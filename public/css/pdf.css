@@ -1,0 +1,47 @@
+.detalle {
+    width: 100%;
+    border-collapse: collapse;
+    border-color: black;
+    border-width: 2px;
+    border-style: groove;
+    font-size: 11px;
+}
+
+.detalle tr {
+    border-color: black;
+    border-width: 2px;
+    border-style: groove;
+}
+
+.detalle td {
+    border-color: black;
+    border-width: 2px;
+    border-style: groove;
+}
+
+.detalle th {
+    border-color: black;
+    border-width: 2px;
+    border-style: groove;
+}
+
+.left {
+    text-align: left;
+    padding-left: 2px;
+}
+
+.right {
+    padding-right: 4px;
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.cabecera {
+    font-weight: bold;
+    width: 80%;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
