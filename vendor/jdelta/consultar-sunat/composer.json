@@ -1,0 +1,28 @@
+{
+    "name": "jdelta/consultar-sunat",
+    "description": "Módulo para realizar consultas a SUNAT mediante el numero de RUC o DNI",
+    "type": "library",
+    "keywords": [
+        "Sunat",
+        "Peru",
+        "PHP",
+        "Consulta",
+        "cURL"
+    ],
+    "authors": [
+        {
+            "name": "Jaime Cruz",
+            "email": "jaime@comprobante.pe"
+        }
+    ],
+    "require": {
+        "php": ">=5.6|^7.2",
+        "ext-curl": "*",
+        "lib-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConsultarSunat\\": "src/"
+        }
+    }
+}
