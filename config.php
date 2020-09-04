@@ -1,7 +1,9 @@
 <?php
+require_once '../host-prospectos.php';
+
 define('ROOTPATH', __DIR__);
 
-define('WEB', 'http://localhost:8082/');
+//define('WEB', 'http://localhost:8082/');
 
 define('WEB_ROOT', WEB .'prospectos/');
 
