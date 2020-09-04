@@ -1,7 +1,7 @@
 <?php
 define('ROOTPATH', __DIR__);
 
-define('WEB', 'http://192.168.0.15/');
+define('WEB', 'http://localhost:8082/');
 
 define('WEB_ROOT', WEB .'prospectos/');
 

@@ -7,7 +7,7 @@ $router->get('admin/vendedores/:id', 'VendedoresController@index');
 $router->get('admin/supervisores/:id', 'SupervisoresController@index');
 $router->get('admin/usuarios/:id', 'UsuariosController@index');
 $router->get('admin/roles/:id', 'RolesController@index');
-
+$router->get('admin/prueba/:id', 'RolesController@index');
 
 $router->get('admin/home/:id', 'DashboardController@index');
 $router->get('admin/mis-negocios', 'NegociosController@misNegocios');
