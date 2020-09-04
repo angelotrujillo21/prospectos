@@ -27,9 +27,9 @@ class ProductosController extends Controller
     public function index($idNegocio)
     {
 
-        $this->view('admin/clientes',
+        $this->view('admin/productos',
         [
-            "titulo" => "Mantemiento de clientes",
+            "titulo" => "Mantemiento de productos",
             "menu"   => true ,
             "user"   => $this->session->get('user')
         ]);
