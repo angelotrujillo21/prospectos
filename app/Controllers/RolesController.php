@@ -7,7 +7,7 @@ use Application\Libs\Session;
 use Application\Core\Controller as Controller;
 use Application\Models\Negocios;
 
-class VendedoresController extends Controller
+class RolesController extends Controller
 {
 
     //model principal
@@ -26,9 +26,9 @@ class VendedoresController extends Controller
 
     public function index($idNegocio)
     {
-        $this->view('admin/vendedores',
+        $this->view('admin/roles',
         [
-            "titulo" => "Mantemiento de vendedores",
+            "titulo" => "Mantemiento de roles",
             "menu"   => true ,
             "user"   => $this->session->get('user')
         ]);

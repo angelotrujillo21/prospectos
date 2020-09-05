@@ -313,3 +313,96 @@ td {
   background: linear-gradient(to right, #7ee5ce, #007bff) !important;
   color: #ffffff !important;
 }
+
+.actions-negocio {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.actions-negocio a {
+  color: #0a84fb;
+  font-size: 20px;
+}
+
+.ml-content-custom-switch {
+  margin-left: 35px;
+}
+
+.flex-center {
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+}
+
+.button-form-control {
+  padding: 0.7rem 3rem !important;
+  font-size: 0.813rem !important;
+}
+
+.border-card {
+  box-shadow: 0px 4px 4px rgba(141, 115, 115, 0.25);
+}
+
+.btn-gradient-order,
+.btn-gradient-order:hover,
+.btn-gradient-order:focus {
+  background: #9b1fe9;
+  background: #9b1fe9;
+  border: none !important;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  color: #ffffff;
+}
+
+.dropdown-menu.dropdown-menu-right.show {
+  z-index: 999999 !important;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #41b883;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.card-dashboard {
+  border-radius: 8px;
+  padding: 20px 0px;
+  max-width: 250px;
+}
+
+.card-dash-color-1 {
+  background: linear-gradient(180deg, #7f7cfb 0%, rgba(203, 4, 236, 0.45) 100%);
+}
+
+.card-dash-color-2 {
+  background: linear-gradient(180deg, rgba(119, 209, 4, 0.46) 0%, rgba(4, 236, 27, 0.55) 100%);
+}
+
+.card-dash-color-3{
+  background: linear-gradient(180deg, #FEF343 0%, #FC993A 100%);
+}
+
+.title-dashcoard-card {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 30px;
+}
+
+.icon-card-dashboard {
+  color: #fff;
+  font-size: 80px;
+}
+.cant-dashbaord {
+  height: 80px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  line-height: 30px;
+  color: #fff;
+}

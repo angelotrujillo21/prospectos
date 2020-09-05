@@ -3968,7 +3968,6 @@ input[type="button"].btn-block {
 .custom-control-input:checked~.custom-control-label::before {
     color: #fff;
     border-color: #2c3e50;
-    background: linear-gradient(to right, #fc76fe, #2c3e50);
 }
 
 .custom-control-input:focus~.custom-control-label::before {
@@ -4010,7 +4009,7 @@ input[type="button"].btn-block {
     height: 1rem;
     pointer-events: none;
     content: "";
-    background-color: #fff;
+    /*background-color: #fff;*/
     border: #adb5bd solid 1px;
 }
 

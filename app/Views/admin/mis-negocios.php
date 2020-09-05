@@ -50,16 +50,17 @@
                                                 <figure class="col-md-4 text-center">
                                                     <div class="position-relative contenedor-negocio text-center">
                                                         <a href="<?= route('admin/home/' . $negocio["idNegocio"]) ?>">
-                                                            <img alt="picture" 
-                                                            style=" width: 100px; height: 100px; max-width: 100px; max-height: 100px;"
-                                                            src="<?= src('multi/' . $negocio['imagenNegocio']) ?>" class="img-fluid">
-                                                            <div class="overlay">
+                                                            <img alt="picture" style=" width: 100px; height: 100px; max-width: 100px; max-height: 100px;" src="<?= src('multi/' . $negocio['imagenNegocio']) ?>" class="img-fluid">
+                                                            <!--<div class="overlay">
                                                                 <div class="text-overlay"><i class="far fa-arrow-alt-circle-right"></i>
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
                                                             <figcaption class="figure-caption">
                                                                 <?= $negocio["nombreNegocio"] ?></figcaption>
                                                         </a>
+                                                        <div class="actions-negocio">
+                                                            <a href="javascript:;" title="Editar"><i class="material-icons">edit</i> </a>
+                                                        </div>
                                                     </div>
                                                 </figure>
                                             <?php endforeach; ?>
@@ -113,7 +114,7 @@
                                     <label for="imagenNegocio" class="col-form-label">Imagen:</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input"  id="imagenNegocio" accept="image/*" lang="es" name="imagenNegocio">
+                                            <input type="file" class="custom-file-input" id="imagenNegocio" accept="image/*" lang="es" name="imagenNegocio">
                                             <label class="custom-file-label" for="imagenNegocio">Elija el archivo</label>
                                         </div>
                                     </div>

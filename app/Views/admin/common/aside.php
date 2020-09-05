@@ -30,14 +30,13 @@
                     </li>
                     <div class="nav-submenus">
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="javascript:;">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/home/' . $user["idNegocio"]) ?>">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Home</span>
                             </a>
                         </li>
                     </div>
                 </div>
-
 
                 <div class="menu-item">
                     <li class="nav-item padre">
@@ -48,14 +47,7 @@
                     </li>
                     <div class="nav-submenus">
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="javascript:;">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Negocio</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="javascript:;">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/configuracion/prospecto/' . $user["idNegocio"]) ?>">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Prospectos</span>
                             </a>
@@ -91,20 +83,19 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/vendedores/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Vendedores</span>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item">
                             <a class="nav-link reportes item__menu__link" href="<?= route('admin/supervisores/' . $user["idNegocio"]) ?>">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Supervisores</span>
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/vendedores/' . $user["idNegocio"]) ?>">
+                                <i class="material-icons">chevron_right</i>
+                                <span>Vendedores</span>
+                            </a>
+                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link reportes item__menu__link" href="<?= route('admin/usuarios/' . $user["idNegocio"]) ?>">
                                 <i class="material-icons">chevron_right</i>
@@ -124,7 +115,32 @@
                 </div>
 
 
+                <div class="menu-item">
+                    <li class="nav-item padre">
+                        <a class="nav-link" href="javascript:;">
+                            <i class="material-icons">link</i>
+                            <span> Enlaces </span>
+                        </a>
+                    </li>
+                    <div class="nav-submenus">
 
+                        <li class="nav-item">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/mis-negocios/')?>">
+                                <i class="material-icons">chevron_right</i>
+                                <span>Mis Negocios</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/salir/')?>">
+                                <i class="material-icons">chevron_right</i>
+                                <span>Salir</span>
+                            </a>
+                        </li>
+
+                    
+                    </div>
+                </div>
             </ul>
         <?php endif ?>
     </div>

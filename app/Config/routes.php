@@ -9,6 +9,8 @@ $router->get('admin/usuarios/:id', 'UsuariosController@index');
 $router->get('admin/roles/:id', 'RolesController@index');
 
 
+$router->get('admin/configuracion/prospecto/:id', 'ProspectosController@index');
+
 $router->get('admin/home/:id', 'DashboardController@index');
 $router->get('admin/mis-negocios', 'NegociosController@misNegocios');
 $router->any('admin/acceso', 'LoginAdminController@acceso');
