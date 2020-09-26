@@ -339,8 +339,8 @@
                             <div class="col-12 col-md-6 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="experienciaenVentasCheck">
-                                    <label class="custom-control-label" for="experienciaenVentasCheckk">Experencia en Ventas</label>
+                                    <input type="checkbox" class="custom-control-input" id="experienciaenVentasVendedorCheck">
+                                    <label class="custom-control-label" for="experienciaenVentasVendedorCheckk">Experencia en Ventas</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 my-2">
@@ -381,8 +381,8 @@
                             <div class="col-12 col-md-4 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="nombreCheck">
-                                    <label class="custom-control-label" for="nombreCheck">Nombre</label>
+                                    <input type="checkbox" class="custom-control-input" id="nombreProductoCheck">
+                                    <label class="custom-control-label" for="nombreProductoCheck">Nombre</label>
                                 </div>
                             </div>
 
@@ -433,31 +433,31 @@
                             <div class="col-12 col-md-6 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="numerodeDocumentoCheck">
-                                    <label class="custom-control-label" for="numerodeDocumentoCheck">Numero de Documento</label>
+                                    <input type="checkbox" class="custom-control-input" id="numerodeDocumentoSupervisorCheck">
+                                    <label class="custom-control-label" for="numerodeDocumentoSupervisorCheck">Numero de Documento</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="nombreCheck">
-                                    <label class="custom-control-label" for="nombreCheck">Nombre</label>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 my-2">
-                                <!-- Default switch -->
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="estadoCivilCheck">
-                                    <label class="custom-control-label" for="estadoCivilCheck">Estado Civil</label>
+                                    <input type="checkbox" class="custom-control-input" id="nombreSupervisorCheck">
+                                    <label class="custom-control-label" for="nombreSupervisorCheck">Nombre</label>
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="fechaNacimientoCheck">
-                                    <label class="custom-control-label" for="fechaNacimientoCheck">Fecha Nacimiento
+                                    <input type="checkbox" class="custom-control-input" id="estadoCivilSupervisorCheck">
+                                    <label class="custom-control-label" for="estadoCivilSupervisorCheck">Estado Civil</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 my-2">
+                                <!-- Default switch -->
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="fechaNacimientoSupervisorCheck">
+                                    <label class="custom-control-label" for="fechaNacimientoSupervisorCheck">Fecha Nacimiento
                                     
                                     </label>
                                 </div>
@@ -466,8 +466,8 @@
                             <div class="col-12 col-md-12 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="candidaddePersonasDependientescheck">
-                                    <label class="custom-control-label" for="candidaddePersonasDependientescheck">Cantidad de Personas Dependientes
+                                    <input type="checkbox" class="custom-control-input" id="candidaddePersonasDependientesSupervisorcheck">
+                                    <label class="custom-control-label" for="candidaddePersonasDependientesSupervisorcheck">Cantidad de Personas Dependientes
                                         
                                     </label>
                                 </div>
@@ -476,15 +476,15 @@
                             <div class="col-12 col-md-6 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="experienciaenVentasCheck">
-                                    <label class="custom-control-label" for="experienciaenVentasCheckk">Experencia en Ventas</label>
+                                    <input type="checkbox" class="custom-control-input" id="experienciaenVentasSupervisorCheck">
+                                    <label class="custom-control-label" for="experienciaenVentasSupervisorCheck">Experencia en Ventas</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="estudiosCheck">
-                                    <label class="custom-control-label" for="estudiosCheck">Estudios</label>
+                                    <input type="checkbox" class="custom-control-input" id="estudiosSupervisorCheck">
+                                    <label class="custom-control-label" for="estudiosSupervisorCheck">Estudios</label>
                                 </div>
                             </div>
                           
