@@ -31,7 +31,8 @@ class ClientesController extends Controller
         [
             "titulo" => "Mantemiento de clientes",
             "menu"   => true ,
-            "user"   => $this->session->get('user')
+            "user"   => $this->session->get('user'),
+            'showNotificacion'   => true ,
         ]);
     }
     

@@ -32,9 +32,10 @@ class ProspectosController extends Controller
         $this->view(
             'admin/prospectos',
             [
-                "titulo" => "Configuracion de prospectos",
-                "menu"   => true,
-                "user"   => $this->session->get('user')
+                "titulo"             => "Configuracion de prospectos",
+                "menu"               => true,
+                "user"               => $this->session->get('user'),
+                'showNotificacion'   => true ,
             ]
         );
     }

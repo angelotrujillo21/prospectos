@@ -35,10 +35,11 @@ class DashboardController extends Controller
             $this->view(
                 'admin/home',
                 array(
-                    'negocio'  => $negocio,
-                    'user'     => $this->session->get('user'),
-                    'menu'     => true,
-                    'titulo'   => 'Home'
+                    'negocio'            => $negocio,
+                    'user'               => $this->session->get('user'),
+                    'menu'               => true,
+                    'titulo'             => 'Home',
+                    'showNotificacion'   => true ,
                 )
             );
 

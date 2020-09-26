@@ -30,7 +30,9 @@ class SupervisoresController extends Controller
         [
             "titulo" => "Mantemiento de supervisores",
             "menu"   => true ,
-            "user"   => $this->session->get('user')
+            "user"   => $this->session->get('user'),
+            'showNotificacion'   => true ,
+
         ]);
     }
 }

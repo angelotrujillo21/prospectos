@@ -378,11 +378,15 @@ td {
 }
 
 .card-dash-color-2 {
-  background: linear-gradient(180deg, rgba(119, 209, 4, 0.46) 0%, rgba(4, 236, 27, 0.55) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(119, 209, 4, 0.46) 0%,
+    rgba(4, 236, 27, 0.55) 100%
+  );
 }
 
-.card-dash-color-3{
-  background: linear-gradient(180deg, #FEF343 0%, #FC993A 100%);
+.card-dash-color-3 {
+  background: linear-gradient(180deg, #fef343 0%, #fc993a 100%);
 }
 
 .title-dashcoard-card {
@@ -405,4 +409,237 @@ td {
   font-size: 30px;
   line-height: 30px;
   color: #fff;
+}
+
+.cuadrado {
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+.title-prospectos {
+  font-size: 18px;
+}
+
+.color-rojo {
+  background: #f06767;
+}
+
+.color-amarillo {
+  background: #fef343;
+}
+
+.color-verde {
+  background: #41b883;
+}
+
+.circulo-vendedor {
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  background: #ffffff;
+  border: 1px solid #188ff6;
+  color: #188ff6;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.circulo-vendedor:hover {
+  color: #fff;
+  background: #188ff6;
+  cursor: pointer;
+}
+
+.btn-invitar {
+  font-size: 15px !important;
+  color: #ffff;
+  background: #41b883;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-invitar:hover {
+  color: #ffff;
+  background: #41b883bd;
+}
+
+.container-list-prospectos {
+  background: #eee9f8;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 5px;
+  width: 360px;
+  height: auto;
+  margin: 0px 10px;
+  display: inline-grid;
+}
+
+.title-header-prospectos {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 17px;
+  text-align: center;
+  color: #797979;
+}
+
+.list-prospectos {
+  width: 100%;
+  padding-right: 9px;
+  max-height: 500px;
+  height: auto;
+  overflow-y: auto;
+}
+
+.card-prospecto {
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.card-prospecto.row.no-gutters {
+  padding: 10px 5px;
+}
+.pr-cliente {
+  font-size: 18px;
+}
+.pr-vendedor {
+  font-size: 16px;
+}
+.pr-icon-edit {
+  font-size: 24px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.color-text-verde {
+  color: #41b883;
+}
+
+.border-top-pr {
+  border-top-width: 3px;
+  border-top-style: solid;
+}
+
+.border-left-pr {
+  border-left-width: 3px;
+  border-left-style: solid;
+}
+
+/* ETAPAS COLORES BORDER LEF */
+.etapa-1-border-left {
+  border-left-color: #046ad1;
+}
+
+.etapa-2-border-left,
+.etapa-3-border-left,
+.etapa-4-border-left {
+  border-left-color: #fc993a;
+}
+
+.etapa-5-border-left {
+  border-left-color: #41b883;
+}
+
+/*FIN DE ETAPAS COLORES BORDER LEF */
+
+/* ETAPAS COLORES */
+.etapa-1-color {
+  color: #046ad1;
+}
+
+.etapa-2-color,
+.etapa-3-color,
+.etapa-4-color {
+  color: #fc993a;
+}
+
+.etapa-5-color {
+  color: #41b883;
+}
+
+/* FIN  ETAPAS COLORES */
+
+/* BORDER TOP COLORES */
+
+.border-top-rojo {
+  border-top-color: #f06767;
+}
+
+.border-top-amarillo {
+  border-top-color: #fef343;
+}
+
+.border-top-verde {
+  border-top-color: #41b883;
+}
+/* FIN DE BORDER TOP COLORES */
+
+.link-ver-todo,
+.link-ver-todo:hover,
+.link-ver-todo:active {
+  color: #41b883;
+  font-size: 16px;
+  line-height: 17px;
+}
+
+.pr-scroll-x::-webkit-scrollbar-track,
+.list-prospectos::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(12, 12, 12, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.pr-scroll-x::-webkit-scrollbar,
+.list-prospectos::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f5f5f5;
+}
+
+.pr-scroll-x::-webkit-scrollbar-thumb,
+.list-prospectos::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #c6c6c6;
+}
+
+.ult-cita,
+.ult-ingreso {
+  font-size: 14px;
+}
+
+.pr-scroll-x {
+  overflow-y: hidden;
+  overflow-x: auto;
+  width: auto;
+  white-space: nowrap;
+  padding-bottom: 20px;
+}
+
+.title-negocio {
+  font-size: 18px;
+  color: #5a6169;
+  font-weight: 500;
+  letter-spacing: 0px;
+}
+
+.edit-controles {
+  color: #0a84fb !important;
+  cursor: pointer;
+  font-size: 14px;
 }

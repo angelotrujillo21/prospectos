@@ -95,6 +95,10 @@
                     <form>
                         <div class="row">
 
+                        <div class="col-12 mb-1">
+                                <span class="title-negocio" >General</span>
+                            </div>
+
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="nombreNegocio" class="col-form-label">Nombre:</label>
@@ -109,7 +113,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="imagenNegocio" class="col-form-label">Imagen:</label>
                                     <div class="input-group">
@@ -120,6 +124,50 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="" class="col-form-label">Tipo De Prospecto:</label>
+                                    <select class="form-control" name="" id="">
+                                        <option value="">Seleccionnar</option>
+                                        <option value="">Corto</option>
+                                        <option value="">Normal</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-1">
+                                <span class="title-negocio">Controles</span>
+                            </div>
+                        
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <span>Cliente <a class="edit-controles" data-toggle="modal" data-target="#" ><i class="fas fa-pen"></i></a></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#" ><i class="fas fa-pen"></i></a></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <span>Productos o servicios <a class="edit-controles" data-toggle="modal" data-target="#" ><i class="fas fa-pen"></i></a></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#" ><i class="fas fa-pen"></i></a></span>
+                                </div>
+                            </div>
+
+
+
+
                         </div>
                     </form>
                 </div>

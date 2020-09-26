@@ -34,10 +34,11 @@ class NegociosController extends Controller
         $this->view(
             'admin/mis-negocios',
             array(
-                'negocios' => $negocios,
-                'user'     => $this->session->get('user'),
-                'menu'     => false,
-                'titulo'   => 'Mis Negocios'
+                'negocios'           => $negocios,
+                'user'               => $this->session->get('user'),
+                'menu'               => false,
+                'showNotificacion'   => false ,
+                'titulo'             => 'Mis Negocios'
             )
         );
     }

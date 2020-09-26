@@ -30,7 +30,8 @@ class UsuariosController extends Controller
         [
             "titulo" => "Mantemiento de usuarios",
             "menu"   => true ,
-            "user"   => $this->session->get('user')
+            "user"   => $this->session->get('user'),
+            'showNotificacion'   => true ,
         ]);
     }
 }

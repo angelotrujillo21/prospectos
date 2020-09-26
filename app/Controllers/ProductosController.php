@@ -31,7 +31,9 @@ class ProductosController extends Controller
         [
             "titulo" => "Mantemiento de productos",
             "menu"   => true ,
-            "user"   => $this->session->get('user')
+            "user"   => $this->session->get('user'),
+            'showNotificacion'   => true ,
+
         ]);
     }
     

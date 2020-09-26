@@ -30,7 +30,8 @@ class RolesController extends Controller
         [
             "titulo" => "Mantemiento de roles",
             "menu"   => true ,
-            "user"   => $this->session->get('user')
+            "user"   => $this->session->get('user'),
+            'showNotificacion'   => true ,
         ]);
     }
 }
