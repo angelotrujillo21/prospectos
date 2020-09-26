@@ -57,64 +57,6 @@
                 </div>
 
 
-
-
-                <div class="menu-item">
-                    <li class="nav-item padre">
-                        <a class="nav-link" href="javascript:;">
-                            <i class="material-icons">table_view</i>
-                            <span> Mantenimiento </span>
-                        </a>
-                    </li>
-                    <div class="nav-submenus">
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/clientes/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Clientes</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/productos/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Productos</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/supervisores/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Supervisores</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/vendedores/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Vendedores</span>
-                            </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/usuarios/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Usuarios</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/roles/' . $user["idNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Roles</span>
-                            </a>
-                        </li>
-
-
-                    </div>
-                </div>
-
-
                 <div class="menu-item">
                     <li class="nav-item padre">
                         <a class="nav-link" href="javascript:;">

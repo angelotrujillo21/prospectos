@@ -106,11 +106,11 @@
 
     <!-- Modales -->
 
-    <div class="modal fade" id="formClientes" tabindex="-1" role="dialog" aria-labelledby="formClientesLabel" aria-hidden="true">
+    <div class="modal fade" id="formCrearNuevoCliente" tabindex="-1" role="dialog" aria-labelledby="formCrearNuevoClienteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formClientesLabel">Nuevo Cliente</h5>
+                    <h5 class="modal-title" id="formCrearNuevoClienteLabel">Nuevo Cliente</h5>
                     <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
