@@ -38,8 +38,7 @@
                                                 <h5 class="m-0">Seleccione su negocio :</h5>
                                             </div>
                                             <div class="bd-highlight">
-                                                <button data-toggle="modal" data-target="#formNegocio"
-                                                    class="btn btn-gradient-primary btn-rounded btn-icon">
+                                                <button data-toggle="modal" data-target="#formNegocio" class="btn btn-gradient-primary btn-rounded btn-icon">
                                                     <i class="fas fa-plus-circle"></i>
                                                 </button>
                                             </div>
@@ -48,26 +47,22 @@
                                     <div class="card-body py-4">
                                         <div class="row">
                                             <?php foreach ($negocios  as $negocio) : ?>
-                                            <figure class="col-md-4 text-center">
-                                                <div class="position-relative contenedor-negocio text-center">
-                                                    <a href="<?= route('admin/home/' . $negocio["idNegocio"]) ?>">
-                                                        <img alt="picture"
-                                                            style=" width: 100px; height: 100px; max-width: 100px; max-height: 100px;"
-                                                            src="<?= src('multi/' . $negocio['imagenNegocio']) ?>"
-                                                            class="img-fluid">
-                                                        <!--<div class="overlay">
+                                                <figure class="col-md-4 text-center">
+                                                    <div class="position-relative contenedor-negocio text-center">
+                                                        <a href="<?= route('admin/home/' . $negocio["idNegocio"]) ?>">
+                                                            <img alt="picture" style=" width: 100px; height: 100px; max-width: 100px; max-height: 100px;" src="<?= src('multi/' . $negocio['imagenNegocio']) ?>" class="img-fluid">
+                                                            <!--<div class="overlay">
                                                                 <div class="text-overlay"><i class="far fa-arrow-alt-circle-right"></i>
                                                                 </div>
                                                             </div>-->
-                                                        <figcaption class="figure-caption">
-                                                            <?= $negocio["nombreNegocio"] ?></figcaption>
-                                                    </a>
-                                                    <div class="actions-negocio">
-                                                        <a href="javascript:;" title="Editar"><i
-                                                                class="material-icons">edit</i> </a>
+                                                            <figcaption class="figure-caption">
+                                                                <?= $negocio["nombreNegocio"] ?></figcaption>
+                                                        </a>
+                                                        <div class="actions-negocio">
+                                                            <a href="javascript:;" title="Editar"><i class="material-icons">edit</i> </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </figure>
+                                                </figure>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>
@@ -87,14 +82,12 @@
 
     <!-- Modales -->
 
-    <div class="modal fade" id="formNegocio" tabindex="-1" role="dialog" aria-labelledby="formNegocioLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="formNegocio" tabindex="-1" role="dialog" aria-labelledby="formNegocioLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="formNegocioLabel">Nuevo Negocio</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0"
-                        data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -109,16 +102,14 @@
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="nombreNegocio" class="col-form-label">Nombre:</label>
-                                    <input type="text" class="form-control" id="nombreNegocio" autocomplete="off"
-                                        name="nombreNegocio">
+                                    <input type="text" class="form-control" id="nombreNegocio" autocomplete="off" name="nombreNegocio">
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="direccionNegocio" class="col-form-label">Direccion:</label>
-                                    <input type="text" class="form-control" id="direccionNegocio" autocomplete="off"
-                                        name="direccionNegocio">
+                                    <input type="text" class="form-control" id="direccionNegocio" autocomplete="off" name="direccionNegocio">
                                 </div>
                             </div>
 
@@ -127,8 +118,7 @@
                                     <label for="imagenNegocio" class="col-form-label">Imagen:</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="imagenNegocio"
-                                                accept="image/*" lang="es" name="imagenNegocio">
+                                            <input type="file" class="custom-file-input" id="imagenNegocio" accept="image/*" lang="es" name="imagenNegocio">
                                             <label class="custom-file-label" for="imagenNegocio">Elija el
                                                 archivo</label>
                                         </div>
@@ -155,57 +145,52 @@
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <span>Cliente
-                                        <a class="edit-controles" data-toggle="modal" data-target="#formCliente"><i
-                                                class="fas fa-pen"></i></a></span>
+                                        <a class="edit-controles" data-toggle="modal" data-target="#formCliente"><i class="fas fa-pen"></i></a></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#formVendedores"><i
-                                                class="fas fa-pen"></i></a></span>
+                                    <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#formVendedores"><i class="fas fa-pen"></i></a></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <span>Productos o servicios <a class="edit-controles" data-toggle="modal"
-                                            data-target="#formProductosoServicios"><i class="fas fa-pen"></i></a></span>
+                                    <span>Productos o servicios <a class="edit-controles" data-toggle="modal" data-target="#formProductosoServicios"><i class="fas fa-pen"></i></a></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#formSupervisores"><i
-                                                class="fas fa-pen"></i></a></span>
+                                    <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#formSupervisores"><i class="fas fa-pen"></i></a></span>
                                 </div>
                             </div>
-
-
-
 
                         </div>
                     </form>
                 </div>
-               
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gradient-primary btn-fw">Guardar</button>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="formCliente" tabindex="-1" role="dialog" aria-labelledby="formClienteLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="formCliente" tabindex="-1" role="dialog" aria-labelledby="formClienteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="formClienteLabel">Editar Control cliente</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0"
-                        data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
-                    
+
                         <div class="row  ml-content-custom-switch w-100">
 
                             <div class="col-12 col-md-6 my-2">
@@ -230,7 +215,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="contactoCheck">
                                     <label class="custom-control-label" for="contactoCheck">Contacto
-                                    
+
                                     </label>
                                 </div>
                             </div>
@@ -240,7 +225,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="telefonocheck">
                                     <label class="custom-control-label" for="telefonocheck">Telefono
-                                        
+
                                     </label>
                                 </div>
                             </div>
@@ -271,26 +256,24 @@
 
                     </form>
                 </div>
-             
+
             </div>
         </div>
     </div>
 
 
-    <div class="modal fade" id="formVendedores" tabindex="-1" role="dialog" aria-labelledby="formVendedoresLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="formVendedores" tabindex="-1" role="dialog" aria-labelledby="formVendedoresLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="formVendedoresLabel">Editar Control Vendedor</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0"
-                        data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
-                    
+
                         <div class="row  ml-content-custom-switch w-100">
 
                             <div class="col-12 col-md-6 my-2">
@@ -321,7 +304,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="fechaNacimientoCheck">
                                     <label class="custom-control-label" for="fechaNacimientoCheck">Fecha Nacimiento
-                                    
+
                                     </label>
                                 </div>
                             </div>
@@ -331,7 +314,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="candidaddePersonasDependientescheck">
                                     <label class="custom-control-label" for="candidaddePersonasDependientescheck">Cantidad de Personas Dependientes
-                                        
+
                                     </label>
                                 </div>
                             </div>
@@ -350,34 +333,32 @@
                                     <label class="custom-control-label" for="estudiosCheck">Estudios</label>
                                 </div>
                             </div>
-                          
+
 
                         </div>
 
                     </form>
                 </div>
-               
+
             </div>
         </div>
     </div>
 
-        <div class="modal fade" id="formProductosoServicios" tabindex="-1" role="dialog" aria-labelledby="formProductosoServiciosLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="formProductosoServicios" tabindex="-1" role="dialog" aria-labelledby="formProductosoServiciosLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="formProductosoServiciossLabel">Editar Control Productos</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0"
-                        data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
-                    
+
                         <div class="row  ml-content-custom-switch w-100">
 
-                         
+
                             <div class="col-12 col-md-4 my-2">
                                 <!-- Default switch -->
                                 <div class="custom-control custom-switch">
@@ -399,7 +380,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="descripcionCheck">
                                     <label class="custom-control-label" for="descripcionCheck">Descripcion
-                                    
+
                                     </label>
                                 </div>
                             </div>
@@ -409,25 +390,23 @@
 
                     </form>
                 </div>
-              
+
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="formSupervisores" tabindex="-1" role="dialog" aria-labelledby="formSupervisoresLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="formSupervisores" tabindex="-1" role="dialog" aria-labelledby="formSupervisoresLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="formSupervisoresLabel">Editar Control Supervisor</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0"
-                        data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
-                    
+
                         <div class="row  ml-content-custom-switch w-100">
 
                             <div class="col-12 col-md-6 my-2">
@@ -458,7 +437,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="fechaNacimientoSupervisorCheck">
                                     <label class="custom-control-label" for="fechaNacimientoSupervisorCheck">Fecha Nacimiento
-                                    
+
                                     </label>
                                 </div>
                             </div>
@@ -468,7 +447,7 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="candidaddePersonasDependientesSupervisorcheck">
                                     <label class="custom-control-label" for="candidaddePersonasDependientesSupervisorcheck">Cantidad de Personas Dependientes
-                                        
+
                                     </label>
                                 </div>
                             </div>
@@ -487,13 +466,13 @@
                                     <label class="custom-control-label" for="estudiosSupervisorCheck">Estudios</label>
                                 </div>
                             </div>
-                          
+
 
                         </div>
 
                     </form>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -508,8 +487,8 @@
 </body>
 
 <script>
-const web_root = '<?= WEB_ROOT ?>';
-const simbolo_moneda = '<?= SIMBOLO_MONEDA ?>';
+    const web_root = '<?= WEB_ROOT ?>';
+    const simbolo_moneda = '<?= SIMBOLO_MONEDA ?>';
 </script>
 
 <?php extend_view(['admin/common/scripts'], $data) ?>

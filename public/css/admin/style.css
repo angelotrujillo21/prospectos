@@ -427,13 +427,26 @@ td {
   background: #f06767;
 }
 
+.fondo-rojo {
+  background: #f06767;
+}
+
 .color-amarillo {
+  background: #fef343;
+}
+
+.fondo-amarillo {
   background: #fef343;
 }
 
 .color-verde {
   background: #41b883;
 }
+
+.fondo-verde {
+  background: #41b883;
+}
+
 
 .circulo-vendedor {
   width: 50px;
@@ -523,8 +536,17 @@ td {
   font-size: 24px;
 }
 
+.font-15 {
+  font-size: 15px;
+}
 .font-14 {
   font-size: 14px;
+}
+.font-13 {
+  font-size: 13px;
+}
+.font-12 {
+  font-size: 12px;
 }
 
 .color-text-verde {
@@ -642,4 +664,45 @@ td {
   color: #0a84fb !important;
   cursor: pointer;
   font-size: 14px;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.card-colaborador {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 10px 0px;
+  margin-bottom: 1.5em;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.activo-hace {
+  font-size: 12px;
+  position: absolute;
+  bottom: 0px;
+  color: #41b883;
+  right: 5px;
+}
+
+.cuadraro-supervisor {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: -5px;
+  right: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 10px;
+}
+
+.dialog-colaborador{
+  max-width: 700px !important;
 }

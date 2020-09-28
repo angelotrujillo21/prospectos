@@ -65,7 +65,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex align-items-end p-2">
-                                                        <a href="#">Ver Todo</a>
+                                                        <a href="javascript:;" data-toggle="modal" data-target="#modalColaboradores">Ver Todo</a>
                                                     </div>
                                                     <div class="d-flex d-flex align-items-center p-2">
                                                         <button data-toggle="modal" data-target="#formColaborador" class="btn btn-invitar">Invitar</button>
@@ -651,8 +651,105 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient-primary btn-fw">Guardar</button>
+                    <button type="button" class="btn btn-gradient-primary btn-fw">Invitar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalColaboradores" tabindex="-1" role="dialog" aria-labelledby="modalColaboradoresLabel" aria-hidden="true">
+        <div class="modal-dialog dialog-colaborador" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalColaboradoresLabel">Lista de Colaboradores</h5>
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class=" row">
+
+                        <div class="col-12 col-md-6">
+                            <div class="card-colaborador">
+                                <div class="row no-gutters">
+                                    <div class="col-3 flex-center">
+                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="Angelo trujillo">
+                                            <span>AT</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span>Angelo Trujillo Orozco</span>
+                                        <div class="w-100"></div>
+                                        <span class="font-14">Asesora de ventas</span>
+                                        <div class="w-100"></div>
+                                        <span class="font-13">QWAY</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cuadraro-supervisor fondo-rojo"></div>
+                                        <span class="activo-hace">Activo hace 5h</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="card-colaborador">
+                                <div class="row no-gutters">
+                                    <div class="col-3 flex-center">
+                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="Angelo trujillo">
+                                            <span>AT</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span>Angelo Trujillo Orozco</span>
+                                        <div class="w-100"></div>
+                                        <span class="font-14">Asesora de ventas</span>
+                                        <div class="w-100"></div>
+                                        <span class="font-13">QWAY</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cuadraro-supervisor fondo-amarillo"></div>
+                                        <span class="activo-hace">Activo hace 5h</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="card-colaborador">
+                                <div class="row no-gutters">
+                                    <div class="col-3 flex-center">
+                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="Angelo trujillo">
+                                            <span>AT</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span>Angelo Trujillo Orozco</span>
+                                        <div class="w-100"></div>
+                                        <span class="font-14">Asesora de ventas</span>
+                                        <div class="w-100"></div>
+                                        <span class="font-13">QWAY</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cuadraro-supervisor fondo-amarillo"></div>
+                                        <span class="activo-hace">Activo hace 5h</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                </div>
+
             </div>
         </div>
     </div>
