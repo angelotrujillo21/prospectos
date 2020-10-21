@@ -604,6 +604,7 @@
                                         <th>Nombre</th>
                                         <th>Precio</th>
                                         <th>Descripcion</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -620,6 +621,7 @@
                                             <th>Producto 1</th>
                                             <th>20.00</th>
                                             <th>Este es una descripcion de un producto x</th>
+                                            <th>Activo</th>
                                         </tr>
                                     <?php endfor ?>
                                 </tbody>
@@ -708,10 +710,7 @@
 
 </body>
 
-<script>
-    const web_root = '<?= WEB_ROOT ?>';
-    const simbolo_moneda = '<?= SIMBOLO_MONEDA ?>';
-</script>
+
 
 <?php extend_view(['admin/common/scripts'], $data) ?>
 

@@ -6,7 +6,7 @@ load_script([
     'popper',
     'bootstrap',
     'admin/custom',
-    'admin/main',
+    'admin/functions',
     'moment',
 ]);
 
@@ -24,3 +24,10 @@ load_script_plugin(
 
     ]
 );
+?>
+
+<script>
+    const web_root = '<?= WEB_ROOT ?>';
+    const web_root_resource = '<?= WEB_ROOT_RESOURCE ?>';
+    const simbolo_moneda    =  '<?= SIMBOLO_MONEDA ?>';
+</script>

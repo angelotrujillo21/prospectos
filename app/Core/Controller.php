@@ -2,6 +2,8 @@
 
 namespace Application\Core;
 
+use Exception;
+
 class Controller
 {
     public function __construct()
@@ -22,6 +24,18 @@ class Controller
     {
         echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT); //Técnologia
     }
+
+    protected function exception($sMessage)
+    {
+        throw new Exception($sMessage, 1);
+    }
+
+    // Escapa los caracteres
+    public function fncSlash($sString)
+    {
+        return (addcslashes($sString, "\/'\"\|\$\&\`\´\@"));
+    }
+
 
 
     /**

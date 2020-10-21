@@ -21,9 +21,7 @@ define('PASSWORD_MAIL', 'mYfCvrb@025!');
 
 
 define('WEB_ROOT_RESOURCE', WEB_ROOT . 'public/');
-
 define('ROOTPATHRESOURCE', ROOTPATH . '/public/');
-
 define('NOMBRE_SITIO', 'App Prospectos');
 
 

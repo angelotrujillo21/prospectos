@@ -31,11 +31,11 @@
                             <form method="post" action="<?= route('admin/acceso') ?>" class="pt-3">
                             
                                 <div class="form-group">
-                                    <input type="text" name="usuario" class="form-control form-control-lg" id="usuario"
+                                    <input type="text" name="sUsuario" class="form-control form-control-lg" id="sUsuario"
                                         placeholder="Usuario" required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="clave" class="form-control form-control-lg" id="clave"
+                                    <input type="password" name="sClave" class="form-control form-control-lg" id="sClave"
                                         placeholder="Password" required>
                                 </div>
                                 <div class="mt-3">

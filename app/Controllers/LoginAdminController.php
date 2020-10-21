@@ -34,21 +34,21 @@ class LoginAdminController extends Controller
             } else {
                 if (!empty($_POST)) {
 
-                    $usuario    = isset($_POST['usuario']) ? $_POST['usuario'] : null;
-                    $clave      = isset($_POST['clave']) ? $_POST['clave'] : null;
+                    $sUsuario    = isset($_POST['sUsuario']) ? $_POST['sUsuario'] : null;
+                    $sClave      = isset($_POST['sClave']) ? $_POST['sClave'] : null;
 
-                    $id = ($this->users->acceso($usuario, $clave));
+                    $nIdUsuario = ($this->users->acceso($sUsuario, $sClave));
 
-                    if ($id > 0) {
-                        $user = $this->users->getUser($id);
+                    if ($nIdUsuario > 0) {
+                        $user = $this->users->getUser($nIdUsuario);
                         $this->session->init();
                         $this->session->add('user', $user);
                         $this->redirect('admin/mis-negocios');
                     } else {
-                        $this->view('admin/login', array('error' => 'Por favor verifique su usuario o contraseña', 'negocios' => $this->negocios->getNegocios()));
+                        $this->view('admin/login', array('error' => 'Por favor verifique su usuario o contraseña', 'negocios' => $this->negocios->fncGetNegocios()));
                     }
                 } else {
-                    $this->view('admin/login', array('negocios' => $this->negocios->getNegocios()));
+                    $this->view('admin/login', array('negocios' => $this->negocios->fncGetNegocios()));
                 }
             }
         } catch (Exception $ex) {
