@@ -6,7 +6,7 @@
                 <div class="d-table m-auto">
                     <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="<?= src('app/shards-dashboards-logo.svg') ?>" alt="Shards Dashboard">
                     <span class="d-none d-md-inline ml-1">
-                        <?= isset($config_negocio['descripcion_negocios']) ? $config_negocio['descripcion_negocios'] : ''  ?>
+
                     </span>
                 </div>
             </a>
@@ -30,7 +30,7 @@
                     </li>
                     <div class="nav-submenus">
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/home/' . $user["idNegocio"]) ?>">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/home/' . $user["nIdNegocio"]) ?>">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Home</span>
                             </a>
@@ -47,7 +47,7 @@
                     </li>
                     <div class="nav-submenus">
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/configuracion/prospecto/' . $user["idNegocio"]) ?>">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/configuracion/prospecto/' . $user["nIdNegocio"]) ?>">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Prospectos</span>
                             </a>

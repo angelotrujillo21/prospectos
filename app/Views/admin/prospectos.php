@@ -710,10 +710,7 @@
 
 </body>
 
-<script>
-    const web_root = '<?= WEB_ROOT ?>';
-    const simbolo_moneda = '<?= SIMBOLO_MONEDA ?>';
-</script>
+
 
 <?php extend_view(['admin/common/scripts'], $data) ?>
 

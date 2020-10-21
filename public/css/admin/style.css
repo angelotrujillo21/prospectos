@@ -342,6 +342,7 @@ td {
 
 .border-card {
   box-shadow: 0px 4px 4px rgba(141, 115, 115, 0.25);
+  border-radius: 8px;
 }
 
 .btn-gradient-order,
@@ -447,6 +448,36 @@ td {
   background: #41b883;
 }
 
+.fondo-azul {
+  background: #188ff6;
+}
+
+.color-azul {
+  color: #188ff6;
+}
+
+.fondo-morado {
+  background: #9a59b5;
+}
+.fondo-negro {
+  background: #141518;
+}
+
+.fondo-plomo {
+  background: #95a5a5;
+}
+
+.fondo-naranja {
+  background: #fc993a;
+}
+
+.fondo-rosa {
+  background: #ff6362;
+}
+
+.fondo-marron {
+  background: #946840;
+}
 
 .circulo-vendedor {
   width: 50px;
@@ -703,6 +734,87 @@ td {
   border-bottom-left-radius: 10px;
 }
 
-.dialog-colaborador{
+.dialog-colaborador {
   max-width: 700px !important;
+}
+
+.img-mis-negocios {
+  width: 100px;
+  height: 100px;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.page-loader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #0761c170;
+  background-image: linear-gradient(330deg, #007bff63, #0761c15c);
+  transition: background-color ease 2s 1s;
+  z-index: 999999;
+}
+
+.loader-dual-ring {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+}
+.loader-dual-ring {
+  margin: 0;
+  margin-right: 0px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader-dual-ring::after {
+  content: " ";
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  margin: 1px;
+  border-radius: 50%;
+  border: 0.3rem solid#ffff;
+  border-color: #ffff transparent #ffff transparent;
+  animation: loader-dual-ring 1.1s ease infinite;
+}
+
+@keyframes loader-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sin-padding {
+  padding: 0px !important;
+}
+
+.container-buttons-table {
+  display: inherit;
+  margin: 0px 10px;
+}
+
+.container-buttons-table button {
+  margin: 0px 10px;
+}
+
+.action-table {
+  font-size: 1.2rem;
+  color: #007bff !important;
+}
+
+.bg-form-colaborador {
+  background: #f7fbff;
+}
+
+.img-check {
+  width: 200px;
+  margin: 20px 0px;
 }

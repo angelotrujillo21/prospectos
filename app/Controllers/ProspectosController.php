@@ -26,9 +26,6 @@ class ProspectosController extends Controller
 
     public function index($idNegocio)
     {
-
-       
-
         $this->view(
             'admin/prospectos',
             [

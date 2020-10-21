@@ -28,9 +28,9 @@ class UsuariosController extends Controller
     {
         $this->view('admin/usuarios',
         [
-            "titulo" => "Mantemiento de usuarios",
-            "menu"   => true ,
-            "user"   => $this->session->get('user'),
+            "titulo"            => "Mantemiento de usuarios",
+            "menu"              => true ,
+            "user"              => $this->session->get('user'),
             'showNotificacion'   => true ,
         ]);
     }
