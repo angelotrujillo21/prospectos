@@ -23,8 +23,8 @@ $(document).ready(function () {
   });
 
   // $(document).on("hidden.bs.modal", function () {
-  //   $(this).find(".modal-body").find("form")[0].trigger("reset");
-  //   $(this).find(".modal-body").find("form")[0].find(".custom-file-label").html("Elija el archivo");
+  //   fncClearInputs( $(this).find("form") );
+  //   fncRemoveDisabled($(this));
   // });
 
   $('input[type="file"]').change(function () {

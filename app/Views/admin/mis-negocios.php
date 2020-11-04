@@ -124,12 +124,11 @@
                                 <div class="form-group">
                                     <label for="nEstado" class="col-form-label">Estado:</label>
                                     <select class="form-control" name="nEstado" id="nEstado">
-                                            <option value="1">Activo</option>
-                                            <option value="0">Desactivo</option>
+                                        <option value="1">Activo</option>
+                                        <option value="0">Desactivo</option>
                                     </select>
                                 </div>
                             </div>
-
 
 
 
@@ -191,11 +190,11 @@
 
                             <?php foreach ($aryConfigClientes as $aryConfigCliente) : ?>
                                 <!-- Ocultamos Tipo de documento y Apellidos -->
-                                <?php $sClass = in_array($aryConfigCliente['nIdCampo'], [1, 4]) ? 'd-none' : ''; ?>
+                                <?php  $sClass = in_array($aryConfigCliente['nIdCampoEntidad'], [1, 5]) ? 'd-none' : ''; ?>
                                 <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
                                     <div class="custom-control custom-switch ">
-                                        <input type="checkbox" name="aryConfiguracionCliente[]" class="custom-control-input" id="chk<?= $aryConfigCliente['nIdCampo'] ?>" checked="checked" value="<?= $aryConfigCliente['nIdCampo'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigCliente['nIdCampo'] ?>"><?= $aryConfigCliente['sNombreUsuario'] ?></label>
+                                        <input type="checkbox" name="aryConfiguracionCliente[]" class="custom-control-input" id="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCliente['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>"><?= $aryConfigCliente['sNombreUsuario'] ?></label>
                                     </div>
                                 </div>
                             <?php endforeach ?>
@@ -226,11 +225,11 @@
                         <div class="row  ml-content-custom-switch w-100">
 
                             <?php foreach ($aryConfigVendedores as $aryConfigVendedor) : ?>
-                                <?php $sClass = in_array($aryConfigVendedor['nIdCampo'], [15, 18]) ? 'd-none' : ''; ?>
+                                <?php $sClass = in_array($aryConfigVendedor['nIdCampoEntidad'], [16, 20]) ? 'd-none' : ''; ?>
                                 <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="aryConfiguracionVendedores[]" class="custom-control-input" id="chk<?= $aryConfigVendedor['nIdCampo'] ?>" checked="checked" value="<?= $aryConfigVendedor['nIdCampo'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigVendedor['nIdCampo'] ?>"><?= $aryConfigVendedor['sNombreUsuario'] ?></label>
+                                        <input type="checkbox" name="aryConfiguracionVendedores[]" class="custom-control-input" id="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigVendedor['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>"><?= $aryConfigVendedor['sNombreUsuario'] ?></label>
                                     </div>
                                 </div>
                             <?php endforeach ?>
@@ -262,8 +261,8 @@
                             <?php foreach ($aryConfigCatalogos as $aryConfigCatalogo) : ?>
                                 <div class="col-12 col-md-6 my-2">
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="aryConfiguracionCatalogo[]" class="custom-control-input" id="chk<?= $aryConfigCatalogo['nIdCampo'] ?>" checked="checked" value="<?= $aryConfigCatalogo['nIdCampo'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigCatalogo['nIdCampo'] ?>"><?= $aryConfigCatalogo['sNombreUsuario'] ?></label>
+                                        <input type="checkbox" name="aryConfiguracionCatalogo[]" class="custom-control-input" id="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>"><?= $aryConfigCatalogo['sNombreUsuario'] ?></label>
                                     </div>
                                 </div>
                             <?php endforeach ?>
@@ -293,11 +292,11 @@
                         <div class="row  ml-content-custom-switch w-100">
 
                             <?php foreach ($aryConfigSupervisores as $aryConfigSupervisor) : ?>
-                                <?php $sClass = in_array($aryConfigSupervisor['nIdCampo'], [24, 27]) ? 'd-none' : ''; ?>
+                                <?php $sClass = in_array($aryConfigSupervisor['nIdCampoEntidad'], [28, 31]) ? 'd-none' : ''; ?>
                                 <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="aryConfiguracionSupervisor[]" class="custom-control-input" id="chk<?= $aryConfigSupervisor['nIdCampo'] ?>" checked="checked" value="<?= $aryConfigSupervisor['nIdCampo'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigSupervisor['nIdCampo'] ?>"><?= $aryConfigSupervisor['sNombreUsuario'] ?></label>
+                                        <input type="checkbox" name="aryConfiguracionSupervisor[]" class="custom-control-input" id="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>"><?= $aryConfigSupervisor['sNombreUsuario'] ?></label>
                                     </div>
                                 </div>
                             <?php endforeach ?>
@@ -334,15 +333,15 @@
         fncDrawNegocios();
 
         fncActDescCheck("#chk2","#chk1");
-        fncActDescCheck("#chk3","#chk4");
+        fncActDescCheck("#chk4","#chk5");
         
         //Vendedores
-        fncActDescCheck("#chk16","#chk15");
-        fncActDescCheck("#chk17","#chk18");
+        fncActDescCheck("#chk17","#chk16");
+        fncActDescCheck("#chk19","#chk20");
 
         //Supervisores
-        fncActDescCheck("#chk25","#chk24");
-        fncActDescCheck("#chk26","#chk27");
+        fncActDescCheck("#chk29","#chk28");
+        fncActDescCheck("#chk30","#chk31");
 
         $("#btnCrearNegocio").on('click', function() {
             fncCleanAll();
@@ -358,7 +357,7 @@
             var sDireccion                  = $("#sDireccion").val().trim();
             var sImagen                     = $("#sImagen")[0].files[0];
             var nTipoProspecto              = $("#nTipoProspecto").val().trim();
-            var nEstado                     = $("#nEstado").val().trim();
+            var nEstado                     = $("#nEstado").val();
 
             var aryConfiguracionCliente     = fncGetAryCampos("input[name='aryConfiguracionCliente[]'");
             var aryConfiguracionCatalogo    = fncGetAryCampos("input[name='aryConfiguracionCatalogo[]'");
@@ -380,13 +379,14 @@
                 return false;
             } 
 
+            console.log(nEstado);
             var formData = new FormData();
             formData.append('nIdRegistro', nIdRegistro);
             formData.append('sNombre', sNombre);
             formData.append('sDireccion',sDireccion);
             formData.append('sImagen',sImagen);
             formData.append('nTipoProspecto',nTipoProspecto);
-            formData.append('nEstado',nEstado);
+            formData.append('nEstado', parseInt( nEstado ));
             formData.append('aryConfiguracionCliente'    , JSON.stringify(aryConfiguracionCliente));
             formData.append('aryConfiguracionCatalogo'   , JSON.stringify(aryConfiguracionCatalogo));
             formData.append('aryConfiguracionVendedores' , JSON.stringify(aryConfiguracionVendedores));
@@ -455,6 +455,8 @@
                     $("#nEstado").val(aryData.aryNegocio.nEstado);
                     $("#sImagen").parent().find(".custom-file-label").html(aryData.aryNegocio.sImagen);
 
+                    console.log(aryData);
+
                     fncActivarDescbyEntidades(aryData.aryConfigClientes);
                     fncActivarDescbyEntidades(aryData.aryConfigCatalogos);
                     fncActivarDescbyEntidades(aryData.aryConfigVendedores);
@@ -514,11 +516,11 @@
         var ary = [];
         
         $(sHtmlTag).each(function (nIndex, objCheck) {
-            
+
             ary.push({
-                nIdCampo              : $(objCheck).val() , 
+                nIdCampoEntidad       : $(objCheck).val() , 
                 nEstado               : $(objCheck).is(':checked') ? 1 :0 ,
-                nIdConfiguracionCampo : $("#sNombre").data("nIdRegistro")  == 0 ? 0 : $(objCheck).data("nIdConfiguracionCampo")
+                nIdConfiguracionCampo : $("#sNombre").data("nIdRegistro") == 0 ? 0 : $(objCheck).data("nIdConfiguracionCampo")
             });
 
         });
@@ -542,7 +544,7 @@
     function fncActivarDescbyEntidades(aryData){
         $.each(aryData,function(nIndex,aryItem){
 
-            var sHtmlTag = '#chk' + aryItem.nIdCampo;
+            var sHtmlTag = '#chk' + aryItem.nIdCampoEntidad;
 
             if (parseInt(aryItem.nEstado) == 1) {
                 $(sHtmlTag).prop('checked', true);         

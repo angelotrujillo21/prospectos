@@ -53,8 +53,8 @@
                                                     <?php if (is_array($aryVendedores)  && count($aryVendedores) > 0) : ?>
                                                         <?php foreach ($aryVendedores as $aryVendedor) : ?>
                                                             
-                                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="<?= uc($arySuper['sNombre'] . ' ' . $arySuper['sApellidos']) ?>">
-                                                            <span><?= strtoupper($arySuper['sEmpleadoCorto']) ?></span>
+                                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="<?= uc($aryVendedor['sNombre'] . ' ' . $aryVendedor['sApellidos']) ?>">
+                                                            <span><?= strtoupper($aryVendedor['sEmpleadoCorto']) ?></span>
                                                         </div>
 
                                                         <?php endforeach ?>
@@ -727,7 +727,7 @@
                                     </div>
                                     <div class="col-3">
                                         <div class="cuadraro-supervisor fondo-<?= strtolower($aryVendedor['sColorSuperEmpleado'])?>"></div>
-                                        <span class="activo-hace">Activo hace 5h</span>
+                                        <span class="activo-hace">Activo hace <?= secondsToTime($aryVendedor['sTimeUltimoAcceso']) ?></span>
                                     </div>
                                 </div>
                             </div>
