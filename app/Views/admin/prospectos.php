@@ -5,9 +5,11 @@
     <?php extend_view(['admin/common/head'], $data) ?>
 </head>
 
-<body>
+<body data-nidnegocio="<?= $nIdNegocio ?>">
 
-
+    <div class="page-loader">
+        <div class="loader-dual-ring"></div>
+    </div>
 
     <div class="container-fluid">
 
@@ -22,13 +24,7 @@
                 <div class="main-content-container container-fluid px-4">
                     <!-- Tu contenido -->
 
-                    <div id="preloader" class="preloader">
-                        <div class="lds-ripple">
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-
+              
                     <div class="container">
                         <div class="page-header row no-gutters py-4">
                             <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
@@ -408,49 +404,26 @@
                                     <h5 class="m-0">Clientes :</h5>
                                 </div>
                                 <div class="bd-highlight">
-                                    <button data-toggle="modal" data-target="#formCECliente" class="btn btn-gradient-primary btn-rounded btn-icon">
+                                    <button id="btnCrearCliente" class="btn btn-gradient-primary btn-rounded btn-icon">
                                         <i class="fas fa-plus-circle"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-12">
-                            <table data-toggle="table" id="tblPrincipal" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="true" data-pagination="true" data-toolbar="#toolbar" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-card-view="false" data-page-size="14" data-sort-name="" data-sort-order="asc">
+                            <table data-toggle="table" id="tblClientes" data-url="<?= route('admin/cliente/fncPopulate/'.$nIdNegocio) ?>" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="true" data-pagination="true" data-toolbar="#toolbar" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-card-view="false" data-page-size="14" data-sort-name="" data-sort-order="asc">
                                 <thead>
                                     <tr>
-                                        <th>Acciones</th>
-                                        <th>Tipo Cliente</th>
-                                        <th>Tipo Documento</th>
-                                        <th>Numero Documento</th>
-                                        <th>Nombre</th>
-                                        <th>Correo</th>
-                                        <th>Distrito</th>
-                                        <th>Telefono</th>
-                                        <th>Relacionamiento</th>
+                                        <th data-field="sAcciones" data-sortable="true">Acciones</th>
+                                        <?php if(is_array($aryCamposClientes) && count($aryCamposClientes) > 0) : ?>
+                                            <?php foreach($aryCamposClientes as $aryCamposCliente): ?>
+                                                <th data-field="<?= $aryCamposCliente['sNombre']?>" data-sortable="true"><?= $aryCamposCliente['sNombreUsuario'] ?></th>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <?php for ($i = 0; $i < 10; $i++) : ?>
-                                        <tr>
-                                            <th>
-                                                <div class="content-acciones">
-                                                    <a href="javascript:;" title="" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                                    <a href="javascript:;" title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>
-                                                    <a href="javascript:;" title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>
-                                                </div>
-                                            </th>
-                                            <th>Empresa</th>
-                                            <th>RUC</th>
-                                            <th>75348133</th>
-                                            <th>QWAY SOL</th>
-                                            <th>contacto@wway.com</th>
-                                            <th>Lima-Lima-Breña</th>
-                                            <th>9988552</th>
-                                            <th>Gerente</th>
-                                        </tr>
-                                    <?php endfor ?>
                                 </tbody>
                             </table>
                         </div>
@@ -473,98 +446,19 @@
                     <form>
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link tab-form-custom active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Empresa</a>
-                                <a class="nav-item nav-link tab-form-custom" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Persona</a>
+                                <a href="javascript:;" class="nav-item nav-link tab-form-custom active" id="btnViewFormEmpresa">Empresa</a>
+                                <a href="javascript:;" class="nav-item nav-link tab-form-custom" id="btnViewFormPersona">Persona</a>
                             </div>
                         </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                <div class="row p-2">
-
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="clienteRss" class="col-form-label">RRSS:</label>
-                                            <input type="text" class="form-control" id="clienteRss" autocomplete="off" name="clienteRss">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Ruc:</label>
-                                            <input type="text" class="form-control" id="rucCliente" autocomplete="off" name="rucCliente">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="clienteRss" class="col-form-label">Contacto:</label>
-                                            <input type="text" class="form-control" id="contacto" autocomplete="off" name="contacto">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Telefono:</label>
-                                            <input type="text" class="form-control" id="telefono" autocomplete="off" name="telefono">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Correo:</label>
-                                            <input type="text" class="form-control" id="telefono" autocomplete="off" name="telefono">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Relacionamiento:</label>
-                                            <select name="" id="" class="form-control">
-                                                <option value="">Seleccionar</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Departamento:</label>
-                                            <select name="" id="" class="form-control">
-                                                <option value="">Seleccionar</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Provincia:</label>
-                                            <select name="" id="" class="form-control">
-                                                <option value="">Seleccionar</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="rucCliente" class="col-form-label">Distrito:</label>
-                                            <select name="" id="" class="form-control">
-                                                <option value="">Seleccionar</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                        <div class="w-100">
+                            <div id="formCliente" class="row">
+                                 
+                            </div>  
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient-primary btn-fw">Guardar</button>
+                    <button type="button" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
                 </div>
             </div>
         </div>
@@ -589,7 +483,7 @@
                                     <h5 class="m-0">Productos o servicios :</h5>
                                 </div>
                                 <div class="bd-highlight">
-                                    <button data-toggle="modal" data-target="#formCEProducto" class="btn btn-gradient-primary btn-rounded btn-icon">
+                                    <button id="btnCrearCatalogo" class="btn btn-gradient-primary btn-rounded btn-icon">
                                         <i class="fas fa-plus-circle"></i>
                                     </button>
                                 </div>
@@ -597,33 +491,20 @@
                         </div>
 
                         <div class="col-12">
-                            <table data-toggle="table" id="tblPrincipal" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="true" data-pagination="true" data-toolbar="#toolbar" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-card-view="false" data-page-size="14" data-sort-name="" data-sort-order="asc">
+                            <table data-toggle="table" data-url="<?= route('admin/catalogo/fncPopulate/'.$nIdNegocio) ?>" id="tblCatalogo" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="true" data-pagination="true" data-toolbar="#toolbar" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-card-view="false" data-page-size="14" data-sort-name="" data-sort-order="asc">
                                 <thead>
                                     <tr>
-                                        <th>Acciones</th>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Descripcion</th>
-                                        <th>Estado</th>
+                                        <th data-field="sAcciones" data-sortable="true">Acciones</th>
+                                        <?php if(is_array($aryCamposCatalogo) && count($aryCamposCatalogo) > 0) : ?>
+                                            <?php foreach($aryCamposCatalogo as $aryCampoCatalogo): ?>
+                                                <th data-field="<?= $aryCampoCatalogo['sNombre']?>" data-sortable="true"><?= $aryCampoCatalogo['sNombreUsuario'] ?></th>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <?php for ($i = 0; $i < 10; $i++) : ?>
-                                        <tr>
-                                            <th>
-                                                <div class="content-acciones">
-                                                    <a href="javascript:;" title="" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                                    <a href="javascript:;" title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>
-                                                    <a href="javascript:;" title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>
-                                                </div>
-                                            </th>
-                                            <th>Producto 1</th>
-                                            <th>20.00</th>
-                                            <th>Este es una descripcion de un producto x</th>
-                                            <th>Activo</th>
-                                        </tr>
-                                    <?php endfor ?>
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -645,57 +526,13 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="row">
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="clienteRss" class="col-form-label">Tipo:</label>
-                                    <select name="" id="" class="form-control">
-                                        <option value="">Seleccionar</option>
-                                        <option value="">Producto</option>
-                                        <option value="">Servicio</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="clienteRss" class="col-form-label">Nombre:</label>
-                                    <input type="text" class="form-control" id="clienteRss" autocomplete="off" name="clienteRss">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="rucCliente" class="col-form-label">Precio:</label>
-                                    <input type="text" class="form-control" id="rucCliente" autocomplete="off" name="rucCliente">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="clienteRss" class="col-form-label">Estado:</label>
-                                    <select name="" id="" class="form-control">
-                                        <option value="">Seleccionar</option>
-                                        <option value="">Activo</option>
-                                        <option value="">Descativo</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="clienteRss" class="col-form-label">Descripcion:</label>
-                                    <textarea name="" id="" cols="20" rows="5" class="form-control" autocomplete="off"></textarea>
-                                </div>
-                            </div>
-
+                        <div id="formProducto" class="row">
 
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient-primary btn-fw">Guardar</button>
+                    <button type="button" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
                 </div>
             </div>
         </div>
@@ -715,9 +552,696 @@
 <?php extend_view(['admin/common/scripts'], $data) ?>
 
 <script>
+    // Se pone asi para que no se repitan los ids 
+    var sEntidadCliente  = '-1';
+    var sEntidadCatalogo = '-2';
+
     $(function() {
+
+        // Formulario Cliente
+
+        $("#btnCrearCliente").on('click',function(){
+            fncCleanAll();
+            $("#formCECliente").find(".modal-title").html("Nuevo Cliente");
+            $("#nTipoDocumento-1").data("nIdRegistro",0);
+            $("#btnViewFormEmpresa").trigger("click");
+            $("#formCECliente").modal("show");
+        });
+
+        fncDrawCliente(function(bStatus){
+            if(bStatus){
+                // El formulario de clientes ya cargo
+                $("#btnViewFormEmpresa").on('click',function(){
+
+                    $("#nTipoDocumento"+sEntidadCliente).data( "sForm" , "EMPRESA" );
+
+                    fncCleanAll();
+                    
+                    $(this).addClass("active");
+                    $("#btnViewFormPersona").removeClass("active");
+
+                    $("#content-sCorreo-1").removeClass("col-md-6");
+                    $("#content-sCorreo-1").addClass("col-md-12");
+
+                    // Mostrar Controles del formulario de empresa 65 - RUC
+                    $("#nTipoDocumento-1").val(65).trigger("change");
+                    
+                    // Visualizar controles 
+                    $("#content-sContacto-1").show();
+                    $("#content-nIdRelacionamiento-1").show();
+
+                });
+
+                $("#btnViewFormPersona").on('click',function(){
+                    
+                    fncCleanAll();
+                    $("#nTipoDocumento" + sEntidadCliente).data( "sForm" , "PERSONA" );
+
+                    $(this).addClass("active");
+                    $("#btnViewFormEmpresa").removeClass("active");
+
+                    $("#content-sCorreo-1").removeClass("col-md-12");
+                    $("#content-sCorreo-1").addClass("col-md-6");
+
+                    // Mostrar Controles del formulario de empresa 63 - DNI
+                    $("#nTipoDocumento-1").val(63).trigger("change");
+
+                    // Ocultar controles 
+                    $("#content-sContacto-1").hide();
+                    $("#content-nIdRelacionamiento-1").hide();
+
+                });
+
+                // Evento Dtp
+                $("#nIdDepartamento-1").on('change',function(){
+                    var jsnData = {
+                        nIdDepartamento : $(this).val()
+                    };
+
+                    fncDrawProvincia("#nIdProvincia-1" , jsnData , null);
+                });
+
+                $("#nIdProvincia-1").on('change',function(){
+                    var jsnData = {
+                        nIdProvincia : $(this).val()
+                    };
+                    fncDrawDistrito("#nIdDistrito-1" , jsnData , null);
+                });
+
+                $("#nTipoDocumento-1").change(function() {
+                    if( $(this).val() > 0 ) {
+                        fncMaxLengthTypeDocument( $(this).find('option:selected').text().trim().toUpperCase() , "#sNumeroDocumento-1" );
+                    }
+                });
+
+                $("#sNumeroDocumento-1").on('keyup keypress blur change',function(){
+                    
+                    switch( $("#nTipoDocumento-1").find("option:selected").text() ){
+                        
+                        case 'RUC':
+
+                            if( $("#sNumeroDocumento-1").val().length  == 11 ){
+                                // Lanzamos el evento
+                            }
+
+                        break;
+                        
+                        case 'DNI':
+                            if( $("#sNumeroDocumento-1").val().length  == 7 || $("#sNumeroDocumento-1").val().length  == 8 ){
+                                // Lanzamos el evento
+
+                            }
+                        break;
+
+                    }
+                  
+                    
+                });
+
+            }
+        });
+
+        // Submit del formulario de Cliente
+        $("#formCECliente").find(".btn-submit").on('click',function(){
+
+            var nIdRegistro            = $("#nTipoDocumento" + sEntidadCliente ).data("nIdRegistro");
+            var nIdNegocio             = $("body").data("nidnegocio");
+            var sForm                  = $("#nTipoDocumento" + sEntidadCliente ).data("sForm");
+            var nTipoDocumento         = $("#nTipoDocumento" + sEntidadCliente )
+            var sNumeroDocumento       = $("#sNumeroDocumento" + sEntidadCliente );
+            var sNombreoRazonSocial    = $("#sNombreoRazonSocial"  + sEntidadCliente);
+            var sContacto              = $("#sContacto"  + sEntidadCliente);
+            var sCorreo                = $("#sCorreo"  + sEntidadCliente);
+            var nIdDepartamento        = $("#nIdDepartamento"  + sEntidadCliente);
+            var nIdProvincia           = $("#nIdProvincia"  + sEntidadCliente);
+            var nIdDistrito            = $("#nIdDistrito"  + sEntidadCliente);
+            var nIdRelacionamiento     = $("#nIdRelacionamiento"  + sEntidadCliente);
+            var sTelefono              = $("#sTelefono"  + sEntidadCliente);
+            var nEstado                = $("#nEstado"  + sEntidadCliente);
+            var nTipoCliente           = sForm == 'EMPRESA' ? 1 : 2;
+
+            
+            if (nTipoDocumento.length > 0 && nTipoDocumento.val() == '') {
+                toastr.error('Error. Seleccione un tipo de documento. Porfavor verifique');
+                return;
+            } else if (sNumeroDocumento.length > 0 && sNumeroDocumento.val() == '') {
+                toastr.error('Error. Ingrese un numero de documento. Porfavor verifique');
+                return;
+            } else if (sNombreoRazonSocial.length > 0 && sNombreoRazonSocial.val() == '') {
+                toastr.error('Error. Ingrese un nombre o razon social. Porfavor verifique');
+                return;
+            }  else if (sCorreo.length > 0 && sCorreo.val() == '') {
+                toastr.error('Error. Ingrese un correo. Porfavor verifique');
+                return;
+            } else if (nIdDepartamento.length > 0 && nIdDepartamento.val() == '0') {
+                toastr.error('Error. Seleccione un departamento. Porfavor verifique');
+                return;
+            } else if (nIdProvincia.length > 0 && nIdProvincia.val() == '0') {
+                toastr.error('Error. Seleccione una provincia. Porfavor verifique');
+                return;
+            } else if (nIdDistrito.length > 0 && nIdDistrito.val() == '0') {
+                toastr.error('Error. Seleccione un distrito. Porfavor verifique');
+                return;
+            } else if (sTelefono.length > 0 && sTelefono.val() == '') {
+                toastr.error('Error. Ingrese un telefono. Porfavor verifique');
+                return;
+            }  
+
+            if (sForm == 'EMPRESA') {
+                if (sContacto.length > 0 && sContacto.val() == '') {
+                    toastr.error('Error. Ingrese un contacto. Porfavor verifique');
+                    return;
+                } else if (nIdRelacionamiento.length > 0 && nIdRelacionamiento.val() == '0') {
+                    toastr.error('Error. Seleccione un relacionamiento. Porfavor verifique');
+                    return;
+                } 
+            }
+
+
+            var jsnData = {
+                nIdRegistro              : nIdRegistro,
+                nIdNegocio               : nIdNegocio,
+                nTipoCliente             : nTipoCliente,
+                nTipoDocumento           : nTipoDocumento.length > 0 ? nTipoDocumento.val() : null,
+                sNumeroDocumento         : sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : null,
+                sNombreoRazonSocial      : sNombreoRazonSocial.length > 0 ? sNombreoRazonSocial.val() : null,
+                sCorreo                  : sCorreo.length > 0 ? sCorreo.val() : null,
+                nIdDepartamento          : nIdDepartamento.length > 0 ? nIdDepartamento.val() : null,
+                nIdProvincia             : nIdProvincia.length > 0 ? nIdProvincia.val() : null,
+                nIdDistrito              : nIdDistrito.length > 0 ? nIdDistrito.val() : null,
+                sTelefono                : sTelefono.length > 0 ? sTelefono.val() : null,
+                nIdRelacionamiento       : nIdRelacionamiento.length > 0 ? nIdRelacionamiento.val() : null,
+                sContacto                : sContacto.length > 0 ? sContacto.val() : null,
+                nEstado                  : nEstado.length > 0 ? nEstado.val() : null,
+            };
+
+            fncGrabarCliente(jsnData, function(aryData){
+                if(aryData.success){
+                    fncCleanAll();
+                    $("#formCECliente").modal("hide");
+                    $("#tblClientes").bootstrapTable('refresh');
+                    toastr.success(aryData.success);
+                } else {
+                    toastr.error(aryData.error);
+                }
+            });
+
+        });
+
+        // Fin de formulario cliente
+
+
+
+        // Formulario Catalogo
+        fncDrawCatalogo(function(bStatus){
+            if(bStatus){
+                // Ya se cargo el formulario
+            }
+        });
+
+        $("#btnCrearCatalogo").on('click',function(){
+            
+            // Limpiamso los inputs del formulario 
+            fncCleanAll();
+
+            // Ponemos el titulo y removemos el disabled de los inputs en caso tuvieran
+            $("#formCEProducto").find(".modal-dialog").find(".modal-title").html('Nuevo Producto o Servicio');
+
+            $("#sNombre" + sEntidadCatalogo).data("nIdRegistro",0);
+            $("#formCEProducto").modal("show");
+            
+        });
+
+        // Submit del formulario de catalogo (Productos o servicios)
+        $("#formCEProducto").find(".btn-submit").on('click',function(){
+
+
+            var nIdRegistro   = $("#sNombre" + sEntidadCatalogo ).data("nIdRegistro");
+            var nIdNegocio    = $("body").data("nidnegocio");
+            var sNombre       = $("#sNombre"  + sEntidadCatalogo);
+            var nTipoItem     = $("#nTipoItem" + sEntidadCatalogo);
+            var nPrecio       = $("#nPrecio"  + sEntidadCatalogo );
+            var sDescripcion  = $("#sDescripcion" + sEntidadCatalogo);
+            var nEstado       = $("#nEstado" + sEntidadCatalogo);
+
+            if (sNombre.length > 0 && sNombre.val() == '') {
+                toastr.error('Error. Ingrese un nombre de item. Porfavor verifique');
+                return;
+            } else if (nTipoItem.length > 0 && nTipoItem.val() == '0') {
+                toastr.error('Error. Seleccione un tipo de item. Porfavor verifique');
+                return;
+            } else if (nPrecio.length > 0 && (nPrecio.val() == ''  || nPrecio.val() == '0' )) {
+                toastr.error('Error. Ingrese un precio de item. Porfavor verifique');
+                return;
+            } 
+
+
+            var jsnData = {
+                nIdRegistro   : nIdRegistro,
+                nIdNegocio    : nIdNegocio,
+                sNombre       : sNombre.length > 0 ? sNombre.val() : null,
+                nTipoItem     : nTipoItem.length > 0 ? nTipoItem.val() : null,
+                nPrecio       : nPrecio.length > 0 ? nPrecio.val() : null,
+                sDescripcion  : sDescripcion.length > 0 ? sDescripcion.val() : null,
+                nEstado       : nEstado.length > 0 ? nEstado.val() : null,
+            };
+
+            fncGrabarCatalogo(jsnData, function(aryData){
+                if(aryData.success){
+                    fncCleanAll();
+                    $("#formCEProducto").modal("hide");
+                    $("#tblCatalogo").bootstrapTable('refresh');
+                    toastr.success(aryData.success);
+                } else {
+                    toastr.error(aryData.error);
+                }
+            });
+
+        });
+
+        // Fin de formulario catalogo
+
+
+
+
+
         $("#sortable").sortable();
     });
+
+ 
+    function fncCleanAll(){
+
+        fncClearInputs($("#formCEProducto").find("form"));
+        fncRemoveDisabled("#formCEProducto");
+
+        fncClearInputs($("#formCECliente").find("form"));
+        fncRemoveDisabled("#formCECliente");
+    }
+
+    // Funciones de la tabla Catalogo
+
+    function fncEliminarCatalogo(nIdRegistro) {
+        if(confirm('Esta acción eliminará permanentemente el registro y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
+            
+            var jsnData = {
+                nIdRegistro : nIdRegistro
+            };
+
+            fncEjecutarEliminarCatalogo( jsnData , function(aryData){
+
+                if(aryData.success){
+                    $("#tblCatalogo").bootstrapTable('refresh');
+                    toastr.success( aryData.success );
+                } else {
+                    toastr.error( aryData.error );
+                }
+
+            }); 
+        }
+    }
+
+    function fncMostrarCatalogo(nIdRegistro , sOpcion ) {
+
+        $( "#sNombre" + sEntidadCatalogo ).data("nIdRegistro",nIdRegistro);
+      
+        var jsnData = {
+            nIdRegistro: nIdRegistro
+        };
+
+        fncBuscarRegistroCatalogo(jsnData, function(aryResponse){
+            
+                if (aryResponse.success) {
+
+                    var aryData = aryResponse.aryData;
+
+                    $("#sNombre" + sEntidadCatalogo ).val(aryData.sNombre);
+                    $("#nTipoItem" + sEntidadCatalogo ).val(aryData.nTipoItem);
+                    $("#nPrecio" + sEntidadCatalogo ).val(aryData.nPrecio);
+                    $("#nEstado" + sEntidadCatalogo ).val(aryData.nEstado);
+                    $("#sDescripcion" + sEntidadCatalogo ).val(aryData.sDescripcion);
+
+                    if(sOpcion == 'ver'){
+                        fncViewForm("#formCEProducto" , "Ver Producto o Servicio");
+                    } else {
+                        fncEditForm("#formCEProducto" , "Editar Producto o Servicio");
+                    }
+
+                    $("#formCEProducto").modal("show");
+
+
+                } else {
+                    toastr.error(aryData.error);
+                }
+        });
+
+    }
+
+    function fncDrawCatalogo(fncCallback) {
+
+        var jsnData = {
+            nIdEntidad : 2,
+            nIdNegocio : $('body').data('nidnegocio')
+        };
+
+        fncObtenerDataForm(jsnData,function(aryData){
+            $("#formProducto").html(fncBuildForm(aryData));
+            fncCallback(true);
+        });
+
+    }
+
+    // Fin de tabla catalogo
+
+
+
+
+
+    // Funciones de la tabla Cliente
+
+    function fncEliminarCliente(nIdRegistro) {
+        if(confirm('Esta acción eliminará permanentemente el registro y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
+            
+            var jsnData = {
+                nIdRegistro : nIdRegistro
+            };
+
+            fncEjecutarEliminarCliente( jsnData , function(aryData){
+
+                if(aryData.success){
+                    $("#tblClientes").bootstrapTable('refresh');
+                    toastr.success( aryData.success );
+                } else {
+                    toastr.error( aryData.error );
+                }
+
+            }); 
+        }
+    }
+
+    function fncMostrarCliente(nIdRegistro , sOpcion ) {
+
+        $( "#nTipoDocumento" + sEntidadCliente ).data("nIdRegistro",nIdRegistro);
+      
+        var jsnData = {
+            nIdRegistro: nIdRegistro
+        };
+
+        fncBuscarRegistroCliente(jsnData, function(aryResponse){
+            
+                if (aryResponse.success) {
+
+                    var aryData = aryResponse.aryData;
+
+                    if( aryData.nTipoCliente == 1 ){
+                        $("#btnViewFormEmpresa").trigger("click");
+                    } else {
+                        $("#btnViewFormEmpresa").trigger("click");
+                    }
+
+                    $("#nTipoDocumento" + sEntidadCliente ).val(aryData.nTipoDocumento);
+                    $("#sNumeroDocumento" + sEntidadCliente ).val(aryData.sNumeroDocumento);
+                    $("#sNombreoRazonSocial" + sEntidadCliente ).val(aryData.sNombreoRazonSocial);
+                    $("#sContacto" + sEntidadCliente ).val(aryData.sContacto);
+                    $("#sCorreo" + sEntidadCliente ).val(aryData.sCorreo);
+
+                    $("#nIdDepartamento" + sEntidadCliente ).val(aryData.nIdDepartamento);
+
+                    var jsnData = { nIdDepartamento : aryData.nIdDepartamento};
+                    fncDrawProvincia( "#nIdProvincia" + sEntidadCliente  , jsnData , aryData.nIdProvincia);
+
+                    var jsnData = { nIdProvincia : aryData.nIdProvincia};
+                    fncDrawDistrito(  "#nIdDistrito" + sEntidadCliente  , jsnData , aryData.nIdDistrito);
+
+                    $("#nIdRelacionamiento" + sEntidadCliente ).val(aryData.nIdRelacionamiento);
+                    $("#sTelefono" + sEntidadCliente ).val(aryData.sTelefono);
+                    $("#nEstado" + sEntidadCliente ).val(aryData.nEstado);
+
+                    if(sOpcion == 'ver'){
+                        fncViewForm("#formCECliente" , "Ver Cliente");
+                    } else {
+                        fncEditForm("#formCECliente" , "Editar Cliente");
+                    }
+
+            
+                    $("#formCECliente").modal("show");
+
+                } else {
+                    toastr.error(aryData.error);
+                }
+        });
+
+    }
+
+    function fncDrawCliente(fncCallback) {
+
+        var jsnData = {
+            nIdEntidad : 1,
+            nIdNegocio : $('body').data('nidnegocio')
+        };
+
+        fncObtenerDataForm(jsnData,function(aryData){
+            $("#formCliente").html(fncBuildForm(aryData));
+            fncCallback(true);
+        });
+
+    }
+
+    function fncDrawProvincia(sHtmlTag , jsnData , nIdProvincia = null){
+        
+        fncObtenerProvincias(jsnData,function(aryData){
+
+            let sOptions = ``;
+            
+            if(aryData.success){
+                
+                sOptions += `<option value="0">SELECCIONAR</option>`;
+                
+                aryData.aryData.forEach(aryElement => {
+                    sOptions += `<option value="${aryElement.nIdProvincia}">${aryElement.sNombre}</option>`;
+                });
+            
+                $(sHtmlTag).html(sOptions);
+
+                if(nIdProvincia != null){
+                    $(sHtmlTag).val(nIdProvincia);
+                }
+            }
+
+        });
+
+    }
+
+    function fncDrawDistrito(sHtmlTag , jsnData , nIdDistrito = null){
+        
+        fncObtenerDistrito(jsnData,function(aryData){
+            
+            let sOptions = ``;
+            
+            if(aryData.success){
+                
+                sOptions += `<option value="0">SELECCIONAR</option>`;
+                
+                aryData.aryData.forEach(aryElement => {
+                    sOptions += `<option value="${aryElement.nIdDistrito}">${aryElement.sNombre}</option>`;
+                });
+            
+                $(sHtmlTag).html(sOptions);
+
+                if(nIdDistrito != null){
+                    $(sHtmlTag).val(nIdDistrito);
+                }
+            }
+
+        });
+
+    }
+
+    // Fin de tabla cliente
+
+
+
+    // llamadas al servidor 
+
+    function fncObtenerDataForm(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'formularios/fncBuildForm',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncObtenerProvincias(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'ubigeo/fncObtenerProvincias',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncObtenerDistrito(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'ubigeo/fncObtenerDistrito',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+
+    // Catalogo 
+
+    function fncGrabarCatalogo(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/catalogo/fncGrabarCatalogo',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncBuscarRegistroCatalogo(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root +  'admin/catalogo/fncMostrarRegistro',
+            data: jsnData ,
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function (data) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncEjecutarEliminarCatalogo( jsnData , fncCallback ) {    
+        $.ajax({
+            type: 'post',
+            url: web_root + 'admin/catalogo/fncEliminarRegistro',
+            data: jsnData,
+            dataType: 'json',
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function( data ) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+
+        });
+    }
+
+    // Fin de catalogo 
+
+
+    // Cliente 
+
+    function fncGrabarCliente(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/cliente/fncGrabarCliente',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncBuscarRegistroCliente(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root +  'admin/cliente/fncMostrarRegistro',
+            data: jsnData ,
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function (data) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncEjecutarEliminarCliente( jsnData , fncCallback ) {    
+        $.ajax({
+            type: 'post',
+            url: web_root + 'admin/cliente/fncEliminarRegistro',
+            data: jsnData,
+            dataType: 'json',
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function( data ) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+
+        });
+    }
+
+    // Fin de cliente 
+
+    // Fin de llamadas al servidor 
+
+
+  
+
+
 </script>
 
 </html>

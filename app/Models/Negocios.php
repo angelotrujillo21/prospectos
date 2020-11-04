@@ -41,7 +41,6 @@ class Negocios
 
     public function fncGrabarNegocio($sNombre, $sDireccion, $sImagen, $nTipoProspecto, $nEstado)
     {
-
         $sSQL = "INSERT INTO negocios(
                     sNombre,
                     sDireccion,
@@ -53,9 +52,8 @@ class Negocios
                     " . (is_null($sDireccion) || empty($sDireccion) ? "NULL" : "'$sDireccion'") . " ,
                     " . (is_null($sImagen) || empty($sImagen) ? "NULL" : "'$sImagen'") . " ,
                     " . (is_null($nTipoProspecto) || empty($nTipoProspecto) ? "NULL" : $nTipoProspecto) . " ,
-                    " . (is_null($nEstado) || empty($nEstado) ? "NULL" : $nEstado) . " 
+                    " . $nEstado . " 
                 )";
-
 
         return  $this->db->run($sSQL);
     }
@@ -64,7 +62,6 @@ class Negocios
 
     public function fncActualizarNegocio($sNombre, $sDireccion, $sImagen, $nTipoProspecto, $nEstado, $nIdNegocio)
     {
-
         $sSQL = "UPDATE negocios SET ";
 
         $sSQL .= (!is_null($sNombre) ? " sNombre = '$sNombre' " : ' sNombre = NULL ');
@@ -85,7 +82,6 @@ class Negocios
 
     public function fncEliminarNegocio($nIdNegocio)
     {
-
         $sSQL = "DELETE FROM negocios WHERE nIdNegocio = $nIdNegocio ";
         $this->db->run($sSQL);
     }
@@ -93,10 +89,9 @@ class Negocios
 
     public function fncGrabarConfiguracionCampos($nIdNegocio, $nIdCampo, $nEstado)
     {
-
         $sSQL = "INSERT INTO configuracioncampos(
                     nIdNegocio,
-                    nIdCampo,
+                    nIdCampoEntidad,
                     nEstado
                     ) VALUES (
                     " . (is_null($nIdNegocio) || empty($nIdNegocio) ? "NULL" : $nIdNegocio) . " ,
@@ -109,7 +104,6 @@ class Negocios
 
     public function fncActualizarConfiguracionCampos($nEstado, $nIdConfiguracionCampo)
     {
-
         $sSQL = "UPDATE configuracioncampos SET ";
 
         $sSQL .= (!is_null($nEstado) ? " nEstado = $nEstado" : ' nEstado = NULL ');
@@ -133,23 +127,30 @@ class Negocios
 
 
 
-    public function fncGetConfiguracionCampo($nIdNegocio, $nIdEntidad, $nEstado  = null)
+    public function fncGetConfiguracionCampo($nIdNegocio, $nIdEntidad, $nEstado  = null, $nOrdenTable = false)
     {
         $sSQL = "SELECT 
-                camp.sNombre,
-                camp.sNombreUsuario,
-                conf.nIdConfiguracionCampo,
-                camp.nIdEntidad ,
-                conf.nIdNegocio,
-                conf.nIdCampo,
-                conf.nEstado
+                    conf.nIdConfiguracionCampo AS nIdConfiguracionCampo ,
+                    campent.nIdCampoEntidad AS nIdCampoEntidad,
+                    camp.nIdCampo,
+                    camp.sNombre,
+                    camp.sNombreUsuario,
+                    camp.sPlaceHolder,
+                    camp.nTipoCampo,
+                    tipocam.sNombre AS sNombreTipoCampo,
+                    camp.sNombreConfig,
+                    camp.nTamano,
+                    camp.nEstado
                 FROM configuracioncampos AS conf 
-                INNER JOIN campos AS camp ON conf.nIdCampo  = camp.nIdCampo
-                WHERE conf.nIdNegocio = $nIdNegocio AND camp.nIdEntidad = $nIdEntidad
-                ORDER BY camp.nOrden ASC 
+                INNER JOIN camposentidades AS campent ON conf.nIdCampoEntidad = campent.nIdCampoEntidad
+                INNER JOIN campos AS camp ON campent.nIdCampo = camp.nIdCampo
+                INNER JOIN tiposcampos AS tipocam ON camp.nTipoCampo = tipocam.nTipoCampo
+                WHERE conf.nIdNegocio = $nIdNegocio AND campent.nIdEntidad = $nIdEntidad
                 ";
+        $sSQL .= is_null($nEstado) ? "" : ' AND conf.nEstado  = ' . $nEstado;
 
-        $sSQL .=  is_null($nEstado) ? "" : ' AND conf.nEstado  = ' . $nEstado;
+        $sSQL .= $nOrdenTable ? " ORDER BY campent.nOrdenTabla ASC " : " ORDER BY campent.nOrden ASC ";
+
         return  $this->db->run($sSQL);
     }
 }

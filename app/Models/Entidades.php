@@ -14,9 +14,12 @@ class Entidades
         $this->db = new Database();
     }
 
-    public function fncGetCamposByEntidad($nIdEntidad,$nEstado = 1)
+    public function fncGetCamposByEntidad($nIdEntidad, $nEstado = 1)
     {
-        $results = $this->db->select("campos", "nIdEntidad = :nIdEntidad AND nEstado = :nEstado ORDER BY nOrden ASC", array(":nIdEntidad" => $nIdEntidad,   ":nEstado" => $nEstado));
-        return $results;
+        $sSQL = "SELECT campent.nIdCampoEntidad , camp.* FROM camposentidades AS campent
+                INNER JOIN campos AS camp ON campent.nIdCampo = camp.nIdCampo
+                WHERE campent.nIdEntidad = $nIdEntidad AND campent.nEstado = $nEstado
+                ORDER BY campent.nOrden ASC";
+        return $this->db->run($sSQL);
     }
 }

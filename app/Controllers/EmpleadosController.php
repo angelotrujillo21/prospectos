@@ -56,18 +56,18 @@ class EmpleadosController extends Controller
             $sCarreraCiclo                  = isset($_POST['sCarreraCiclo']) ? $_POST['sCarreraCiclo'] : null;
             $nIdSupervisor                  = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
             $nEstado                        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
-            
-            
+
+
             // Valida valores del formulario
             if (is_null($nIdRegistro) || is_null($nIdNegocio) || is_null($nIdTipoEmpleado)) {
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-          
+
             // Crear 
             if ($nIdRegistro == 0) {
 
-               $this->empleados->fncGrabarEmpleado(
+                $this->empleados->fncGrabarEmpleado(
                     $nIdNegocio,
                     $nIdTipoEmpleado,
                     $nTipoDocumento,
@@ -85,8 +85,6 @@ class EmpleadosController extends Controller
                     $nIdSupervisor,
                     $nEstado
                 );
-
-
             } else {
                 //Actualizar 
                 $this->empleados->fncActualizarEmpleado(
@@ -122,38 +120,32 @@ class EmpleadosController extends Controller
     public function fncFormularioEmpleado($nIdNegocio, $nIdTipoEmpleado, $nIdSupervisoroColor)
     {
         try {
-        
-            $aryConfTemplate = [];
+
 
             $aryNegocio  = $this->negocios->fncGetNegocioById($nIdNegocio);
 
             if ($nIdTipoEmpleado == '588') {
                 // Supervisores
                 $sTitle           = 'Formulario Supervisor';
-                $aryConfTemplate  = $this->negocios->fncGetConfiguracionCampo($nIdNegocio, 4);
+                $nIdEntidad       = 4;
             } else {
                 $sTitle            = 'Formulario Vendedor';
-                $aryConfTemplate   = $this->negocios->fncGetConfiguracionCampo($nIdNegocio, 3);
+                $nIdEntidad        = 3;
             }
 
             $this->view('admin/formulario-empleado', array(
                 'nIdNegocio'          => $nIdNegocio,
-                'aryConfTemplate'     => $aryConfTemplate,
                 'sTitle'              => $sTitle,
                 'nIdTipoEmpleado'     => $nIdTipoEmpleado,
                 'nIdSupervisoroColor' => $nIdSupervisoroColor,
                 'aryNegocio'          => $aryNegocio,
-                'aryTipoDocumento'    => $this->catalogoTabla->fncListado('TIPO_DOCUMENTO_IDENTIDAD'),
-                'aryNivelEducacion'   => $this->catalogoTabla->fncListado('NIVEL_EDUCACION'),
-                'arySituacionEstudio' => $this->catalogoTabla->fncListado('SITUACION_ESTUDIO')
-            ));
+                'nIdEntidad'          => $nIdEntidad
 
+            ));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }
     }
-
-
 
     public function fncSendEmailEmpleado()
     {
@@ -198,14 +190,4 @@ class EmpleadosController extends Controller
             $this->json(array("error" => $ex->getMessage()));
         }
     }
-
-
-
-
-
-
-
-
-
-
 }

@@ -72,6 +72,7 @@ class NegociosController extends Controller
     public function fncGrabarNegocio()
     {
         try {
+
             $nIdRegistro                = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
             $sNombre                    = isset($_POST['sNombre']) ? $_POST['sNombre'] : null;
             $sDireccion                 = isset($_POST['sDireccion']) ? $_POST['sDireccion'] : null;
@@ -93,6 +94,7 @@ class NegociosController extends Controller
             $aryConfiguracionVendedores  = json_decode($aryConfiguracionVendedores);
             $aryConfiguracionSupervisor  = json_decode($aryConfiguracionSupervisor);
 
+
             $sNombreImagen = null;
             $user          = $this->session->get('user');
 
@@ -109,25 +111,25 @@ class NegociosController extends Controller
 
                 if (count($aryConfiguracionCliente) > 0) {
                     foreach ($aryConfiguracionCliente as $aryCliente) {
-                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $aryCliente->nIdCampo,  $aryCliente->nEstado);
+                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $aryCliente->nIdCampoEntidad,  $aryCliente->nEstado);
                     }
                 }
 
                 if (count($aryConfiguracionCatalogo) > 0) {
                     foreach ($aryConfiguracionCatalogo as $aryCatalogo) {
-                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $aryCatalogo->nIdCampo,  $aryCatalogo->nEstado);
+                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $aryCatalogo->nIdCampoEntidad,  $aryCatalogo->nEstado);
                     }
                 }
 
                 if (count($aryConfiguracionVendedores) > 0) {
                     foreach ($aryConfiguracionVendedores as $aryVendedor) {
-                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $aryVendedor->nIdCampo,  $aryVendedor->nEstado);
+                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $aryVendedor->nIdCampoEntidad,  $aryVendedor->nEstado);
                     }
                 }
 
                 if (count($aryConfiguracionSupervisor) > 0) {
                     foreach ($aryConfiguracionSupervisor as $arySupervisor) {
-                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $arySupervisor->nIdCampo,  $arySupervisor->nEstado);
+                        $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $arySupervisor->nIdCampoEntidad,  $arySupervisor->nEstado);
                     }
                 }
             } else {
@@ -145,6 +147,7 @@ class NegociosController extends Controller
                         $this->negocios->fncActualizarConfiguracionCampos($aryCatalogo->nEstado, $aryCatalogo->nIdConfiguracionCampo);
                     }
                 }
+
 
                 if (count($aryConfiguracionVendedores) > 0) {
                     foreach ($aryConfiguracionVendedores as $aryVendedor) {
@@ -225,6 +228,11 @@ class NegociosController extends Controller
             if ($nIdRegistro == null) {
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
+
+            $aryNegocio = $this->negocios->fncGetNegocioById($nIdRegistro);
+
+            // Eliminar la imagen 
+            fncEliminarArchivo(ROOTPATHRESOURCE . "/images/multi/" . $aryNegocio['sImagen']);
 
             $this->negocios->fncEliminarNegocio($nIdRegistro);
 

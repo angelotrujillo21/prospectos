@@ -9,7 +9,7 @@ define('WEB_ROOT', WEB .'prospectos/');
 
 define('DB_DRIVER'  , 'mysql'); // mysql, mysqli, sqlite are options for use with the Base Model.
 define('DB_HOSTNAME', 'localhost');
-define('DB_DATABASE', 'prospectos');
+define('DB_DATABASE', 'systemprospectos');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 

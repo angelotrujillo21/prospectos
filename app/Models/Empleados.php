@@ -166,7 +166,7 @@ class Empleados
                         IFNULL(catsup.sDescripcionLargaItem,'') AS sColorSuper, -- Este join es cuando se lista los supersiores
                         IFNULL(catsupem.sDescripcionLargaItem,'') AS sColorSuperEmpleado,  -- Este join es cuando se lista los supervisores de los empleados
                         CONCAT(SUBSTRING(emp.sNombre, 1, 1), SUBSTRING(emp.sApellidos, 1, 1) ) AS sEmpleadoCorto,
-                        TIME_TO_SEC(TIMEDIFF(NOW(), emp.dFechaHoraUltimoAcceso)) AS sTime
+                        TIME_TO_SEC(TIMEDIFF(NOW(), emp.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso
                 FROM empleados AS emp 
                 INNER JOIN negocios AS neg ON emp.nIdNegocio = neg.nIdNegocio 
                 LEFT JOIN empleados AS empSup ON emp.nIdSupervisor = empSup.nIdEmpleado

@@ -6,11 +6,32 @@
 $router->any('admin/empleados/fncSendEmailEmpleado', 'EmpleadosController@fncSendEmailEmpleado');
 $router->any('formulario-empleado/:id/:id/:id', 'EmpleadosController@fncFormularioEmpleado');
 $router->any('empleados/fncGrabarEmpleado', 'EmpleadosController@fncGrabarEmpleado');
+$router->any('formularios/fncBuildForm', 'BuildFormController@fncBuildForm');
+
 
 
 
 // Fin de home 
 
+// Ubigeo 
+$router->any('ubigeo/fncObtenerProvincias', 'UbigeoController@fncObtenerProvincias');
+$router->any('ubigeo/fncObtenerDistrito', 'UbigeoController@fncObtenerDistrito');
+// Fin de ubigeo
+
+
+// Mantenimiento Cliente
+$router->any('admin/cliente/fncPopulate/:id', 'ClientesController@fncPopulate');
+$router->any('admin/cliente/fncGrabarCliente', 'ClientesController@fncGrabarCliente');
+$router->any('admin/cliente/fncMostrarRegistro', 'ClientesController@fncMostrarRegistro');
+$router->any('admin/cliente/fncEliminarRegistro', 'ClientesController@fncEliminarRegistro');
+// Fin del cliente
+
+// Mantenimiento Catalogo
+$router->any('admin/catalogo/fncPopulate/:id', 'CatalogoController@fncPopulate');
+$router->any('admin/catalogo/fncGrabarCatalogo', 'CatalogoController@fncGrabarCatalogo');
+$router->any('admin/catalogo/fncMostrarRegistro', 'CatalogoController@fncMostrarRegistro');
+$router->any('admin/catalogo/fncEliminarRegistro', 'CatalogoController@fncEliminarRegistro');
+// Fin del Catalogo
 
 // Mantenimiento Negocios
 $router->any('admin/negocios/fncGetNegocios', 'NegociosController@fncGetNegocios');
