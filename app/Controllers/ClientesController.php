@@ -11,7 +11,7 @@ class ClientesController extends Controller
 {
     //model principal
     public $users;
-    public $clientes;
+    public $clientes; // Es mi modelo
 
     public function __construct()
     {
@@ -32,9 +32,7 @@ class ClientesController extends Controller
             $aryClientes  = $this->clientes->fncGetClientes($nIdNegocio);
 
             if (is_array($aryClientes) && count($aryClientes) > 0) {
-
                 foreach ($aryClientes as $aryCliente) {
-
                     $sActionVer       = "fncMostrarCliente(" . $aryCliente['nIdCliente'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarCliente(" . $aryCliente['nIdCliente'] . ", 'editar' );";
                     $sActionEliminar  = "fncEliminarCliente(" . $aryCliente['nIdCliente'] . ");";
@@ -71,7 +69,6 @@ class ClientesController extends Controller
     public function fncGrabarCliente()
     {
         try {
-
             $nIdRegistro             = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
             $nIdNegocio              = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
             $nTipoCliente            = isset($_POST['nTipoCliente']) ? $_POST['nTipoCliente'] : null;
@@ -92,11 +89,10 @@ class ClientesController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-
-            // Crear 
+            $nIdClienteNew = null;
+            // Crear
             if ($nIdRegistro == 0) {
-
-                $this->clientes->fncGrabarCliente(
+                $nIdClienteNew = $this->clientes->fncGrabarCliente(
                     $nIdNegocio,
                     $nTipoCliente,
                     $nTipoDocumento,
@@ -112,7 +108,7 @@ class ClientesController extends Controller
                     $nEstado
                 );
             } else {
-                //Actualizar 
+                //Actualizar
                 $this->clientes->fncActualizarEmpleado(
                     $nIdRegistro,
                     $nIdNegocio,
@@ -133,7 +129,7 @@ class ClientesController extends Controller
 
             $sSuccess =  $nIdRegistro == 0 ? 'Cliente registrado exitosamente...' : 'Cliente actualizado exitosamente...';
 
-            $this->json(array("success" => $sSuccess));
+            $this->json(array("success" => $sSuccess, "nIdClienteNew" => $nIdClienteNew));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }
@@ -141,7 +137,6 @@ class ClientesController extends Controller
 
     public function fncMostrarRegistro()
     {
-
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
@@ -175,6 +170,26 @@ class ClientesController extends Controller
 
             $this->clientes->fncEliminarCliente($nIdRegistro);
             $this->json(array("success" => 'Cliente eliminado exitosamente.'));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncGetClientes()
+    {
+        // Recibe valores del formulario
+        $nIdNegocio = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if ($nIdNegocio == null) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryData = $this->clientes->fncGetClientes($nIdNegocio, 1);
+
+            $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }

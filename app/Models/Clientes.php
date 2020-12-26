@@ -65,9 +65,6 @@ class Clientes
     }
 
 
-
-
-
     public function fncActualizarEmpleado(
         $nIdCliente,
         $nIdNegocio,
@@ -195,4 +192,6 @@ class Clientes
    
         return $this->db->run(trim($sSQL));
     }
+
+
 }

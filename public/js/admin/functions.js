@@ -12,6 +12,15 @@ function fncClearInputs(sHtmlTag, bFlag = false) {
     .find(":input")
     .each(function () {
       switch (this.type) {
+        case "number":
+
+          if (this.name.substring(0, 9) == "nCantidad") {
+            $(this).val(1);
+          } else {
+            $(this).val(0);
+          }
+
+          break;
         case "select-one":
         case "select-multiple":
           if (this.name.substring(0, 7) == "nEstado") {
@@ -28,6 +37,9 @@ function fncClearInputs(sHtmlTag, bFlag = false) {
           break;
         case "password":
         case "text":
+        case "date":
+        case "time":
+        case "tel":
         case "textarea":
           $(this).val("");
           break;
@@ -106,6 +118,20 @@ function copyToClipboard(sHtmlTag) {
   document.execCommand("copy");
 }
 
+function fncValidateEmail(sString) {
+
+  if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(sString)) {
+    // Email correcto
+    return true;
+  }
+  return false;
+
+}
+
+function fncNf(sInput) {
+  return parseFloat(sInput).toFixed(2);
+}
+
 function fncBuildForm(aryData) {
   let sHtml = ``;
   if (aryData.length > 0) {
@@ -116,11 +142,13 @@ function fncBuildForm(aryData) {
 
       sHtml += `<div id="content-${aryItem.sNombre}-${aryItem.nIdEntidad}" class="col-12 col-md-${aryItem.nTamano}">`;
       sHtml += `<div class="form-group">`;
-      sHtml += `<label for="${aryItem.sNombre}" class="col-form-label">${aryItem.sNombreUsuario}</label>`;
+      sHtml += `<label for="${sNameorId}" class="col-form-label">${aryItem.sNombreUsuario}</label>`;
 
       switch (aryItem.sNombreTipoCampo) {
         case "text":
-        case "phone":
+        case "tel":
+        case "date":
+
           sHtml += `<input type="${aryItem.sNombreTipoCampo}" autocomplete="off" placeholder="${aryItem.sPlaceHolder}" class="form-control" name="${sNameorId}" id="${sNameorId}">`;
           break;
         case "select":
@@ -175,9 +203,6 @@ function fncBuildForm(aryData) {
           break;
         case "textarea":
           sHtml += `<textarea name="${sNameorId}" id="${sNameorId}" cols="20" rows="5" class="form-control" autocomplete="off"></textarea>`;
-          break;
-        case "date":
-          sHtml += `<input type="text" autocomplete="off" placeholder="${aryItem.sPlaceHolder}" class="form-control date-picker" name="${sNameorId}" id="${sNameorId}">`;
           break;
       }
 

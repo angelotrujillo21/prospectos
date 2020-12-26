@@ -2,6 +2,7 @@
 
 namespace Application\Core;
 
+use Application\Models\VariblesConfiguracion;
 use Exception;
 
 class Controller
@@ -37,6 +38,15 @@ class Controller
     }
 
 
+    public function fncGetVarConfig($sNombre, $sField = "sValorPrincipal")
+    {
+        $config  =  new VariblesConfiguracion();
+        $aryData = $config->fncGetVarConfig($sNombre, $sField);
+        if (is_array($aryData) && count($aryData) > 0) {
+            return $aryData[0][$sField];
+        }
+        return false;
+    }
 
     /**
      * @param $view
@@ -61,6 +71,8 @@ class Controller
             return false;
         }
     }
+
+
 
 
 
@@ -94,6 +106,13 @@ class Controller
     {
         if ($session->getStatus() === 1 || empty($session->get('user'))) {
             $this->redirect('admin/acceso');
+        }
+    }
+
+    protected function authEmpleado($session)
+    {
+        if ($session->getStatus() === 1 || empty($session->get('userEmpleado'))) {
+            $this->redirect('acceso');
         }
     }
 }

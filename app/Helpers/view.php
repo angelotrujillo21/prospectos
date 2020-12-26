@@ -610,8 +610,16 @@ function convertir($numero)
 }
 
 
+function fncValidateArray($ary)
+{
+    if(is_array($ary) && count($ary)){
+        return true;
+    }
+    return false;
+}
 
-function secondsToTime($inputSeconds)
+
+function fncSecondsToTime($inputSeconds)
 {
     $secondsInAMinute = 60;
     $secondsInAnHour  = 60 * $secondsInAMinute;
@@ -630,6 +638,7 @@ function secondsToTime($inputSeconds)
 
     // extract the remaining seconds
     $remainingSeconds = $minuteSeconds % $secondsInAMinute;
+    
     $seconds = ceil($remainingSeconds);
 
     // return the final array
@@ -637,14 +646,16 @@ function secondsToTime($inputSeconds)
         'd' => (int) $days,
         'h' => (int) $hours,
         'm' => (int) $minutes,
-        's' => (int) $seconds,
+        's' => (float) $seconds,
     );
 
-    $sDias  =  ($obj['d'] == 0 ? '' : ($obj['d'] == 1 ? $obj['d'] . 'd' :  $obj['d'] . 'd'));
-    $shoras =  ($obj['h'] == 0 ? '' : ($obj['h'] == 1 ? (strlen($sDias) > 0 ? ' y ' : '') . $obj['d'] . 'h' : (strlen($sDias) > 0 ? ' y ' : '') . $obj['d'] . 'h'));
-    $sMin   =  ($obj['m'] == 0 ? '' : ($obj['m'] == 1 ? (strlen($shoras) > 0 ? ' y ' : '') . $obj['m'] . 'm' : (strlen($shoras) > 0 ? ' y ' : '') . $obj['m'] . 'm'));
 
-    return $sDias . $shoras . $sMin;
+    $sDias  =  ($obj['d'] == 0 ? '' :  $obj['d'] . 'd');
+    $shoras =  ($obj['h'] == 0 ? '' : ($obj['h'] == 1 ? (strlen($sDias) > 0 ? ' y ' : ' ') . $obj['h'] . 'h' : (strlen($sDias) > 0 ? ' y ' : ' ') . $obj['h'] . 'h'));
+    $sMin   =  ($obj['m'] == 0 ? '' : ($obj['m'] == 1 ? (strlen($shoras) > 0 ? ' y ' : ' ') . $obj['m'] . 'm' : (strlen($shoras) > 0 ? ' y ' : ' ') . $obj['m'] . 'm'));
+    $sSeg   =  ($obj['s'] == 0 ? '' : ($obj['s'] == 1 ? (strlen($sMin) > 0 ? ' y ' : ' ') . $obj['s'] . 's' : (strlen($sMin) > 0 ? ' y ' : ' ') . $obj['s'] . 's'));
+
+    return $sDias . $shoras . $sMin . $sSeg;
 }
 
 
@@ -655,4 +666,9 @@ function fncEliminarArchivo($path)
     } else {
         return false;
     }
+}
+
+function fncSanitizeDb($str)
+{
+    return trim(strtolower(preg_replace("/\s+/", "", $str)));
 }

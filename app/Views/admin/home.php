@@ -6,7 +6,7 @@
 
 </head>
 
-<body>
+<body data-ntipoempleadosupervisor="<?=$nTipoEmpleadoSupervisor?>">
 
     <div class="page-loader">
         <div class="loader-dual-ring"></div>
@@ -53,7 +53,7 @@
                                                     <?php if (is_array($aryVendedores)  && count($aryVendedores) > 0) : ?>
                                                         <?php foreach ($aryVendedores as $aryVendedor) : ?>
                                                             
-                                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="<?= uc($aryVendedor['sNombre'] . ' ' . $aryVendedor['sApellidos']) ?>">
+                                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="<?= uc($aryVendedor['sNombre']) ?>">
                                                             <span><?= strtoupper($aryVendedor['sEmpleadoCorto']) ?></span>
                                                         </div>
 
@@ -606,90 +606,91 @@
     <div class="modal fade" id="formColaborador" tabindex="-1" role="dialog" aria-labelledby="formColaboradorLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formColaboradorLabel">Invitar Colaborador</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="sEmail" class="col-form-label">Email:</label>
-                                    <input type="email" class="form-control" id="sEmail" autocomplete="off" name="sEmail">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formColaboradorLabel">Invitar Colaborador</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="sEmail" class="col-form-label">Email:</label>
+                                        <input type="email" class="form-control" id="sEmail" autocomplete="off" name="sEmail">
+                                    </div>
                                 </div>
+
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="" class="col-form-label">Tipo:</label>
+                                        <select class="form-control" name="nTipoEmpleado" id="nTipoEmpleado">
+                                            <option value="0">Seleccionar</option>
+                                            <?php if (is_array($aryTipoEmpleados)  && count($aryTipoEmpleados) > 0) : ?>
+                                                <?php foreach ($aryTipoEmpleados as $aryTipoEmpleado) : ?>
+                                                    <option value="<?= $aryTipoEmpleado['nIdCatalogoTabla'] ?>"><?= $aryTipoEmpleado['sDescripcionLargaItem'] ?></option>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="container-color" class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="" class="col-form-label">Color:</label>
+                                        <select class="form-control" name="nIdColor" id="nIdColor">
+                                            <option value="0">Seleccionar</option>
+                                            <?php if (is_array($aryColores)  && count($aryColores) > 0) : ?>
+                                                <?php foreach ($aryColores as $aryColor) : ?>
+                                                    <option value="<?= $aryColor['nIdCatalogoTabla'] ?>"><?= $aryColor['sDescripcionLargaItem'] ?></option>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div id="container-supervisor" class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="" class="col-form-label">Supervisor:</label>
+
+                                        <select class="form-control" name="nIdSupervisor" id="nIdSupervisor">
+                                            <option value="0">Seleccionar</option>
+                                            <?php if (is_array($arySupervisores)  && count($arySupervisores) > 0) : ?>
+                                                <?php foreach ($arySupervisores as $arySuper) : ?>
+                                                    <option value="<?= $arySuper['nIdEmpleado'] ?>"><?= uc($arySuper['sNombre']) ?></option>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
                             </div>
 
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="" class="col-form-label">Tipo:</label>
-                                    <select class="form-control" name="nTipoEmpleado" id="nTipoEmpleado">
-                                        <option value="0">Seleccionar</option>
-                                        <?php if (is_array($aryTipoEmpleados)  && count($aryTipoEmpleados) > 0) : ?>
-                                            <?php foreach ($aryTipoEmpleados as $aryTipoEmpleado) : ?>
-                                                <option value="<?= $aryTipoEmpleado['nIdCatalogoTabla'] ?>"><?= $aryTipoEmpleado['sDescripcionLargaItem'] ?></option>
-                                            <?php endforeach ?>
-                                        <?php endif ?>
-
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div id="container-color" class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="" class="col-form-label">Color:</label>
-                                    <select class="form-control" name="nIdColor" id="nIdColor">
-                                        <option value="0">Seleccionar</option>
-                                        <?php if (is_array($aryColores)  && count($aryColores) > 0) : ?>
-                                            <?php foreach ($aryColores as $aryColor) : ?>
-                                                <option value="<?= $aryColor['nIdCatalogoTabla'] ?>"><?= $aryColor['sDescripcionLargaItem'] ?></option>
-                                            <?php endforeach ?>
-                                        <?php endif ?>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div id="container-supervisor" class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="" class="col-form-label">Supervisor:</label>
-
-                                    <select class="form-control" name="nIdSupervisor" id="nIdSupervisor">
-                                        <option value="0">Seleccionar</option>
-                                        <?php if (is_array($arySupervisores)  && count($arySupervisores) > 0) : ?>
-                                            <?php foreach ($arySupervisores as $arySuper) : ?>
-                                                <option value="<?= $arySuper['nIdEmpleado'] ?>"><?= uc($arySuper['sNombre'] . ' ' . $arySuper['sApellidos']) ?></option>
-                                            <?php endforeach ?>
-                                        <?php endif ?>
-                                    </select>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-
-                        <div id="content-link-copy" class="row flex-center">
-                            <div class="col-8">
-                                <p class="mb-2 color-azul">Si no llego el correo puede utiliza este link para el registro del colaborador.</p>
-                                <div class="input-group mb-3">
-                                    <input type="text" id="sLinkCopy" readonly class="form-control" placeholder="Copia el link.." aria-label="Copia el link.." aria-describedby="basic-copy">
-                                    <div id="btnCopyLink" class="input-group-append cursor-pointer" >
-                                        <span class="input-group-text" id="basic-copy"><i class="far fa-copy"></i></span>
+                            <div id="content-link-copy" class="row flex-center">
+                                <div class="col-8">
+                                    <p class="mb-2 color-azul">Si no llego el correo puede utiliza este link para el registro del colaborador.</p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="sLinkCopy" readonly class="form-control" placeholder="Copia el link.." aria-label="Copia el link.." aria-describedby="basic-copy">
+                                        <div id="btnCopyLink" class="input-group-append cursor-pointer" >
+                                            <span class="input-group-text" id="basic-copy"><i class="far fa-copy"></i></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                                                
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient-primary btn-fw btn-submit">Invitar</button>
-                </div>
+                                                    
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Invitar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -714,12 +715,12 @@
                             <div class="card-colaborador">
                                 <div class="row no-gutters">
                                     <div class="col-3 flex-center">
-                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="<?= uc($aryVendedor['sNombre'] . ' ' . $aryVendedor['sApellidos']) ?>">
+                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="<?= uc($aryVendedor['sNombre']) ?>">
                                             <span><?= strtoupper($aryVendedor['sEmpleadoCorto']) ?></span>
                                         </div>
                                     </div>
                                     <div class="col-6 text-center">
-                                        <span><?= uc($aryVendedor['sNombre'] . ' ' . $aryVendedor['sApellidos']) ?></span>
+                                        <span><?= uc($aryVendedor['sNombre']) ?></span>
                                         <div class="w-100"></div>
                                         <span class="font-14"><?= uc($aryVendedor['sTipoEmpleado']) ?></span>
                                         <div class="w-100"></div>
@@ -727,7 +728,7 @@
                                     </div>
                                     <div class="col-3">
                                         <div class="cuadraro-supervisor fondo-<?= strtolower($aryVendedor['sColorSuperEmpleado'])?>"></div>
-                                        <span class="activo-hace">Activo hace <?= secondsToTime($aryVendedor['sTimeUltimoAcceso']) ?></span>
+                                        <span class="activo-hace">Activo hace <?= fncSecondsToTime($aryVendedor['sTimeUltimoAcceso']) ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -783,7 +784,7 @@
 
         $("#nTipoEmpleado").on('change', function() {
             if ($(this).val() != 0) {
-                if ($(this).val() == '588') {
+                if ($(this).val() == $("body").data("ntipoempleadosupervisor")) {
                     //Supervisor
                     $("#container-color").show();
                     $("#container-supervisor").hide();
@@ -803,22 +804,24 @@
             fncClearInputs($("#formColaborador").find("form"));
         });
 
-        $("#formColaborador").find('.btn-submit').on('click', function() {
+        $("#formColaborador").find('form').on('submit', function(event) {
+            event.preventDefault();
 
             var sEmail          = $("#sEmail").val().trim();
             var nTipoEmpleado   = $("#nTipoEmpleado").val().trim();
             var nIdColor        = $("#nIdColor").val().trim();
             var nIdSupervisor   = $("#nIdSupervisor").val();
 
-            if(sEmail == ''){
-                toastr.error('Error. Debe ingresar el correo del colaborador.');
+            if(sEmail == '' || !fncValidateEmail(sEmail)){
+                toastr.error('Error. Debe ingresar un correo con un formato correcto . Porfavor verifique.');
                 return false;
             } if(nTipoEmpleado == 0){
                 toastr.error('Error. Debe seleccionar el tipo de empleado.');
                 return false;
             } 
-            
-            if (nTipoEmpleado == '588') {
+
+    
+            if (nTipoEmpleado == $("body").data("ntipoempleadosupervisor")) {
                 if(nIdColor == 0){
                     toastr.error('Error. Debe seleccionar el color del supervisor.');
                     return false;
@@ -880,7 +883,8 @@
             }
         });
     }
-
+ 
+  
     
 </script>
 

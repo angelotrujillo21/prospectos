@@ -15,6 +15,10 @@ define('DB_PASSWORD', '');
 
 
 /* MAIL */
+// define('HOST_MAIL', 'mail.norsalespiura.com');
+// define('USER_MAIL', 'server@norsalespiura.com');
+// define('PASSWORD_MAIL', '+PLZ~!(o$sm3');
+
 define('HOST_MAIL', 'mail.mmconsultoresinformaticos.net');
 define('USER_MAIL', 'deliappauth@mmconsultoresinformaticos.net');
 define('PASSWORD_MAIL', 'mYfCvrb@025!');

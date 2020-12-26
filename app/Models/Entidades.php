@@ -22,4 +22,12 @@ class Entidades
                 ORDER BY campent.nOrden ASC";
         return $this->db->run($sSQL);
     }
+
+    public function fnGetTipoCampos($nEstado = null, $nNotIn = null)
+    {
+        $sSQL  = "SELECT nTipoCampo, sNombre, sNombreUsuario, nEstado FROM tiposcampos WHERE";
+        $sSQL .= !is_null($nEstado) ? " nEstado = $nEstado " : "";
+        $sSQL .= !is_null($nNotIn) ? " AND nTipoCampo NOT IN ($nNotIn)" : "";
+        return $this->db->run($sSQL);
+    }
 }

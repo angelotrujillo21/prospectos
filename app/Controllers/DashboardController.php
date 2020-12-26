@@ -41,19 +41,22 @@ class DashboardController extends Controller
                 $user["nIdNegocio"] = $nIdNegocio;
                 $this->session->add("user", $user);
 
+                $aryColores = $this->empleados->fncGetColoresEmpleados($nIdNegocio);
+                $sColores   = is_array($aryColores) && count($aryColores) > 0 ? implode(",", array_column($aryColores, 'nIdColor')) : "0";
+
                 $this->view(
                     'admin/home',
                     array(
-                        'negocio'            => $negocio,
-                        'user'               => $this->session->get('user'),
-                        'menu'               => true,
-                        'titulo'             => 'Home',
-                        'showNotificacion'   => true,
-                        'aryColores'         => $this->catalogoTabla->fncListado('COLORES'),
-                        'aryTipoEmpleados'   => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
-                        'arySupervisores'    => $this->empleados->fncGetEmpleados('588',$nIdNegocio),
-                        'aryVendedores'      => $this->empleados->fncGetEmpleados('589',$nIdNegocio)
-
+                        'negocio'                 => $negocio,
+                        'user'                    => $this->session->get('user'),
+                        'menu'                    => true,
+                        'titulo'                  => 'Home',
+                        'showNotificacion'        => true,
+                        'aryColores'              => $this->catalogoTabla->fncListado('COLORES', "nIdCatalogoTabla NOT IN($sColores)"),
+                        'aryTipoEmpleados'        => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
+                        'arySupervisores'         => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoSupervisor"), $nIdNegocio),
+                        'aryVendedores'           => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio),
+                        'nTipoEmpleadoSupervisor' => $this->fncGetVarConfig("nTipoEmpleadoSupervisor")
                     )
                 );
             } else {

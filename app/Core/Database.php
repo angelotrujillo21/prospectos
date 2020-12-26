@@ -88,6 +88,8 @@ class Database extends PDO
                 }
             }
         } catch (PDOException $e) {
+            var_dump($sql);
+
             var_dump($e->getMessage());
             $this->error = $e->getMessage();
             $this->debug();

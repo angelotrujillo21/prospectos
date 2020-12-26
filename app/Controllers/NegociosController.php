@@ -9,6 +9,7 @@ use Application\Models\Negocios;
 use Application\Models\Entidades;
 use Application\Models\CatalogoTabla;
 use Application\Core\Controller as Controller;
+use Application\Models\Prospecto;
 
 class NegociosController extends Controller
 {
@@ -18,6 +19,7 @@ class NegociosController extends Controller
     public $session;
     public $entidades;
     public $catalogoTabla;
+    public $prospecto;
     public $users;
 
     public function __construct()
@@ -28,6 +30,7 @@ class NegociosController extends Controller
         $this->negocios      = new Negocios();
         $this->entidades     = new Entidades();
         $this->catalogoTabla = new CatalogoTabla();
+        $this->prospecto     = new Prospecto();
         $this->session->init();
         $this->authAdmin($this->session);
     }
@@ -39,10 +42,10 @@ class NegociosController extends Controller
             $user = $this->session->get('user');
             if (isset($user["nIdUsuario"]) && !empty($user["nIdUsuario"])) {
 
-                $aryConfigClientes        = $this->entidades->fncGetCamposByEntidad(1);
-                $aryConfigCatalogos       = $this->entidades->fncGetCamposByEntidad(2);
-                $aryConfigVendedores      = $this->entidades->fncGetCamposByEntidad(3);
-                $aryConfigSupervisores    = $this->entidades->fncGetCamposByEntidad(4);
+                $aryConfigClientes        = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCliente"));
+                $aryConfigCatalogos       = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCatalogo"));
+                $aryConfigVendedores      = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadVendedor"));
+                $aryConfigSupervisores    = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdSupervisor"));
                 $aryTipoProspectos        = $this->catalogoTabla->fncListado('TIPO_PROSPECTO');
 
                 $this->view(
@@ -132,6 +135,14 @@ class NegociosController extends Controller
                         $this->negocios->fncGrabarConfiguracionCampos($nIdNegocio, $arySupervisor->nIdCampoEntidad,  $arySupervisor->nEstado);
                     }
                 }
+
+                // Obtener lso campos del prospecto por default
+                $aryConfigProspectoDefault = $this->prospecto->fncObtenerWidgetProspecto(1, 1);
+                if (is_array($aryConfigProspectoDefault) && count($aryConfigProspectoDefault) > 0) {
+                    foreach ($aryConfigProspectoDefault as $nKey => $aryDefault) {
+                        $this->prospecto->fncGrabarConfigProspecto($nIdNegocio, $aryDefault['nIdWidget'], 1);
+                    }
+                }
             } else {
                 //Actualizar 
                 $this->negocios->fncActualizarNegocio($sNombre, $sDireccion, $sNombreImagen, $nTipoProspecto, $nEstado, $nIdRegistro);
@@ -198,10 +209,10 @@ class NegociosController extends Controller
             $aryNegocios = $this->negocios->fncGetNegocioById($nIdRegistro);
 
 
-            $aryConfigClientes        = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, 1);
-            $aryConfigCatalogos       = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, 2);
-            $aryConfigVendedores      = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, 3);
-            $aryConfigSupervisores    = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, 4);
+            $aryConfigClientes        = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, $this->fncGetVarConfig("nIdEntidadCliente"));
+            $aryConfigCatalogos       = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, $this->fncGetVarConfig("nIdEntidadCatalogo"));
+            $aryConfigVendedores      = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, $this->fncGetVarConfig("nIdEntidadVendedor"));
+            $aryConfigSupervisores    = $this->negocios->fncGetConfiguracionCampo($nIdRegistro, $this->fncGetVarConfig("nIdSupervisor"));
 
             $aryData = [
                 "aryNegocio"             => $aryNegocios,
@@ -227,6 +238,15 @@ class NegociosController extends Controller
             // Valida valores del formulario
             if ($nIdRegistro == null) {
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryConfigNegocio   = $this->prospecto->fncObtenerConfigProspecto($nIdRegistro, null, 0);
+            
+            if (is_array($aryConfigNegocio) && count($aryConfigNegocio)) {
+                foreach ($aryConfigNegocio as $aryconf) {
+                    $this->prospecto->fncEliminarColumnaProspecto($aryconf["sWidgetSystem"]);
+                    $this->prospecto->fncEliminarWidgetProspecto($aryconf["nIdWidget"]);
+                }
             }
 
             $aryNegocio = $this->negocios->fncGetNegocioById($nIdRegistro);

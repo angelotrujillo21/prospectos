@@ -106,7 +106,7 @@ class Negocios
     {
         $sSQL = "UPDATE configuracioncampos SET ";
 
-        $sSQL .= (!is_null($nEstado) ? " nEstado = $nEstado" : ' nEstado = NULL ');
+        $sSQL .= (!is_null($nEstado) ? " nEstado = $nEstado " : ' nEstado = NULL ');
 
         $sSQL .= " WHERE nIdConfiguracionCampo = $nIdConfiguracionCampo ";
 
@@ -140,15 +140,15 @@ class Negocios
                     tipocam.sNombre AS sNombreTipoCampo,
                     camp.sNombreConfig,
                     camp.nTamano,
-                    camp.nEstado
+                    conf.nEstado
                 FROM configuracioncampos AS conf 
                 INNER JOIN camposentidades AS campent ON conf.nIdCampoEntidad = campent.nIdCampoEntidad
                 INNER JOIN campos AS camp ON campent.nIdCampo = camp.nIdCampo
                 INNER JOIN tiposcampos AS tipocam ON camp.nTipoCampo = tipocam.nTipoCampo
                 WHERE conf.nIdNegocio = $nIdNegocio AND campent.nIdEntidad = $nIdEntidad
                 ";
+                
         $sSQL .= is_null($nEstado) ? "" : ' AND conf.nEstado  = ' . $nEstado;
-
         $sSQL .= $nOrdenTable ? " ORDER BY campent.nOrdenTabla ASC " : " ORDER BY campent.nOrden ASC ";
 
         return  $this->db->run($sSQL);

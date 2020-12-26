@@ -24,14 +24,5 @@ class RolesController extends Controller
         $this->authAdmin($this->session);
     }
 
-    public function index($idNegocio)
-    {
-        $this->view('admin/roles',
-        [
-            "titulo" => "Mantemiento de roles",
-            "menu"   => true ,
-            "user"   => $this->session->get('user'),
-            'showNotificacion'   => true ,
-        ]);
-    }
+ 
 }

@@ -36,4 +36,27 @@ class Users
         }
         return (int) $results["nIdUsuario"];
     }
+
+    
+    public function getUserEmpleado($nIdEmpleado)
+    {
+        $results = $this->db->selectOne("empleados", "nIdEmpleado = :nIdEmpleado", array(':nIdEmpleado' => $nIdEmpleado));
+        /* si el resultado esta vacio o empty el metodo Select One devuelve false */
+        if ($results === false) {
+            return 0;
+        }
+        return $results;
+    }
+
+    public function fncAccesoEmpleado($sCorreo, $sClave)
+    {
+        $results = $this->db->run("SELECT * FROM empleados WHERE sCorreo = '$sCorreo' AND sClave = '$sClave'");
+        /* si el resultado esta vacio o empty el metodo Select One devuelve false */
+        
+        if (count($results)== 0 || $results === false) {
+            return 0;
+        }
+        return (int) $results[0]["nIdEmpleado"];
+    }
+
 }

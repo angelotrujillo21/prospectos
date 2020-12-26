@@ -1,17 +1,73 @@
 <?php
 
+// App Vendedor
+
+$router->get('/', 'LoginEmpleadoController@acceso');
+$router->any('home/:id', 'AppProspectoController@home');
+$router->any('acceso', 'LoginEmpleadoController@acceso');
+$router->get('salir', 'LoginEmpleadoController@salir');
+// Fin de App de vendedor
+
+
 
 // Home 
 
 $router->any('admin/empleados/fncSendEmailEmpleado', 'EmpleadosController@fncSendEmailEmpleado');
 $router->any('formulario-empleado/:id/:id/:id', 'EmpleadosController@fncFormularioEmpleado');
 $router->any('empleados/fncGrabarEmpleado', 'EmpleadosController@fncGrabarEmpleado');
+$router->any('empleados/fncMostrarRegistro', 'EmpleadosController@fncMostrarRegistro');
+
+
 $router->any('formularios/fncBuildForm', 'BuildFormController@fncBuildForm');
+$router->any('formularios/fncBuildFormProspecto', 'BuildFormController@fncBuildFormProspecto');
+
+
+
+$router->any('api/dni/:id', 'ApisController@dni');
+$router->any('api/ruc/:id', 'ApisController@ruc');
+
+
+
+// Prospectos 
+
+$router->any('admin/prospecto/fncGrabarProspectoCatalogo', 'ProspectosController@fncGrabarProspectoCatalogo');
+$router->any('admin/prospecto/fncGetProspectoCatalogoByIdProspecto', 'ProspectosController@fncGetProspectoCatalogoByIdProspecto');
+$router->any('admin/prospecto/fncEliminarProspectoCatalogo', 'ProspectosController@fncEliminarProspectoCatalogo');
+
+$router->any('admin/prospecto/fncActualizaProspectoSegmentacion', 'ProspectosController@fncActualizaProspectoSegmentacion');
+$router->any('admin/prospecto/fncGrabarProspectoActividad', 'ProspectosController@fncGrabarProspectoActividad');
+$router->any('admin/prospecto/fncEliminarProspectoActividad', 'ProspectosController@fncEliminarProspectoActividad');
+$router->any('admin/prospecto/fncGetActividadByIdProspecto', 'ProspectosController@fncGetActividadByIdProspecto');
+
+
+$router->any('admin/prospecto/fncGrabarProspectoNota', 'ProspectosController@fncGrabarProspectoNota');
+$router->any('admin/prospecto/fncEliminarProspectoNota', 'ProspectosController@fncEliminarProspectoNota');
+$router->any('admin/prospecto/fncGetProspectoNotaByIdProspecto', 'ProspectosController@fncGetProspectoNotaByIdProspecto');
+$router->any('admin/prospecto/fncActualizarControlExtra', 'ProspectosController@fncActualizarControlExtra');
+$router->any('admin/prospecto/fncGetCambioProspectoByIdProspecto', 'ProspectosController@fncGetCambioProspectoByIdProspecto');
+$router->any('admin/prospecto/fncGrabarCambioProspecto', 'ProspectosController@fncGrabarCambioProspecto');
+$router->any('admin/prospecto/fncActualizarEstadoProspecto', 'ProspectosController@fncActualizarEstadoProspecto');
 
 
 
 
-// Fin de home 
+$router->any('admin/prospecto/fncGetProspectos', 'ProspectosController@fncGetProspectos');
+$router->any('admin/prospecto/fncGrabarProspecto', 'ProspectosController@fncGrabarProspecto');
+$router->any('admin/prospecto/fncMostrarRegistro', 'ProspectosController@fncMostrarRegistro');
+
+
+
+$router->any('admin/prospecto/fncGrabarWidgetProspecto', 'ProspectosController@fncGrabarWidgetProspecto');
+$router->any('admin/prospecto/fncObtenerConfigProspecto', 'ProspectosController@fncObtenerConfigProspecto');
+$router->any('admin/prospecto/fncActualizarConfigProspecto', 'ProspectosController@fncActualizarConfigProspecto');
+$router->any('admin/prospecto/fncMostrarWidget', 'ProspectosController@fncMostrarWidget');
+$router->any('admin/prospecto/fncEliminarWidget', 'ProspectosController@fncEliminarWidget');
+
+
+
+
+// Fin de prospectos
+
 
 // Ubigeo 
 $router->any('ubigeo/fncObtenerProvincias', 'UbigeoController@fncObtenerProvincias');
@@ -19,11 +75,29 @@ $router->any('ubigeo/fncObtenerDistrito', 'UbigeoController@fncObtenerDistrito')
 // Fin de ubigeo
 
 
+// Mantenimientos Segmentacion 
+$router->any('admin/segmentacion/fncPopulateSegmentacion/:id/:id', 'SegmentacionController@fncPopulateSegmentacion');
+$router->any('admin/segmentacion/fncGrabarSegmentacion', 'SegmentacionController@fncGrabarSegmentacion');
+$router->any('admin/segmentacion/fncMostrarSegmentacion', 'SegmentacionController@fncMostrarSegmentacion');
+$router->any('admin/segmentacion/fncEliminarSegmentacion', 'SegmentacionController@fncEliminarSegmentacion');
+
+// Detalle 
+$router->any('admin/segmentacion/fncPopulateDetalleSegmentacion', 'SegmentacionController@fncPopulateDetalleSegmentacion');
+$router->any('admin/segmentacion/fncGrabarDetalleSegmentacion', 'SegmentacionController@fncGrabarDetalleSegmentacion');
+$router->any('admin/segmentacion/fncMostrarDetalleSegmentacion', 'SegmentacionController@fncMostrarDetalleSegmentacion');
+$router->any('admin/segmentacion/fncEliminarDetalleSegmentacion', 'SegmentacionController@fncEliminarDetalleSegmentacion');
+
+// Fin del Segmentacion
+
 // Mantenimiento Cliente
 $router->any('admin/cliente/fncPopulate/:id', 'ClientesController@fncPopulate');
 $router->any('admin/cliente/fncGrabarCliente', 'ClientesController@fncGrabarCliente');
 $router->any('admin/cliente/fncMostrarRegistro', 'ClientesController@fncMostrarRegistro');
 $router->any('admin/cliente/fncEliminarRegistro', 'ClientesController@fncEliminarRegistro');
+$router->any('admin/cliente/fncGetClientes', 'ClientesController@fncGetClientes');
+
+
+
 // Fin del cliente
 
 // Mantenimiento Catalogo

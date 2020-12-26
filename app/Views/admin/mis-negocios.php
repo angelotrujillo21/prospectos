@@ -63,113 +63,111 @@
     <div class="modal fade" enctype="multipart/form-data" id="formNegocio" tabindex="-1" role="dialog" aria-labelledby="formNegocioLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formNegocioLabel">Nuevo Negocio</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formNegocioLabel">Nuevo Negocio</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    
+                            <div class="row">
 
-                            <div class="col-12 mb-1">
-                                <span class="title-negocio">General</span>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="sNombre" class="col-form-label">Nombre:</label>
-                                    <input type="text" class="form-control" id="sNombre" autocomplete="off" name="sNombre">
+                                <div class="col-12 mb-1">
+                                    <span class="title-negocio">General</span>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="sDireccion" class="col-form-label">Direccion:</label>
-                                    <input type="text" class="form-control" id="sDireccion" autocomplete="off" name="sDireccion">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="sNombre" class="col-form-label">Nombre:</label>
+                                        <input type="text" class="form-control" id="sNombre" autocomplete="off" name="sNombre">
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="sDireccion" class="col-form-label">Direccion:</label>
+                                        <input type="text" class="form-control" id="sDireccion" autocomplete="off" name="sDireccion">
+                                    </div>
+                                </div>
 
 
-                        
-                            
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="sImagen" class="col-form-label">Imagen:</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="sImagen" accept="image/*" lang="es" name="sImagen">
-                                            <label class="custom-file-label" for="sImagen">Elija el
-                                                archivo</label>
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label for="sImagen" class="col-form-label">Imagen:</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="sImagen" accept="image/*" lang="es" name="sImagen">
+                                                <label class="custom-file-label" for="sImagen">Elija el
+                                                    archivo</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="nTipoProspecto" class="col-form-label">Tipo De Prospecto:</label>
-                                    <select class="form-control" name="nTipoProspecto" id="nTipoProspecto">
-                                        <option value="0">Seleccionnar</option>
-                                        <?php foreach ($aryTipoProspectos as $aryTipoProspecto) : ?>
-                                            <option value="<?= $aryTipoProspecto['nIdCatalogoTabla'] ?>"><?= $aryTipoProspecto['sDescripcionLargaItem'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="nTipoProspecto" class="col-form-label">Tipo De Prospecto:</label>
+                                        <select class="form-control" name="nTipoProspecto" id="nTipoProspecto">
+                                            <option value="0">Seleccionnar</option>
+                                            <?php foreach ($aryTipoProspectos as $aryTipoProspecto) : ?>
+                                                <option value="<?= $aryTipoProspecto['nIdCatalogoTabla'] ?>"><?= $aryTipoProspecto['sDescripcionLargaItem'] ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="nEstado" class="col-form-label">Estado:</label>
-                                    <select class="form-control" name="nEstado" id="nEstado">
-                                        <option value="1">Activo</option>
-                                        <option value="0">Desactivo</option>
-                                    </select>
+                                
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="nEstado" class="col-form-label">Estado:</label>
+                                        <select class="form-control" name="nEstado" id="nEstado">
+                                            <option value="1">Activo</option>
+                                            <option value="0">Desactivo</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
 
 
-                            <div class="col-12 mb-1">
-                                <span class="title-negocio">Controles</span>
-                            </div>
-
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <span>Cliente
-                                        <a class="edit-controles" data-toggle="modal" data-target="#formCliente"><i class="fas fa-pen"></i></a></span>
+                                <div class="col-12 mb-1">
+                                    <span class="title-negocio">Controles</span>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#formVendedores"><i class="fas fa-pen"></i></a></span>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <span>Cliente
+                                            <a class="edit-controles" data-toggle="modal" data-target="#formCliente"><i class="fas fa-pen"></i></a></span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <span>Productos o servicios <a class="edit-controles" data-toggle="modal" data-target="#formProductosoServicios"><i class="fas fa-pen"></i></a></span>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#formVendedores"><i class="fas fa-pen"></i></a></span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#formSupervisores"><i class="fas fa-pen"></i></a></span>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <span>Productos o servicios <a class="edit-controles" data-toggle="modal" data-target="#formProductosoServicios"><i class="fas fa-pen"></i></a></span>
+                                    </div>
                                 </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#formSupervisores"><i class="fas fa-pen"></i></a></span>
+                                    </div>
+                                </div>
+
                             </div>
-
-                        </div>
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
-                </div>
-
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -177,69 +175,70 @@
     <div class="modal fade" id="formCliente" tabindex="-1" role="dialog" aria-labelledby="formClienteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formClienteLabel">Editar Control cliente</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formClienteLabel">Editar Control cliente</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
 
-                        <div class="row  ml-content-custom-switch w-100">
+                            <div class="row  ml-content-custom-switch w-100">
 
-                            <?php foreach ($aryConfigClientes as $aryConfigCliente) : ?>
-                                <!-- Ocultamos Tipo de documento y Apellidos -->
-                                <?php  $sClass = in_array($aryConfigCliente['nIdCampoEntidad'], [1, 5]) ? 'd-none' : ''; ?>
-                                <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
-                                    <div class="custom-control custom-switch ">
-                                        <input type="checkbox" name="aryConfiguracionCliente[]" class="custom-control-input" id="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCliente['nIdCampoEntidad'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>"><?= $aryConfigCliente['sNombreUsuario'] ?></label>
+                                <?php foreach ($aryConfigClientes as $aryConfigCliente) : ?>
+                                    <!-- Ocultamos Tipo de documento y Apellidos -->
+                                    <?php  $sClass = in_array($aryConfigCliente['nIdCampoEntidad'], [1, 5]) ? 'd-none' : ''; ?>
+                                    <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
+                                        <div class="custom-control custom-switch ">
+                                            <input type="checkbox" name="aryConfiguracionCliente[]" class="custom-control-input" id="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCliente['nIdCampoEntidad'] ?>">
+                                            <label class="custom-control-label" for="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>"><?= $aryConfigCliente['sNombreUsuario'] ?></label>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php endforeach ?>
+                                <?php endforeach ?>
 
 
-                        </div>
+                            </div>
 
-                    </form>
-                </div>
-
+                        
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-
     <div class="modal fade" id="formVendedores" tabindex="-1" role="dialog" aria-labelledby="formVendedoresLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formVendedoresLabel">Editar Control Vendedor</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formVendedoresLabel">Editar Control Vendedor</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
 
-                        <div class="row  ml-content-custom-switch w-100">
+                            <div class="row  ml-content-custom-switch w-100">
 
-                            <?php foreach ($aryConfigVendedores as $aryConfigVendedor) : ?>
-                                <?php $sClass = in_array($aryConfigVendedor['nIdCampoEntidad'], [16, 20]) ? 'd-none' : ''; ?>
-                                <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="aryConfiguracionVendedores[]" class="custom-control-input" id="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigVendedor['nIdCampoEntidad'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>"><?= $aryConfigVendedor['sNombreUsuario'] ?></label>
+                                <?php foreach ($aryConfigVendedores as $aryConfigVendedor) : ?>
+                                    <?php $sClass = in_array($aryConfigVendedor['nIdCampoEntidad'], [16, 20]) ? 'd-none' : ''; ?>
+                                    <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" name="aryConfiguracionVendedores[]" class="custom-control-input" id="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigVendedor['nIdCampoEntidad'] ?>">
+                                            <label class="custom-control-label" for="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>"><?= $aryConfigVendedor['sNombreUsuario'] ?></label>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php endforeach ?>
+                                <?php endforeach ?>
 
 
-                        </div>
+                            </div>
 
-                    </form>
-                </div>
-
+                        
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -247,32 +246,33 @@
     <div class="modal fade" id="formProductosoServicios" tabindex="-1" role="dialog" aria-labelledby="formProductosoServiciosLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formProductosoServiciossLabel">Editar Control Productos</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formProductosoServiciossLabel">Editar Control Productos</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
 
-                        <div class="row  ml-content-custom-switch w-100">
+                            <div class="row  ml-content-custom-switch w-100">
 
-                            <?php foreach ($aryConfigCatalogos as $aryConfigCatalogo) : ?>
-                                <div class="col-12 col-md-6 my-2">
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="aryConfiguracionCatalogo[]" class="custom-control-input" id="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>"><?= $aryConfigCatalogo['sNombreUsuario'] ?></label>
+                                <?php foreach ($aryConfigCatalogos as $aryConfigCatalogo) : ?>
+                                    <div class="col-12 col-md-6 my-2">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" name="aryConfiguracionCatalogo[]" class="custom-control-input" id="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>">
+                                            <label class="custom-control-label" for="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>"><?= $aryConfigCatalogo['sNombreUsuario'] ?></label>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php endforeach ?>
+                                <?php endforeach ?>
 
 
-                        </div>
+                            </div>
 
-                    </form>
-                </div>
-
+                        
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -280,33 +280,34 @@
     <div class="modal fade" id="formSupervisores" tabindex="-1" role="dialog" aria-labelledby="formSupervisoresLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formSupervisoresLabel">Editar Control Supervisor</h5>
-                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formSupervisoresLabel">Editar Control Supervisor</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    
 
-                        <div class="row  ml-content-custom-switch w-100">
+                            <div class="row  ml-content-custom-switch w-100">
 
-                            <?php foreach ($aryConfigSupervisores as $aryConfigSupervisor) : ?>
-                                <?php $sClass = in_array($aryConfigSupervisor['nIdCampoEntidad'], [28, 31]) ? 'd-none' : ''; ?>
-                                <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="aryConfiguracionSupervisor[]" class="custom-control-input" id="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>">
-                                        <label class="custom-control-label" for="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>"><?= $aryConfigSupervisor['sNombreUsuario'] ?></label>
+                                <?php foreach ($aryConfigSupervisores as $aryConfigSupervisor) : ?>
+                                    <?php $sClass = in_array($aryConfigSupervisor['nIdCampoEntidad'], [28, 31]) ? 'd-none' : ''; ?>
+                                    <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" name="aryConfiguracionSupervisor[]" class="custom-control-input" id="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>">
+                                            <label class="custom-control-label" for="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>"><?= $aryConfigSupervisor['sNombreUsuario'] ?></label>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php endforeach ?>
+                                <?php endforeach ?>
 
 
-                        </div>
+                            </div>
 
-                    </form>
-                </div>
-
+                    
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -350,8 +351,10 @@
             $("#formNegocio").modal("show");
         });
 
-        $("#formNegocio").find('.btn-submit').on('click', function() {
+        $("#formNegocio").find('form').on('submit', function(event) {
             
+            event.preventDefault();
+
             var nIdRegistro                 = $("#sNombre").data("nIdRegistro");
             var sNombre                     = $("#sNombre").val().trim();
             var sDireccion                  = $("#sDireccion").val().trim();
@@ -371,15 +374,12 @@
             } else if(sDireccion == ''){
                 toastr.error('Error. Debe ingresar el nombre del negocio.');
                 return false;
-            } else if(nIdRegistro == 0 && (sImagen == null || typeof sImagen === 'undefined')){
-                toastr.error('Error. Debe seleccionar una imagen del negocio.');
-                return false;
             } else if(nTipoProspecto == '0'){
                 toastr.error('Error. Debe seleccionar un tipo de prospecto del negocio.');
                 return false;
             } 
 
-            console.log(nEstado);
+            console.log(aryConfiguracionCliente);
             var formData = new FormData();
             formData.append('nIdRegistro', nIdRegistro);
             formData.append('sNombre', sNombre);

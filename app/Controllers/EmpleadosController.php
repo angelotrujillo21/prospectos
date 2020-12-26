@@ -33,8 +33,6 @@ class EmpleadosController extends Controller
     }
 
 
-
-
     public function fncGrabarEmpleado()
     {
         try {
@@ -45,7 +43,7 @@ class EmpleadosController extends Controller
             $nTipoDocumento                 = isset($_POST['nTipoDocumento']) ? $_POST['nTipoDocumento'] : null;
             $sNumeroDocumento               = isset($_POST['sNumeroDocumento']) ? $_POST['sNumeroDocumento'] : null;
             $sNombre                        = isset($_POST['sNombre']) ? $_POST['sNombre'] : null;
-            $sApellidos                     = isset($_POST['sApellidos']) ? $_POST['sApellidos'] : null;
+            $sCorreo                        = isset($_POST['sCorreo']) ? $_POST['sCorreo'] : null;
             $nIdColor                       = isset($_POST['nIdColor']) ? $_POST['nIdColor'] : null;
             $dFechaNacimiento               = isset($_POST['dFechaNacimiento']) ? $_POST['dFechaNacimiento'] : null;
             $nCantidadPersonasDependientes  = isset($_POST['nCantidadPersonasDependientes']) ? $_POST['nCantidadPersonasDependientes'] : null;
@@ -55,11 +53,12 @@ class EmpleadosController extends Controller
             $nIdSituacionEstudios           = isset($_POST['nIdSituacionEstudios']) ? $_POST['nIdSituacionEstudios'] : null;
             $sCarreraCiclo                  = isset($_POST['sCarreraCiclo']) ? $_POST['sCarreraCiclo'] : null;
             $nIdSupervisor                  = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
+            $sClave                         = isset($_POST['sClave']) ? $_POST['sClave'] : null;
             $nEstado                        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
 
             // Valida valores del formulario
-            if (is_null($nIdRegistro) || is_null($nIdNegocio) || is_null($nIdTipoEmpleado)) {
+            if (is_null($nIdRegistro) || is_null($nIdNegocio)) {
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
@@ -73,7 +72,7 @@ class EmpleadosController extends Controller
                     $nTipoDocumento,
                     $sNumeroDocumento,
                     $sNombre,
-                    $sApellidos,
+                    $sCorreo,
                     $nIdColor,
                     $dFechaNacimiento,
                     $nCantidadPersonasDependientes,
@@ -83,6 +82,7 @@ class EmpleadosController extends Controller
                     $nIdSituacionEstudios,
                     $sCarreraCiclo,
                     $nIdSupervisor,
+                    $sClave,
                     $nEstado
                 );
             } else {
@@ -94,7 +94,7 @@ class EmpleadosController extends Controller
                     $nTipoDocumento,
                     $sNumeroDocumento,
                     $sNombre,
-                    $sApellidos,
+                    $sCorreo,
                     $nIdColor,
                     $dFechaNacimiento,
                     $nCantidadPersonasDependientes,
@@ -104,6 +104,7 @@ class EmpleadosController extends Controller
                     $nIdSituacionEstudios,
                     $sCarreraCiclo,
                     $nIdSupervisor,
+                    $sClave,
                     $nEstado
                 );
             }
@@ -124,7 +125,9 @@ class EmpleadosController extends Controller
 
             $aryNegocio  = $this->negocios->fncGetNegocioById($nIdNegocio);
 
-            if ($nIdTipoEmpleado == '588') {
+            $nTipoEmpleadoSupervisor =  $this->fncGetVarConfig("nTipoEmpleadoSupervisor");
+
+            if ($nIdTipoEmpleado == $nTipoEmpleadoSupervisor ) {
                 // Supervisores
                 $sTitle           = 'Formulario Supervisor';
                 $nIdEntidad       = 4;
@@ -134,18 +137,40 @@ class EmpleadosController extends Controller
             }
 
             $this->view('admin/formulario-empleado', array(
-                'nIdNegocio'          => $nIdNegocio,
-                'sTitle'              => $sTitle,
-                'nIdTipoEmpleado'     => $nIdTipoEmpleado,
-                'nIdSupervisoroColor' => $nIdSupervisoroColor,
-                'aryNegocio'          => $aryNegocio,
-                'nIdEntidad'          => $nIdEntidad
+                'nIdNegocio'              => $nIdNegocio,
+                'sTitle'                  => $sTitle,
+                'nIdTipoEmpleado'         => $nIdTipoEmpleado,
+                'nIdSupervisoroColor'     => $nIdSupervisoroColor,
+                'aryNegocio'              => $aryNegocio,
+                'nIdEntidad'              => $nIdEntidad,
+                'nTipoEmpleadoSupervisor' => $nTipoEmpleadoSupervisor
 
             ));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }
     }
+
+    public function fncMostrarRegistro()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if ($nIdRegistro == null) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+
+            $aryData = $this->empleados->fncGetEmpleadoById($nIdRegistro);
+
+            $this->json(array("success" => true, "aryData" => $aryData[0]));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
 
     public function fncSendEmailEmpleado()
     {
@@ -163,7 +188,7 @@ class EmpleadosController extends Controller
             $user = $this->session->get('user');
 
             // Si el tipo de emepleado es supervisro traeme el color 
-            $nIdSupervisoroColor =  $nTipoEmpleado == '588' ? $nIdColor : $nIdSupervisor;
+            $nIdSupervisoroColor =  $nTipoEmpleado == $this->fncGetVarConfig("nTipoEmpleadoSupervisor") ? $nIdColor : $nIdSupervisor;
             $sUrl = route("formulario-empleado/" . $user["nIdNegocio"] . "/" . $nTipoEmpleado . "/" . $nIdSupervisoroColor . "");
 
             $aryNegocio  = $this->negocios->fncGetNegocioById($user["nIdNegocio"]);
@@ -190,4 +215,8 @@ class EmpleadosController extends Controller
             $this->json(array("error" => $ex->getMessage()));
         }
     }
+
+
+   
+
 }

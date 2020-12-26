@@ -577,7 +577,7 @@ td {
   font-size: 13px;
 }
 .font-12 {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 .color-text-verde {
@@ -595,7 +595,19 @@ td {
 }
 
 /* ETAPAS COLORES BORDER LEF */
-.etapa-1-border-left {
+
+.color-border-left-amarillo {
+  border-left-color: #fef343;
+}
+
+.etapa-0-border-left,
+.etapa-6-border-left,
+.color-border-left-rojo {
+  border-left-color: #f06767;
+}
+
+.etapa-1-border-left,
+.color-border-left-azul {
   border-left-color: #046ad1;
 }
 
@@ -605,7 +617,8 @@ td {
   border-left-color: #fc993a;
 }
 
-.etapa-5-border-left {
+.etapa-5-border-left,
+.color-border-left-verde {
   border-left-color: #41b883;
 }
 
@@ -817,4 +830,225 @@ td {
 .img-check {
   width: 200px;
   margin: 20px 0px;
+}
+
+.footer-app-prospectos {
+  height: 4rem;
+  padding: 5px 0px;
+  background: #363637;
+}
+
+.footer-link-prospecto {
+  text-align: center;
+  color: #fff;
+  padding: 5px 0px;
+}
+
+.footer-link-prospecto i {
+  font-size: 25px;
+  display: block;
+}
+.footer-link-prospecto div {
+  font-size: 14px !important;
+  line-height: 25px;
+}
+
+.footer-link-prospecto:hover,
+.footer-link-prospecto:active {
+  font-weight: 400 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.title-indicativos {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 28px;
+  text-align: center;
+  color: #797979;
+  margin-bottom: 6px;
+  margin-top: 5px;
+}
+
+.card-indicativo-1 {
+  width: 90%;
+  padding: 5px 0px;
+}
+
+.card-indicativo-1 p {
+  font-size: 16px;
+  display: block;
+  line-height: 19px;
+  color: #797979;
+  padding: 2px 0px !important;
+  margin: 0px;
+  text-align: center;
+}
+
+.card-indicativo-1 .title {
+  font-weight: 600;
+}
+
+.card-indicativo-2 {
+  background: linear-gradient(180deg, #41b883 0%, rgba(0, 113, 227, 0.45) 100%);
+  color: #fff !important;
+  padding: 5px 0px;
+}
+
+.card-indicativo-2 .title {
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.card-indicativo-2 .value {
+  font-size: 16px;
+  line-height: 14px;
+  text-align: center;
+}
+
+.card-indicativo-2.content-data {
+  padding: 5px 3px !important;
+}
+
+.font-16 {
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+  .pr-cliente {
+    font-size: 15px;
+  }
+  .pr-vendedor {
+    font-size: 14px;
+  }
+  .ult-cita,
+  .ult-ingreso,
+  .font-14 {
+    font-size: 12px;
+  }
+  .btn.btn-icon {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+  }
+}
+
+.content-prospectos-empleados {
+  padding-bottom: 20px;
+}
+.content-indi-pros {
+  color: #ffff;
+  padding: 12px 0px;
+}
+
+.content-indi-pros .title {
+  color: #ffff;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 600;
+}
+
+.content-citas {
+  background: linear-gradient(180deg, #7f7cfb 0%, rgba(203, 4, 236, 0.45) 100%);
+}
+
+.content-cierres {
+  background: linear-gradient(
+    180deg,
+    rgba(119, 209, 4, 0.46) 0%,
+    rgba(4, 236, 27, 0.55) 100%
+  );
+}
+
+.content-oportunidad {
+  background: linear-gradient(180deg, #fef343 0%, #fc993a 100%);
+}
+
+.content-indi-pros i {
+  font-size: 25px;
+}
+
+.modal-header-recuperar {
+  border-bottom: none !important;
+}
+
+.btn-close-recuperar {
+  position: absolute;
+  right: 40px;
+}
+
+.btn-close-app-prospecto {
+  position: absolute;
+  right: 65px;
+  top: 45px;
+  z-index: 88888;
+}
+
+.ml-label-radio {
+  margin-left: 20px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.cont-number input::-webkit-outer-spin-button,
+.cont-number input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.cont-number input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#table-servicios tbody tr td,
+#table-productos tbody tr td {
+  padding: 2px !important;
+}
+
+#table-servicios tbody tr td div,
+#table-productos tbody tr td div {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: initial;
+  font-size: 11px;
+  margin: 20px 0px;
+}
+
+.font-18 {
+  font-size: 18px;
+}
+
+.content-actividad .titulo {
+  font-size: 14px;
+}
+
+.content-actividad p {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.btn-delete-actividad {
+  font-size: 21px;
+  margin-top: 3px;
+}
+
+#table-servicios tfoot tr td,
+#table-productos tfoot tr td {
+  font-size: 11px !important;
+}
+
+.editar-nota {
+  background: transparent !important;
+  border: none !important;
+}
+
+.ShowMore:hover {
+  text-decoration: none !important;
+  color: #007bff;
+  font-weight: 300;
 }

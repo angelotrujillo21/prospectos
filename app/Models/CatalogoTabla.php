@@ -389,7 +389,7 @@ class CatalogoTabla
         return $this->db->run($sql);
     }
 
-    public function fncListado($tabla)
+    public function fncListado($tabla , $sWhere = null)
     {
 
         $sql = '';
@@ -420,10 +420,10 @@ class CatalogoTabla
                             sDescripcionLargaItem,
                             sDefecto, ## Added by Cesar
                             sEstado
-
-                 FROM catalogotabla WHERE sEstado='1' AND sNombreCatalogo = '$tabla' ORDER BY nIdCatalogoTabla ASC;";
+                 FROM catalogotabla WHERE sEstado='1' AND sNombreCatalogo = '$tabla'";            
+            $sql .= !is_null($sWhere) ? " AND $sWhere " :"";  
+            $sql .= "ORDER BY nIdCatalogoTabla ASC";
         }
-
 
 
         return $this->db->run($sql);

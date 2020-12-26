@@ -50,9 +50,6 @@ class Catalogo
     }
 
 
-
-
-
     public function fncActualizarCatalogo(
         $nIdCatalogo,
         $nIdNegocio,
@@ -106,6 +103,19 @@ class Catalogo
         $sSQL .=  is_null($nIdNegocio) ? "" : ' cat.nIdNegocio  = ' . $nIdNegocio;
         $sSQL .=  is_null($nEstado) ? "" : ' AND cat.nEstado  = ' . $nEstado;
 
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncObtenerProductosCatalogo($nPrecio1, $nPrecio2)
+
+    {
+        $sSQL = "SELECT * FROM catalogo WHERE nPrecio >= $nPrecio1 AND nPrecio <= $nPrecio2";
+        return $this->db->run(trim($sSQL));
+    }
+    public function fncObtenerLista($sFiltro)
+
+    {
+        $sSQL = "SELECT * FROM catalogo WHERE sNombre LIKE '%$sFiltro%'";
         return $this->db->run(trim($sSQL));
     }
 }

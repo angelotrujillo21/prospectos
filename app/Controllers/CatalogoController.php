@@ -47,9 +47,7 @@ class CatalogoController extends Controller
             $aryCatalogos = $this->catalogo->fncGetCatalogos($nIdNegocio);
 
             if (is_array($aryCatalogos) && count($aryCatalogos) > 0) {
-
                 foreach ($aryCatalogos as $aryCatalogo) {
-
                     $sActionVer       = "fncMostrarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ", 'editar' );";
                     $sActionEliminar  = "fncEliminarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ");";
@@ -81,7 +79,6 @@ class CatalogoController extends Controller
     public function fncGrabarCatalogo()
     {
         try {
-
             $nIdRegistro      = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
             $nIdNegocio       = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
             $nTipoItem        = isset($_POST['nTipoItem']) ? $_POST['nTipoItem'] : null;
@@ -97,9 +94,8 @@ class CatalogoController extends Controller
             }
 
 
-            // Crear 
+            // Crear
             if ($nIdRegistro == 0) {
-
                 $this->catalogo->fncGrabarCatalogo(
                     $nIdNegocio,
                     $sNombre,
@@ -109,7 +105,7 @@ class CatalogoController extends Controller
                     $nEstado
                 );
             } else {
-                //Actualizar 
+                //Actualizar
                 $this->catalogo->fncActualizarCatalogo(
                     $nIdRegistro,
                     $nIdNegocio,
@@ -131,7 +127,6 @@ class CatalogoController extends Controller
 
     public function fncMostrarRegistro()
     {
-
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
@@ -153,6 +148,7 @@ class CatalogoController extends Controller
     public function fncEliminarRegistro()
     {
         // Recibe valores del formulario
+        //hola 
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
@@ -162,11 +158,12 @@ class CatalogoController extends Controller
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
 
-
             $this->catalogo->fncEliminarCatalogo($nIdRegistro);
             $this->json(array("success" => 'Catalogo eliminado exitosamente.'));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }
     }
+   
+
 }

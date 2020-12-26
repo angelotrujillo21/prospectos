@@ -21,6 +21,7 @@ class Mail
         $this->mail->Host       = HOST_MAIL;                              // Set the SMTP server to send through
         $this->mail->SMTPAuth   = true;                                   // Enable SMTP authentication
         $this->mail->Username   = USER_MAIL;                              // SMTP username
+        $this->mail->From       = USER_MAIL; 
         $this->mail->Password   = PASSWORD_MAIL;                               // SMTP password
         $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
         $this->mail->Port       = 587;
