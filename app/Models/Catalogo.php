@@ -97,7 +97,7 @@ class Catalogo
                         cat.sDescripcion, 
                         cat.nEstado
                 FROM catalogo AS cat 
-                INNER JOIN catalogoTabla AS catTabla ON cat.nTipoItem = catTabla.nIdCatalogoTabla
+                INNER JOIN catalogotabla AS catTabla ON cat.nTipoItem = catTabla.nIdCatalogoTabla
                 WHERE";
 
         $sSQL .=  is_null($nIdNegocio) ? "" : ' cat.nIdNegocio  = ' . $nIdNegocio;

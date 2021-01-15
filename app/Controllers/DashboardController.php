@@ -8,6 +8,7 @@ use Application\Models\Negocios;
 use Application\Models\CatalogoTabla;
 use Application\Core\Controller as Controller;
 use Application\Models\Empleados;
+use Application\Models\Prospecto;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,7 @@ class DashboardController extends Controller
     public $session;
     public $catalogoTabla;
     public $empleados;
+    public $prospecto;
 
     public $users;
 
@@ -25,6 +27,7 @@ class DashboardController extends Controller
         parent::__construct();
         $this->session       = new Session();
         $this->negocios      = new Negocios();
+        $this->prospecto     = new Prospecto();
         $this->catalogoTabla = new CatalogoTabla();
         $this->empleados     = new Empleados();
         $this->session->init();
@@ -34,31 +37,51 @@ class DashboardController extends Controller
     public function index($nIdNegocio)
     {
         try {
-            $negocio = $this->negocios->fncGetNegocioById($nIdNegocio);
+            $aryNegocio = $this->negocios->fncGetNegocioById($nIdNegocio);
 
-            if ($negocio != false) {
+            if ($aryNegocio != false) {
                 $user = $this->session->get('user');
                 $user["nIdNegocio"] = $nIdNegocio;
                 $this->session->add("user", $user);
 
                 $aryColores = $this->empleados->fncGetColoresEmpleados($nIdNegocio);
                 $sColores   = is_array($aryColores) && count($aryColores) > 0 ? implode(",", array_column($aryColores, 'nIdColor')) : "0";
+                $sIds       = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo") ? $this->fncGetVarConfig("nPorcentajesProspectoLargo") : $this->fncGetVarConfig("nPorcentajesProspectoCorto");
 
-                $this->view(
+                $nIdEstadoPendiente = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nIdEtapaEnProceso") : $this->fncGetVarConfig("nIdEtapaProgramada");
+                $sEtapas            = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nPorcentajesProspectoLargo") : $this->fncGetVarConfig("nPorcentajesProspectoCorto");
+                $this->view( 
                     'admin/home',
                     array(
-                        'negocio'                 => $negocio,
-                        'user'                    => $this->session->get('user'),
-                        'menu'                    => true,
-                        'titulo'                  => 'Home',
-                        'showNotificacion'        => true,
-                        'aryColores'              => $this->catalogoTabla->fncListado('COLORES', "nIdCatalogoTabla NOT IN($sColores)"),
-                        'aryTipoEmpleados'        => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
-                        'arySupervisores'         => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoSupervisor"), $nIdNegocio),
-                        'aryVendedores'           => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio),
-                        'nTipoEmpleadoSupervisor' => $this->fncGetVarConfig("nTipoEmpleadoSupervisor")
+                        'aryNegocio'                  => $aryNegocio,
+                        'nIdNegocio'                  => $nIdNegocio,
+                        'user'                        => $this->session->get('user'),
+                        'menu'                        => true,
+                        'titulo'                      => 'Home',
+                        'showNotificacion'            => true,
+                        'nIdEstadoPendiente'          => $nIdEstadoPendiente,
+                        'sEtapas'                     => $sEtapas,
+                        'nTipoProspecto'              => $aryNegocio["nTipoProspecto"],
+                        'aryEtapaProspecto'           => $this->prospecto->fncGetEtapaProspecto($sIds),
+                        'nTipoProspectoLargo'         => $this->fncGetVarConfig("nTipoProspectoLargo"),
+                        'nIdEtapaProgramada'          => $this->fncGetVarConfig("nIdEtapaProgramada"),
+                        'nIdEtapaEnvioPropuesta'      => $this->fncGetVarConfig("nIdEtapaEnvioPropuesta"),
+                        'nIdEtapaNegociacion'         => $this->fncGetVarConfig("nIdEtapaNegociacion"),
+                        'nIdEtapaEnProceso'           => $this->fncGetVarConfig("nIdEtapaEnProceso"),
+                        'nIdEtapaCierre'              => $this->fncGetVarConfig("nIdEtapaCierre"),
+                        'nIdEstadoActividadPen'       => $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
+                        'nIdEstadoActividadEjecutado' => $this->fncGetVarConfig("nIdEstadoActividadEjecutado"),
+                        'nTipoActividadCita'          => $this->fncGetVarConfig("nTipoActividadCita"),
+                        'aryNotificaciones'           => $this->prospecto->fncObtenerCambiosForAdmin($nIdNegocio, 1),
+                        'aryColores'                  => $this->catalogoTabla->fncListado('COLORES', "nIdCatalogoTabla NOT IN($sColores)"),
+                        'aryTipoEmpleados'            => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
+                        'arySupervisores'             => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoSupervisor"), $nIdNegocio),
+                        'aryVendedores'               => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio),
+                        'nTipoEmpleadoSupervisor'     => $this->fncGetVarConfig("nTipoEmpleadoSupervisor"),
+                        'nIdEtapaRechazado'           => $this->fncGetVarConfig("nIdEtapaRechazado"),
                     )
                 );
+
             } else {
                 $this->redirect('admin/mis-negocios');
             }

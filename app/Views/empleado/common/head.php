@@ -13,6 +13,7 @@
     'admin/style',
     'admin/shards-dashboards.1.1.0.min',
     'admin/extras.1.1.0.min',
+    'bootstrap-table/bootstrap-table'
     ]);
 
 

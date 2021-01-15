@@ -99,8 +99,7 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="sImagen" accept="image/*" lang="es" name="sImagen">
-                                                <label class="custom-file-label" for="sImagen">Elija el
-                                                    archivo</label>
+                                                <label class="custom-file-label" for="sImagen">Elija el archivo</label>
                                             </div>
                                         </div>
                                     </div>

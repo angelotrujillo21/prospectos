@@ -3,13 +3,13 @@
         <div class="col-10 col-md-8">
             <div class="row no-gutters">
                 <div class="col-4 flex-center">
-                    <a class="footer-link-prospecto" href="javascript:;">
+                    <a  class="footer-link-prospecto btnVerInicio" href="javascript:;" >
                         <i class="fas fa-home"></i>
                         <div>INICIO</div>
                     </a>
                 </div>
                 <div class="col-4 flex-center">
-                    <a class="footer-link-prospecto" href="javascript:;">
+                    <a  class="footer-link-prospecto btnVerprospectos" href="javascript:;">
                         <i class="fas fa-clipboard-list"></i>
                         <div>PROSPECTOS</div>
                     </a>

@@ -168,9 +168,9 @@ function uc($string)
     return mb_convert_case(mb_strtolower($string, "UTF-8"), MB_CASE_TITLE, "UTF-8");
 }
 
-function sp($input)
+function sp($input , $nNumber = 8)
 {
-    return str_pad($input, 8, "0", STR_PAD_LEFT);
+    return str_pad($input, $nNumber, "0", STR_PAD_LEFT);
 }
 
 function array_msort($array, $cols)
@@ -612,7 +612,7 @@ function convertir($numero)
 
 function fncValidateArray($ary)
 {
-    if(is_array($ary) && count($ary)){
+    if (is_array($ary) && count($ary) > 0) {
         return true;
     }
     return false;
@@ -638,7 +638,7 @@ function fncSecondsToTime($inputSeconds)
 
     // extract the remaining seconds
     $remainingSeconds = $minuteSeconds % $secondsInAMinute;
-    
+
     $seconds = ceil($remainingSeconds);
 
     // return the final array
@@ -671,4 +671,19 @@ function fncEliminarArchivo($path)
 function fncSanitizeDb($str)
 {
     return trim(strtolower(preg_replace("/\s+/", "", $str)));
+}
+
+
+function fncCheckInRange($fecha_inicio, $fecha_fin, $fecha)
+{
+
+    $fecha_inicio = strtotime($fecha_inicio);
+    $fecha_fin = strtotime($fecha_fin);
+    $fecha = strtotime($fecha);
+
+    if (($fecha >= $fecha_inicio) && ($fecha <= $fecha_fin)) {
+        return true;
+    } else {
+        return false;
+    }
 }

@@ -102,7 +102,7 @@ class NegociosController extends Controller
             $user          = $this->session->get('user');
 
             if (isset($sImagen) && !is_null($sImagen)) {
-                $sNombreImagen = Upload::process($sImagen, 'multi');
+                $sNombreImagen = Upload::process($sImagen, 'images/multi');
             }
 
             // Crear 
@@ -241,7 +241,7 @@ class NegociosController extends Controller
             }
 
             $aryConfigNegocio   = $this->prospecto->fncObtenerConfigProspecto($nIdRegistro, null, 0);
-            
+
             if (is_array($aryConfigNegocio) && count($aryConfigNegocio)) {
                 foreach ($aryConfigNegocio as $aryconf) {
                     $this->prospecto->fncEliminarColumnaProspecto($aryconf["sWidgetSystem"]);
@@ -252,7 +252,9 @@ class NegociosController extends Controller
             $aryNegocio = $this->negocios->fncGetNegocioById($nIdRegistro);
 
             // Eliminar la imagen 
-            fncEliminarArchivo(ROOTPATHRESOURCE . "/images/multi/" . $aryNegocio['sImagen']);
+            if (!empty($aryNegocio['sImagen']) && file_exists(ROOTPATHRESOURCE . "/images/multi/" . $aryNegocio['sImagen'])) {
+                fncEliminarArchivo(ROOTPATHRESOURCE . "/images/multi/" . $aryNegocio['sImagen']);
+            }
 
             $this->negocios->fncEliminarNegocio($nIdRegistro);
 

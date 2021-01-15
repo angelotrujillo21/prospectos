@@ -17,7 +17,7 @@
 
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="javascript:;" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="<?= src('app/avatar.jpg') ?>" alt="<?= $user['sNombre'] ?>">
                     <span class="d-none d-md-inline-block"><?= $user['sNombre'] ?></span>
                 </a>
@@ -33,7 +33,7 @@
             </li>
         </ul>
         <nav class="nav">
-            <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left menu-collap">
+            <a href="javascript:;" id="btnToogleAside" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left menu-collap">
                 <i class="material-icons">&#xE5D2;</i>
             </a>
         </nav>

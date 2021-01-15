@@ -31,14 +31,14 @@
                     <div class="nav-submenus">
 
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/mis-negocios/')?>">
+                            <a class="nav-link reportes item__menu__link btnVerInicio"  onclick="$('#btnToogleAside').trigger('click');" href="javascript:;">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Inicio</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/mis-negocios/')?>">
+                            <a class="nav-link reportes item__menu__link btnVerprospectos" onclick="$('#btnToogleAside').trigger('click');" href="javascript:;">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Prospectos</span>
                             </a>
@@ -46,7 +46,7 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/salir/')?>">
+                            <a class="nav-link reportes item__menu__link" href="<?= route('salir')?>">
                                 <i class="material-icons">chevron_right</i>
                                 <span>Salir</span>
                             </a>

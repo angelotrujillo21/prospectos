@@ -150,8 +150,8 @@ class Clientes
                 LEFT JOIN departamentos AS dpt ON cli.nIdDepartamento = dpt.nIdDepartamento
                 LEFT JOIN provincia AS prov ON cli.nIdProvincia = prov.nIdProvincia
                 LEFT JOIN distrito AS dist ON cli.nIdDistrito = dist.nIdDistrito
-                LEFT JOIN catalogoTabla AS relac ON cli.nIdRelacionamiento = relac.nIdCatalogoTabla
-                LEFT JOIN catalogoTabla AS tipodoc ON cli.nTipoDocumento = tipodoc.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS relac ON cli.nIdRelacionamiento = relac.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS tipodoc ON cli.nTipoDocumento = tipodoc.nIdCatalogoTabla
                 WHERE cli.nIdNegocio  = $nIdNegocio";
         $sSQL .=  is_null($nEstado) ? "" : ' AND cli.nEstado  = ' . $nEstado;
         // echo $sSQL;

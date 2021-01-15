@@ -192,6 +192,30 @@ class Empleados
         return $this->db->run(trim($sSQL));
     }
 
+    public function fncMostrarRegistroCard($nIdEmpleado)
+    {
+        $sSQL = "SELECT emp.nIdEmpleado,
+                        emp.nTipoEmpleado, 
+                        IFNULL(cattipo.sDescripcionLargaItem,'') AS sTipoEmpleado, 
+                        IFNULL(neg.sNombre,'') AS sNombreNegocio, 
+                        emp.sNombre,
+                        emp.nIdNegocio,
+                        emp.nIdColor,
+                        emp.nIdSupervisor,
+                        IFNULL(catsup.sDescripcionLargaItem,'') AS sColorSuper, -- Este join es cuando se lista los supersiores
+                        IFNULL(catsupem.sDescripcionLargaItem,'') AS sColorSuperEmpleado,  -- Este join es cuando se lista los supervisores de los empleados
+                        CONCAT(SUBSTRING(emp.sNombre, 1, 3)) AS sEmpleadoCorto,
+                        TIME_TO_SEC(TIMEDIFF(NOW(), emp.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso
+                FROM empleados AS emp 
+                INNER JOIN negocios AS neg ON emp.nIdNegocio = neg.nIdNegocio 
+                LEFT JOIN empleados AS empSup ON emp.nIdSupervisor = empSup.nIdEmpleado
+                LEFT JOIN catalogotabla AS cattipo  ON emp.nTipoEmpleado  = cattipo.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS catsup   ON emp.nIdColor = catsup.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS catsupem ON empSup.nIdColor = catsupem.nIdCatalogoTabla
+                WHERE emp.nEstado = 1 AND  emp.nIdEmpleado = $nIdEmpleado";
+        return $this->db->run(trim($sSQL))[0];
+    }
+
     public function fncGetEmpleados($nTipoEmpleado, $nIdNegocio, $nIdEmpleado = null)
     {
         $sSQL = "SELECT emp.nIdEmpleado,
@@ -227,4 +251,12 @@ class Empleados
         $sSQL = "SELECT DISTINCT nIdColor FROM empleados WHERE nIdNegocio = $nIdNegocio AND nIdColor IS NOT NULL";
         return $this->db->run(trim($sSQL));
     }
+
+    public function fncBuscarEmpleadoPorCorreo($sCorreo)
+    {
+        $sSQL = "SELECT nIdEmpleado FROM empleados WHERE sCorreo = '$sCorreo'";
+    
+        return $this->db->run($sSQL);
+    }
+
 }

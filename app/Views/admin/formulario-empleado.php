@@ -66,6 +66,8 @@
 
             if(bStatus){
                 
+                // Ocultamos el estado ya que no tiene sentido que el usuario lo ingrese 
+                $("#content-nEstado"+sEntidad).hide();
                 // Si todo esta cooreecto agrergo los eventos
                 
                 $("#nIdEstudios" + sEntidad).on('change', function() {
@@ -98,9 +100,13 @@
                 });
 
                 $("#nTipoDocumento" + sEntidad ).change(function() {
+                  
                     if( $(this).val() > 0 ) {
                         fncMaxLengthTypeDocument( $(this).find('option:selected').text().trim().toUpperCase() , "#sNumeroDocumento"+sEntidad );
                     }
+
+                    $("#sNumeroDocumento"+sEntidad).val("").trigger("keyup");
+
                 });
 
                 $("#sNumeroDocumento" + sEntidad ).on('keyup change',function(){

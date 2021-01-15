@@ -822,10 +822,7 @@
             } else if (sNombreoRazonSocial.length > 0 && sNombreoRazonSocial.val() == '') {
                 toastr.error('Error. Ingrese un nombre o razon social. Porfavor verifique');
                 return;
-            }  else if (sCorreo.length > 0 && sCorreo.val() == '') {
-                toastr.error('Error. Ingrese un correo. Porfavor verifique');
-                return;
-            } else if (nIdDepartamento.length > 0 && nIdDepartamento.val() == '0') {
+            }  else if (nIdDepartamento.length > 0 && nIdDepartamento.val() == '0') {
                 toastr.error('Error. Seleccione un departamento. Porfavor verifique');
                 return;
             } else if (nIdProvincia.length > 0 && nIdProvincia.val() == '0') {
@@ -838,6 +835,12 @@
                 toastr.error('Error. Ingrese un telefono. Porfavor verifique');
                 return;
             }  
+
+
+            // else if (sCorreo.length > 0 && sCorreo.val() == '') {
+            //     toastr.error('Error. Ingrese un correo. Porfavor verifique');
+            //     return;
+            // }
 
             if (sForm == 'EMPRESA') {
                 if (sContacto.length > 0 && sContacto.val() == '') {

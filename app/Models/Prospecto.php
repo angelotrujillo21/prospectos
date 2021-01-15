@@ -152,18 +152,35 @@ class Prospecto
     }
 
 
-    public function fncGetProspectoAll($nIdNegocio, $nIdEmpleado = null)
+    public function fncGetProspectoAll($nIdNegocio, $nIdEmpleado = null ,$sBuscador = null,$nValidacionAdmin = false,$nIdEtapa = null,$nIdSupervisor = null,$nIdCliente= null)
     {
-        $sSQL = "SELECT p.nIdProspecto, p.nIdNegocio, p.nIdCliente, IFNULL(cli.sNombreoRazonSocial,'') AS sCliente, IFNULL(emp.sNombre,'') AS sEmpleado, 
-                TIME_TO_SEC(TIMEDIFF(NOW(), p.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso, p.nIdEmpleado, p.nIdEtapa, etp.sNombre AS sNombreEtapa , etp.nPorcentaje, p.nEstado
-            FROM prospectos AS p
+        $sSQL = "SELECT p.nIdProspecto, 
+                        p.nIdNegocio, 
+                        p.nIdCliente, 
+                        IFNULL(cli.sNombreoRazonSocial,'') AS sCliente, 
+                        IFNULL(emp.sNombre,'') AS sEmpleado, 
+                        TIME_TO_SEC(TIMEDIFF(NOW(), p.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso,
+                        IFNULL( DATE_FORMAT( p.dFechaCreacion , '%d/%m/%Y %H:%i:%s' ), '' ) as dFechaCreacion,
+                        IFNULL( DATE_FORMAT( p.dFechaHoraUltimoAcceso , '%d/%m/%Y %H:%i:%s' ), '' ) as dFechaHoraUltimoAcceso,
+                        p.nIdEmpleado, 
+                        p.nIdEtapa,
+                        etp.sNombre AS sNombreEtapa , 
+                        etp.nPorcentaje, 
+                        p.nEstado
+        FROM prospectos AS p
         LEFT JOIN clientes AS cli ON p.nIdCliente = cli.nIdCliente
         LEFT JOIN empleados AS emp ON p.nIdEmpleado = emp.nIdEmpleado
         LEFT JOIN etapaprospecto AS etp ON p.nIdEtapa = etp.nIdEtapa
         WHERE p.nIdNegocio  = $nIdNegocio ";
-        $sSQL .= !is_null($nIdEmpleado) ? " AND p.nIdEmpleado = $nIdEmpleado " : "";
-        $sSQL .= "ORDER BY p.dFechaCreacion DESC";
 
+        $sSQL .= !is_null($nIdEmpleado) && !empty($nIdEmpleado) ? " AND p.nIdEmpleado = $nIdEmpleado " : "";
+        $sSQL .= !is_null($sBuscador)  && !empty($sBuscador) ?  " AND concat_ws( ' ' , cli.sNombreoRazonSocial,' ', etp.sNombre ,' ', emp.sNombre , DATE_FORMAT( DATE(p.dFechaCreacion) , '%d/%m/%Y' )  ) LIKE '%$sBuscador%' " : "";
+        $sSQL .= !is_null($nValidacionAdmin) ? " AND p.nValidacionAdmin = $nValidacionAdmin " : "";
+        $sSQL .= !is_null($nIdEtapa) && !empty($nIdEtapa) ? " AND p.nIdEtapa = $nIdEtapa " : "";
+        $sSQL .= !is_null($nIdSupervisor)  && !empty($nIdSupervisor) ? " AND emp.nIdSupervisor = $nIdSupervisor " : "";
+        $sSQL .= !is_null($nIdCliente)  && !empty($nIdCliente) ? " AND p.nIdCliente = $nIdCliente " : "";
+
+        $sSQL .= "ORDER BY p.dFechaCreacion DESC";
         return $this->db->run(trim($sSQL));
     }
 
@@ -647,6 +664,17 @@ class Prospecto
     }
 
 
+    public function fncGetActividadesByProspecto($nIdProspecto, $nTipoActividad, $nIdEstadoActividad)
+    {
+        $sSQL = "SELECT 
+                    IFNULL(COUNT(*),0) AS nCantidad
+                FROM actividades AS act 
+                WHERE act.nIdProspecto = $nIdProspecto";
+        $sSQL .= !is_null($nTipoActividad) ? " AND act.nTipoActividad = $nTipoActividad " : "";
+        $sSQL .= !is_null($nIdEstadoActividad) ? " AND act.nIdEstadoActividad = $nIdEstadoActividad " : "";
+        return $this->db->run($sSQL)[0];
+    }
+
     public function fncGrabarProspectoNota(
         $nIdProspecto,
         $nIdEmpleado,
@@ -753,4 +781,122 @@ class Prospecto
         // exit;
         return $this->db->run($sSQL);
     }
+
+
+    public function fncGrabarProspectoAdjunto(
+       $nIdProspecto,
+       $sNombreArchivo,
+       $nContrato
+    ) {
+        $sSQL = "INSERT INTO prospectoadjunto(
+                        nIdProspecto,
+                        sNombreArchivo,
+                        dFechaCreacion,
+                        nContrato
+                ) VALUES (
+                    " . (is_null($nIdProspecto)  ? "NULL" : "$nIdProspecto") . " ,
+                    " . (is_null($sNombreArchivo) || empty($sNombreArchivo) ? "NULL" : "'$sNombreArchivo'") . " ,
+                    " . " CURDATE() " . " ,
+                    " . (is_null($nContrato) ? "NULL" : "$nContrato") . " 
+                )";
+        return $this->db->run($sSQL);
+    }
+
+    
+    public function fncObtenerProspectoAdjunto($nIdAdjunto)
+    {
+        $sSQL = "SELECT 
+                    pa.nIdAdjunto,
+                    pa.nIdProspecto,
+                    pa.sNombreArchivo,
+                    pa.dFechaCreacion,
+                    pa.nContrato
+                FROM prospectoadjunto AS pa 
+                WHERE pa.nIdAdjunto = $nIdAdjunto";
+        return $this->db->run($sSQL)[0];
+    }
+
+    public function fncObtenerProspectoAdjuntosByIdProspecto($nIdProspecto)
+    {
+        $sSQL = "SELECT 
+                    pa.nIdAdjunto,
+                    pa.nIdProspecto,
+                    pa.sNombreArchivo,
+                    pa.dFechaCreacion,
+                    pa.nContrato
+                FROM prospectoadjunto AS pa 
+                WHERE pa.nIdProspecto = $nIdProspecto";
+        return $this->db->run($sSQL);
+    }
+
+
+
+    public function fncActualizaProspectoAdjunto(
+        $nIdAdjunto,
+        $nIdProspecto,
+        $sNombreArchivo,
+        $nContrato
+    ) {
+        $sSQL = "UPDATE prospectoadjunto SET ";
+
+        $sCOL  = (!is_null($nIdProspecto) && !empty($nIdProspecto) ?   " nIdProspecto = $nIdProspecto " : "");
+
+        $sCOL .= (!is_null($sNombreArchivo) && !empty($sNombreArchivo) ? (strlen($sCOL) > 0  ? "," : "") . " sNombreArchivo = '$sNombreArchivo' " : "");
+
+        $sCOL .= (!is_null($nContrato) ? (strlen($sCOL) > 0  ? "," : "") . " nContrato = $nContrato " : "");
+
+        $sWhere = " WHERE nIdAdjunto = $nIdAdjunto ";
+
+        $sSQL  =  $sSQL . $sCOL . $sWhere;
+ 
+        return $this->db->run($sSQL);
+    }
+
+    public function fncEliminarProspectoAdjunto($nIdAdjunto)
+    {
+        $sSQL = "DELETE FROM prospectoadjunto WHERE nIdAdjunto = $nIdAdjunto ";
+        return $this->db->run($sSQL);
+    }
+
+    public function fncEliminarProspectoAdjuntoByProspecto($nIdProspecto)
+    {
+        $sSQL = "DELETE FROM prospectoadjunto WHERE nIdProspecto = $nIdProspecto ";
+        return $this->db->run($sSQL);
+    }
+
+
+
+    public function fncActualizarProspectonValidacionAdmin($nValidacionAdmin )
+    {
+        $sSQL = "UPDATE  prospectos SET nValidacionAdmin  = $nValidacionAdmin ";
+        return $this->db->run($sSQL);
+    }
+
+    
+
+    public function fncObtenerCambiosForAdmin($nIdNegocio ,$nEstado)
+    {
+        $sSQL = "SELECT cp.nIdCambio,
+                        cp.nIdProspecto, 
+                        cp.nIdEmpleado, cp.sCambio, cp.dFechaCreacion, 
+                        cp.nEstado,
+                        IFNULL(cli.sNombreoRazonSocial,'') AS sCliente,
+                        IFNULL(emp.sNombre,'') AS sEmpleado FROM
+                        cambiosprospecto AS cp 
+                 INNER JOIN prospectos AS p ON p.nIdProspecto  = cp.nIdProspecto 
+                 INNER JOIN clientes AS cli ON p.nIdCliente = cli.nIdCliente
+                 INNER JOIN empleados AS emp ON p.nIdEmpleado = emp.nIdEmpleado
+                 WHERE p.nIdNegocio  = $nIdNegocio  AND cp.nEstado = $nEstado  ";
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncActualizarEstadoCambiosProspecto($nIdNegocio, $nEstado)
+    {
+        $sSQL = "UPDATE cambiosprospecto  AS cp INNER JOIN  prospectos AS p ON p.nIdProspecto = cp.nIdProspecto SET cp.nEstado = $nEstado  WHERE p.nIdNegocio = $nIdNegocio";
+        return $this->db->run($sSQL);
+    }
+
+
+
+
 }

@@ -6,13 +6,13 @@ use Application\Libs\UploadMaster;
 
 class Upload
 {
-    public static function process($imagen, $folder)
+    public static function process($file, $folder)
     {
 
-        $handle = new UploadMaster($imagen);
+        $handle = new UploadMaster($file);
         $handle->file_new_name_body = uniqid();
         if ($handle->uploaded) {
-            $handle->process(ROOTPATHRESOURCE . '/images/' . $folder . '/');
+            $handle->process(ROOTPATHRESOURCE . '/' . $folder . '/' );
             if ($handle->processed) {
                 $handle->clean();
             } else {

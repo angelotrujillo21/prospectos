@@ -59,7 +59,10 @@ class AppProspectoController extends Controller
                         'nIdEntidad'                  => $this->fncGetVarConfig("nIdEntidadVendedor"),
                         'nIdEstadoActividadPen'       => $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
                         'nIdEstadoActividadEjecutado' => $this->fncGetVarConfig("nIdEstadoActividadEjecutado"),
-                        'aryEtapaProspecto'           => $this->prospecto->fncGetEtapaProspecto($sIds)
+                        'aryEtapaProspecto'           => $this->prospecto->fncGetEtapaProspecto($sIds),
+                        'nTipoActividadCita'          => $this->fncGetVarConfig("nTipoActividadCita"),
+                        'nIdEtapaEnProceso'           => $this->fncGetVarConfig("nIdEtapaEnProceso"),
+                        'nIdEtapaRechazado'           => $this->fncGetVarConfig("nIdEtapaRechazado")
                     )
                 );
 

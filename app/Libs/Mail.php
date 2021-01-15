@@ -33,12 +33,12 @@ class Mail
     {
         try {
             //Recipients
-            $this->mail->setFrom(USER_MAIL, $data['tienda']);
-            $this->mail->addAddress($data['email'], $data['nombre']);     // Add a recipient
+            $this->mail->setFrom(USER_MAIL, $data['sFrom']);
+            $this->mail->addAddress($data['sCorreo'], $data['sNombre']);     // Add a recipient
 
-            if (isset($data['archivo']) && !empty($data['archivo'])) {
+            if (isset($data['sLinkArchivo']) && !empty($data['sLinkArchivo'])) {
                 // Attachments
-                $this->mail->addAttachment($data['archivo']);
+                $this->mail->addAttachment($data['sLinkArchivo']);
             }
             // Content
             $this->mail->isHTML(true);                                  // Set email format to HTML

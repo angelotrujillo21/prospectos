@@ -7,6 +7,10 @@
 
 <body>
 
+    <div class="page-loader">
+        <div class="loader-dual-ring"></div>
+    </div>
+
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-start align-items-md-center auth py-md-auto px-md-auto px-0 py-0">
@@ -38,7 +42,7 @@
                                     <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Ingresar</button>
                                 </div>
                                 <div class="mt-3">
-                                    <a id="btnRecuperarClave" href="javascript:;">Recuperar Contraseña</a>
+                                    <a id="btnRecuperar" href="javascript:;">Recuperar Contraseña</a>
                                 </div>
                             </form>
                         </div>
@@ -87,13 +91,78 @@
 
 <?php extend_view(['empleado/common/scripts'], $data) ?>
 
+<!-- Recuperar -->
 <script>
-$(document).ready(() => {
-    $("#btnRecuperarClave").on("click",function(){
-        $("#formRecuperar").modal("show");
-    });
-});
+    $(function() {
 
+        // Formulario Negocios 
+
+        $("#btnRecuperar").on('click', function() {
+            fncCleanAll();
+            $("#formRecuperar").modal("show");
+        });
+
+
+        $("#formRecuperar").find('form').on('submit', function(event) {
+
+            event.preventDefault();
+
+
+            var sEmail  = $("#sEmail").val().trim();
+         
+            if (sEmail == '') {
+                toastr.error('Error. Debe ingresar el email del usuario.');
+                return false;
+            } 
+
+           
+            var jsnData = {
+                sEmail : sEmail
+            };
+
+            fncRecuperarClave(jsnData, function(aryData) {
+                if (aryData.success) {
+                    
+                    fncCleanAll();
+                    $("#formRecuperar").modal("hide");
+                    toastr.success(aryData.success);                  
+                } else {
+                    toastr.error(aryData.error);
+                }
+            });
+
+        });
+
+        // Fin de Formulario Negocios 
+
+    });
+
+    // Funciones de la tabla o layout Principal 
+
+    function fncCleanAll() {
+        fncClearInputs($("#formRecuperar").find("form"));
+    }
+
+
+    // Llamadas al servidor
+    function fncRecuperarClave(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'fncRecuperarClave',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
 </script>
+<!-- Usuario -->
 
 </html>

@@ -20,7 +20,7 @@ class ApisController extends Controller
             /* Primero busco en sunat servicio gratiuto si no esta busco en la api de paga */
             $service = new SearchService();
             $busqueda  = $service->search($dni);
-            if ($busqueda->success === true) {
+            if ($busqueda->success === true && $busqueda->result->razon_social != "******") {
                 $response  = ["razonSocial" => $busqueda->result->razon_social];
                 $this->json(array("success" => $response));
             } else {
@@ -59,13 +59,14 @@ class ApisController extends Controller
             /* Primero busco en sunat servicio gratiuto si no esta busco en la api de paga */
             $service = new SearchService();
             $busqueda  = $service->search($ruc);
-            if ($busqueda->success === true) {
+            if ($busqueda->success === true && $busqueda->result->razon_social != "******") {
                 $response = ["razonSocial" => $busqueda->result->razon_social, "direccion" => $busqueda->result->direccion];
                 $this->json(array("success" => $response));
             } else {
                 $busqueda = $this->getApiDev('ruc', $ruc);
+                //var_dump($busqueda);
                 if ($busqueda->success === true) {
-                    $response = ["razonSocial" => $busqueda->data->nombre_o_razon_social, "direccion" => $busqueda->data->direccion_completa];
+                    $response = ["razonSocial" => $busqueda->data->nombre_o_razon_social, "direccion" => isset($busqueda->data->direccion_completa) ?  $busqueda->data->direccion_completa : ""];
                     $this->json(array("success" => $response));
                 } else {
                     $this->json(array("error" => 'No se encontro a la persona o empresa.'));

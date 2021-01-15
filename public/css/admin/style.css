@@ -7,6 +7,11 @@ th,
 td {
   white-space: nowrap;
 }
+
+main {
+  transition: all 0.2s ease-out;
+}
+
 .container {
   display: block;
   position: relative;
@@ -514,12 +519,24 @@ td {
   background: #41b883bd;
 }
 
+.btn-pendiente {
+  font-size: 15px !important;
+  color: #ffff;
+  background: #fc993a;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-pendiente:hover {
+  color: #ffff;
+  background: #ffb771;
+}
+
 .container-list-prospectos {
   background: #eee9f8;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   padding: 5px;
-  width: 360px;
+  width: 370px;
   height: auto;
   margin: 0px 10px;
   display: inline-grid;
@@ -536,7 +553,7 @@ td {
 
 .list-prospectos {
   width: 100%;
-  padding-right: 9px;
+  padding-right: 0px;
   max-height: 500px;
   height: auto;
   overflow-y: auto;
@@ -578,6 +595,18 @@ td {
 }
 .font-12 {
   font-size: 12px !important;
+}
+
+.color-text-rojo {
+  color: #f06767;
+}
+
+.color-text-azul {
+  color: #046ad1;
+}
+
+.color-text-amarillo {
+  color: #cac13c;
 }
 
 .color-text-verde {
@@ -654,6 +683,31 @@ td {
 .border-top-verde {
   border-top-color: #41b883;
 }
+
+.border-top-morado {
+  border-top-color: #9a59b5;
+}
+
+.border-top-negro {
+  border-top-color: #141518;
+}
+
+.border-top-plomo {
+  border-top-color: #95a5a5;
+}
+
+.border-top-naranja {
+  border-top-color: #fc993a;
+}
+
+.border-top-rosa {
+  border-top-color: #ff6362;
+}
+
+.border-top-marron {
+  border-top-color: #946840;
+}
+
 /* FIN DE BORDER TOP COLORES */
 
 .link-ver-todo,
@@ -686,7 +740,7 @@ td {
 
 .ult-cita,
 .ult-ingreso {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .pr-scroll-x {
@@ -702,6 +756,9 @@ td {
   color: #5a6169;
   font-weight: 500;
   letter-spacing: 0px;
+}
+.color-icon-download-contrato {
+  color: #5a6169;
 }
 
 .edit-controles {
@@ -933,6 +990,13 @@ td {
     height: 35px;
     padding: 0;
   }
+  .cuadraro-supervisor {
+    width: 25px;
+    height: 25px;
+  }
+  .activo-hace {
+    font-size: 11px;
+  }
 }
 
 .content-prospectos-empleados {
@@ -1051,4 +1115,28 @@ td {
   text-decoration: none !important;
   color: #007bff;
   font-weight: 300;
+}
+.break-spaces {
+  white-space: break-spaces;
+}
+.hb-desktop {
+  transform: translateY(-4px);
+}
+
+.navbar__menu {
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-2px);
+}
+.color-plomo {
+  color: #818ea3 !important;
+}
+
+.link-registrar {
+  color: #3d5170 !important;
+}
+
+.link-registrar:hover {
+  text-decoration: none;
+  font-size: 600;
 }

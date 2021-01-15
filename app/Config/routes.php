@@ -4,6 +4,7 @@
 
 $router->get('/', 'LoginEmpleadoController@acceso');
 $router->any('home/:id', 'AppProspectoController@home');
+$router->any('fncRecuperarClave', 'LoginEmpleadoController@fncRecuperarClave');
 $router->any('acceso', 'LoginEmpleadoController@acceso');
 $router->get('salir', 'LoginEmpleadoController@salir');
 // Fin de App de vendedor
@@ -16,6 +17,7 @@ $router->any('admin/empleados/fncSendEmailEmpleado', 'EmpleadosController@fncSen
 $router->any('formulario-empleado/:id/:id/:id', 'EmpleadosController@fncFormularioEmpleado');
 $router->any('empleados/fncGrabarEmpleado', 'EmpleadosController@fncGrabarEmpleado');
 $router->any('empleados/fncMostrarRegistro', 'EmpleadosController@fncMostrarRegistro');
+$router->any('empleados/fncMostrarRegistroCard', 'EmpleadosController@fncMostrarRegistroCard');
 
 
 $router->any('formularios/fncBuildForm', 'BuildFormController@fncBuildForm');
@@ -29,6 +31,20 @@ $router->any('api/ruc/:id', 'ApisController@ruc');
 
 
 // Prospectos 
+
+$router->any('admin/usuarios/fncGrabarUsuario', 'UsuariosController@fncGrabarUsuario');
+$router->any('admin/usuarios/fncRecuperarClave', 'UsuariosController@fncRecuperarClave');
+$router->any('admin/usuarios/fncEliminarUsuario', 'UsuariosController@fncEliminarUsuario');
+
+
+$router->any('admin/prospecto/fncPopulateHistorialCliente', 'ProspectosController@fncPopulateHistorialCliente');
+$router->any('admin/prospecto/fncTerminarProspecto', 'ProspectosController@fncTerminarProspecto');
+$router->any('admin/prospecto/fncActualizarEstadoCambiosProspecto', 'ProspectosController@fncActualizarEstadoCambiosProspecto');
+$router->any('admin/prospecto/fncObtenerProspectoAdjuntosByIdProspecto', 'ProspectosController@fncObtenerProspectoAdjuntosByIdProspecto');
+$router->any('admin/prospecto/fncGrabarProspectoAdjunto', 'ProspectosController@fncGrabarProspectoAdjunto');
+$router->any('admin/prospecto/fncEliminarProspectoAdjunto', 'ProspectosController@fncEliminarProspectoAdjunto');
+$router->any('admin/prospecto/fncEliminarRegistro', 'ProspectosController@fncEliminarRegistro');
+
 
 $router->any('admin/prospecto/fncGrabarProspectoCatalogo', 'ProspectosController@fncGrabarProspectoCatalogo');
 $router->any('admin/prospecto/fncGetProspectoCatalogoByIdProspecto', 'ProspectosController@fncGetProspectoCatalogoByIdProspecto');

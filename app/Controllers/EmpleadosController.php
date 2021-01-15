@@ -127,7 +127,7 @@ class EmpleadosController extends Controller
 
             $nTipoEmpleadoSupervisor =  $this->fncGetVarConfig("nTipoEmpleadoSupervisor");
 
-            if ($nIdTipoEmpleado == $nTipoEmpleadoSupervisor ) {
+            if ($nIdTipoEmpleado == $nTipoEmpleadoSupervisor) {
                 // Supervisores
                 $sTitle           = 'Formulario Supervisor';
                 $nIdEntidad       = 4;
@@ -172,6 +172,28 @@ class EmpleadosController extends Controller
     }
 
 
+    public function fncMostrarRegistroCard()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if ($nIdRegistro == null) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryData = $this->empleados->fncMostrarRegistroCard($nIdRegistro);
+            $aryData["sUltimoAcceso"] = fncSecondsToTime($aryData["sTimeUltimoAcceso"]);
+
+            $this->json(array("success" => true, "aryData" => $aryData ));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+
+
     public function fncSendEmailEmpleado()
     {
         try {
@@ -206,7 +228,7 @@ class EmpleadosController extends Controller
             ob_end_clean();
 
 
-            if ($mail->send(['tienda' =>  $aryNegocio["sNombre"], 'subject' => 'Invitacion', 'body' => $html, 'email' => $sEmail, 'nombre' => 'Colaborador'])) {
+            if ($mail->send(['sFrom' =>  $aryNegocio["sNombre"], 'subject' => 'Invitacion', 'body' => $html, 'sCorreo' => $sEmail, 'sNombre' => 'Colaborador'])) {
                 $this->json(array("success" => true, "sUrl" => $sUrl));
             } else {
                 $this->json(array("error" => true, "sUrl" => $sUrl));
@@ -215,8 +237,4 @@ class EmpleadosController extends Controller
             $this->json(array("error" => $ex->getMessage()));
         }
     }
-
-
-   
-
 }
