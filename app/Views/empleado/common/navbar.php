@@ -18,7 +18,7 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="javascript:;" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" src="<?= src('app/avatar.jpg') ?>" alt="<?= $user['sNombre'] ?>">
+                    <img class="user-avatar rounded-circle mr-2" src="<?= !empty($user['sImagen']) && file_exists(ROOTPATHRESOURCE . "/images/multi/" . $user['sImagen']) ? src('multi/' . $user["sImagen"]) :  src('app/avatar.jpg') ?>" alt="<?= $user['sNombre'] ?>">
                     <span class="d-none d-md-inline-block"><?= $user['sNombre'] ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-small">

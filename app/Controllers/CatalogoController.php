@@ -46,16 +46,24 @@ class CatalogoController extends Controller
             $aryRows      = [];
             $aryCatalogos = $this->catalogo->fncGetCatalogos($nIdNegocio);
 
+            $user          = $this->session->get("user");
+            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+
             if (is_array($aryCatalogos) && count($aryCatalogos) > 0) {
                 foreach ($aryCatalogos as $aryCatalogo) {
+
                     $sActionVer       = "fncMostrarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ", 'editar' );";
                     $sActionEliminar  = "fncEliminarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ");";
 
+
+                    $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
+                    $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                    <a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>
-                                    <a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>
+                                    ' . $sLinkEdit . '
+                                    ' . $sLinkEliminar . '
                                 </div>';
 
                     $aryRows[] = [
@@ -66,6 +74,7 @@ class CatalogoController extends Controller
                         "sDescripcion"  => $aryCatalogo["sDescripcion"],
                         "nEstado"       => $aryCatalogo["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
                     ];
+
                 }
             }
 
@@ -164,6 +173,4 @@ class CatalogoController extends Controller
             $this->json(array("error" => $ex->getMessage()));
         }
     }
-   
-
 }

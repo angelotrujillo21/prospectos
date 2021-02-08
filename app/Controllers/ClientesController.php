@@ -12,11 +12,14 @@ class ClientesController extends Controller
     //model principal
     public $users;
     public $clientes; // Es mi modelo
+    public $session; // Es mi modelo
 
     public function __construct()
     {
         parent::__construct();
         $this->clientes = new Clientes();
+        $this->session  = new Session();
+        $this->session->init();
     }
 
     public function fncPopulate($nIdNegocio)
@@ -28,19 +31,27 @@ class ClientesController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-            $aryRows      = [];
-            $aryClientes  = $this->clientes->fncGetClientes($nIdNegocio);
+            $user          = $this->session->get("user");
+            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+
+            $aryRows       = [];
+            $aryClientes   = $this->clientes->fncGetClientes($nIdNegocio);
 
             if (is_array($aryClientes) && count($aryClientes) > 0) {
                 foreach ($aryClientes as $aryCliente) {
+
                     $sActionVer       = "fncMostrarCliente(" . $aryCliente['nIdCliente'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarCliente(" . $aryCliente['nIdCliente'] . ", 'editar' );";
                     $sActionEliminar  = "fncEliminarCliente(" . $aryCliente['nIdCliente'] . ");";
 
+                    $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
+                    $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+
+
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                    <a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>
-                                    <a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>
+                                    ' . $sLinkEdit . '
+                                    ' . $sLinkEliminar . '
                                 </div>';
 
                     $aryRows[] = [
@@ -80,6 +91,7 @@ class ClientesController extends Controller
             $nIdDepartamento         = isset($_POST['nIdDepartamento']) ? $_POST['nIdDepartamento'] : null;
             $nIdProvincia            = isset($_POST['nIdProvincia']) ? $_POST['nIdProvincia'] : null;
             $nIdDistrito             = isset($_POST['nIdDistrito']) ? $_POST['nIdDistrito'] : null;
+            $sDireccion              = isset($_POST['sDireccion']) ? $_POST['sDireccion'] : null;
             $sTelefono               = isset($_POST['sTelefono']) ? $_POST['sTelefono'] : null;
             $nIdRelacionamiento      = isset($_POST['nIdRelacionamiento']) ? $_POST['nIdRelacionamiento'] : null;
             $nEstado                 = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
@@ -103,13 +115,14 @@ class ClientesController extends Controller
                     $nIdDepartamento,
                     $nIdProvincia,
                     $nIdDistrito,
+                    $sDireccion,
                     $sTelefono,
                     $nIdRelacionamiento,
                     $nEstado
                 );
             } else {
                 //Actualizar
-                $this->clientes->fncActualizarEmpleado(
+                $this->clientes->fncActualizarClientes(
                     $nIdRegistro,
                     $nIdNegocio,
                     $nTipoCliente,
@@ -121,6 +134,7 @@ class ClientesController extends Controller
                     $nIdDepartamento,
                     $nIdProvincia,
                     $nIdDistrito,
+                    $sDireccion,
                     $sTelefono,
                     $nIdRelacionamiento,
                     $nEstado
@@ -190,6 +204,46 @@ class ClientesController extends Controller
             $aryData = $this->clientes->fncGetClientes($nIdNegocio, 1);
 
             $this->json(array("success" => true, "aryData" => $aryData));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+
+
+    public function fncGetClientesParaAdmin()
+    {
+        try {
+
+            $nIdNegocio   = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+            $nTipoCliente = isset($_POST['nTipoCliente']) ? $_POST['nTipoCliente'] : null;
+
+            // Valida valores del formulario
+            if (is_null($nIdNegocio)) {
+                $this->exception('Error. Existen valores vacios. Por favor verifique.');
+            }
+
+            $aryRows      = [];
+            $aryClientes  = $this->clientes->fncGetClientes($nIdNegocio, 1, $nTipoCliente);
+
+            if (is_array($aryClientes) && count($aryClientes) > 0) {
+                foreach ($aryClientes as $aryCliente) {
+
+                    $aryRows[] = [
+                        "sNombreoRazonSocial"   => $aryCliente["sNombreoRazonSocial"],
+                        "sNumeroDocumento"      => $aryCliente["sTipoDoc"]  . " - " . $aryCliente["sNumeroDocumento"],
+                        "sContacto"             => $aryCliente["sContacto"],
+                        "sCorreo"               => $aryCliente["sCorreo"],
+                        "sDireccion"            => $aryCliente["sDireccion"],
+                        "sRelacionamiento"      => $aryCliente["sRelacionamiento"],
+                        "sTelefono"             => $aryCliente["sTelefono"],
+                        "sTiempoCreacion"       => " Hace " .  fncSecondsToTime($aryCliente["sTimeFechaCreacion"]),
+                        "sHistorico"            => '<a onclick="fncVerHistorial(' . $aryCliente["nIdCliente"] . ');" href="javascript:;"><i class="fas fa-history"></i></a>',
+                        "nEstado"               => $aryCliente["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
+                    ];
+                }
+            }
+            $this->json(array("success" => true, "aryData" => $aryRows));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }

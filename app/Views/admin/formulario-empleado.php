@@ -21,7 +21,7 @@
             <div class="row flex-center">
                 <div class="col-12 col-md-6 border-card bg-white  mt-0 mt-md-5 mb-5">
 
-                    <form id="form-empleado">
+                    <form enctype="multipart/form-data" id="form-empleado">
                         <div class="row p-3" id="content-form">
 
                             <div id="title-formulario-empleado" class="col-12 text-center my-3">
@@ -195,7 +195,9 @@
 
             var nExperienciaVentas              = $("#nExperienciaVentas" + sEntidad);
             var sRubroExperiencia               = $("#sRubroExperiencia" + sEntidad);
-            var sClave                          = $("#sClave" + sEntidad);
+
+            var sImagen                        = $("#sImagen" + sEntidad).length > 0 ?  $("#sImagen" + sEntidad)[0].files[0] : null;
+            var sClave                         = $("#sClave" + sEntidad);
 
 
             if (nTipoDocumento.length > 0 && nTipoDocumento.val() == '0') {
@@ -241,38 +243,35 @@
                 }
             }
 
+            var formData = new FormData();
+            formData.append('nIdRegistro', 0);
+            formData.append('nIdNegocio', nIdNegocio);
+            formData.append('nIdTipoEmpleado', nIdTipoEmpleado);
+            formData.append('nTipoDocumento', nTipoDocumento.length > 0 ? nTipoDocumento.val() : "");
+            formData.append('sNumeroDocumento',sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : "");
+            formData.append('sNombre', sNombre.length > 0 ? sNombre.val() : "");
+            formData.append('sCorreo', sCorreo.length > 0 ? sCorreo.val() : "");
+            formData.append('dFechaNacimiento', dFechaNacimiento.length > 0 ? dFechaNacimiento.val() : "");
+            formData.append('nCantidadPersonasDependientes', nCantidadPersonasDependientes.length > 0 ? nCantidadPersonasDependientes.val() : 0);
+            formData.append('nExperienciaVentas', nExperienciaVentas.length > 0 ? nExperienciaVentas.val() : "");
+            formData.append('sRubroExperiencia', sRubroExperiencia.length > 0 ? sRubroExperiencia.val() : "");
+            formData.append('nIdEstudios',nIdEstudios.length > 0 ? nIdEstudios.val() : "");
+            formData.append('nIdSituacionEstudios', nIdSituacionEstudios.length > 0 ? nIdSituacionEstudios.val() : "");
+            formData.append('sCarreraCiclo', sCarreraCiclo.length > 0 ? sCarreraCiclo.val() : "");
+            formData.append('sClave', sClave.length > 0 ? sClave.val() : "");
+            formData.append('sImagen', sImagen);
+            formData.append('nEstado', 1);
 
-            var jsnData = {
-                nIdRegistro                     : 0,
-                nIdNegocio                      : nIdNegocio,
-                nIdTipoEmpleado                 : nIdTipoEmpleado,
-                nTipoDocumento                  : nTipoDocumento.length > 0 ? nTipoDocumento.val() : null,
-                sNumeroDocumento                : sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : null,
-                sNombre                         : sNombre.length > 0 ? sNombre.val() : null,
-                sCorreo                         : sCorreo.length > 0 ? sCorreo.val() : null,
-                dFechaNacimiento                : dFechaNacimiento.length > 0 ? dFechaNacimiento.val() : null,
-                nCantidadPersonasDependientes   : nCantidadPersonasDependientes.length > 0 ? nCantidadPersonasDependientes.val() : null,
-                nExperienciaVentas              : nExperienciaVentas.length > 0 ? nExperienciaVentas.val() : null,
-                sRubroExperiencia               : sRubroExperiencia.length > 0 ? sRubroExperiencia.val() : null,
-                nIdEstudios                     : nIdEstudios.length > 0 ? nIdEstudios.val() : null,
-                nIdSituacionEstudios            : nIdSituacionEstudios.length > 0 ? nIdSituacionEstudios.val() : null,
-                sCarreraCiclo                   : sCarreraCiclo.length > 0 ? sCarreraCiclo.val() : null,
-                sClave                          : sClave.length > 0 ? sClave.val() : null,
-                nEstado                         : 1
-            };
-
+           
             if (nIdTipoEmpleado == $("body").data("ntipoempleadosupervisor") ) {
                 // Supervisores
-                var jsnData = Object.assign(jsnData, {
-                    nIdColor : nidsupervisorocolor
-                });
+                formData.append('nIdColor', nidsupervisorocolor);
             } else {
-                var jsnData = Object.assign(jsnData, {
-                    nIdSupervisor : nidsupervisorocolor
-                });
+
+                formData.append('nIdSupervisor', nidsupervisorocolor);
             }
 
-            fncGrabarEmpleado(jsnData, function(aryData) {
+            fncGrabarEmpleado(formData, function(aryData) {
                 if (aryData.success) {
                     $("#content-form").fadeOut();
                     $("#content-success").fadeIn();
@@ -304,12 +303,15 @@
     }
 
     // Llamadas al servidor 
-    function fncGrabarEmpleado(jsnData, fncCallback) {
+    function fncGrabarEmpleado(formData, fncCallback) {
         $.ajax({
             type: 'post',
             dataType: 'json',
             url: web_root + 'empleados/fncGrabarEmpleado',
-            data: jsnData,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
             beforeSend: function() {
                 fncMostrarLoader();
             },

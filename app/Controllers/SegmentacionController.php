@@ -19,11 +19,14 @@ class SegmentacionController extends Controller
 
 
     public $users;
+    public $session;
 
     public function __construct()
     {
         parent::__construct();
         $this->segmentacion   = new Segmentacion();
+        $this->session  = new Session();
+        $this->session->init();
     }
 
 
@@ -39,18 +42,26 @@ class SegmentacionController extends Controller
             $aryRows            = [];
             $arySegmentaciones  = $this->segmentacion->fncGetSegmentacion($nIdNegocio, $nTipoSegmento);
 
+
+            $user          = $this->session->get("user");
+            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+
             if (is_array($arySegmentaciones) && count($arySegmentaciones) > 0) {
 
                 foreach ($arySegmentaciones as $arySegmentacion) {
+
                     $aryDetalle       = [];
                     $sActionVer       = "fncDetalleSegmentacion(" . $arySegmentacion['nIdSegmentacion'] . "," . $arySegmentacion['nTipoSegmento'] . " , '" . $arySegmentacion['sNombre'] . "' );";
                     $sActionEdit      = "fncMostrarSegmentacion(" . $arySegmentacion['nIdSegmentacion'] . "," . $arySegmentacion['nTipoSegmento'] . ");";
                     $sActionEliminar  = "fncEliminarSegmentacion(" . $arySegmentacion['nIdSegmentacion'] . "," . $arySegmentacion['nTipoSegmento'] . ");";
 
+                    $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
+                    $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                    <a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>
-                                    <a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>
+                                    ' . $sLinkEdit . '
+                                    ' . $sLinkEliminar . '
                                 </div>';
 
                     $aryDetalle = $this->segmentacion->fncGetDetalleSegmentacion($arySegmentacion['nIdSegmentacion']);
@@ -72,7 +83,7 @@ class SegmentacionController extends Controller
     }
 
 
-    public function fncGetSegmentacionAll($nIdNegocio, $nTipoSegmento ,$nEstado)
+    public function fncGetSegmentacionAll($nIdNegocio, $nTipoSegmento, $nEstado)
     {
         try {
 
@@ -119,16 +130,25 @@ class SegmentacionController extends Controller
             $aryRows            = [];
             $arySegmentaciones  = $this->segmentacion->fncGetDetalleSegmentacion($nIdSegmentacion);
 
+
+            $user          = $this->session->get("user");
+            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+
+
             if (is_array($arySegmentaciones) && count($arySegmentaciones) > 0) {
 
                 foreach ($arySegmentaciones as $arySegmentacion) {
 
+
                     $sActionEdit      = "fncMostrarItemSegmentacion(" . $arySegmentacion['nIdDetalleSegmentacion'] . "," . $arySegmentacion['nIdSegmentacion'] . ");";
                     $sActionEliminar  = "fncEliminarDetalleSegmentacion(" . $arySegmentacion['nIdDetalleSegmentacion'] . "," . $arySegmentacion['nIdSegmentacion'] . ");";
 
+                    $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
+                    $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+
                     $sAcciones = '<div class="content-acciones">
-                                    <a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>
-                                    <a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>
+                                    ' . $sLinkEdit . '
+                                    ' . $sLinkEliminar . '
                                 </div>';
 
                     $aryRows[] = [

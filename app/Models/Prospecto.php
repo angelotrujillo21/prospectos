@@ -152,14 +152,16 @@ class Prospecto
     }
 
 
-    public function fncGetProspectoAll($nIdNegocio, $nIdEmpleado = null ,$sBuscador = null,$nValidacionAdmin = false,$nIdEtapa = null,$nIdSupervisor = null,$nIdCliente= null)
+    public function fncGetProspectoAll($nIdNegocio, $nIdEmpleado = null, $sBuscador = null, $nValidacionAdmin = null, $nIdEtapa = null, $nIdSupervisor = null, $nIdCliente = null, $nTipoItem = null, $dFechaCrecion = null, $dFechaCierre = null)
     {
-        $sSQL = "SELECT p.nIdProspecto, 
+        $sSQL = "SELECT DISTINCT 
+                        p.nIdProspecto, 
                         p.nIdNegocio, 
                         p.nIdCliente, 
                         IFNULL(cli.sNombreoRazonSocial,'') AS sCliente, 
                         IFNULL(emp.sNombre,'') AS sEmpleado, 
                         TIME_TO_SEC(TIMEDIFF(NOW(), p.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso,
+                        IFNULL( DATE_FORMAT( p.dFechaCreacion , '%d/%m/%Y' ), '' ) AS dFecha,
                         IFNULL( DATE_FORMAT( p.dFechaCreacion , '%d/%m/%Y %H:%i:%s' ), '' ) as dFechaCreacion,
                         IFNULL( DATE_FORMAT( p.dFechaHoraUltimoAcceso , '%d/%m/%Y %H:%i:%s' ), '' ) as dFechaHoraUltimoAcceso,
                         p.nIdEmpleado, 
@@ -170,8 +172,13 @@ class Prospecto
         FROM prospectos AS p
         LEFT JOIN clientes AS cli ON p.nIdCliente = cli.nIdCliente
         LEFT JOIN empleados AS emp ON p.nIdEmpleado = emp.nIdEmpleado
-        LEFT JOIN etapaprospecto AS etp ON p.nIdEtapa = etp.nIdEtapa
-        WHERE p.nIdNegocio  = $nIdNegocio ";
+        LEFT JOIN etapaprospecto AS etp ON p.nIdEtapa = etp.nIdEtapa ";
+
+        $sSQL .= !is_null($nTipoItem) && !empty($nTipoItem) ? " INNER JOIN prospectocatalogo AS pc ON p.nIdProspecto = pc.nIdProspecto  " : "";
+        $sSQL .= !is_null($nTipoItem) && !empty($nTipoItem) ? " INNER JOIN catalogo AS cat ON pc.nIdCatalogo = cat.nIdCatalogo  " : "";
+
+
+        $sSQL .= " WHERE p.nIdNegocio  = $nIdNegocio ";
 
         $sSQL .= !is_null($nIdEmpleado) && !empty($nIdEmpleado) ? " AND p.nIdEmpleado = $nIdEmpleado " : "";
         $sSQL .= !is_null($sBuscador)  && !empty($sBuscador) ?  " AND concat_ws( ' ' , cli.sNombreoRazonSocial,' ', etp.sNombre ,' ', emp.sNombre , DATE_FORMAT( DATE(p.dFechaCreacion) , '%d/%m/%Y' )  ) LIKE '%$sBuscador%' " : "";
@@ -179,8 +186,13 @@ class Prospecto
         $sSQL .= !is_null($nIdEtapa) && !empty($nIdEtapa) ? " AND p.nIdEtapa = $nIdEtapa " : "";
         $sSQL .= !is_null($nIdSupervisor)  && !empty($nIdSupervisor) ? " AND emp.nIdSupervisor = $nIdSupervisor " : "";
         $sSQL .= !is_null($nIdCliente)  && !empty($nIdCliente) ? " AND p.nIdCliente = $nIdCliente " : "";
+        $sSQL .= !is_null($nTipoItem)  && !empty($nTipoItem) ? " AND cat.nTipoItem = $nTipoItem " : "";
+        $sSQL .= !is_null($dFechaCrecion)  && !empty($dFechaCrecion) ? " AND p.dFechaCrecion = STR_TO_DATE( '$dFechaCrecion', '%d/%m/%Y' ) " : "";
+        $sSQL .= !is_null($dFechaCierre)  && !empty($dFechaCierre) ? " AND p.dFechaCierre = STR_TO_DATE( '$dFechaCierre', '%d/%m/%Y' ) " : "";
 
         $sSQL .= "ORDER BY p.dFechaCreacion DESC";
+        // echo $sSQL;
+        // exit;
         return $this->db->run(trim($sSQL));
     }
 
@@ -407,17 +419,20 @@ class Prospecto
     }
 
 
-    public function fncGetAryProspectoCatalogo($nIdProspecto, $sTipoMoneda)
+    public function fncGetAryProspectoCatalogo($nIdProspecto, $sTipoMoneda, $nTipoItem = null)
     {
         $sSQL = "SELECT 
-            CONCAT( SUM(pc.nCantidad), ' ', catTabla.sDescripcionLargaItem, (IF( SUM(pc.nCantidad) > 1 , 'S', '')),    ' - ', '$sTipoMoneda',    SUM(pc.nCantidad * pc.nPrecio) ) AS sItemCantidadPrecio,
-            SUM(pc.nCantidad) AS nCantidad,
-            SUM(pc.nCantidad * pc.nPrecio) AS nTotal
-            FROM prospectocatalogo AS pc
-            INNER JOIN catalogo AS cat ON pc.nIdCatalogo = cat.nIdCatalogo
-            INNER JOIN catalogotabla AS catTabla ON cat.nTipoItem = catTabla.nIdCatalogoTabla
-            WHERE pc.nIdProspecto = $nIdProspecto
-            GROUP BY cat.nTipoItem";
+                CONCAT( SUM(pc.nCantidad), ' ', catTabla.sDescripcionLargaItem, (IF( SUM(pc.nCantidad) > 1 , 'S', '')),    ' - ', '$sTipoMoneda',    SUM(pc.nCantidad * pc.nPrecio) ) AS sItemCantidadPrecio,
+                SUM(pc.nCantidad) AS nCantidad,
+                SUM(pc.nCantidad * pc.nPrecio) AS nTotal
+                FROM prospectocatalogo AS pc
+                INNER JOIN catalogo AS cat ON pc.nIdCatalogo = cat.nIdCatalogo
+                INNER JOIN catalogotabla AS catTabla ON cat.nTipoItem = catTabla.nIdCatalogoTabla
+                WHERE pc.nIdProspecto = $nIdProspecto";
+
+        $sSQL .= !is_null($nTipoItem) ? " AND cat.nTipoItem = $nTipoItem " : "";
+
+        $sSQL .= " GROUP BY cat.nTipoItem ";
         return $this->db->run($sSQL);
     }
 
@@ -505,6 +520,8 @@ class Prospecto
         $dFecha,
         $dHora,
         $sNota,
+        $sLatitud,
+        $sLongitud,
         $nEstado
     ) {
         $sSQL = "INSERT INTO actividades(
@@ -516,6 +533,8 @@ class Prospecto
                        dFecha,
                        dHora,
                        sNota,
+                       sLatitud,
+                       sLongitud,
                        nEstado
                 ) VALUES (
                     " . (is_null($nIdProspecto) || empty($nIdProspecto) ? "NULL" : "$nIdProspecto") . " ,
@@ -526,6 +545,8 @@ class Prospecto
                     " . (is_null($dFecha) || empty($dFecha) ? "NULL" : "'$dFecha'") . " ,
                     " . (is_null($dHora) || empty($dHora) ? "NULL" : "'$dHora'") . " ,
                     " . (is_null($sNota) || empty($sNota) ? "NULL" : "'$sNota'") . " ,
+                    " . (is_null($sNota) || empty($sLatitud) ? "NULL" : "'$sLatitud'") . " ,
+                    " . (is_null($sNota) || empty($sLongitud) ? "NULL" : "'$sLongitud'") . " ,
                     " . (is_null($nEstado) ? "NULL" : "$nEstado") . " 
                 )";
 
@@ -542,6 +563,8 @@ class Prospecto
         $dFecha,
         $dHora,
         $sNota,
+        $sLatitud,
+        $sLongitud,
         $nEstado
     ) {
         $sSQL = "UPDATE actividades SET ";
@@ -562,6 +585,10 @@ class Prospecto
 
         $sCOL .= (!is_null($sNota) && !empty($sNota) ? (strlen($sCOL) > 0  ? "," : "") . " sNota = '$sNota' " : "");
 
+        $sCOL .= (!is_null($sLatitud) && !empty($sLatitud) ? (strlen($sCOL) > 0  ? "," : "") . " sLatitud = '$sLatitud' " : "");
+
+        $sCOL .= (!is_null($sLongitud) && !empty($sLongitud) ? (strlen($sCOL) > 0  ? "," : "") . " sLongitud = '$sLongitud' " : "");
+
         $sCOL .= (!is_null($nEstado) ? (strlen($sCOL) > 0  ? "," : "") . " nEstado = $nEstado " : "");
 
         $sWhere = " WHERE nIdActividad = $nIdActividad ";
@@ -574,30 +601,49 @@ class Prospecto
 
 
 
-    public function fncGetProspectoActividadByIdProspecto($nIdProspecto, $nTipoActividad = null, $sOrderBy = null, $sLimit = null)
+    public function fncGetProspectoActividadByIdProspecto($nIdProspecto = null, $nTipoActividad = null, $nIdEstadoActividad = null, $nIdEmpleado = null,  $sOrderBy = null, $sLimit = null)
     {
         $sSQL = "SELECT 
                 act.nIdActividad,
                 act.nIdEmpleado,
                 act.nIdProspecto,
                 act.nIdEstadoActividad,
+                IFNULL( cli.sNombreoRazonSocial , '' ) AS sCliente,
                 IFNULL( DATE_FORMAT( act.dFechaCreacion, '%d/%m/%Y' ), '' ) AS dFechaCreacion,
                 IFNULL(emp.sNombre ,'') AS sEmpleado,
                 IFNULL(tipoestado.sDescripcionLargaItem,'') AS sEstadoActividadLarga,
                 IFNULL(tipoestado.sDescripcionCortaItem,'') AS sEstadoActividadCorta,
                 CONCAT(act.dFecha ,' ',act.dHora) as dtFechaEjecucion,
+                IFNULL(act.sLatitud ,'') AS sLatitud,
+                IFNULL(act.sLongitud ,'') AS sLongitud,
                 act.nTipoActividad,
                 act.dFecha,
                 act.dHora,
                 act.sNota,
                 act.nEstado
          FROM actividades AS act 
+         INNER JOIN prospectos AS p ON act.nIdProspecto = p.nIdProspecto 
+         INNER JOIN clientes AS cli ON p.nIdCliente = cli.nIdCliente
          INNER JOIN empleados AS emp ON act.nIdEmpleado = emp.nIdEmpleado 
          INNER JOIN catalogotabla AS tipoestado ON act.nIdEstadoActividad = tipoestado.nIdCatalogoTabla 
-         WHERE act.nIdProspecto = $nIdProspecto ";
-        $sSQL .= !is_null($nTipoActividad) ? " AND act.nTipoActividad = $nTipoActividad " : "";
-        $sSQL .= !is_null($sOrderBy) ? " ORDER BY $sOrderBy  " : "";
-        $sSQL .= !is_null($sLimit) ? " LIMIT $sLimit " : "";
+        ";
+
+        $sWhere = "";
+
+        $sWhere .= (is_null($nIdProspecto) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nIdProspecto = $nIdProspecto ");
+
+        $sWhere .= (is_null($nTipoActividad) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nTipoActividad = $nTipoActividad ");
+
+        $sWhere .= (is_null($nIdEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nIdEmpleado = $nIdEmpleado ");
+
+        $sWhere .= (is_null($nIdEstadoActividad) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nIdEstadoActividad = $nIdEstadoActividad ");
+
+        $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
+
+        $sSQL   .= !is_null($sOrderBy) ? " ORDER BY $sOrderBy  " : "";
+
+        $sSQL   .= !is_null($sLimit) ? " LIMIT $sLimit " : "";
+
         return $this->db->run($sSQL);
     }
 
@@ -664,14 +710,33 @@ class Prospecto
     }
 
 
-    public function fncGetActividadesByProspecto($nIdProspecto, $nTipoActividad, $nIdEstadoActividad)
+    public function fncGetActividadesByProspecto($nIdProspecto = null, $nTipoActividad = null, $nIdEstadoActividad = null, $nIdEmpleado = null, $dFecha = null,$nIdNegocio = null)
     {
-        $sSQL = "SELECT 
-                    IFNULL(COUNT(*),0) AS nCantidad
-                FROM actividades AS act 
-                WHERE act.nIdProspecto = $nIdProspecto";
-        $sSQL .= !is_null($nTipoActividad) ? " AND act.nTipoActividad = $nTipoActividad " : "";
-        $sSQL .= !is_null($nIdEstadoActividad) ? " AND act.nIdEstadoActividad = $nIdEstadoActividad " : "";
+
+        $sSQL = "SELECT  IFNULL(COUNT(*),0) AS nCantidad FROM actividades AS act ";
+
+        $sSQL .= (is_null($nIdEmpleado) && is_null($nIdNegocio)  ? "" : " INNER JOIN prospectos AS p ON p.nIdProspecto = act.nIdProspecto ");
+
+        
+        $sWhere = "";
+
+        $sWhere .= (is_null($nIdProspecto) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nIdProspecto = $nIdProspecto ");
+
+        $sWhere .= (is_null($nTipoActividad) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nTipoActividad = $nTipoActividad  ");
+
+        $sWhere .= (is_null($nIdEstadoActividad) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.nIdEstadoActividad = $nIdEstadoActividad  ");
+
+        $sWhere .= (is_null($dFecha) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " act.dFecha = STR_TO_DATE( '$dFecha', '%d/%m/%Y' )   ");
+
+        $sWhere .= (is_null($nIdEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " p.nIdEmpleado = $nIdEmpleado ");
+
+        $sWhere .= (is_null($nIdNegocio) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " p.nIdNegocio = $nIdNegocio ");
+
+        $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
+
+        // echo $sSQL;
+        // exit;
+
         return $this->db->run($sSQL)[0];
     }
 
@@ -782,11 +847,20 @@ class Prospecto
         return $this->db->run($sSQL);
     }
 
+    public function fncActualizarCierreProspecto($nIdProspecto)
+    {
+        $sSQL = "UPDATE prospectos SET dFechaCierre = NOW() WHERE nIdProspecto = $nIdProspecto ";
+        // echo $sSQL;
+        // exit;
+        return $this->db->run($sSQL);
+    }
+
+
 
     public function fncGrabarProspectoAdjunto(
-       $nIdProspecto,
-       $sNombreArchivo,
-       $nContrato
+        $nIdProspecto,
+        $sNombreArchivo,
+        $nContrato
     ) {
         $sSQL = "INSERT INTO prospectoadjunto(
                         nIdProspecto,
@@ -802,7 +876,7 @@ class Prospecto
         return $this->db->run($sSQL);
     }
 
-    
+
     public function fncObtenerProspectoAdjunto($nIdAdjunto)
     {
         $sSQL = "SELECT 
@@ -848,7 +922,7 @@ class Prospecto
         $sWhere = " WHERE nIdAdjunto = $nIdAdjunto ";
 
         $sSQL  =  $sSQL . $sCOL . $sWhere;
- 
+
         return $this->db->run($sSQL);
     }
 
@@ -866,15 +940,15 @@ class Prospecto
 
 
 
-    public function fncActualizarProspectonValidacionAdmin($nValidacionAdmin )
+    public function fncActualizarProspectonValidacionAdmin($nValidacionAdmin)
     {
         $sSQL = "UPDATE  prospectos SET nValidacionAdmin  = $nValidacionAdmin ";
         return $this->db->run($sSQL);
     }
 
-    
 
-    public function fncObtenerCambiosForAdmin($nIdNegocio ,$nEstado)
+
+    public function fncObtenerCambiosForAdmin($nIdNegocio, $nEstado)
     {
         $sSQL = "SELECT cp.nIdCambio,
                         cp.nIdProspecto, 
@@ -886,7 +960,9 @@ class Prospecto
                  INNER JOIN prospectos AS p ON p.nIdProspecto  = cp.nIdProspecto 
                  INNER JOIN clientes AS cli ON p.nIdCliente = cli.nIdCliente
                  INNER JOIN empleados AS emp ON p.nIdEmpleado = emp.nIdEmpleado
-                 WHERE p.nIdNegocio  = $nIdNegocio  AND cp.nEstado = $nEstado  ";
+                 WHERE p.nIdNegocio  = $nIdNegocio  AND cp.nEstado = $nEstado  
+                 ORDER BY cp.nIdCambio DESC
+                 ";
         return $this->db->run(trim($sSQL));
     }
 
@@ -897,6 +973,16 @@ class Prospecto
     }
 
 
-
-
+    public function fncObtenerDetalleProspecto($nIdProspecto, $nTipoItem)
+    {
+        $sSQL = "SELECT IFNULL(catTabla.sDescripcionLargaItem, '') AS sTipoItem, pc.nIdProspecto, pc.nIdCatalogo, pc.nCantidad, pc.nPrecio
+                FROM prospectocatalogo AS pc 
+                INNER JOIN catalogo AS cat ON cat.nIdCatalogo = pc.nIdCatalogo 
+                LEFT JOIN catalogotabla AS catTabla ON cat.nTipoItem = catTabla.nIdCatalogoTabla
+                WHERE pc.nIdProspecto = $nIdProspecto";
+        $sSQL .= !is_null($nTipoItem) && !empty($nTipoItem) ? " AND cat.nTipoItem = $nTipoItem " : "";
+        // echo $sSQL;
+        // exit;
+        return $this->db->run(trim($sSQL));
+    }
 }

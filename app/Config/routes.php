@@ -12,12 +12,18 @@ $router->get('salir', 'LoginEmpleadoController@salir');
 
 
 // Home 
+$router->any('socket', 'ProspectosController@fncSocket');
 
 $router->any('admin/empleados/fncSendEmailEmpleado', 'EmpleadosController@fncSendEmailEmpleado');
 $router->any('formulario-empleado/:id/:id/:id', 'EmpleadosController@fncFormularioEmpleado');
 $router->any('empleados/fncGrabarEmpleado', 'EmpleadosController@fncGrabarEmpleado');
 $router->any('empleados/fncMostrarRegistro', 'EmpleadosController@fncMostrarRegistro');
 $router->any('empleados/fncMostrarRegistroCard', 'EmpleadosController@fncMostrarRegistroCard');
+$router->any('empleados/fncObtenerCamposEmpleados', 'EmpleadosController@fncObtenerCamposEmpleados');
+$router->any('empleados/fncPopulate', 'EmpleadosController@fncPopulate');
+$router->any('empleados/fncObtenerColores', 'EmpleadosController@fncObtenerColores');
+
+
 
 
 $router->any('formularios/fncBuildForm', 'BuildFormController@fncBuildForm');
@@ -35,8 +41,14 @@ $router->any('api/ruc/:id', 'ApisController@ruc');
 $router->any('admin/usuarios/fncGrabarUsuario', 'UsuariosController@fncGrabarUsuario');
 $router->any('admin/usuarios/fncRecuperarClave', 'UsuariosController@fncRecuperarClave');
 $router->any('admin/usuarios/fncEliminarUsuario', 'UsuariosController@fncEliminarUsuario');
+$router->any('formulario-usuario/:id/:id', 'UsuariosController@fncFormularioUsuario');
 
 
+$router->any('admin/prospecto/fncIndicativosHoy', 'ProspectosController@fncIndicativosHoy');
+$router->any('admin/prospecto/fncGetIndicativosGeneral', 'ProspectosController@fncGetIndicativosGeneral');
+
+$router->any('admin/prospecto/fncGetActividadesNoCumplidas', 'ProspectosController@fncGetActividadesNoCumplidas');
+$router->any('admin/prospecto/fncGetProspectosParaReporteVentas', 'ProspectosController@fncGetProspectosParaReporteVentas');
 $router->any('admin/prospecto/fncPopulateHistorialCliente', 'ProspectosController@fncPopulateHistorialCliente');
 $router->any('admin/prospecto/fncTerminarProspecto', 'ProspectosController@fncTerminarProspecto');
 $router->any('admin/prospecto/fncActualizarEstadoCambiosProspecto', 'ProspectosController@fncActualizarEstadoCambiosProspecto');
@@ -106,6 +118,7 @@ $router->any('admin/segmentacion/fncEliminarDetalleSegmentacion', 'SegmentacionC
 // Fin del Segmentacion
 
 // Mantenimiento Cliente
+$router->any('admin/cliente/fncGetClientesParaAdmin', 'ClientesController@fncGetClientesParaAdmin');
 $router->any('admin/cliente/fncPopulate/:id', 'ClientesController@fncPopulate');
 $router->any('admin/cliente/fncGrabarCliente', 'ClientesController@fncGrabarCliente');
 $router->any('admin/cliente/fncMostrarRegistro', 'ClientesController@fncMostrarRegistro');
@@ -124,6 +137,11 @@ $router->any('admin/catalogo/fncEliminarRegistro', 'CatalogoController@fncElimin
 // Fin del Catalogo
 
 // Mantenimiento Negocios
+
+$router->any('admin/negocios/fncEliminarUsuarioNegocio', 'NegociosController@fncEliminarUsuarioNegocio');
+$router->any('admin/negocios/fncGrabarUsuarioNegocio', 'NegociosController@fncGrabarUsuarioNegocio');
+$router->any('admin/negocios/fncProcesarInvitacionNegocio', 'NegociosController@fncProcesarInvitacionNegocio');
+$router->any('admin/negocios/fncGetUsuariosInvitacion', 'NegociosController@fncGetUsuariosInvitacion');
 $router->any('admin/negocios/fncGetNegocios', 'NegociosController@fncGetNegocios');
 $router->any('admin/negocios/fncGrabarNegocio', 'NegociosController@fncGrabarNegocio');
 $router->any('admin/negocios/fncMostrarRegistro', 'NegociosController@fncMostrarRegistro');

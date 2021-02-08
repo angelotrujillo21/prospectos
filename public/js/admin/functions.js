@@ -219,6 +219,24 @@ function fncBuildForm(aryData) {
         case "textarea":
           sHtml += `<textarea name="${sNameorId}" id="${sNameorId}" cols="20" rows="5" class="form-control" autocomplete="off"></textarea>`;
           break;
+
+        case "file":
+
+          var sAccept = aryItem.sNombre == 'sImagen' ? 'image/*' : '*';
+
+          sHtml += `
+          
+              <div class="input-group">
+                  <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="${sNameorId}" accept="${sAccept}" name="${sNameorId}" lang="es">
+                      <label class="custom-file-label" for="${sNameorId}">Selecciona un archivo</label>
+                  </div>
+              </div>
+          
+          `;
+          sHtml += `<small>${aryItem.sPlaceHolder}</small>`;
+
+          break;  
       }
 
       sHtml += `</div>`;

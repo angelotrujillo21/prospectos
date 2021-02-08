@@ -38,10 +38,14 @@ class DashboardController extends Controller
     {
         try {
             $aryNegocio = $this->negocios->fncGetNegocioById($nIdNegocio);
-
             if ($aryNegocio != false) {
-                $user = $this->session->get('user');
+
+                $user               = $this->session->get('user');
+                $aryNegocioUsuario  = $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"] ,$nIdNegocio);
+
+                $user["nRol"]       = fncValidateArray($aryNegocioUsuario) ? $aryNegocioUsuario[0]['nRol'] : null;
                 $user["nIdNegocio"] = $nIdNegocio;
+                
                 $this->session->add("user", $user);
 
                 $aryColores = $this->empleados->fncGetColoresEmpleados($nIdNegocio);
@@ -50,6 +54,9 @@ class DashboardController extends Controller
 
                 $nIdEstadoPendiente = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nIdEtapaEnProceso") : $this->fncGetVarConfig("nIdEtapaProgramada");
                 $sEtapas            = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nPorcentajesProspectoLargo") : $this->fncGetVarConfig("nPorcentajesProspectoCorto");
+                
+               // var_dump($this->session->get('user'));
+
                 $this->view( 
                     'admin/home',
                     array(
@@ -72,6 +79,8 @@ class DashboardController extends Controller
                         'nIdEstadoActividadPen'       => $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
                         'nIdEstadoActividadEjecutado' => $this->fncGetVarConfig("nIdEstadoActividadEjecutado"),
                         'nTipoActividadCita'          => $this->fncGetVarConfig("nTipoActividadCita"),
+                        'nIdEntidadVendedor'          => $this->fncGetVarConfig("nIdEntidadVendedor"),
+                        'nIdSupervisor'               => $this->fncGetVarConfig("nIdSupervisor"),
                         'aryNotificaciones'           => $this->prospecto->fncObtenerCambiosForAdmin($nIdNegocio, 1),
                         'aryColores'                  => $this->catalogoTabla->fncListado('COLORES', "nIdCatalogoTabla NOT IN($sColores)"),
                         'aryTipoEmpleados'            => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
@@ -79,6 +88,8 @@ class DashboardController extends Controller
                         'aryVendedores'               => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio),
                         'nTipoEmpleadoSupervisor'     => $this->fncGetVarConfig("nTipoEmpleadoSupervisor"),
                         'nIdEtapaRechazado'           => $this->fncGetVarConfig("nIdEtapaRechazado"),
+                        'aryTipoItem'                 => $this->catalogoTabla->fncListado('TIPO_ITEM'), 
+                        'nRolProspectoAdmin'          => $this->fncGetVarConfig("nRolProspectoAdmin")
                     )
                 );
 

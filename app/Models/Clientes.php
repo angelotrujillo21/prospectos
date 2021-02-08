@@ -26,6 +26,7 @@ class Clientes
         $nIdDepartamento,
         $nIdProvincia,
         $nIdDistrito,
+        $sDireccion,
         $sTelefono,
         $nIdRelacionamiento,
         $nEstado
@@ -42,7 +43,9 @@ class Clientes
                     nIdDepartamento,
                     nIdProvincia,
                     nIdDistrito,
+                    sDireccion,
                     sTelefono,
+                    dFechaCreacion,
                     nIdRelacionamiento,
                     nEstado
                 ) VALUES (
@@ -56,7 +59,9 @@ class Clientes
                     " . (is_null($nIdDepartamento) || empty($nIdDepartamento) ? "NULL" : "$nIdDepartamento") . " ,
                     " . (is_null($nIdProvincia) || empty($nIdProvincia) ? "NULL" : "$nIdProvincia") . " ,
                     " . (is_null($nIdDistrito) || empty($nIdDistrito) ? "NULL" : "$nIdDistrito") . " ,
+                    " . (is_null($sDireccion) || empty($sDireccion) ? "NULL" : "'$sDireccion'") . " ,
                     " . (is_null($sTelefono) || empty($sTelefono) ? "NULL" : "'$sTelefono'") . " ,
+                    " . " NOW() " . " ,
                     " . (is_null($nIdRelacionamiento) || empty($nIdRelacionamiento) ? "NULL" : "$nIdRelacionamiento") . " ,
                     " . (is_null($nEstado) || empty($nEstado) ? "NULL" : "$nEstado") . " 
                 )";
@@ -65,7 +70,7 @@ class Clientes
     }
 
 
-    public function fncActualizarEmpleado(
+    public function fncActualizarClientes(
         $nIdCliente,
         $nIdNegocio,
         $nTipoCliente,
@@ -77,6 +82,7 @@ class Clientes
         $nIdDepartamento,
         $nIdProvincia,
         $nIdDistrito,
+        $sDireccion,
         $sTelefono,
         $nIdRelacionamiento,
         $nEstado
@@ -103,6 +109,8 @@ class Clientes
         $sSQL .= (!is_null($nIdProvincia) ? ", nIdProvincia = $nIdProvincia " : ", nIdProvincia = NULL");
 
         $sSQL .= (!is_null($nIdDistrito) ? ", nIdDistrito = $nIdDistrito " : ", nIdDistrito = NULL");
+        
+        $sSQL .= (!is_null($sDireccion) ? ", sDireccion = '$sDireccion' " : ", sDireccion = NULL");
 
         $sSQL .= (!is_null($sTelefono) ? ", sTelefono = '$sTelefono' " : ", nIdDistrito = NULL");
 
@@ -111,7 +119,6 @@ class Clientes
         $sSQL .= (!is_null($nEstado) ? ", nEstado = '$nEstado' " : ", nEstado = NULL");
 
         $sSQL .= " WHERE nIdCliente = $nIdCliente ";
-
      
         return  $this->db->run($sSQL);
     }
@@ -124,7 +131,7 @@ class Clientes
     }
 
 
-    public function fncGetClientes($nIdNegocio, $nEstado = null)
+    public function fncGetClientes($nIdNegocio, $nEstado = null , $nTipoCliente = null)
     {
         $sSQL = "SELECT  
                    cli.nIdCliente,
@@ -140,11 +147,14 @@ class Clientes
                    cli.nIdDepartamento,
                    cli.nIdProvincia,
                    cli.nIdDistrito,
+                   cli.sDireccion,
                    cli.sTelefono,
                    cli.nIdRelacionamiento,
                    dpt.sNombre as sDpt ,
                    prov.sNombre as sProvincia ,
                    dist.sNombre as sDistrito ,
+                   IFNULL( DATE_FORMAT( cli.dFechaCreacion , '%d/%m/%Y %H:%i:%s' ), '' ) as dFechaCreacion,
+                   TIME_TO_SEC(TIMEDIFF(NOW(), cli.dFechaCreacion)) AS sTimeFechaCreacion,
                    cli.nEstado
                 FROM clientes AS cli 
                 LEFT JOIN departamentos AS dpt ON cli.nIdDepartamento = dpt.nIdDepartamento
@@ -153,7 +163,10 @@ class Clientes
                 LEFT JOIN catalogotabla AS relac ON cli.nIdRelacionamiento = relac.nIdCatalogoTabla
                 LEFT JOIN catalogotabla AS tipodoc ON cli.nTipoDocumento = tipodoc.nIdCatalogoTabla
                 WHERE cli.nIdNegocio  = $nIdNegocio";
+
         $sSQL .=  is_null($nEstado) ? "" : ' AND cli.nEstado  = ' . $nEstado;
+        $sSQL .=  is_null($nTipoCliente) || empty($nTipoCliente) ? "" : ' AND cli.nTipoCliente  = ' . $nTipoCliente;
+
         // echo $sSQL;
         // exit;
 
@@ -186,8 +199,8 @@ class Clientes
                 LEFT JOIN departamentos AS dpt ON cli.nIdDepartamento = dpt.nIdDepartamento
                 LEFT JOIN provincia AS prov ON cli.nIdProvincia = prov.nIdProvincia
                 LEFT JOIN distrito AS dist ON cli.nIdDistrito = dist.nIdDistrito
-                LEFT JOIN catalogoTabla AS relac ON cli.nIdRelacionamiento = relac.nIdCatalogoTabla
-                LEFT JOIN catalogoTabla AS tipodoc ON cli.nTipoDocumento = tipodoc.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS relac ON cli.nIdRelacionamiento = relac.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS tipodoc ON cli.nTipoDocumento = tipodoc.nIdCatalogoTabla
                 WHERE cli.nIdCliente  = $nIdCliente";
    
         return $this->db->run(trim($sSQL));

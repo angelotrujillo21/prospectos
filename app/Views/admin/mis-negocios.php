@@ -6,7 +6,8 @@
 
 </head>
 
-<body>
+<body data-nrolprospectoadmin="<?= $nRolProspectoAdmin ?>"
+>
 
     <div class="page-loader">
         <div class="loader-dual-ring"></div>
@@ -311,6 +312,68 @@
         </div>
     </div>
 
+    <div class="modal fade" id="formInvitarUsuario" tabindex="-1" role="dialog" aria-labelledby="formInvitarUsuarioLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formInvitarUsuarioLabel">Invitar usuario</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div id="content-nTipoUsuarioInvitar" class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="nTipoUsuarioInvitar" class="col-form-label">Tipo de usuario a invitar</label>
+                                    <select class="form-control" name="nTipoUsuarioInvitar" id="nTipoUsuarioInvitar">
+                                        <option value="1">Existente</option>
+                                        <option value="2">Nuevo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div id="content-nIdUsuario" class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="nEstado" class="col-form-label">Usuarios</label>
+                                    <select class="form-control" name="nIdUsuario" id="nIdUsuario">
+                                 
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="content-sCorreoInvitacion" class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="sCorreoInvitacion" class="col-form-label">Correo:</label>
+                                    <input type="email" class="form-control" id="sCorreoInvitacion" autocomplete="off" name="sCorreoInvitacion">
+                                </div>
+                            </div>
+
+
+                            <div id="content-nRol" class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="nRol" class="col-form-label">Rol</label>
+                                    <select class="form-control" name="nRol" id="nRol">
+                                        <option value="2">Visitante</option>
+                                        <option value="1">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Fin de modales -->
 
 
@@ -431,6 +494,27 @@
         }
     }
 
+    function fncEliminarInvitacion ( nIdNegocio , nIdUsuario ) {
+        if(confirm('Esta acción eliminará permanentemente la invitacion y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
+            
+            var jsnData = {
+                nIdNegocio : nIdNegocio,
+                nIdUsuario : nIdUsuario
+            };
+
+            fncEjecutarEliminarUsuarioNegocio( jsnData , function(aryData){
+
+                if(aryData.success){
+                    fncDrawNegocios();
+                    toastr.success( aryData.success );
+                } else {
+                    toastr.error( aryData.error );
+                }
+
+            }); 
+        }
+    }
+
     function fncMostrarRegistro(nIdRegistro) {
 
         $("#sNombre").data("nIdRegistro",nIdRegistro);
@@ -478,6 +562,8 @@
                 var sHtmlTemplate = ``;
                 $.each(aryData.aryData,function(nIndex,aryValue){
 
+                    var isAdmin = $("body").data("nrolprospectoadmin") == aryValue.nRol  ? true : false;
+
                     sHtmlTemplate += `
                                         <figure class="col-md-4 text-center">
                                                     <div class="position-relative contenedor-negocio text-center">
@@ -490,8 +576,9 @@
                                                             <figcaption class="figure-caption">${aryValue.sNombre}</figcaption>
                                                         </a>
                                                         <div class="actions-negocio">
-                                                            <a href="javascript:;" onclick="fncMostrarRegistro(${aryValue.nIdNegocio});" title="Editar"><i class="material-icons">edit</i> </a>
-                                                            <a href="javascript:;" onclick="fncEliminarRegistro(${aryValue.nIdNegocio});" title="Eliminar"><i class="material-icons">delete</i> </a>
+                                                          ${isAdmin ? `<a href="javascript:;" onclick="fncInvitarUsario(${aryValue.nIdNegocio},'${aryValue.sNombre}');" title="Editar"><i class="material-icons">person_add</i> </a>` : ``}  
+                                                          ${isAdmin ? `<a href="javascript:;" onclick="fncMostrarRegistro(${aryValue.nIdNegocio});" title="Editar"><i class="material-icons">edit</i> </a>` : ``}  
+                                                          ${isAdmin ? `<a class="text-danger" href="javascript:;" onclick="fncEliminarRegistro(${aryValue.nIdNegocio});" title="Eliminar"><i class="material-icons">delete</i> </a>` :  ` <a  class="text-danger" href="javascript:;" onclick="fncEliminarInvitacion(${aryValue.nIdNegocio},${aryValue.nIdUsuario});" title="Eliminar Invitacion"><i class="material-icons">delete</i> </a> `}  
                                                         </div>
                                                     </div>
                                         </figure>
@@ -502,6 +589,9 @@
             }
         });
     }
+
+
+    
 
     function fncCleanAll(){
         fncClearInputs( $("#formNegocio").find("form") );
@@ -616,6 +706,26 @@
         });
     }
 
+    function fncEjecutarEliminarUsuarioNegocio ( jsnData , fncCallback ) {    
+        $.ajax({
+            type: 'post',
+            url: web_root + 'admin/negocios/fncEliminarUsuarioNegocio',
+            data: jsnData,
+            dataType: 'json',
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function( data ) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+
+        });
+    }
+
+
     function fncBuscarRegistro(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
@@ -635,8 +745,192 @@
     }
 
 
+    
+
 
 
 </script>
+
+
+<!-- Invitar Usuario -->
+<script>
+    $(function() {
+
+        $("#nTipoUsuarioInvitar").on('change',function(){
+
+            if( $(this).find("option:selected").val() == '1' ){
+                
+                // Existente 
+                $("#content-nIdUsuario").show();
+                $("#content-sCorreoInvitacion").hide();
+
+
+            } else {
+
+                // Invitar 
+                $("#content-nIdUsuario").hide();
+                $("#content-sCorreoInvitacion").show();
+
+            }
+
+        });
+
+        $("#formInvitarUsuario").find('form').on('submit', function(event) {
+            
+            event.preventDefault();
+
+            var nIdNegocio            = $("#formInvitarUsuario").data("nIdNegocio");
+            var sNombre               = $("#formInvitarUsuario").data("sNombre");
+            var nTipoUsuarioInvitar   = $("#nTipoUsuarioInvitar").find("option:selected").val();
+            var nIdUsuario            = $("#nIdUsuario").find("option:selected").val();
+            var sCorreoInvitacion     = $("#sCorreoInvitacion").val().trim();
+            var nRol                  = $("#nRol").find("option:selected").val();
+
+        
+            if(nTipoUsuarioInvitar == '0'){
+                toastr.error('Error. Debe seleccionar un tipo de usuario a invitar . Porfavor verifique');
+                return;
+            }  
+
+            if(nTipoUsuarioInvitar == '1'){
+                
+                if(nIdUsuario == '0'){
+                    toastr.error('Error. Debe seleccionar un usuario . Porfavor verifique');
+                    return;
+                }
+
+            } else {
+
+                if(sCorreoInvitacion == ''){
+                    toastr.error('Error. Debe ingresar un correo para la invitacion del usuario . Porfavor verifique');
+                    return;
+                }
+
+            }
+
+            var jsnData = {
+                nIdNegocio              : nIdNegocio,
+                sNombre                 : sNombre,
+                nTipoUsuarioInvitar     : nTipoUsuarioInvitar,
+                nIdUsuario              : nIdUsuario,
+                sCorreoInvitacion       : sCorreoInvitacion, 
+                nRol                    : nRol
+            };
+
+            fncProcesarInvitacionNegocio(jsnData,function(aryData){
+                
+                if(aryData.success){     
+                    
+                    
+                    $("#formInvitarUsuario").modal("hide");
+                    toastr.success(aryData.success);
+                
+                } else {
+
+                    toastr.error(aryData.error);
+                
+                }
+
+            });
+
+            
+        });
+
+
+    });
+
+    // Funciones de la tabla o layout Principal 
+
+  
+
+
+    // Funciones Auxiliares
+
+    window.fncDrawUsuariosInvitacion = (jsnData,sHtmlTag) => {
+       
+        fncGetUsuariosInvitacion(jsnData,(aryData)=>{
+            if(aryData.success){
+                var aryData = aryData.aryData ;
+
+                var sHtml = ``;
+
+                sHtml += `<option value="0" >Seleccionar</option>`; 
+
+                if ( aryData.length > 0 ){
+ 
+                    aryData.forEach(aryItem => {
+                       sHtml += `<option value="${aryItem.nIdUsuario}" >${aryItem.sNombre + ' ' + aryItem.sApellidos}</option>`; 
+                    });
+
+                }
+
+                $(sHtmlTag).html(sHtml);
+
+            }else{
+                toastr.error(aryData.error);
+            }
+        });
+
+    }
+
+    window.fncInvitarUsario = (nIdNegocio,sNombreNegocio) => {
+
+        var jsnData = {
+            nIdNegocio : nIdNegocio 
+        };
+
+        fncDrawUsuariosInvitacion(jsnData,"#nIdUsuario");
+
+        $("#formInvitarUsuario").data("nIdNegocio",nIdNegocio);
+        $("#formInvitarUsuario").data("sNombre",sNombreNegocio);
+
+        $("#nTipoUsuarioInvitar").trigger("change");
+        $("#formInvitarUsuario").modal("show");
+    }
+
+  
+
+    // Llamadas al servidor
+
+    function fncGetUsuariosInvitacion(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/negocios/fncGetUsuariosInvitacion',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+    
+    function fncProcesarInvitacionNegocio(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/negocios/fncProcesarInvitacionNegocio',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+
+
+</script>
+<!-- Invitar Usuario -->
 
 </html>

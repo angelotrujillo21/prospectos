@@ -507,16 +507,39 @@ main {
   cursor: pointer;
 }
 
-.btn-invitar {
+.style-btn-home-admin {
   font-size: 15px !important;
-  color: #ffff;
-  background: #41b883;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.btn-invitar:hover {
+.btn-azul {
+  background: #007bff !important;
+  color: #ffff;
+}
+
+.btn-azul:hover {
+  background: #007bff80 !important;
+  color: #ffff !important;
+}
+
+.btn-verde {
+  color: #ffff;
+  background: #41b883;
+}
+
+.btn-verde:hover {
   color: #ffff;
   background: #41b883bd;
+}
+
+.btn-dark-cyan {
+  color: #ffff;
+  background: #64acac;
+}
+
+.btn-dark-cyan:hover {
+  color: #ffff;
+  opacity: 0.8;
 }
 
 .btn-pendiente {
@@ -536,7 +559,7 @@ main {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   padding: 5px;
-  width: 370px;
+  width: 307px;
   height: auto;
   margin: 0px 10px;
   display: inline-grid;
@@ -575,10 +598,10 @@ main {
   padding: 10px 5px;
 }
 .pr-cliente {
-  font-size: 18px;
+  font-size: 15px;
 }
 .pr-vendedor {
-  font-size: 16px;
+  font-size: 13px;
 }
 .pr-icon-edit {
   font-size: 24px;
@@ -588,7 +611,7 @@ main {
   font-size: 15px;
 }
 .font-14 {
-  font-size: 14px;
+  font-size: 12px;
 }
 .font-13 {
   font-size: 13px;
@@ -740,7 +763,7 @@ main {
 
 .ult-cita,
 .ult-ingreso {
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .pr-scroll-x {
@@ -813,6 +836,7 @@ main {
   height: 100px;
   max-width: 100px;
   max-height: 100px;
+  object-fit: cover;
 }
 
 .page-loader {
@@ -974,6 +998,10 @@ main {
 }
 
 @media only screen and (max-width: 600px) {
+  .content-indicativos-dashboard {
+    transform: translateY(0px) !important;
+    margin: 20px 0px !important;
+  }
   .pr-cliente {
     font-size: 15px;
   }
@@ -1139,4 +1167,33 @@ main {
 .link-registrar:hover {
   text-decoration: none;
   font-size: 600;
+}
+
+.content-indicativos-dashboard {
+  position: relative;
+  transform: translateY(-50px);
+  z-index: 1040;
+  font-size: 13px;
+}
+
+.header-toggle {
+  text-decoration: none !important;
+  color: #5a6169 !important;
+  border: 1px solid #e1e5eb !important;
+}
+
+.img-usuario {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+table {
+  font-size: 13px;
+}
+.link-ir-admin {
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1px;
 }

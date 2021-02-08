@@ -27,6 +27,10 @@ $(document).ready(function () {
   //   fncRemoveDisabled($(this));
   // });
 
+  fncEventFile();
+});
+
+function fncEventFile(){
   $('input[type="file"]').change(function () {
     var text =
       this.files.length > 1
@@ -34,7 +38,8 @@ $(document).ready(function () {
         : this.files[0].name;
     $(this).next().html(text);
   });
-});
+}
+
 
 $(function () {
   setTimeout(function () {
@@ -47,18 +52,20 @@ $(document).ready(function () {
 });
 
 $.fn.alwaysChange = function (callback) {
-  return this.filter('select').each(function () {
+  return this.filter("select").each(function () {
     var elem = this;
     var $this = $(this);
 
-    $this.change(function () {
-      callback($this.val());
-    }).focus(function () {
-      elem.selectedIndex = -1;
-      elem.blur();
-    });
+    $this
+      .change(function () {
+        callback($this.val());
+      })
+      .focus(function () {
+        elem.selectedIndex = -1;
+        elem.blur();
+      });
   });
-}
+};
 
 $.datepicker.regional["es"] = {
   closeText: "Cerrar",
@@ -113,7 +120,6 @@ $.datepicker.regional["es"] = {
 };
 $.datepicker.setDefaults($.datepicker.regional["es"]);
 
-
 window.sParentSelector = "div.content";
 window.sShowItemsSelector = ".items:gt(2)";
 window.sShowLessSelector = ".ShowMore,.ShowLess";
@@ -121,34 +127,31 @@ window.sShowLessSelector = ".ShowMore,.ShowLess";
 window.fncEventListenerShowMoreLess = function () {
   $(sParentSelector).each(fncShowItemsHandler);
   $(sShowLessSelector).off();
-  $(sShowLessSelector).on('click', showHideHandler);
-}
+  $(sShowLessSelector).on("click", showHideHandler);
+};
 
 window.showHideHandler = function () {
-
-  if ($(this).data('action') === 'show') {
+  if ($(this).data("action") === "show") {
     $(this).text("Ver Menos");
-    $(this).data('action', 'hide');
-    $(this).closest(sParentSelector).children('.items').show();
+    $(this).data("action", "hide");
+    $(this).closest(sParentSelector).children(".items").show();
   } else {
     $(this).text("Ver Todo");
-    $(this).data('action', 'show');
+    $(this).data("action", "show");
     fncShowItemsHandler.bind($(this).closest(sParentSelector))();
   }
-
-}
+};
 
 window.fncShowItemsHandler = function () {
   $(this).children(sShowItemsSelector).hide();
-}
+};
 
-$("#dropdownMenuLink").on('click', function () {
+$("#dropdownMenuLink").on("click", function () {
   // Desactivamos los que ya vio
   if (parseInt($("#count-noti").html()) > 0) {
-
     var jsnData = {
       nIdNegocio: $("body").data("nidnegocio"),
-      nEstado: 0
+      nEstado: 0,
     };
 
     fncActualizarEstadoCambiosProspecto(jsnData, function (aryData) {
@@ -159,12 +162,10 @@ $("#dropdownMenuLink").on('click', function () {
         toastr.error(aryData.error);
       }
     });
-
   }
 });
 
-
-$("#btn-toogle-desktop").on('click', function () {
+$("#btn-toogle-desktop").on("click", function () {
   if ($("aside").hasClass("d-none")) {
     // Oculto
     $("aside").removeClass("d-none");
@@ -174,9 +175,7 @@ $("#btn-toogle-desktop").on('click', function () {
     $("main").addClass("col-md-9");
     $("main").addClass("offset-lg-2");
     $("main").addClass("offset-md-3");
-
   } else {
-
     $("main").removeClass("col-lg-10");
     $("main").removeClass("col-md-9");
     $("main").removeClass("offset-lg-2");
@@ -184,17 +183,25 @@ $("#btn-toogle-desktop").on('click', function () {
 
     $("main").addClass("col-md-12");
     $("aside").addClass("d-none");
-
   }
 });
 
+// $(".header-toggle").on("click", function () {
+//   if ($(this).hasClass("collapsed")) {
+//     $(".icon-up").hide();
+//     $(".icon-down").show();
+//   } else {
+//     $(".icon-up").show();
+//     $(".icon-down").hide();
+//   }
+// });
 
 // Llamadas al servidor
 function fncActualizarEstadoCambiosProspecto(jsnData, fncCallback) {
   $.ajax({
-    type: 'post',
-    dataType: 'json',
-    url: web_root + 'admin/prospecto/fncActualizarEstadoCambiosProspecto',
+    type: "post",
+    dataType: "json",
+    url: web_root + "admin/prospecto/fncActualizarEstadoCambiosProspecto",
     data: jsnData,
     beforeSend: function () {
       //fncMostrarLoader();
@@ -204,6 +211,6 @@ function fncActualizarEstadoCambiosProspecto(jsnData, fncCallback) {
     },
     complete: function () {
       //fncOcultarLoader();
-    }
+    },
   });
 }

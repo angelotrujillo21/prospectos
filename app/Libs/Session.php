@@ -12,7 +12,9 @@ class Session
      */
     public function init()
     {
-        session_start();
+        if (!isset($_SESSION)) {
+            session_start();
+        }
     }
 
     /**

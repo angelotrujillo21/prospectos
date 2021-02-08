@@ -61,29 +61,11 @@
 
                 <div class="menu-item">
                     <li class="nav-item padre">
-                        <a class="nav-link" href="javascript:;">
-                            <i class="material-icons">link</i>
-                            <span> Enlaces </span>
+                        <a class="nav-link"  href="<?= route('admin/salir/')?>">
+                            <i class="material-icons">&#xE879;</i>
+                            <span> Salir </span>
                         </a>
                     </li>
-                    <div class="nav-submenus">
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/mis-negocios/')?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Mis Negocios</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/salir/')?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Salir</span>
-                            </a>
-                        </li>
-
-                    
-                    </div>
                 </div>
             </ul>
         <?php endif ?>

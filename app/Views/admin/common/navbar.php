@@ -2,7 +2,7 @@
     <!-- Main Navbar -->
     <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
         <?php if (isset($menu) && $menu === true) : ?>
-            <div class="navbar__menu flex-row">
+            <div class="navbar__menu flex-row d-none d-md-block">
                 <a id="btn-toogle-desktop" class="nav-link nav-link-icon text-center cursor-pointer color-plomo">
                     <i class="material-icons">reorder</i>
                 </a>
@@ -16,15 +16,25 @@
                         <i class="fas fa-chart-line" style="color: rgb(0, 123, 255);"></i>
                     </div>
                 </div>
+
                 <input id="titulo" class="navbar-search form-control text-uppercase" type="text" readonly style="background: white; color:black; font-size: 14px;" value="<?= isset($titulo) && !empty($titulo) ? $titulo : NOMBRE_SITIO ?>">
 
             </div>
         </div>
         <ul class="navbar-nav border-left flex-row">
 
-            <?php if ( isset($showNotificacion) && $showNotificacion) : ?>
+            <?php if (isset($showNotificacion) && $showNotificacion) : ?>
+
+                <li class="nav-item border-right dropdown">
+                    <a class="nav-link nav-link-icon text-center" href="<?= route('admin/mis-negocios/') ?>" role="button" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Mis Negocios">
+                        <div class="nav-link-icon__wrapper">
+                            <i class="material-icons">business</i>
+                        </div>
+                    </a>
+                </li>
+
                 <li class="nav-item border-right dropdown notifications">
-                    <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Notificaciones">
                         <div class="nav-link-icon__wrapper">
                             <i class="material-icons">&#xE7F4;</i>
                             <span id="count-noti" class="badge badge-pill badge-danger"><?= isset($aryNotificaciones) && fncValidateArray($aryNotificaciones) ? count($aryNotificaciones) : 0  ?></span>
@@ -40,18 +50,19 @@
                                         </div>
                                     </div>
                                     <div class="notification__content">
-                                        <span class="notification__category"><?= $aryNoti["sCliente"] ?> - <?= sp($aryNoti["sEmpleado"]) ?></span>
+                                        <span class="notification__category"><?= $aryNoti["sCliente"] ?> -
+                                            <?= sp($aryNoti["sEmpleado"]) ?></span>
                                         <p><?= $aryNoti["sCambio"] ?></p>
                                     </div>
                                 </a>
                             <?php endforeach ?>
-                            <a class="dropdown-item notification__all text-center ShowMore" data-action="show" onclick="setTimeout(()=>{$('#dropdownMenuLink').trigger('click');}, 700);" href="javascript:;"> Ver todos los mensajes </a>
+                            <a class="dropdown-item notification__all text-center ShowMore" data-action="show" onclick="setTimeout(()=>{$('#dropdownMenuLink').trigger('click');}, 700);" href="javascript:;">
+                                Ver todos los mensajes </a>
                         <?php endif ?>
                     </div>
                 </li>
             <?php endif ?>
 
-            <?php // var_dump( $user ); ?>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="<?= !empty($user['sImagen']) && file_exists(ROOTPATHRESOURCE . "/images/multi/" . $user['sImagen']) ? src('multi/' . $user["sImagen"]) :  src('app/avatar.jpg') ?>" alt="<?= $user['sNombre'] ?>">

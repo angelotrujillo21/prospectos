@@ -55,15 +55,17 @@ class ProspectosController extends Controller
             $this->view(
                 'admin/prospectos',
                 [
-                    "titulo"                => "Configuracion de prospectos",
-                    "menu"                  => true,
-                    "user"                  => $this->session->get('user'),
-                    'aryNotificaciones'     => $this->prospecto->fncObtenerCambiosForAdmin($nIdNegocio, 1),
-                    'showNotificacion'      => true,
-                    'nIdNegocio'            => $nIdNegocio,
-                    'aryCamposClientes'     => $aryCamposClientes,
-                    'aryCamposCatalogo'     => $aryCamposCatalogo,
-                    'aryTipoCampos'         => $aryTipoCampos,
+                    "titulo"                 => "Configuracion de prospectos",
+                    "menu"                   => true,
+                    "user"                   => $this->session->get('user'),
+                    'aryNotificaciones'      => $this->prospecto->fncObtenerCambiosForAdmin($nIdNegocio, 1),
+                    'showNotificacion'       => true,
+                    'nIdNegocio'             => $nIdNegocio,
+                    'aryCamposClientes'      => $aryCamposClientes,
+                    'aryCamposCatalogo'      => $aryCamposCatalogo,
+                    'aryTipoCampos'          => $aryTipoCampos,
+                    'nRolProspectoAdmin'     => $this->fncGetVarConfig("nRolProspectoAdmin")
+
                 ]
             );
         } catch (Exception $ex) {
@@ -106,11 +108,10 @@ class ProspectosController extends Controller
 
             if (fncValidateArray($aryProspectos)) {
                 foreach ($aryProspectos as $aryProspecto) {
-
                     $aryEmpleado =  ($this->empleado->fncGetEmpleados(null, $nIdNegocio, $aryProspecto["nIdEmpleado"]));
                     $aryEmpleado =   fncValidateArray($aryEmpleado) > 0 ? $aryEmpleado[0] : [];
 
-                    $aryUltimaCita = ($this->prospecto->fncGetProspectoActividadByIdProspecto($aryProspecto["nIdProspecto"], $nTipoActividadCita, " act.nIdActividad DESC ", 1));
+                    $aryUltimaCita = ($this->prospecto->fncGetProspectoActividadByIdProspecto($aryProspecto["nIdProspecto"], $nTipoActividadCita, null, null, " act.nIdActividad DESC ", 1));
                     $aryUltimaCita = fncValidateArray($aryUltimaCita) > 0 ? $aryUltimaCita[0] : [];
 
 
@@ -120,7 +121,9 @@ class ProspectosController extends Controller
 
                     $aryCatalogo = $this->prospecto->fncGetAryProspectoCatalogo($aryProspecto["nIdProspecto"], SIMBOLO_MONEDA);
 
-                    if ($aryProspecto["nIdEtapa"] == $nIdEtapaCierre) $nTotalCierre++;
+                    if ($aryProspecto["nIdEtapa"] == $nIdEtapaCierre) {
+                        $nTotalCierre++;
+                    }
 
                     if (fncValidateArray($aryCatalogo)) {
                         foreach ($aryCatalogo as $aryCat) {
@@ -142,14 +145,13 @@ class ProspectosController extends Controller
                     }
 
                     if ($sFiltro == 'CITAS' && fncValidateArray($aryUltimaCita) && ($nIdEstadoActividadPendiente == $aryUltimaCita["nIdEstadoActividad"])) {
-
                         $bCheckRango = fncCheckInRange($dFechaHoy, $dAUnaSemana, $aryUltimaCita["dFecha"]);
                         if ($bCheckRango) {
                             $aryData[] = $this->fncBuilRowItemProspecto($aryProspecto, $aryEmpleado, $aryCatalogo, $aryUltimaCita);
                         }
-                    } else if ($sFiltro == 'CIERRES' && ($aryProspecto["nIdEtapa"] == $nIdEtapaCierre)) {
+                    } elseif ($sFiltro == 'CIERRES' && ($aryProspecto["nIdEtapa"] == $nIdEtapaCierre)) {
                         $aryData[] = $this->fncBuilRowItemProspecto($aryProspecto, $aryEmpleado, $aryCatalogo, $aryUltimaCita);
-                    } else if ($sFiltro == 'OPORTUNIDAD' && ($aryProspecto["nPorcentaje"] >= 25) && ($aryProspecto["nPorcentaje"] <= 90)) {
+                    } elseif ($sFiltro == 'OPORTUNIDAD' && ($aryProspecto["nPorcentaje"] >= 25) && ($aryProspecto["nPorcentaje"] <= 90)) {
                         $aryData[] = $this->fncBuilRowItemProspecto($aryProspecto, $aryEmpleado, $aryCatalogo, $aryUltimaCita);
                     }
 
@@ -163,7 +165,7 @@ class ProspectosController extends Controller
                 "nAvance"        => $nAvance,
                 "nRentaBasica"   => SIMBOLO_MONEDA . nf($nRentaBasica),
                 "nCompra"        => SIMBOLO_MONEDA . (count($aryProspectos) > 0 ?  nf($nRentaBasica / count($aryProspectos)) : 0),
-                "nTicket"        => $nAvance > 0 ? intval($nRentaBasica / $nAvance) : 0,
+                "nTicket"        => $nAvance > 0 ? SIMBOLO_MONEDA . nf($nRentaBasica / $nAvance) : 0,
                 "nEfectividad"   => $nTotal > 0 ? ((round(($nRentaBasica / $nTotal) * 100)) . "%")  : 0,
                 "nCitasCercanas" => $nCitasCercanas,
                 "nTotalCierre"   => $nTotalCierre,
@@ -181,18 +183,95 @@ class ProspectosController extends Controller
     public function fncBuilRowItemProspecto($aryProspecto, $aryEmpleado, $aryCatalogo, $aryUltimaCita)
     {
         return [
-            "nIdProspecto"      => $aryProspecto["nIdProspecto"],
-            "nIdEtapa"          => $aryProspecto["nIdEtapa"],
-            "sEtapa"            => $aryProspecto["sNombreEtapa"],
-            "sCliente"          => $aryProspecto["sCliente"],
-            "aryEmpleado"       => $aryEmpleado,
-            "aryCatalogo"       => $aryCatalogo,
-            "aryUltimaCita"     => $aryUltimaCita,
-            "sTimeUltimoAcceso" => fncSecondsToTime($aryProspecto["sTimeUltimoAcceso"])
+            "nIdProspecto"       => $aryProspecto["nIdProspecto"],
+            "nIdProspectoFormat" => sp($aryProspecto["nIdProspecto"]),
+            "nIdEtapa"           => $aryProspecto["nIdEtapa"],
+            "sEtapa"             => $aryProspecto["sNombreEtapa"],
+            "sCliente"           => $aryProspecto["sCliente"],
+            "aryEmpleado"        => $aryEmpleado,
+            "aryCatalogo"        => $aryCatalogo,
+            "aryUltimaCita"      => $aryUltimaCita,
+            "sTimeUltimoAcceso"  => fncSecondsToTime($aryProspecto["sTimeUltimoAcceso"])
         ];
     }
 
+    public function fncGetProspectosParaReporteVentas()
+    {
+        $nIdNegocio           = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+        $nIdEmpleado          = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $sBuscador            = isset($_POST['sBuscador']) ? $_POST['sBuscador'] : null;
+        $nValidacionAdmin     = isset($_POST['nValidacionAdmin']) ? $_POST['nValidacionAdmin'] : null;
+        $nIdEtapa             = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
+        $nIdSupervisor        = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
+        $nIdTipoItem          = isset($_POST['nIdTipoItem']) ? $_POST['nIdTipoItem'] : null;
 
+        try {
+            // Valida valores del formulario
+            if ($nIdNegocio == null) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryData = [];
+            $aryProspectos  = $this->prospecto->fncGetProspectoAll($nIdNegocio, $nIdEmpleado, $sBuscador, $nValidacionAdmin, $nIdEtapa, $nIdSupervisor, null, $nIdTipoItem);
+
+
+            if (fncValidateArray($aryProspectos)) {
+                foreach ($aryProspectos as $nKey => $aryProspecto) {
+                    $aryCliente     = ($this->clientes->fncGetClienteById($aryProspecto["nIdCliente"]))[0];
+                    $aryDataDetalle = $this->fncGetDetalleCatalogoByIdProspecto($aryProspecto["nIdProspecto"], $nIdTipoItem);
+
+                    $aryData[] = [
+                        "nItem"             => sp($nKey + 1, 4),
+                        "dFechaCreacion"    => $aryProspecto["dFecha"],
+                        "sCliente"          => $aryCliente["sNombreoRazonSocial"],
+                        "sTelefono"         => $aryCliente["sTelefono"],
+                        "sDocumento"        => $aryCliente["sTipoDoc"] . "-" .  $aryCliente["sNumeroDocumento"],
+                        "sTipoItem"         => $aryDataDetalle["sTipoItem"],
+                        "nCantidad"         => $aryDataDetalle["nCantidad"],
+                        "nTotal"            => nf($aryDataDetalle["nTotal"]),
+                        "sEmpleado"         => $aryProspecto["sEmpleado"],
+                    ];
+                }
+            }
+
+            $this->json(array("success" => true, "aryData" => $aryData));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncGetDetalleCatalogoByIdProspecto($nIdProspecto, $nIdTipoItem = null)
+    {
+        try {
+
+            $aryDetalles = $this->prospecto->fncObtenerDetalleProspecto($nIdProspecto, $nIdTipoItem);
+            $nTotal      = 0;
+            $nCantidad   = 0;
+            $aryItems    = [];
+
+            if (fncValidateArray($aryDetalles)) {
+                foreach ($aryDetalles as $aryDetalle) {
+                    $nTotalItem   = $aryDetalle["nCantidad"] *  $aryDetalle["nPrecio"];
+                    $nTotal      += $nTotalItem;
+                    $nCantidad   += $aryDetalle["nCantidad"];
+                    $aryItems[]  = $aryDetalle["sTipoItem"];
+                }
+            }
+
+            $aryItems  = array_unique($aryItems);
+            $sTipoItem = "";
+
+            if (count($aryItems) == 1) {
+                $sTipoItem = $aryItems[0];
+            } else {
+                $sTipoItem = implode(",", $aryItems);
+            }
+
+            return ["nTotal" => $nTotal, "nCantidad" => $nCantidad, "sTipoItem" => $sTipoItem];
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
 
     public function fncGrabarProspecto()
     {
@@ -235,7 +314,18 @@ class ProspectosController extends Controller
 
                 if (fncValidateArray($aryActividades)) {
                     foreach ($aryActividades as $aryActi) {
-                        $this->prospecto->fncGrabarProspectoActividad($nIdNewProspecto, $aryActi["nIdEmpleado"], $aryActi["nTipoActividad"], $aryActi["nIdEstadoActividad"], $aryActi["sFechaActividad"], $aryActi["sHoraActividad"], $aryActi["sNota"], $aryActi["nEstado"]);
+                        $this->prospecto->fncGrabarProspectoActividad(
+                            $nIdNewProspecto,
+                            $aryActi["nIdEmpleado"],
+                            $aryActi["nTipoActividad"],
+                            $aryActi["nIdEstadoActividad"],
+                            $aryActi["sFechaActividad"],
+                            $aryActi["sHoraActividad"],
+                            $aryActi["sNota"],
+                            $aryActi["sLatitud"],
+                            $aryActi["sLongitud"],
+                            $aryActi["nEstado"]
+                        );
                     }
                     $sCambio = ("Se creo " . count($aryActividades) . (count($aryActividades) == 1 ? " cita " : " citas "));
                     $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdEmpleado, $sCambio, $nEstado);
@@ -316,12 +406,10 @@ class ProspectosController extends Controller
 
     public function fncGetActividadByIdProspecto()
     {
-
         $nIdRegistro    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
         $nTipoActividad = isset($_POST['nTipoActividad']) ? $_POST['nTipoActividad'] : null;
 
         try {
-
             $aryData = [];
             $aryActividades =   $this->prospecto->fncGetProspectoActividadByIdProspecto($nIdRegistro, $nTipoActividad);
 
@@ -367,12 +455,12 @@ class ProspectosController extends Controller
                     // color rojo
                     $sColor = "rojo";
                 } else {
-                    // si la difrencia es mayor a una año a un mes o aun dia 
+                    // si la difrencia es mayor a una año a un mes o aun dia
                     if ($df->y > 0 || ($df->m > 0) || $df->d > 0) {
                         // color verde
                         $sColor =  "verde";
                         // si la diferencia es menor a 24 horas
-                    } else if ($df->h < 24) {
+                    } elseif ($df->h < 24) {
                         // color amarillo
                         $sColor =  "amarillo";
                     }
@@ -436,7 +524,7 @@ class ProspectosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-            // Se le adjunta un id al nombre del camp para que sean distintos 
+            // Se le adjunta un id al nombre del camp para que sean distintos
             $sNombreDb = fncSanitizeDb($nIdNegocio . $sNombre);
             $nSize     = 250;
 
@@ -534,7 +622,7 @@ class ProspectosController extends Controller
                 $this->prospecto->fncActualizaProspectoCatalogo($nIdRegistro, $nIdProspecto, $nIdCatalogo, $nCantidad, $nPrecio);
             }
 
-            $sSuccess =  $nIdRegistro == 0 ? 'Producto o servicio registrado exitosamente...' : 'Producto o servicio exitosamente...';
+            $sSuccess =  $nIdRegistro == 0 ? 'Producto o servicio registrado exitosamente...' : 'Producto o servicio actualizado exitosamente...';
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
@@ -611,6 +699,8 @@ class ProspectosController extends Controller
             $sFechaActividad       = isset($_POST['sFechaActividad']) ? $_POST['sFechaActividad'] : null;
             $sHoraActividad        = isset($_POST['sHoraActividad']) ? $_POST['sHoraActividad'] : null;
             $sNota                 = isset($_POST['sNota']) ? $_POST['sNota'] : null;
+            $sLatitud              = isset($_POST['sLatitud']) ? $_POST['sLatitud'] : null;
+            $sLongitud             = isset($_POST['sLongitud']) ? $_POST['sLongitud'] : null;
             $nEstado               = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
             // Valida valores del formulario
@@ -632,6 +722,8 @@ class ProspectosController extends Controller
                     $sFechaActividad,
                     $sHoraActividad,
                     $sNota,
+                    $sLatitud,
+                    $sLongitud,
                     $nEstado
                 );
 
@@ -647,6 +739,8 @@ class ProspectosController extends Controller
                     $sFechaActividad,
                     $sHoraActividad,
                     $sNota,
+                    $sLatitud,
+                    $sLongitud,
                     $nEstado
                 );
 
@@ -656,7 +750,7 @@ class ProspectosController extends Controller
 
             $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdEmpleado, $sCambio, 1);
 
-            // Validar 2 Citas Efectivas 
+            // Validar 2 Citas Efectivas
             $bChangeEstado = false;
             $nIdEtapaNegociacion = $this->fncGetVarConfig("nIdEtapaNegociacion");
             $aryData = $this->prospecto->fncGetActividadesByProspecto($nIdProspecto, $nTipoActividad, $this->fncGetVarConfig("nIdEstadoActividadEjecutado"));
@@ -665,7 +759,7 @@ class ProspectosController extends Controller
                 $this->prospecto->fncActualizarEstadoProspecto($nIdProspecto, $nIdEtapaNegociacion);
                 $bChangeEstado = true;
             }
-            // Fin de validacion 
+            // Fin de validacion
 
             $sSuccess =  $nIdRegistro == 0 ?  $sActividad . ' registrado exitosamente...' :  $sActividad . ' actualizado exitosamente...';
 
@@ -729,7 +823,6 @@ class ProspectosController extends Controller
             $sCambio  = null;
 
             if ($nIdRegistro == 0) {
-
                 $this->prospecto->fncGrabarProspectoNota(
                     $nIdProspecto,
                     $nIdEmpleado,
@@ -738,7 +831,6 @@ class ProspectosController extends Controller
                 );
                 $sCambio = "Se creo una nueva nota";
             } else {
-
                 $this->prospecto->fncActualizaProspectoNota(
                     $nIdRegistro,
                     $nIdProspecto,
@@ -780,7 +872,6 @@ class ProspectosController extends Controller
 
     public function fncActualizarControlExtra()
     {
-
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
         $nIdEmpleado = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
         $sWidget     = isset($_POST['sWidget']) ? $_POST['sWidget'] : null;
@@ -805,7 +896,6 @@ class ProspectosController extends Controller
 
     public function fncGetCambioProspectoByIdProspecto()
     {
-
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
@@ -824,7 +914,6 @@ class ProspectosController extends Controller
 
     public function fncGrabarCambioProspecto()
     {
-
         $nIdRegistro    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
         $nIdEmpleado    = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
         $sCambio        = isset($_POST['sCambio']) ? $_POST['sCambio'] : null;
@@ -846,7 +935,6 @@ class ProspectosController extends Controller
 
     public function fncActualizarEstadoProspecto()
     {
-
         $nIdRegistro    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
         $nIdEtapa       = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
 
@@ -884,7 +972,6 @@ class ProspectosController extends Controller
 
     public function fncEnviarPropuesta($nIdProspecto)
     {
-
         try {
             $aryDataProspecto        = $this->prospecto->fncGetProspectoById($nIdProspecto);
             $aryDataProspectoDetalle = $this->prospecto->fncGetProspectoCatalogoByIdProspecto($nIdProspecto);
@@ -922,7 +1009,6 @@ class ProspectosController extends Controller
 
 
             if (strlen($aryCliente["sCorreo"]) > 0) {
-
                 $mail = new Mail();
 
                 $html = '
@@ -993,7 +1079,7 @@ class ProspectosController extends Controller
 
             // exit;
             if ($nIdRegistro == 0) {
-                // Crear 
+                // Crear
 
                 if (isset($sContrato) && !is_null($sContrato)) {
                     $bChangeEstado = true;
@@ -1011,9 +1097,7 @@ class ProspectosController extends Controller
                 // Actualizar
 
                 if (isset($sContrato) && !is_null($sContrato)) {
-
                     if ($nIdAdjuntoContrato > 0) {
-
                         $aryDataContrato = $this->prospecto->fncObtenerProspectoAdjunto($nIdAdjuntoContrato);
 
                         if (fncValidateArray($aryDataContrato)) {
@@ -1025,7 +1109,7 @@ class ProspectosController extends Controller
                         $sNombreContrato = Upload::process($sContrato, 'docs');
                         $this->prospecto->fncActualizaProspectoAdjunto($nIdAdjuntoContrato, $nIdProspecto, $sNombreContrato, 1);
                     } else {
-                        // Si no existe pero se va a editar 
+                        // Si no existe pero se va a editar
                         $sNombreContrato = Upload::process($sContrato, 'docs');
                         $this->prospecto->fncGrabarProspectoAdjunto($nIdProspecto, $sNombreContrato, 1);
                     }
@@ -1065,7 +1149,7 @@ class ProspectosController extends Controller
 
             $aryData = $this->prospecto->fncObtenerProspectoAdjunto($nIdRegistro);
 
-            // Eliminar la imagen 
+            // Eliminar la imagen
             if (!empty($aryData['sNombreArchivo'])) {
                 fncEliminarArchivo(ROOTPATHRESOURCE . "/docs/" . $aryData['sNombreArchivo']);
             }
@@ -1081,7 +1165,6 @@ class ProspectosController extends Controller
 
     public function fncObtenerProspectoAdjuntosByIdProspecto()
     {
-
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
@@ -1102,7 +1185,6 @@ class ProspectosController extends Controller
 
     public function fncActualizarEstadoCambiosProspecto()
     {
-
         $nIdNegocio = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
         $nEstado    = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
@@ -1123,7 +1205,6 @@ class ProspectosController extends Controller
 
     public function fncTerminarProspecto()
     {
-
         $nIdRegistro    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
         $nIdEtapa       = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
 
@@ -1134,6 +1215,7 @@ class ProspectosController extends Controller
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
 
+            $this->prospecto->fncActualizarCierreProspecto($nIdRegistro);
             $this->prospecto->fncActualizarEstadoProspecto($nIdRegistro, $nIdEtapa);
             $this->json(array("success" => "Genial ! . Se termino el prospecto de forma correcta"));
         } catch (Exception $ex) {
@@ -1158,7 +1240,6 @@ class ProspectosController extends Controller
 
             if (fncValidateArray($aryProspectos)) {
                 foreach ($aryProspectos as $nKey => $aryProspecto) {
-
                     $aryEmpleado =  ($this->empleado->fncGetEmpleados(null, $nIdNegocio, $aryProspecto["nIdEmpleado"]));
                     $aryEmpleado =   fncValidateArray($aryEmpleado) > 0 ? $aryEmpleado[0] : [];
 
@@ -1182,6 +1263,191 @@ class ProspectosController extends Controller
             }
 
             $this->json(array("success" => "Mostrando resultados..", "aryData" => $aryData));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncSocket()
+    {
+        try {
+            $this->view("empleado/socket");
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncIndicativosHoy()
+    {
+        try {
+            $nIdNegocio   = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+            $nIdEmpleado  = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+
+            $nCantidadCitasHoy = 0;
+            $nCierreHoy        = 0;
+            $nRentaBasica      = 0;
+
+            $aryProspectos  = $this->prospecto->fncGetProspectoAll(
+                $nIdNegocio,
+                $nIdEmpleado,
+                null,
+                null,
+                $this->fncGetVarConfig("nIdEtapaCierre"),
+                null,
+                null,
+                null,
+                null,
+                date("d/m/Y")
+            );
+
+            $nCierreHoy  = count($aryProspectos);
+
+            if (fncValidateArray($aryProspectos)) {
+                foreach ($aryProspectos as $aryProspecto) {
+
+                    $aryCatalogo = $this->prospecto->fncGetAryProspectoCatalogo($aryProspecto["nIdProspecto"], SIMBOLO_MONEDA);
+
+                    if (fncValidateArray($aryCatalogo)) {
+                        foreach ($aryCatalogo as $aryCat) {
+                            $nRentaBasica +=  $aryCat["nTotal"];
+                        }
+                    }
+                }
+            }
+
+
+            $aryCitas  = $this->prospecto->fncGetActividadesByProspecto(
+                null,
+                $this->fncGetVarConfig("nTipoActividadCita"),
+                $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
+                $nIdEmpleado,
+                date("d/m/Y"),
+                $nIdNegocio
+            );
+
+            $nCantidadCitasHoy  = $aryCitas["nCantidad"];
+
+            $aryData = [
+                "nCierreHoy"        => $nCierreHoy,
+                "nCantidadCitasHoy" => $nCantidadCitasHoy,
+                "nRentaBasica"      => SIMBOLO_MONEDA . nf($nRentaBasica),
+            ];
+
+            $this->json(array("success" => "Mostrando resultados..", "aryData" => $aryData));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncGetActividadesNoCumplidas()
+    {
+        try {
+
+            $nIdEmpleado  = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+
+            // Valida valores del formulario
+            if (is_null($nIdEmpleado)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryCitas = $this->prospecto->fncGetProspectoActividadByIdProspecto(
+                NULL,
+                $this->fncGetVarConfig("nTipoActividadCita"),
+                $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
+                $nIdEmpleado
+            );
+
+            $nCantidadActividad  = 0;
+            $bExistenNoCumplidas = false;
+            $sDetalle            = "";
+
+
+            if (fncValidateArray($aryCitas)) {
+                foreach ($aryCitas as $aryCita) {
+                    $sColor = $this->fncObtenerColor($aryCita["sEstadoActividadCorta"], $aryCita["dtFechaEjecucion"]);
+                    if ($sColor == 'rojo') {
+                        $nCantidadActividad++;
+                        $bExistenNoCumplidas = true;
+                        $sDetalle .= "<b>Prospecto</b> " . sp($aryCita["nIdProspecto"]) . " - " . " <b>Cliente</b> " . $aryCita["sCliente"] . "</br>";
+                    }
+                }
+            }
+
+            $aryData = [
+                "bExistenNoCumplidas" => $bExistenNoCumplidas,
+                "sDetalle"            => $sDetalle,
+                "nCantidadActividad"  => $nCantidadActividad
+            ];
+
+            $this->json(array("success" => "Mostrando resultados..", "aryData" => $aryData));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncGetIndicativosGeneral()
+    {
+        $nIdNegocio           = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+        $nIdEmpleado          = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $sBuscador            = isset($_POST['sBuscador']) ? $_POST['sBuscador'] : null;
+        $sFiltro              = isset($_POST['sFiltro']) ? $_POST['sFiltro'] : null;
+        $nValidacionAdmin     = isset($_POST['nValidacionAdmin']) ? $_POST['nValidacionAdmin'] : null;
+        $nIdEtapa             = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
+        $nIdSupervisor        = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
+
+        try {
+            // Valida valores del formulario
+            if (is_null($nIdNegocio)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryData = [];
+            $aryProspectos  = $this->prospecto->fncGetProspectoAll($nIdNegocio);
+
+            $nAvance        = 0;
+            $nRentaBasica   = 0;
+            $nTotal         = 0;
+            $nTotalCierre   = 0;
+            $nOportunidad   = 0;
+
+            $nIdEtapaCierre = $this->fncGetVarConfig("nIdEtapaCierre");
+
+            if (fncValidateArray($aryProspectos)) {
+                foreach ($aryProspectos as $aryProspecto) {
+
+                    $aryCatalogo = $this->prospecto->fncGetAryProspectoCatalogo($aryProspecto["nIdProspecto"], SIMBOLO_MONEDA);
+
+                    if ($aryProspecto["nIdEtapa"] == $nIdEtapaCierre) {
+                        $nTotalCierre++;
+                    }
+
+                    if (fncValidateArray($aryCatalogo)) {
+                        foreach ($aryCatalogo as $aryCat) {
+                            $nAvance      += $aryProspecto["nIdEtapa"] == $nIdEtapaCierre ? $aryCat["nCantidad"] : 0;
+                            $nRentaBasica += $aryProspecto["nIdEtapa"] == $nIdEtapaCierre ? $aryCat["nTotal"] : 0;
+                            $nTotal       += $aryCat["nTotal"];
+                        }
+                    }
+
+                    if (($aryProspecto["nPorcentaje"] >= 25) && ($aryProspecto["nPorcentaje"] <= 90)) {
+                        $nOportunidad++;
+                    }
+                }
+            }
+
+            $aryData = [
+                "nAvance"        => $nAvance,
+                "nRentaBasica"   => SIMBOLO_MONEDA . nf($nRentaBasica),
+                "nCompra"        => SIMBOLO_MONEDA . (count($aryProspectos) > 0 ?  nf($nRentaBasica / count($aryProspectos)) : 0),
+                "nTicket"        => $nAvance > 0 ? SIMBOLO_MONEDA . nf($nRentaBasica / $nAvance) : 0,
+                "nEfectividad"   => $nTotal > 0 ? ((round(($nRentaBasica / $nTotal) * 100)) . "%")  : 0,
+                "nTotalCierre"   => $nTotalCierre,
+                "nOportunidad"   => $nOportunidad,
+                "nTotal"         => $nTotal,
+            ];
+
+            $this->json(array("success" => "Mostrando resultados..", "aryData" => $aryData));
+
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }

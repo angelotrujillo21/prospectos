@@ -5,7 +5,10 @@
     <?php extend_view(['admin/common/head'], $data) ?>
 </head>
 
-<body data-nidnegocio="<?= $nIdNegocio ?>">
+<body data-nidnegocio="<?= $nIdNegocio ?>"
+      data-nrol="<?=$user["nRol"]?>"
+      data-nrolprospectoadmin = "<?=$nRolProspectoAdmin?>"
+>
 
     <div class="page-loader">
         <div class="loader-dual-ring"></div>
@@ -57,6 +60,7 @@
 
                                                     <div id="content-controles-prospecto" class="row  ml-content-custom-switch w-100">
                                                     </div>
+
                                                 </div>
                                             </div>
 
@@ -196,7 +200,7 @@
                             <table id="tblDetalleSegmentacion" data-toggle="table" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="false" data-pagination="true" data-toolbar="#toolbar" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-card-view="false" data-page-size="14" data-sort-name="" data-sort-order="asc">
                                 <thead>
                                     <tr>
-                                        <th data-field="sAcciones" data-sortable="true">Acciones</th>
+                                        <th id="sAccionesDetalleSeg" data-field="sAcciones" data-sortable="true">Acciones</th>
                                         <th data-field="sNombre" data-sortable="true">Nombre</th>
                                         <th data-field="nEstado" data-sortable="true">Estado</th>
                                     </tr>
@@ -450,8 +454,9 @@
     var sEntidadCatalogo = '-2';
 
     $(function() {
-
+        fncValidarRol();
         // Prospecto 
+        fncEventListenerShowMoreLess();
         fncDrawProspecto();
 
       
@@ -532,8 +537,6 @@
         });
 
      
-
-
 
         $("#nTipoCampo").trigger("change");
 
@@ -678,6 +681,7 @@
         fncDrawCliente(function(bStatus){
             if(bStatus){
                 // El formulario de clientes ya cargo
+
                 $("#btnViewFormEmpresa").on('click',function(){
 
                     $("#nTipoDocumento"+sEntidadCliente).data( "sForm" , "EMPRESA" );
@@ -777,6 +781,7 @@
                                 fncBuscarDocument(jsnData ,function(aryData){
                                     if(aryData.success){
                                         $("#sNombreoRazonSocial-1").val(aryData.success.razonSocial);
+                                        $("#sDireccion-1").val(aryData.success.direccion);
                                     }
                                 });
 
@@ -807,6 +812,7 @@
             var nIdDepartamento        = $("#nIdDepartamento"  + sEntidadCliente);
             var nIdProvincia           = $("#nIdProvincia"  + sEntidadCliente);
             var nIdDistrito            = $("#nIdDistrito"  + sEntidadCliente);
+            var sDireccion             = $("#sDireccion"  + sEntidadCliente);
             var nIdRelacionamiento     = $("#nIdRelacionamiento"  + sEntidadCliente);
             var sTelefono              = $("#sTelefono"  + sEntidadCliente);
             var nEstado                = $("#nEstado"  + sEntidadCliente);
@@ -864,6 +870,7 @@
                 nIdDepartamento          : nIdDepartamento.length > 0 ? nIdDepartamento.val() : null,
                 nIdProvincia             : nIdProvincia.length > 0 ? nIdProvincia.val() : null,
                 nIdDistrito              : nIdDistrito.length > 0 ? nIdDistrito.val() : null,
+                sDireccion               : sDireccion.length > 0 ? sDireccion.val() : null,
                 sTelefono                : sTelefono.length > 0 ? sTelefono.val() : null,
                 nIdRelacionamiento       : nIdRelacionamiento.length > 0 ? nIdRelacionamiento.val() : null,
                 sContacto                : sContacto.length > 0 ? sContacto.val() : null,
@@ -958,16 +965,62 @@
         // Fin de formulario catalogo
 
 
-        $("#sortable").sortable({
-            cursor: "move",
-            update: function(event, ui) {
-                fncGrabarProspecto();
-            }
-        });
+  
 
     });
 
  
+    window.fncValidarRol = () => {
+
+        if( $("body").data("nrol")  == $("body").data("nrolprospectoadmin") ) {
+            
+            // Admin 
+            $("#btnCrearWidgetProspecto").show();
+            $("#btnCrearCliente").show();
+            $("#btnCrearSegmentacion").show();
+            $("#btnCrearItemSegmentacion").show();
+            $("#sAccionesDetalleSeg").show();
+            $("#tblDetalleSegmentacion").bootstrapTable('showColumn', 'sAcciones');
+
+            $("#sortable").sortable({
+                cursor: "move",
+                update: function(event, ui) {
+                    fncGrabarProspecto();
+                }
+            });
+
+        } else {
+
+            // Visitante 
+            $("#btnCrearWidgetProspecto").hide();
+            $("#btnCrearCliente").hide();
+            $("#btnCrearSegmentacion").hide();
+            $("#btnCrearItemSegmentacion").hide();
+            $("#tblDetalleSegmentacion").bootstrapTable('hideColumn', 'sAcciones');
+
+            $("#formCECliente").find(".modal-footer").hide();
+
+            $("#content-controles-prospecto")
+            .find(":input")
+            .each(function () {
+                console.log(1);
+                $(this).attr("disabled", "disabled");
+            });
+
+            $("#content-controles-prospecto")
+            .find("a.text-danger")
+            .each(function () {
+                 $(this).attr("onclick", "");
+                 $(this).find("i").html("block");
+            });
+
+            
+        }
+
+    }
+
+
+
     function fncCleanAll(){
 
         fncClearInputs($("#formCEProducto").find("form"));
@@ -998,6 +1051,7 @@
                 var aryData    = aryData.aryData;
                 var sHtml      = ``;
                 var sHtmlOrden = ``;
+                var isRolAdmin = $("body").data("nrol") == $("body").data("nrolprospectoadmin") ? true : false;
 
                 aryData.forEach(aryElement => {
 
@@ -1010,7 +1064,9 @@
                           <span>`
 
                               if(aryElement.nEdit == 1 || aryElement.nTipoWidget == 2){
-                                sHtml += `<a href="javascript:;" onclick="fncWidget(${aryElement.nIdWidget},${aryElement.nTipoWidget},${aryElement.nDefault},${aryElement.nIdConfigProspecto});" title="Editar"><i class="material-icons">edit</i> </a>`;
+                                sHtml += `<a href="javascript:;" onclick="fncWidget(${aryElement.nIdWidget},${aryElement.nTipoWidget},${aryElement.nDefault},${aryElement.nIdConfigProspecto});" title="Editar">
+                                   ${isRolAdmin ? ` <i class="material-icons">edit</i> `: ` <i class="material-icons">remove_red_eye</i>  ` } 
+                                </a>`;
                               }
 
                               if(aryElement.nTipoWidget == 2){
@@ -1042,6 +1098,9 @@
                 $("#sortable").html(sHtmlOrden);
                 fncListenEvents();
 
+                setTimeout(() => {
+                    fncValidarRol();
+                }, 700 );
                
 
             }else{
@@ -1052,6 +1111,7 @@
     }
 
     function fncWidget(nIdWidget,nTipoWidget,nDefault,nIdConfigProspecto){
+
 
         if(nTipoWidget == 1 && nDefault == 1){
 
@@ -1114,7 +1174,15 @@
 
                     var aryData = aryData.aryData;
                     
-                    $("#formInputProspecto").find(".modal-title").html("Editar Campo");
+                    var isRolAdmin  = $("body").data("nrol") == $("body").data("nrolprospectoadmin") ? true : false;
+                    var sTitle      = isRolAdmin ? "Editar Campo" : "Ver Campo";
+
+                    if(isRolAdmin){
+                        fncEditForm( "#formInputProspecto" , sTitle  );
+                    } else {
+                        fncViewForm( "#formInputProspecto" , sTitle  );
+                    }
+
                     $("#nTipoCampo").val(aryData.nTipoCampo).trigger("change");
                     $("#sNombreWidget").val(aryData.sNombreUsuario);
                     $("#nRequerido").val(aryData.nRequerido);

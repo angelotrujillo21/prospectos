@@ -50,7 +50,7 @@ class Users
 
     public function fncAccesoEmpleado($sCorreo, $sClave)
     {
-        $results = $this->db->run("SELECT * FROM empleados WHERE sCorreo = '$sCorreo' AND sClave = '$sClave'");
+        $results = $this->db->run("SELECT * FROM empleados WHERE sCorreo = '$sCorreo' AND sClave = '$sClave' AND nEstado = 1");
         /* si el resultado esta vacio o empty el metodo Select One devuelve false */
 
         if (count($results) == 0 || $results === false) {

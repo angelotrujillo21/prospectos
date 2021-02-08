@@ -51,16 +51,18 @@ class UsuariosController extends Controller
                 $sNombreImagen = Upload::process($sImagen, 'images/multi');
             }
 
+            $nIdUsuarioNew = null;
+
             // Crear 
             if ($nIdRegistro == 0) {
 
-                $aryData = $this->users->fncBuscarUsuarioPorCorreoOLogin($sEmail,$sLogin);
+                $aryData = $this->users->fncBuscarUsuarioPorCorreoOLogin($sEmail, $sLogin);
 
                 if (fncValidateArray($aryData)) {
                     $this->exception("Error. Ya existe un usuario con el correo ingresado.Porfavor verifique");
                 }
 
-                $nIdUsuario = $this->users->fncGrabarUsuario(
+                $nIdUsuarioNew = $this->users->fncGrabarUsuario(
                     $sNombre,
                     $sApellidos,
                     $sEmail,
@@ -83,11 +85,12 @@ class UsuariosController extends Controller
                     $nIdRol,
                     $nEstado
                 );
+                $nIdUsuarioNew = $nIdRegistro;
             }
 
             $sSuccess =  $nIdRegistro == 0 ? 'Usuario registrado exitosamente...' : 'Usuario actualizado exitosamente...';
 
-            $this->json(array("success" => $sSuccess));
+            $this->json(array("success" => $sSuccess, 'nIdUsuarioNew' => $nIdUsuarioNew));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }
@@ -137,10 +140,10 @@ class UsuariosController extends Controller
 
             $aryData = $this->users->fncBuscarUsuarioPorCorreo($sEmail);
 
-            if ( fncValidateArray( $aryData ) ) {
-              
+            if (fncValidateArray($aryData)) {
+
                 $aryData = $aryData[0];
-              
+
                 $aryUser = $this->users->getUser($aryData["nIdUsuario"]);
 
                 $mail = new Mail();
@@ -158,11 +161,11 @@ class UsuariosController extends Controller
                     </p>
 
                     <p>
-                       <span style="font-size:14px;font-family:Arial"><b>Login :</b> '.$aryUser["sLogin"].'  </span>
+                       <span style="font-size:14px;font-family:Arial"><b>Login :</b> ' . $aryUser["sLogin"] . '  </span>
                     </p>
 
                     <p>
-                        <span style="font-size:14px;font-family:Arial"><b>Clave :</b> '.$aryUser["sClave"].'  </span>
+                        <span style="font-size:14px;font-family:Arial"><b>Clave :</b> ' . $aryUser["sClave"] . '  </span>
                     </p>
                   
                     <p>
@@ -170,12 +173,11 @@ class UsuariosController extends Controller
                     </p>
                 </div>';
 
-                if ($mail->send(['sFrom' => 'Auth' , 'subject' => 'Recuperacion de acceso', 'body' => $sHtml, 'sCorreo' => $aryUser["sEmail"], 'sNombre' => $aryUser["sNombre"]])) {
-                    $this->json(array("success" => "Genial!.Enviamos los datos de acceso al correo ". $aryUser["sEmail"]  .". Porfavor verifique."));
+                if ($mail->send(['sFrom' => 'Auth', 'subject' => 'Recuperacion de acceso', 'body' => $sHtml, 'sCorreo' => $aryUser["sEmail"], 'sNombre' => $aryUser["sNombre"]])) {
+                    $this->json(array("success" => "Genial!.Enviamos los datos de acceso al correo " . $aryUser["sEmail"]  . ". Porfavor verifique."));
                 } else {
                     $this->exception("Error. Se encontro al usuario pero no se pudo enviar el correo . Intentelo mas tarde porfavor");
                 }
-
             } else {
                 $this->exception("Error. No se encontro data con el correo ingresado. Porfavor veriique");
             }
@@ -183,4 +185,24 @@ class UsuariosController extends Controller
             $this->json(array("error" => $ex->getMessage()));
         }
     }
+
+    public function fncFormularioUsuario($nIdNegocio, $nRol)
+    {
+        try {
+
+
+            $this->view('admin/formulario-usuario', array(
+                'nIdNegocio'    => $nIdNegocio,
+                'nRol'          => $nRol,
+            ));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+
+  
+
+
+
 }

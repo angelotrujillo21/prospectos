@@ -31,11 +31,26 @@ class Negocios
     }
 
 
-    public function fncGetNegociosByIdUsuario($idUsuario)
+    public function fncGetNegociosByIdUsuario($nIdUsuario = null ,$nIdNegocio= null)
     {
-        $resultIds = $this->db->run("SELECT IFNULL(GROUP_CONCAT(usuanego.nIdNegocio),0) as ids FROM usuariosnegocios as usuanego WHERE usuanego.nIdUsuario = $idUsuario");
-        $results   = $this->db->run("SELECT * FROM negocios WHERE nIdNegocio IN (" . $resultIds[0]["ids"] . ")");
-        return $results;
+
+        $sSQL = "SELECT DISTINCT  neg.nIdNegocio, usuneg.nIdUsuario,  neg.sNombre, neg.sDireccion, neg.sImagen, neg.nTipoProspecto, usuneg.nRol, neg.nEstado
+                FROM
+                    negocios AS neg
+                INNER JOIN usuariosnegocios AS usuneg ON neg.nIdNegocio = usuneg.nIdNegocio
+                ";
+
+        $sWhere = "";
+
+        $sWhere .= (is_null($nIdUsuario) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " usuneg.nIdUsuario = $nIdUsuario ");
+
+        $sWhere .= (is_null($nIdNegocio) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " usuneg.nIdNegocio = $nIdNegocio ");
+
+        $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
+
+        // $resultIds = $this->db->run("SELECT IFNULL(GROUP_CONCAT(usuanego.nIdNegocio),0) as ids FROM usuariosnegocios as usuanego WHERE usuanego.nIdUsuario = $idUsuario");
+        // $results   = $this->db->run("SELECT * FROM negocios WHERE nIdNegocio IN (" . $resultIds[0]["ids"] . ")");
+        return $this->db->run(trim($sSQL));
     }
 
 
@@ -87,6 +102,7 @@ class Negocios
     }
 
 
+
     public function fncGrabarConfiguracionCampos($nIdNegocio, $nIdCampo, $nEstado)
     {
         $sSQL = "INSERT INTO configuracioncampos(
@@ -113,19 +129,20 @@ class Negocios
         return $this->db->run($sSQL);
     }
 
-    public function fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio)
+    public function fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nRol)
     {
         $sSQL = "INSERT INTO usuariosnegocios(
                   nIdUsuario,
-                  nIdNegocio
+                  nIdNegocio,
+                  nRol
                 ) VALUES (
                     " . (is_null($nIdUsuario) || empty($nIdUsuario) ? "NULL" : "$nIdUsuario") . " ,
-                    " . (is_null($nIdNegocio) || empty($nIdNegocio) ? "NULL" : "$nIdNegocio") . " 
+                    " . (is_null($nIdNegocio) || empty($nIdNegocio) ? "NULL" : "$nIdNegocio") . " ,
+                    " . (is_null($nRol) || empty($nRol) ? "NULL" : "$nRol") . " 
                 )";
+
         return  $this->db->run($sSQL);
     }
-
-
 
     public function fncGetConfiguracionCampo($nIdNegocio, $nIdEntidad, $nEstado  = null, $nOrdenTable = false)
     {
@@ -147,10 +164,29 @@ class Negocios
                 INNER JOIN tiposcampos AS tipocam ON camp.nTipoCampo = tipocam.nTipoCampo
                 WHERE conf.nIdNegocio = $nIdNegocio AND campent.nIdEntidad = $nIdEntidad
                 ";
-                
+
         $sSQL .= is_null($nEstado) ? "" : ' AND conf.nEstado  = ' . $nEstado;
         $sSQL .= $nOrdenTable ? " ORDER BY campent.nOrdenTabla ASC " : " ORDER BY campent.nOrden ASC ";
 
         return  $this->db->run($sSQL);
     }
+
+
+    public function fncGetUsuariosInvitacion($nIdNegocio)
+    {
+        // Traer los usuarios que tiene el negocio le ponemos coma 1 por que el SUDO no puede ser  invitado
+        $resultIds = $this->db->run("SELECT CONCAT(IFNULL(GROUP_CONCAT(usuanego.nIdUsuario),0),',1') as ids FROM usuariosnegocios as usuanego WHERE usuanego.nIdNegocio = $nIdNegocio");
+        // Traemos todos los usuarios menos los que tienen ese negocio 
+        $results   = $this->db->run("SELECT * FROM usuarios WHERE nIdUsuario NOT IN (" . $resultIds[0]["ids"] . ")");
+        return $results;
+    }
+
+
+    public function fncEliminarUsuarioNegocio($nIdUsuario,$nIdNegocio)
+    {
+        $sSQL = "DELETE FROM usuariosnegocios WHERE nIdUsuario = $nIdUsuario AND nIdNegocio = $nIdNegocio ";
+        return $this->db->run($sSQL);
+    }
+
+
 }

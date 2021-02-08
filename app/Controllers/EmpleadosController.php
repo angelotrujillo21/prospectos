@@ -4,11 +4,12 @@ namespace Application\Controllers;
 
 use Exception;
 use Application\Libs\Mail;
+use Application\Libs\Upload;
 use Application\Libs\Session;
 use Application\Models\Negocios;
+use Application\Models\Empleados;
 use Application\Models\CatalogoTabla;
 use Application\Core\Controller as Controller;
-use Application\Models\Empleados;
 
 class EmpleadosController extends Controller
 {
@@ -36,7 +37,6 @@ class EmpleadosController extends Controller
     public function fncGrabarEmpleado()
     {
         try {
-
             $nIdRegistro                    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
             $nIdNegocio                     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
             $nIdTipoEmpleado                = isset($_POST['nIdTipoEmpleado']) ? $_POST['nIdTipoEmpleado'] : null;
@@ -54,6 +54,7 @@ class EmpleadosController extends Controller
             $sCarreraCiclo                  = isset($_POST['sCarreraCiclo']) ? $_POST['sCarreraCiclo'] : null;
             $nIdSupervisor                  = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
             $sClave                         = isset($_POST['sClave']) ? $_POST['sClave'] : null;
+            $sImagen                        = isset($_FILES['sImagen']) ? $_FILES['sImagen'] : null;
             $nEstado                        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
 
@@ -62,9 +63,15 @@ class EmpleadosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
+            $sNombreImagen = null;
 
-            // Crear 
+
+
+            // Crear
             if ($nIdRegistro == 0) {
+                if (isset($sImagen) && !is_null($sImagen)) {
+                    $sNombreImagen = Upload::process($sImagen, 'images/multi');
+                }
 
                 $this->empleados->fncGrabarEmpleado(
                     $nIdNegocio,
@@ -83,10 +90,21 @@ class EmpleadosController extends Controller
                     $sCarreraCiclo,
                     $nIdSupervisor,
                     $sClave,
+                    $sNombreImagen,
                     $nEstado
                 );
             } else {
-                //Actualizar 
+                if (isset($sImagen) && !is_null($sImagen)) {
+                    $aryEmpleado = ($this->empleados->fncGetEmpleadoById($nIdRegistro))[0];
+
+                    if (!empty($aryEmpleado["sImagen"])) {
+                        fncEliminarArchivo(ROOTPATHRESOURCE . "/images/multi/" . $aryEmpleado['sImagen']);
+                    }
+
+                    $sNombreImagen = Upload::process($sImagen, 'images/multi');
+                }
+
+                //Actualizar
                 $this->empleados->fncActualizarEmpleado(
                     $nIdRegistro,
                     $nIdNegocio,
@@ -105,8 +123,17 @@ class EmpleadosController extends Controller
                     $sCarreraCiclo,
                     $nIdSupervisor,
                     $sClave,
+                    $sNombreImagen,
                     $nEstado
                 );
+
+                // Si actualizamos el empleado desde la app actualizamos su session
+                $aryEmpleado  = $this->empleados->fncGetEmpleados(null, null, $nIdRegistro);
+                $aryEmpleado  = fncValidateArray($aryEmpleado) ? $aryEmpleado[0] : null;
+
+                if (!is_null($this->session->get("userEmpleado"))  && ($aryEmpleado["nTipoEmpleado"] == $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"))) {
+                    $this->session->add('userEmpleado', $aryEmpleado);
+                }
             }
 
             $sSuccess =  $nIdRegistro == 0 ? 'Empleado registrado exitosamente...' : 'Empleado actualizado exitosamente...';
@@ -118,11 +145,71 @@ class EmpleadosController extends Controller
     }
 
 
+    public function fncPopulate()
+    {
+        try {
+            $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+            $nTipoEmpleado  = isset($_POST['nTipoEmpleado']) ? $_POST['nTipoEmpleado'] : null;
+            $nRol           = isset($_POST['nRol']) ? $_POST['nRol'] : null;
+
+            // Valida valores del formulario
+            if (is_null($nIdNegocio)) {
+                $this->exception('Error. Existen valores vacios. Por favor verifique.');
+            }
+
+            $aryRows      = [];
+            $aryEmpleados  = $this->empleados->fncGetEmpleadosAll($nTipoEmpleado, $nIdNegocio);
+
+            $bIsSupervisor = $nTipoEmpleado == $this->fncGetVarConfig("nTipoEmpleadoSupervisor") ? true : false;
+
+            $user          = $this->session->get("user");
+            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+            
+            if (fncValidateArray($aryEmpleados)) {
+                foreach ($aryEmpleados as $aryEmpleado) {
+
+                    $sActionVer       = "fncMostrarEmpleado(" . $aryEmpleado['nIdEmpleado'] . ", 'ver' );";
+                    $sActionEdit      = "fncMostrarEmpleado(" . $aryEmpleado['nIdEmpleado'] . ", 'editar' );";
+
+                    $sAcciones = '<div class="content-acciones">
+                                    <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
+                                    ' . ( $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>'  : '') . ' 
+                                </div>';
+
+                    $sCuadradoSuper = ($bIsSupervisor ? '<div class="cuadrado fondo-' . strtolower($aryEmpleado["sColorSuper"]) . '"></div>' : '');
+
+                    $aryRows[] = [
+                        "sAcciones"                         => $sAcciones,
+                        "nIdEmpleado"                       => $aryEmpleado["nIdEmpleado"],
+                        "nTipoDocumento"                    => $aryEmpleado["sTipoDoc"],
+                        "sNumeroDocumento"                  => $aryEmpleado["sNumeroDocumento"],
+                        "sColor"                            => $sCuadradoSuper,
+                        "sNombre"                           => $aryEmpleado["sNombre"],
+                        "sCorreo"                           => $aryEmpleado["sCorreo"],
+                        "nExperienciaVentas"                => $aryEmpleado["nExperienciaVentas"] == 1 ? "SI" : "NO",
+                        "sRubroExperiencia"                 => $aryEmpleado["sRubroExperiencia"],
+                        "dFechaNacimiento"                  => $aryEmpleado["dFechaNacimiento"],
+                        "nCantidadPersonasDependientes"     => $aryEmpleado["nCantidadPersonasDependientes"],
+                        "nIdEstudios"                       => $aryEmpleado["sEstudio"],
+                        "nIdSituacionEstudios"              => $aryEmpleado["sSituacionEstudio"],
+                        "sCarreraCiclo"                     => $aryEmpleado["sCarreraCiclo"],
+                        "sClave"                            => $aryEmpleado["sClave"],
+                        'sImagen'                           => !empty($aryEmpleado['sImagen']) ? '<img class="user-avatar rounded-circle  img-usuario" src="' . src('multi/' . $aryEmpleado['sImagen'])  . '" alt="' . $aryEmpleado['sImagen'] . '">' : '',
+                        "nEstado"                           => $aryEmpleado["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
+                    ];
+                }
+            }
+
+            $this->json(array("success" => true, "aryData" => $aryRows));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+
     public function fncFormularioEmpleado($nIdNegocio, $nIdTipoEmpleado, $nIdSupervisoroColor)
     {
         try {
-
-
             $aryNegocio  = $this->negocios->fncGetNegocioById($nIdNegocio);
 
             $nTipoEmpleadoSupervisor =  $this->fncGetVarConfig("nTipoEmpleadoSupervisor");
@@ -186,12 +273,11 @@ class EmpleadosController extends Controller
             $aryData = $this->empleados->fncMostrarRegistroCard($nIdRegistro);
             $aryData["sUltimoAcceso"] = fncSecondsToTime($aryData["sTimeUltimoAcceso"]);
 
-            $this->json(array("success" => true, "aryData" => $aryData ));
+            $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }
     }
-
 
 
     public function fncSendEmailEmpleado()
@@ -209,7 +295,7 @@ class EmpleadosController extends Controller
 
             $user = $this->session->get('user');
 
-            // Si el tipo de emepleado es supervisro traeme el color 
+            // Si el tipo de emepleado es supervisro traeme el color
             $nIdSupervisoroColor =  $nTipoEmpleado == $this->fncGetVarConfig("nTipoEmpleadoSupervisor") ? $nIdColor : $nIdSupervisor;
             $sUrl = route("formulario-empleado/" . $user["nIdNegocio"] . "/" . $nTipoEmpleado . "/" . $nIdSupervisoroColor . "");
 
@@ -233,6 +319,55 @@ class EmpleadosController extends Controller
             } else {
                 $this->json(array("error" => true, "sUrl" => $sUrl));
             }
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncObtenerCamposEmpleados()
+    {
+        $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+        $nTipoEmpleado  = isset($_POST['nTipoEmpleado']) ? $_POST['nTipoEmpleado'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdNegocio)  || is_null($nTipoEmpleado)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $nEntidad = 0;
+
+            if ($nTipoEmpleado == $this->fncGetVarConfig("nTipoEmpleadoSupervisor")) {
+                $nEntidad = $this->fncGetVarConfig("nIdSupervisor");
+            } else {
+                $nEntidad = $this->fncGetVarConfig("nIdEntidadVendedor");
+            }
+
+            $aryData = $this->negocios->fncGetConfiguracionCampo($nIdNegocio, $nEntidad, 1, true);
+
+            $this->json(array("success" => true, "aryData" => $aryData));
+        } catch (Exception $ex) {
+            $this->json(array("error" => $ex->getMessage()));
+        }
+    }
+
+    public function fncObtenerColores()
+    {
+        $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdNegocio)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryColores = $this->empleados->fncGetColoresEmpleados($nIdNegocio);
+            $sColores   = fncValidateArray($aryColores) ? implode(",", array_column($aryColores, 'nIdColor')) : "0";
+            $aryColores = $this->catalogoTabla->fncListado('COLORES', "nIdCatalogoTabla NOT IN($sColores)");
+
+            $this->json(array("success" => true, "aryData" => $aryColores));
         } catch (Exception $ex) {
             $this->json(array("error" => $ex->getMessage()));
         }

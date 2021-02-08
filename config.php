@@ -32,6 +32,8 @@ define('NOMBRE_SITIO', 'App Prospectos');
 define('IGV', 18);
 define('SIMBOLO_MONEDA', ' S./ ');
 define('TEXTO_MONEDA', ' SOLES ');
+define('HOST_NAME', "192.168.0.7");
+define('PORT', "8090");
 
 /*PRODUCTION 
 
