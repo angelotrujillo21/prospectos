@@ -22,8 +22,6 @@ class Negocios
         return $results;
     }
 
-
-
     public function fncGetNegocioById($nIdNegocio)
     {
         $results = $this->db->selectOne("negocios", "nIdNegocio = :nIdNegocio", array(":nIdNegocio" => $nIdNegocio));
@@ -31,9 +29,8 @@ class Negocios
     }
 
 
-    public function fncGetNegociosByIdUsuario($nIdUsuario = null ,$nIdNegocio= null)
+    public function fncGetNegociosByIdUsuario($nIdUsuario = null, $nIdNegocio = null)
     {
-
         $sSQL = "SELECT DISTINCT  neg.nIdNegocio, usuneg.nIdUsuario,  neg.sNombre, neg.sDireccion, neg.sImagen, neg.nTipoProspecto, usuneg.nRol, neg.nEstado
                 FROM
                     negocios AS neg
@@ -176,17 +173,51 @@ class Negocios
     {
         // Traer los usuarios que tiene el negocio le ponemos coma 1 por que el SUDO no puede ser  invitado
         $resultIds = $this->db->run("SELECT CONCAT(IFNULL(GROUP_CONCAT(usuanego.nIdUsuario),0),',1') as ids FROM usuariosnegocios as usuanego WHERE usuanego.nIdNegocio = $nIdNegocio");
-        // Traemos todos los usuarios menos los que tienen ese negocio 
+        // Traemos todos los usuarios menos los que tienen ese negocio
         $results   = $this->db->run("SELECT * FROM usuarios WHERE nIdUsuario NOT IN (" . $resultIds[0]["ids"] . ")");
         return $results;
     }
 
 
-    public function fncEliminarUsuarioNegocio($nIdUsuario,$nIdNegocio)
+    public function fncEliminarUsuarioNegocio($nIdUsuario, $nIdNegocio)
     {
         $sSQL = "DELETE FROM usuariosnegocios WHERE nIdUsuario = $nIdUsuario AND nIdNegocio = $nIdNegocio ";
         return $this->db->run($sSQL);
     }
+
+
+    public function fncMostrarUsuariosNegocios($nIdNegocio)
+    {
+        $sSQL = "SELECT un.nIdUsuarioNegocio, IFNULL(CONCAT(usu.sNombre , ' ' , usu.sApellidos),'') AS sUsuario, un.nIdUsuario, un.nIdNegocio, un.nRol , (CASE WHEN un.nRol = 1 THEN 'Administrador' ELSE 'Visitante' END) AS sRol
+                FROM usuariosnegocios AS un
+                INNER JOIN usuarios AS usu ON un.nIdUsuario = usu.nIdUsuario
+                WHERE un.nIdNegocio = $nIdNegocio ORDER BY  un.nIdUsuarioNegocio ASC";
+
+        // echo $sSQL;
+        // exit;
+        return $this->db->run($sSQL);
+    }
+
+    public function fncGetNegociosByIds($aryIdNegocios)
+    {
+        $sSQL = "SELECT * FROM negocios WHERE nIdNegocio IN (" . implode(",", $aryIdNegocios) . ")";
+        return $this->db->run($sSQL);
+    }
+
+
+    public function fncGetNegociosByEmpleado($nIdEmpleado)
+    {
+        $sSQL = "SELECT   
+            n.nIdNegocio,
+            n.sNombre,
+            n.sDireccion,
+            n.sImagen,
+            n.nTipoProspecto,
+            n.nEstado
+         FROM negocios AS n INNER JOIN empleados AS emp ON n.nIdNegocio = emp.nIdNegocio WHERE  emp.nIdEmpleado = $nIdEmpleado ";
+        return $this->db->run($sSQL);
+    }
+
 
 
 }

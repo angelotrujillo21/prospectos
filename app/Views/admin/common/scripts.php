@@ -4,6 +4,7 @@
     const web_root_resource = '<?= WEB_ROOT_RESOURCE ?>';
     const simbolo_moneda    =  '<?= SIMBOLO_MONEDA ?>';
     const is_admin    =   true;
+    const web_socket_js = '<?= WEB_SOCKET_JS ?>';
 </script>
 
 <?php 
@@ -17,6 +18,7 @@ load_script([
     'admin/functions',
     'moment',
     'socket',
+    'admin/edit-user-empleado',
 ]);
 
 load_script_plugin(

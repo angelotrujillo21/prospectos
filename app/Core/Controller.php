@@ -7,6 +7,8 @@ use Exception;
 
 class Controller
 {
+
+
     public function __construct()
     {
         $this->load_helper(['view']);
@@ -28,7 +30,7 @@ class Controller
 
     protected function exception($sMessage)
     {
-        throw new Exception($sMessage, 1);
+        throw new Exception(json_encode(["error" => $sMessage]), 1);
     }
 
     // Escapa los caracteres
@@ -105,14 +107,201 @@ class Controller
     protected function authAdmin($session)
     {
         if ($session->getStatus() === 1 || empty($session->get('user'))) {
-            $this->redirect('admin/acceso');
-        }
-    }
-
-    protected function authEmpleado($session)
-    {
-        if ($session->getStatus() === 1 || empty($session->get('userEmpleado'))) {
             $this->redirect('acceso');
         }
     }
+
+    protected function fncGetRoles($session)
+    {
+        $user   =  $session->get('user');
+        $sRolUser           = $this->fncGetVarConfig("sRolUser");
+        $sRolEmp            = $this->fncGetVarConfig("sRolEmp");
+
+        return [
+            "isUser"     =>  $user["sRol"] == $sRolUser,
+            "isEmpleado" =>  $user["sRol"] == $sRolEmp,
+        ];
+    }
+
+
+    protected function fncGetModulos($session)
+    {
+        $user               =  $session->get('user');
+
+        $sRolUser                   = $this->fncGetVarConfig("sRolUser");
+        $sRolEmp                    = $this->fncGetVarConfig("sRolEmp");
+        $nTipoEmpleadoSupervisor    = $this->fncGetVarConfig("nTipoEmpleadoSupervisor");
+        $nTipoEmpleadoAsesorVentas  = $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas");
+
+        $isUser             =  $user["sRol"] == $sRolUser;
+        $isEmpleado         =  $user["sRol"] == $sRolEmp;
+
+        $isAsesor  = $isEmpleado && ($user["nTipoEmpleado"] == $nTipoEmpleadoAsesorVentas) ? true : false;
+        $isSuper   = $isEmpleado && ($user["nTipoEmpleado"] == $nTipoEmpleadoSupervisor) ? true : false;
+        $aryModulos = [];
+        if ($isUser) {
+            $aryModulos  = [
+                [
+                    "sNombre"      => "Home",
+                    "sIcono"       => "dashboard",
+                    "sUrl"         => route('home/' . $user["nIdNegocio"]),
+                    "arySubModulo" => []
+                ],
+                [
+                    "sNombre"      => "Reportes",
+                    "sUrl"         => "#",
+                    "sIcono"       => "trending_up",
+                    "arySubModulo" => [
+                        [
+                            "sNombre" => "Reporte de ventas",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rVentas"),
+                            "sIcono"  => "chevron_right"
+                        ],
+                        [
+                            "sNombre" => "Reporte por consultor",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rConsultor"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Analisis de venta",
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Reporte Basico Empleado",
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"] . "?query=rBasicoEmpleado"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Base de datos cliente",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rClientes"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+
+                    ]
+                ],
+                [
+                    "sNombre"      => "Configuracion",
+                    "sUrl"         => "#",
+                    "sIcono"       => "settings",
+                    "arySubModulo" => [
+                        [
+                            "sNombre" => "Prospectos",
+                            "sUrl"    => route('configuracion/prospecto/' . $user["nIdNegocio"]),
+                            "sIcono"  => "chevron_right"
+                        ],
+                        [
+                            "sNombre" => "Base de empleados",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rEmpleados"),
+                            "sIcono"  => "chevron_right"
+                        ],
+                    ]
+                ],
+                [
+                    "sNombre"      => "Salir",
+                    "sIcono"       => "&#xE879;",
+                    "sUrl"         => route('salir'),
+                    "arySubModulo" => []
+                ],
+            ];
+        } else if ($isSuper) {
+            $aryModulos  = [
+                [
+                    "sNombre"      => "Home",
+                    "sIcono"       => "dashboard",
+                    "sUrl"         => route('home/' . $user["nIdNegocio"]),
+                    "arySubModulo" => []
+                ],
+                [
+                    "sNombre"      => "Reportes",
+                    "sUrl"         => "#",
+                    "sIcono"       => "trending_up",
+                    "arySubModulo" => [
+                        [
+                            "sNombre" => "Reporte de ventas",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rVentas"),
+                            "sIcono"  => "chevron_right"
+                        ],
+                        [
+                            "sNombre" => "Reporte por consultor",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rConsultor"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Analisis de venta",
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Reporte Basico Empleado",
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"] . "?query=rBasicoEmpleado"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Base de datos cliente",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rClientes"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+
+                    ]
+                ],
+
+                [
+                    "sNombre"      => "Salir",
+                    "sIcono"       => "&#xE879;",
+                    "sUrl"         => route('salir'),
+                    "arySubModulo" => []
+                ],
+            ];
+        } else if ($isAsesor) {
+            $aryModulos  = [
+                [
+                    "sNombre"      => "Home",
+                    "sIcono"       => "dashboard",
+                    "sUrl"         => route('home/' . $user["nIdNegocio"]),
+                    "arySubModulo" => []
+                ],
+                [
+                    "sNombre"      => "Reportes",
+                    "sUrl"         => "#",
+                    "sIcono"       => "trending_up",
+                    "arySubModulo" => [
+                        [
+                            "sNombre" => "Reporte de ventas",
+                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rVentas"),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+
+                    ]
+                ],
+
+                [
+                    "sNombre"      => "Salir",
+                    "sIcono"       => "&#xE879;",
+                    "sUrl"         => route('salir'),
+                    "arySubModulo" => []
+                ],
+            ];
+        }
+
+        return $aryModulos;
+    }
+
+
+
+    // protected function authEmpleado($session)
+    // {
+    //     if ($session->getStatus() === 1 || empty($session->get('userEmpleado'))) {
+    //         $this->redirect('acceso');
+    //     }
+    // }
 }

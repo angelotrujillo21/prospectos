@@ -32,7 +32,7 @@ class AppProspectoController extends Controller
         $this->empleados     = new Empleados();
         $this->prospecto     = new Prospecto();
         $this->session->init();
-        $this->authEmpleado($this->session);
+        //$this->authEmpleado($this->session);
     }
 
 
@@ -49,6 +49,15 @@ class AppProspectoController extends Controller
                 
                 $sIds                = $nTipoProspecto == $nTipoProspectoLargo ? $this->fncGetVarConfig("nPorcentajesProspectoLargo") : $this->fncGetVarConfig("nPorcentajesProspectoCorto");
                 $nIdEtapaNegociacion = $nTipoProspecto == $nTipoProspectoLargo ? $this->fncGetVarConfig("nIdEtapaNegociacion") :0;
+                $nTipoEmpleadoAsesorVentas = $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas");
+                
+                $aryEmpleados = $this->empleados->fncGetEmpleados(
+                    $nTipoEmpleadoAsesorVentas,
+                    $nIdNegocio,
+                    null,
+                    1
+                );
+
                 $this->view(
                     'empleado/home',
                     array(
@@ -62,7 +71,13 @@ class AppProspectoController extends Controller
                         'aryEtapaProspecto'           => $this->prospecto->fncGetEtapaProspecto($sIds),
                         'nTipoActividadCita'          => $this->fncGetVarConfig("nTipoActividadCita"),
                         'nIdEtapaEnProceso'           => $this->fncGetVarConfig("nIdEtapaEnProceso"),
-                        'nIdEtapaRechazado'           => $this->fncGetVarConfig("nIdEtapaRechazado")
+                        'nIdEtapaRechazado'           => $this->fncGetVarConfig("nIdEtapaRechazado"),
+                        'nIdEtapaNegociacion'         => $this->fncGetVarConfig("nIdEtapaNegociacion"),
+                        'nIdEtapaCierre'              => $this->fncGetVarConfig('nIdEtapaCierre'),
+                        'nIdEtapaRechazado'           => $this->fncGetVarConfig('nIdEtapaRechazado'),
+                        'nIdEtapaEnvioPropuesta'      => $this->fncGetVarConfig("nIdEtapaEnvioPropuesta"),
+                        'nTipoEntidadNotaEmpleado'    => $this->fncGetVarConfig("nTipoEntidadNotaEmpleado"),
+                        'aryEmpleados'                => $aryEmpleados
                     )
                 );
 
@@ -70,7 +85,7 @@ class AppProspectoController extends Controller
                 $this->view('empleado/login', array('error' => 'El negocio de este usuario no existe o fue eliminado.'));
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 }

@@ -1,15 +1,15 @@
 <?php
-require_once '../host-prospectos.php';
+//require_once '../host-prospectos.php';
 
 define('ROOTPATH', __DIR__);
 
-//define('WEB', 'http://localhost:8082/');
+define('WEB', 'http://localhost/');
 
-define('WEB_ROOT', WEB .'prospectos/');
+define('WEB_ROOT', WEB . 'prospectos/');
 
-define('DB_DRIVER'  , 'mysql'); // mysql, mysqli, sqlite are options for use with the Base Model.
+define('DB_DRIVER', 'mysql'); // mysql, mysqli, sqlite are options for use with the Base Model.
 define('DB_HOSTNAME', 'localhost');
-define('DB_DATABASE', 'newprospectos');
+define('DB_DATABASE', 'newprospectostwo');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
@@ -32,26 +32,6 @@ define('NOMBRE_SITIO', 'App Prospectos');
 define('IGV', 18);
 define('SIMBOLO_MONEDA', ' S./ ');
 define('TEXTO_MONEDA', ' SOLES ');
-define('HOST_NAME', "192.168.0.7");
+define('HOST_NAME', "192.168.1.103");
 define('PORT', "8090");
-
-/*PRODUCTION 
-
-
-define('WEB_ROOT', 'http://192.168.0.15:8082/api-procesos/');
-
-define('DB_DRIVER', 'mysql'); // mysql, mysqli, sqlite are options for use with the Base Model.
-define('DB_HOSTNAME', 'localhost');
-define('DB_DATABASE', 'mmconpfa_deliapp_principal');
-define('DB_USERNAME', 'mmconpfa');
-define('DB_PASSWORD', 'mYfCvrb@025!');
-
-
-define('DB_DRIVER', 'mysql'); // mysql, mysqli, sqlite are options for use with the Base Model.
-define('DB_HOSTNAME', 'localhost');
-define('DB_DATABASE', 'mmconpfa_deliapp_principal');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-
-
-*/
+define('WEB_SOCKET_JS', "ws://" . HOST_NAME . ":" . PORT . "/");

@@ -5,6 +5,7 @@ namespace Application\Controllers;
 use Exception;
 use Application\Libs\Session;
 use Application\Core\Controller as Controller;
+use Application\Models\Empleados;
 use Application\Models\Negocios;
 use Application\Models\Users;
 
@@ -15,50 +16,86 @@ class LoginAdminController extends Controller
     public $negocios;
     public $session;
     public $users;
+    public $empleados;
 
     public function __construct()
     {
         parent::__construct();
-        $this->session  = new Session();
-        $this->negocios = new Negocios();
-        $this->users    = new Users();
+        $this->session   = new Session();
+        $this->negocios  = new Negocios();
+        $this->users     = new Users();
+        $this->empleados = new Empleados();
         $this->session->init();
     }
 
     public function acceso()
     {
         try {
-            if (!is_null($this->session->get('user'))) {
+            if (!is_null($this->session->get('user')) ||  !is_null($this->session->get('user'))) {
                 $user = $this->session->get('user');
-                $this->redirect('admin/mis-negocios');
+                $this->redirect('mis-negocios');
             } else {
-                if (!empty($_POST)) {
-
-                    $sUsuario    = isset($_POST['sUsuario']) ? $_POST['sUsuario'] : null;
-                    $sClave      = isset($_POST['sClave']) ? $_POST['sClave'] : null;
-
-                    $nIdUsuario = ($this->users->acceso($sUsuario, $sClave));
-
-                    if ($nIdUsuario > 0) {
-                        $user = $this->users->getUser($nIdUsuario);
-                        $this->session->init();
-                        $this->session->add('user', $user);
-                        $this->redirect('admin/mis-negocios');
-                    } else {
-                        $this->view('admin/login', array('error' => 'Por favor verifique su usuario o contraseña', 'negocios' => $this->negocios->fncGetNegocios()));
-                    }
-                } else {
-                    $this->view('admin/login', array('negocios' => $this->negocios->fncGetNegocios()));
-                }
+                $this->view('admin/login', array('negocios' => $this->negocios->fncGetNegocios()));
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
+        }
+    }
+
+    public function accesoAjax()
+    {
+        try {
+
+            // Usuario o correo y cliente
+
+            $sUsuario    = isset($_POST['sUsuario']) ? $_POST['sUsuario'] : null;
+            $sClave      = isset($_POST['sClave']) ? $_POST['sClave'] : null;
+
+            // Verificar si es administrador 
+            $aryUser = ($this->users->acceso($sUsuario, $sClave));
+
+            // var_dump($aryUser);
+            // exit;
+
+            if (fncValidateArray($aryUser)) {
+
+                $aryUser["sRol"] = $this->fncGetVarConfig("sRolUser");
+
+                $this->session->init();
+
+                $this->session->add('user', $aryUser);
+
+                $this->json(["success" => true, "msg" =>   "Bienvenido al sistema usuario"]);
+            } else {
+
+                $aryUser = $this->users->fncAccesosEmpleado($sUsuario, $sClave);
+
+                if (fncValidateArray($aryUser)) {
+                    
+                    $aryUser  = $aryUser[0];
+                    
+                    $aryUser["sRol"] = $this->fncGetVarConfig("sRolEmp");
+    
+                    $this->session->init();
+                    
+                    $this->session->add('user', $aryUser);
+                    
+                    $this->json(["success" => true, "msg" =>  "Bievenido al sistema empleado"]);
+                } else {
+                    $this->json(["success" => false, "msg" => "Por favor verifique su usuario o correo o contraseña"]);
+                }
+                
+            }
+
+           
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
         }
     }
 
     public function salir()
     {
         $this->session->close();
-        $this->redirect('admin/acceso');
+        $this->redirect('acceso');
     }
 }

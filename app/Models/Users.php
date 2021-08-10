@@ -29,12 +29,9 @@ class Users
 
     public function acceso($sLogin, $sClave)
     {
-        $results = $this->db->selectOne("usuarios", "sLogin = :sLogin AND sClave = :sClave", array('sLogin' => $sLogin, 'sClave' => $sClave));
+        $results = $this->db->selectOne("usuarios", "sLogin = :sLogin AND sClave = :sClave AND nEstado = 1", array('sLogin' => $sLogin, 'sClave' => $sClave));
         /* si el resultado esta vacio o empty el metodo Select One devuelve false */
-        if ($results === false) {
-            return 0;
-        }
-        return (int) $results["nIdUsuario"];
+        return $results;
     }
 
 
@@ -48,15 +45,22 @@ class Users
         return $results;
     }
 
-    public function fncAccesoEmpleado($sCorreo, $sClave)
+    public function fncAccesoEmpleado($nIdNegocio, $sCorreo, $sClave)
     {
-        $results = $this->db->run("SELECT * FROM empleados WHERE sCorreo = '$sCorreo' AND sClave = '$sClave' AND nEstado = 1");
+        $results = $this->db->run("SELECT * FROM empleados WHERE nIdNegocio = $nIdNegocio AND sCorreo = '$sCorreo' AND sClave = '$sClave' AND nEstado = 1");
         /* si el resultado esta vacio o empty el metodo Select One devuelve false */
 
         if (count($results) == 0 || $results === false) {
             return 0;
         }
         return (int) $results[0]["nIdEmpleado"];
+    }
+
+    public function fncAccesosEmpleado($sCorreo, $sClave)
+    {
+        $results = $this->db->run("SELECT * FROM empleados WHERE sCorreo = '$sCorreo' AND sClave = '$sClave' AND nEstado = 1");
+        /* si el resultado esta vacio o empty el metodo Select One devuelve false */
+        return $results;
     }
 
     public function fncGrabarUsuario(
@@ -69,25 +73,16 @@ class Users
         $nIdRol,
         $nestado
     ) {
-        $sSQL = "INSERT INTO usuarios(
-                    sNombre,
-                    sApellidos,
-                    sEmail,
-                    sLogin,
-                    sClave,
-                    sImagen,
-                    nIdRol,
-                    nestado
-                ) VALUES (
-                    " . (is_null($sNombre) || empty($sNombre) ? "NULL" : "'$sNombre'") . " ,
-                    " . (is_null($sApellidos) || empty($sApellidos) ? "NULL" : "'$sApellidos'") . " ,
-                    " . (is_null($sEmail) || empty($sEmail) ? "NULL" : "'$sEmail'") . " ,
-                    " . (is_null($sLogin) || empty($sLogin) ? "NULL" : "'$sLogin'") . " ,
-                    " . (is_null($sClave) || empty($sClave) ? "NULL" : "'$sClave'") . " ,
-                    " . (is_null($sImagen) || empty($sImagen) ? "NULL" : "'$sImagen'") . " ,
-                    " . (is_null($nIdRol) || empty($nIdRol) ? "NULL" : "'$nIdRol'") . " ,
-                    " . $nestado . " 
-                )";
+        $sSQL =  $this->db->generateSQLInsert("usuarios", [
+            "sNombre"    => $sNombre,
+            "sApellidos" => $sApellidos,
+            "sEmail"     => $sEmail,
+            "sLogin"     => $sLogin,
+            "sClave"     => $sClave,
+            "nIdRol"     => $nIdRol,
+            "sImagen"    => $sImagen,
+            "nestado"    => $nestado
+        ]);
 
         return  $this->db->run($sSQL);
     }
@@ -103,25 +98,18 @@ class Users
         $nIdRol,
         $nestado
     ) {
-        $sSQL = "UPDATE negocios SET ";
 
-        $sSQL .= (!is_null($sNombre) ? " sNombre = '$sNombre' " : ' sNombre = NULL ');
 
-        $sSQL .= (!is_null($sApellidos) ? " sApellidos = '$sApellidos' " : ' sApellidos = NULL ');
-
-        $sSQL .= (!is_null($sEmail) ? " sEmail = '$sEmail' " : ' sEmail = NULL ');
-
-        $sSQL .= (!is_null($sLogin) ? " sLogin = '$sLogin' " : ' sLogin = NULL ');
-
-        $sSQL .= (!is_null($sClave) ? " sClave = '$sClave' " : ' sClave = NULL ');
-
-        $sSQL .= (!is_null($sImagen) ? ", sImagen = '$sImagen'" : '');
-
-        $sSQL .= (!is_null($nIdRol)  ? ", nIdRol = $nIdRol" : ', nIdRol = NULL ');
-
-        $sSQL .= (!is_null($nestado) ? ", nestado = $nestado" : ', nestado = NULL ');
-
-        $sSQL .= " WHERE nIdUsuario = $nIdUsuario ";
+        $sSQL =  $this->db->generateSQLUpdate("usuarios", [
+            "sNombre"    => $sNombre,
+            "sApellidos" => $sApellidos,
+            "sEmail"     => $sEmail,
+            "sLogin"     => $sLogin,
+            "sClave"     => $sClave,
+            "nIdRol"     => $nIdRol,
+            "sImagen"    => $sImagen,
+            "nestado"    => $nestado
+        ], "nIdUsuario = $nIdUsuario");
 
         return  $this->db->run($sSQL);
     }
@@ -139,12 +127,11 @@ class Users
         return $this->db->run($sSQL);
     }
 
-    public function fncBuscarUsuarioPorCorreoOLogin($sEmail,$sLogin)
+    public function fncBuscarUsuarioPorCorreoOLogin($sEmail, $sLogin)
     {
         $sSQL = "SELECT nIdUsuario FROM usuarios WHERE sEmail = '$sEmail' AND sLogin = '$sLogin'";
         return $this->db->run($sSQL);
     }
 
-
-
+  
 }

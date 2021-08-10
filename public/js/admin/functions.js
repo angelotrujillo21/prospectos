@@ -150,6 +150,24 @@ function fncUc(str) {
   return str;
 }
 
+window.fncOcultarAside = function () {
+  //console.log("ocularaside");
+  var mq = window.matchMedia( "(max-width: 768px)" );
+  if (mq.matches) {
+    // console.log("mobile");
+    //el ancho de la ventana es inferior a 570 px
+  } else {
+    // el ancho de la ventana es mayor que 570px
+   // console.log("desktop");
+    if (!$(".main-sidebar").hasClass("d-none")) {
+       $("#btn-toogle-desktop").trigger("click");
+    }
+  }
+};
+
+
+
+
 function fncBuildForm(aryData) {
   let sHtml = ``;
   if (aryData.length > 0) {
@@ -261,16 +279,19 @@ function fncBuildFormPro(aryData) {
                                   <div class="col-12">
                                       <div class="d-flex align-items-center">
                                           <div class="flex-grow-1 bd-highlight">
-                                              <p class="m-0 font-16">${aryItem.sWidget}  : <a id="btnVerHistorial" href="javascript:;"><i class="fas fa-history"></i><a/></p>
+                                              <p class="m-0 font-16">${aryItem.sWidget}  : 
+                                                <a id="btnVerDetallesCliente" href="javascript:;"><i class="far fa-eye"></i></a> 
+                                                <a id="btnVerHistorial" href="javascript:;"><i class="fas fa-history"></i></a> 
+                                                <a id="btnEditarCliente" href="javascript:;"><i class="fas fa-edit"></i></a> 
+                                              </p>
                                           </div>
                                           <div class="bd-highlight">
-                                              <button type="button" id="btnCrearCliente" class="btn btn-gradient-primary btn-rounded btn-icon">
-                                                  <i class="fas fa-plus-circle"></i>
-                                              </button>
+                                            <a class="color-azul font-16" id="btnCrearCliente" href="javascript:;" ><i class="fas fa-plus-circle"></i></a>
+                                            <a class="color-azul link-drop collapsed" data-toggle="collapse" href="#content-cliente" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                           </div>
                                       </div>
                                   </div>
-                                  <div class="col-12 my-2">
+                                  <div id="content-cliente" class="col-12 my-2 collapse show">
                                       ${fncDrawSelect(aryItem.aryLista, "nIdCliente", "nIdCliente", "sNombreoRazonSocial")}
                                   </div>
                               </div>
@@ -300,20 +321,47 @@ function fncBuildFormPro(aryData) {
                                               <p class="m-0 font-16">${aryItem.sWidget}  :</p>
                                           </div>
                                           <div class="bd-highlight">
-                                              <button type="button" id="btnAgregarCatalogo" class="btn btn-gradient-primary btn-rounded btn-icon">
-                                                  <i class="fas fa-plus-circle"></i>
-                                              </button>
+
+                                              <a class="color-azul font-16" id="btnAgregarCatalogo" href="javascript:;" ><i class="fas fa-plus-circle"></i></a>
+                                              <a class="color-azul link-drop collapsed" data-toggle="collapse" href="#content-catalogo-tablas" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                           </div>
                                       </div>
                                   </div>
-                                  
-                                  <div class="col-12 my-2">
+
+                                  <div id="content-catalogo-tablas" class="w-100  collapse show">
+                                    <div class="col-12 my-2 p-0">
+                                        <div class="table-responsive">
+                                            <table id="table-servicios"  class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Accion</th>
+                                                        <th>Serv</th>
+                                                        <th>Cst.Uni</th>
+                                                        <th>Cant</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td class="text-center" colspan="3">Total</td>
+                                                        <td class="cantidad-total text-center">0.00</td>
+                                                        <td class="total text-center">0.00</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 my-2 p-0">
                                       <div class="table-responsive">
-                                          <table id="table-servicios"  class="table table-striped">
+                                          <table id="table-productos" class="table table-striped">
                                               <thead>
                                                   <tr>
                                                       <th>Accion</th>
-                                                      <th>Serv</th>
+                                                      <th>Prod</th>
                                                       <th>Cst.Uni</th>
                                                       <th>Cant</th>
                                                       <th>Total</th>
@@ -331,33 +379,8 @@ function fncBuildFormPro(aryData) {
                                               </tfoot>
                                           </table>
                                       </div>
-                                  </div>
-
-                                  <div class="col-12 my-2">
-                                   <div class="table-responsive">
-                                      <table id="table-productos" class="table table-striped">
-                                          <thead>
-                                              <tr>
-                                                  <th>Accion</th>
-                                                  <th>Prod</th>
-                                                  <th>Cst.Uni</th>
-                                                  <th>Cant</th>
-                                                  <th>Total</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-
-                                          </tbody>
-                                          <tfoot>
-                                              <tr>
-                                                  <td class="text-center" colspan="3">Total</td>
-                                                  <td class="cantidad-total text-center">0.00</td>
-                                                  <td class="total text-center">0.00</td>
-                                              </tr>
-                                          </tfoot>
-                                      </table>
-                                   </div>
-                                  </div>
+                                    </div>
+                                </div>
                               </div>
                           </div>
 
@@ -373,9 +396,12 @@ function fncBuildFormPro(aryData) {
                                               <div class="flex-grow-1 bd-highlight">
                                                   <p class="m-0 font-16">${aryItem.sWidget} :</p>
                                               </div>
+                                              <div class="ml-auto">
+                                                <a class="color-azul link-drop collapsed" data-toggle="collapse" href="#c${aryItem.sWidget}" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                              </div>
                                           </div>
                                       </div>
-                                      <div class="col-12 my-2"> `;
+                                      <div id="c${aryItem.sWidget}" class="col-12 my-2 collapse show"> `;
             aryItem.aryLista.forEach((element) => {
 
               sHtml += `  <div class="form-group content-segmetacion">
@@ -396,13 +422,12 @@ function fncBuildFormPro(aryData) {
                                                   <p class="m-0 font-16">${aryItem.sWidget}  :</p>
                                               </div>
                                               <div class="bd-highlight">
-                                                  <button type="button" id="btnCrearActividad" class="btn btn-gradient-primary btn-rounded btn-icon">
-                                                      <i class="fas fa-plus-circle"></i>
-                                                  </button>
+                                                <a class="color-azul font-16" id="btnCrearActividad" href="javascript:;" ><i class="fas fa-plus-circle"></i></a>  
+                                                <a class="color-azul link-drop" data-toggle="collapse" href="#content-actividades" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                               </div>
                                           </div>
                                       </div>
-                                      <div id="content-actividades" class="col-12 my-2 content-actividades">
+                                      <div id="content-actividades" class="col-12 my-2 content-actividades collapse show">
                                           
                                       
                                           
@@ -419,16 +444,22 @@ function fncBuildFormPro(aryData) {
                                                   <div class="flex-grow-1 bd-highlight">
                                                       <p class="m-0 font-16">${aryItem.sWidget} :</p>
                                                   </div>
+                                                  <div class="ml-auto">
+                                                    <a class="color-azul link-drop" data-toggle="collapse" href="#c-notas" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                                  </div>
                                               </div>
                                           </div>
 
-                                          <div class="col-12">
-                                              <div id="content-notas" class="row no-gutters w-100 content"></div>
+                                          <div id="c-notas" class=" collapse show w-100">
+                                            <div class="col-12 mx-0 p-0">
+                                                <div id="content-notas" class="row no-gutters w-100 content"></div>
+                                            </div>
+
+                                            <div class="col-12 mx-0 p-0">
+                                                <textarea data-stext="" class="form-control d-block my-2" placeholder="Escribe una nueva nota.." name="sNota" id="sNota" cols="2" rows="2"></textarea>
+                                            </div>
                                           </div>
 
-                                          <div class="col-12">
-                                              <textarea class="form-control d-block my-2" placeholder="Escribe una nueva nota.." name="sNota" id="sNota" cols="2" rows="2"></textarea>
-                                          </div>
                                       </div>
                                   </div>`;
 
@@ -443,9 +474,12 @@ function fncBuildFormPro(aryData) {
                                       <div class="flex-grow-1 bd-highlight">
                                           <p class="m-0 font-16">${aryItem.sWidget}  :</p>
                                       </div>
+                                      <div class="ml-auto">
+                                        <a class="color-azul link-drop" data-toggle="collapse" href="#c${aryItem.sWidgetSystem}" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                      </div>
                                   </div>
                               </div>
-                              <div class="col-12 my-2">`;
+                              <div id="c${aryItem.sWidgetSystem}" class="col-12 my-2 collapsed show">`;
 
         switch (aryItem.sTipoCampoSystem) {
 

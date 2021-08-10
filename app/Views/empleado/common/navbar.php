@@ -15,6 +15,13 @@
         </div>
         <ul class="navbar-nav border-left flex-row ">
 
+            <li class="nav-item border-right dropdown">
+                <a class="nav-link nav-link-icon text-center btnIndi" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Mis Indicativos">
+                    <div class="nav-link-icon__wrapper">
+                        <i class="material-icons">analytics</i>
+                    </div>
+                </a>
+            </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="javascript:;" role="button" aria-haspopup="true" aria-expanded="false">
@@ -23,7 +30,10 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-small">
                     <div class="dropdown-divider"></div>
-                    <a id="btnEditarEmpleado" class="dropdown-item"  href="javascript:;">
+                    <a onclick="fncToggleFullScreen();" class="dropdown-item" href="javascript:;">
+                        <i class="material-icons">fullscreen</i> Pantalla completa
+                    </a>
+                    <a id="btnEditarEmpleado" class="dropdown-item" href="javascript:;">
                         <i class="material-icons">person_outline</i> Editar
                     </a>
                     <a class="dropdown-item text-danger" href="<?= route('salir') ?>">

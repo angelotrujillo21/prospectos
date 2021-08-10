@@ -12,7 +12,7 @@ class ClientesController extends Controller
     //model principal
     public $users;
     public $clientes; // Es mi modelo
-    public $session; // Es mi modelo
+    public $session;
 
     public function __construct()
     {
@@ -39,18 +39,27 @@ class ClientesController extends Controller
 
             if (is_array($aryClientes) && count($aryClientes) > 0) {
                 foreach ($aryClientes as $aryCliente) {
+                    $sNewState = $aryCliente['nEstado'] == '1' ? '0' : '1';
 
+
+                    $sActionState     = 'fncCambiarEstadoCliente( ' . "'" . $aryCliente['nIdCliente'] . "', " . $sNewState . ' )';
                     $sActionVer       = "fncMostrarCliente(" . $aryCliente['nIdCliente'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarCliente(" . $aryCliente['nIdCliente'] . ", 'editar' );";
                     $sActionEliminar  = "fncEliminarCliente(" . $aryCliente['nIdCliente'] . ");";
 
+                    $sIconState     = $aryCliente['nEstado'] == '1'  ? 'power_settings_new' : 'check';
+                    $sTitleState    = $aryCliente['nEstado'] == '1' ? 'Desactivar' : 'Activar';
+
+
                     $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
                     $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+                    $sLinkState     = $bIsRolAdmin ? '<a onclick="' . $sActionState . '"  href="javascript:;"  class="text-primary" title="' . $sTitleState . '"><i class="material-icons">' . $sIconState . '</i></a></a>' : '';
 
 
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
                                     ' . $sLinkEdit . '
+                                    ' . $sLinkState . '
                                     ' . $sLinkEliminar . '
                                 </div>';
 
@@ -64,6 +73,7 @@ class ClientesController extends Controller
                         "nIdDepartamento"       => $aryCliente["sDpt"],
                         "nIdProvincia"          => $aryCliente["sProvincia"],
                         "nIdDistrito"           => $aryCliente["sDistrito"],
+                        "sDireccion"            => $aryCliente["sDireccion"],
                         "nIdRelacionamiento"    => $aryCliente["sRelacionamiento"],
                         "sTelefono"             => $aryCliente["sTelefono"],
                         "nEstado"               => $aryCliente["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
@@ -73,7 +83,7 @@ class ClientesController extends Controller
 
             $this->json($aryRows);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -104,6 +114,20 @@ class ClientesController extends Controller
             $nIdClienteNew = null;
             // Crear
             if ($nIdRegistro == 0) {
+
+                $aryCliente = $this->clientes->fncGetClienteByNumDoc($nIdNegocio, $nTipoDocumento, $sNumeroDocumento);
+
+                if (fncValidateArray($aryCliente)) {
+                    $this->exception("Error.Ya existe un cliente con este numero de documento .Porfavor verifique");
+                }
+
+
+                $aryCliente = $this->clientes->fncGetClienteByNombre($nIdNegocio, $sNombreoRazonSocial);
+
+                if (fncValidateArray($aryCliente)) {
+                    $this->exception("Error.Ya existe un cliente con este nombre .Porfavor verifique");
+                }
+
                 $nIdClienteNew = $this->clientes->fncGrabarCliente(
                     $nIdNegocio,
                     $nTipoCliente,
@@ -139,13 +163,14 @@ class ClientesController extends Controller
                     $nIdRelacionamiento,
                     $nEstado
                 );
+                $nIdClienteNew = $nIdRegistro;
             }
 
             $sSuccess =  $nIdRegistro == 0 ? 'Cliente registrado exitosamente...' : 'Cliente actualizado exitosamente...';
 
             $this->json(array("success" => $sSuccess, "nIdClienteNew" => $nIdClienteNew));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -165,7 +190,7 @@ class ClientesController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData[0]));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -185,7 +210,7 @@ class ClientesController extends Controller
             $this->clientes->fncEliminarCliente($nIdRegistro);
             $this->json(array("success" => 'Cliente eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -205,7 +230,7 @@ class ClientesController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -245,7 +270,28 @@ class ClientesController extends Controller
             }
             $this->json(array("success" => true, "aryData" => $aryRows));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
+        }
+    }
+
+
+
+    public function fncCambiarEstado()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+        $nEstado     = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdRegistro) || is_null($nEstado)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $this->clientes->fncCambiarEstado($nIdRegistro, $nEstado);
+            $this->json(array("success" => "Genial se realizo el cambio de estado exitosamente."));
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
         }
     }
 }

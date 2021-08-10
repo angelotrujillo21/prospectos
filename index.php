@@ -100,7 +100,7 @@ define('LIBS_PATH', $libs_path);
 define('LANGUAGE_PATH', $language_path);
 // Build front-loader
 
-$router = new \Buki\Router([
+$router = new \Buki\Router\Router([
     'paths' => [
         'controllers' => 'app/Controllers',
     ],

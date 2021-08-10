@@ -6,7 +6,11 @@
 
 </head>
 
-<body data-nrolprospectoadmin="<?= $nRolProspectoAdmin ?>"
+<body 
+data-nrolprospectoadmin="<?= $nRolProspectoAdmin ?>"
+data-srol="<?=$user["sRol"]?>"
+data-sroluser="<?=$sRolUser?>"
+
 >
 
     <div class="page-loader">
@@ -60,6 +64,8 @@
 
 
     <!-- Modales -->
+    
+    <?php extend_view(['admin/common/modales-editar'], $data) ?>
 
     <div class="modal fade" enctype="multipart/form-data" id="formNegocio" tabindex="-1" role="dialog" aria-labelledby="formNegocioLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -106,7 +112,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-12">
+                                <div id="content-nTipoProspecto" class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="nTipoProspecto" class="col-form-label">Tipo De Prospecto:</label>
                                         <select class="form-control" name="nTipoProspecto" id="nTipoProspecto">
@@ -374,6 +380,29 @@
         </div>
     </div>
 
+    <div class="modal fade" id="formListarUsuarios" tabindex="-1" role="dialog" aria-labelledby="formListarUsuariosLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formListarUsuariosLabel">Listar usuarios</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row flex-center " id="lista-usuarios">
+
+          
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Fin de modales -->
 
 
@@ -405,11 +434,13 @@
         //Supervisores
         fncActDescCheck("#chk29","#chk28");
         fncActDescCheck("#chk30","#chk31");
+        fncValidateUser();
 
         $("#btnCrearNegocio").on('click', function() {
             fncCleanAll();
             $("#formNegocio").find(".modal-title").html('Nuevo Negocio');
             $("#sNombre").data("nIdRegistro",0);
+            $("#content-nTipoProspecto").show();
             $("#formNegocio").modal("show");
         });
 
@@ -518,7 +549,8 @@
     function fncMostrarRegistro(nIdRegistro) {
 
         $("#sNombre").data("nIdRegistro",nIdRegistro);
-      
+        $("#content-nTipoProspecto").hide();
+
         var jsnData = {
             nIdRegistro: nIdRegistro
         };
@@ -552,6 +584,19 @@
 
     }
 
+    function fncValidateUser() {
+        if($("body").data("srol") == $("body").data("sroluser")){
+            // Es super usuario 
+            $("#btnEditarUsuarioEmpleado").show();
+            $("#btnCrearNegocio").show();
+        } else {
+            $("#btnEditarUsuarioEmpleado").hide();
+
+            $("#btnCrearNegocio").hide();
+
+        }
+    }
+
 
 
     // Funciones Auxiliares
@@ -559,15 +604,26 @@
     function fncDrawNegocios(){
         fncGetNegocios({},function(aryData){
             if(aryData.success){
+                
                 var sHtmlTemplate = ``;
+
                 $.each(aryData.aryData,function(nIndex,aryValue){
 
-                    var isAdmin = $("body").data("nrolprospectoadmin") == aryValue.nRol  ? true : false;
+                    var isAdmin = false;
+                    var isUser = $("body").data("srol") == $("body").data("sroluser");
+
+                    // Solo si es usuario va a lidar el flag
+                    // Si es un emepleado no va a poder hacer ninguna accion mas que seleccionar a que negocio ira 
+
+                    if(isUser){
+                        isAdmin = $("body").data("nrolprospectoadmin") == aryValue.nRol  ? true : false;
+                    }
+
 
                     sHtmlTemplate += `
                                         <figure class="col-md-4 text-center">
                                                     <div class="position-relative contenedor-negocio text-center">
-                                                        <a href="${route('admin/home/' + aryValue.nIdNegocio )}">
+                                                        <a href="${route('home/' + aryValue.nIdNegocio )}">
                                                             <img alt="picture" src="${src( 'multi/' + aryValue.sImagen )}" class="img-fluid img-mis-negocios">
                                                             <!--<div class="overlay">
                                                                 <div class="text-overlay"><i class="far fa-arrow-alt-circle-right"></i>
@@ -576,9 +632,10 @@
                                                             <figcaption class="figure-caption">${aryValue.sNombre}</figcaption>
                                                         </a>
                                                         <div class="actions-negocio">
-                                                          ${isAdmin ? `<a href="javascript:;" onclick="fncInvitarUsario(${aryValue.nIdNegocio},'${aryValue.sNombre}');" title="Editar"><i class="material-icons">person_add</i> </a>` : ``}  
+                                                          ${isAdmin ? `<a href="javascript:;" onclick="fncListarUsuarios(${aryValue.nIdNegocio});" title="Listado de usuarios"><i class="material-icons">list_alt</i> </a>` : ``}  
+                                                          ${isAdmin ? `<a href="javascript:;" onclick="fncInvitarUsario(${aryValue.nIdNegocio},'${aryValue.sNombre}');" title="Invitar usuario"><i class="material-icons">person_add</i> </a>` : ``}  
                                                           ${isAdmin ? `<a href="javascript:;" onclick="fncMostrarRegistro(${aryValue.nIdNegocio});" title="Editar"><i class="material-icons">edit</i> </a>` : ``}  
-                                                          ${isAdmin ? `<a class="text-danger" href="javascript:;" onclick="fncEliminarRegistro(${aryValue.nIdNegocio});" title="Eliminar"><i class="material-icons">delete</i> </a>` :  ` <a  class="text-danger" href="javascript:;" onclick="fncEliminarInvitacion(${aryValue.nIdNegocio},${aryValue.nIdUsuario});" title="Eliminar Invitacion"><i class="material-icons">delete</i> </a> `}  
+                                                          ${isAdmin ? `<a class="text-danger" href="javascript:;" onclick="fncEliminarRegistro(${aryValue.nIdNegocio});" title="Eliminar"><i class="material-icons">delete</i> </a>` : ( isUser ?  ` <a  class="text-danger" href="javascript:;" onclick="fncEliminarInvitacion(${aryValue.nIdNegocio},${aryValue.nIdUsuario});" title="Eliminar Invitacion"><i class="material-icons">delete</i> </a> ` : '')}  
                                                         </div>
                                                     </div>
                                         </figure>
@@ -854,7 +911,7 @@
 
                 var sHtml = ``;
 
-                sHtml += `<option value="0" >Seleccionar</option>`; 
+                //sHtml += `<option value="0" >Seleccionar</option>`; 
 
                 if ( aryData.length > 0 ){
  
@@ -865,6 +922,14 @@
                 }
 
                 $(sHtmlTag).html(sHtml);
+
+                setTimeout(() => {
+                    
+                    $(sHtmlTag).select2({
+                        placeholder : "Seleccionar"
+                    });
+
+                }, 500);
 
             }else{
                 toastr.error(aryData.error);
@@ -878,6 +943,8 @@
         var jsnData = {
             nIdNegocio : nIdNegocio 
         };
+
+        $("#nTipoUsuarioInvitar").val(2).trigger("change");
 
         fncDrawUsuariosInvitacion(jsnData,"#nIdUsuario");
 
@@ -932,5 +999,98 @@
 
 </script>
 <!-- Invitar Usuario -->
+
+
+
+
+
+<!-- Listar Usuarios -->
+<script>
+
+
+    window.fncListarUsuarios = function(nIdNegocio){
+        var jsnData = {
+            nIdNegocio : nIdNegocio
+        };
+
+        fncMostrarUsuariosNegocios(jsnData,(aryData)=>{
+        
+            if(aryData.success){
+
+                var aryData = aryData.aryData ;
+
+                var sHtml = ``;
+
+                if ( aryData.length > 0 ){
+ 
+                    aryData.forEach(aryItem => {
+                       sHtml += 
+                       `<div class="card my-2 p-2 w-100 mx-4">
+                            <div class="d-flex flex-center">
+                                <div>${fncUc(aryItem.sUsuario)} - ${aryItem.sRol} </div>
+                                <div class="ml-auto"></div>
+                                <div class="mx-2"><a href="javascript:;" class="text-danger font-18" onclick="fncEliminarRelacionUsuario(${aryItem.nIdNegocio}, ${aryItem.nIdUsuario});" title="Eliminar"><i class="material-icons">delete</i></a></div>
+                            </div>
+                        </div>`; 
+                    });
+
+                } else{
+                    sHtml = `<h6> No existen usuarios invitados </h6>`;
+                }
+
+                $("#lista-usuarios").html(sHtml);
+                $("#formListarUsuarios").modal("show");
+            } else {
+                toastr.error(aryData.error);
+            }
+        });
+    
+    }
+
+    window.fncEliminarRelacionUsuario = function(nIdNegocio , nIdUsuario) {
+        if(confirm('Esta acción eliminará permanentemente la invitacion y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
+            
+            var jsnData = {
+                nIdNegocio : nIdNegocio,
+                nIdUsuario : nIdUsuario
+            };
+
+            fncEjecutarEliminarUsuarioNegocio( jsnData , function(aryData){
+
+                if(aryData.success){
+                    fncListarUsuarios(nIdNegocio);
+                    toastr.success( aryData.success );
+                } else {
+                    toastr.error( aryData.error );
+                }
+
+            }); 
+        }
+    }
+  
+
+    // Llamadas al servidor    
+    function fncMostrarUsuariosNegocios(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/negocios/fncMostrarUsuariosNegocios',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+</script>
+<!-- Listar Usuarios -->
+
+
+
 
 </html>

@@ -22,6 +22,8 @@ class Empleados
         $sNumeroDocumento,
         $sNombre,
         $sCorreo,
+        $nIdSexo,
+        $nIdEstadoCivil,
         $nIdColor,
         $dFechaNacimiento,
         $nCantidadPersonasDependientes,
@@ -35,7 +37,6 @@ class Empleados
         $sImagen,
         $nEstado
     ) {
-
         $sSQL = "INSERT INTO empleados(
                     nIdNegocio,
                     nTipoEmpleado,
@@ -43,6 +44,8 @@ class Empleados
                     sNumeroDocumento,
                     sNombre,
                     sCorreo,
+                    nIdSexo,
+                    nIdEstadoCivil,
                     nIdColor,
                     dFechaNacimiento,
                     nCantidadPersonasDependientes,
@@ -64,6 +67,8 @@ class Empleados
                     " . (is_null($sNumeroDocumento) || empty($sNumeroDocumento) ? "NULL" : "'$sNumeroDocumento'") . " ,
                     " . (is_null($sNombre) || empty($sNombre) ? "NULL" : "'$sNombre'") . " ,
                     " . (is_null($sCorreo) || empty($sCorreo) ? "NULL" : "'$sCorreo'") . " ,
+                    " . (is_null($nIdSexo) || empty($nIdSexo) ? "NULL" : "$nIdSexo") . " ,
+                    " . (is_null($nIdEstadoCivil) || empty($nIdEstadoCivil) ? "NULL" : "$nIdEstadoCivil") . " ,
                     " . (is_null($nIdColor) || empty($nIdColor) ? "NULL" : "$nIdColor") . " ,
                     " . (is_null($dFechaNacimiento) || empty($dFechaNacimiento) ? "NULL" : " '$dFechaNacimiento' ") . " ,
                     " . (is_null($nCantidadPersonasDependientes) || $nCantidadPersonasDependientes == ''  ? "NULL" : "$nCantidadPersonasDependientes") . " ,
@@ -96,6 +101,8 @@ class Empleados
         $sNumeroDocumento,
         $sNombre,
         $sCorreo,
+        $nIdSexo,
+        $nIdEstadoCivil,
         $nIdColor,
         $dFechaNacimiento,
         $nCantidadPersonasDependientes,
@@ -109,7 +116,6 @@ class Empleados
         $sImagen,
         $nEstado
     ) {
-
         $sSQL = "UPDATE empleados SET ";
 
         $sSQL .= (!is_null($nIdNegocio) ? " nIdNegocio = $nIdNegocio " : "");
@@ -124,7 +130,11 @@ class Empleados
 
         $sSQL .= (!is_null($sCorreo) && !empty($sCorreo) ? ", sCorreo = '$sCorreo' " : ', sCorreo = NULL ');
 
-        $sSQL .= (!is_null($nIdColor) ? ", nIdColor = $nIdColor " : "");
+        $sSQL .= (!is_null($nIdSexo)  && !empty($nIdSexo) ? ", nIdSexo = $nIdSexo " : "");
+
+        $sSQL .= (!is_null($nIdEstadoCivil)   && !empty($nIdEstadoCivil) ? ", nIdEstadoCivil = $nIdEstadoCivil " : "");
+
+        $sSQL .= (!is_null($nIdColor)  && !empty($nIdColor) ? ", nIdColor = $nIdColor " : "");
 
         $sSQL .= (!is_null($dFechaNacimiento) ? ", dFechaNacimiento = '$dFechaNacimiento' " : "");
 
@@ -132,15 +142,15 @@ class Empleados
 
         $sSQL .= ", dFechaHoraEdicion = NOW() ";
 
-        $sSQL .= (!is_null($nCantidadPersonasDependientes) && $nCantidadPersonasDependientes != '' ? ", nCantidadPersonasDependientes = $nCantidadPersonasDependientes " : "");
+        $sSQL .= (!is_null($nCantidadPersonasDependientes) && $nCantidadPersonasDependientes != '' ? ", nCantidadPersonasDependientes = '$nCantidadPersonasDependientes' " : "");
 
         $sSQL .= (!is_null($nExperienciaVentas)  && $nExperienciaVentas != '' ? ", nExperienciaVentas = $nExperienciaVentas " : "");
 
         $sSQL .= (!is_null($sRubroExperiencia) && $sRubroExperiencia != ''  ? ", sRubroExperiencia = '$sRubroExperiencia' " : "");
 
-        $sSQL .= (!is_null($nIdEstudios) ? ", nIdEstudios = $nIdEstudios " : "");
+        $sSQL .= (!is_null($nIdEstudios) && !empty($nIdEstudios)   ? ", nIdEstudios = $nIdEstudios " : "");
 
-        $sSQL .= (!is_null($nIdSupervisor) ? ", nIdSupervisor = $nIdSupervisor " : "");
+        $sSQL .= (!is_null($nIdSupervisor) && !empty($nIdSupervisor)  ? ", nIdSupervisor = $nIdSupervisor " : "");
 
         $sSQL .= (!is_null($nIdSituacionEstudios) && !empty($nIdSituacionEstudios) ? ", nIdSituacionEstudios = $nIdSituacionEstudios " : "");
 
@@ -183,6 +193,8 @@ class Empleados
                     emp.sNumeroDocumento,
                     emp.sNombre,
                     emp.sCorreo,
+                    emp.nIdSexo,
+                    emp.nIdEstadoCivil,
                     emp.nIdColor,
                     emp.dFechaNacimiento,
                     emp.nCantidadPersonasDependientes,
@@ -228,15 +240,26 @@ class Empleados
         return $this->db->run(trim($sSQL))[0];
     }
 
-    public function fncGetEmpleados($nTipoEmpleado = null, $nIdNegocio = null, $nIdEmpleado = null, $nEstado = 1)
-    {
+    public function fncGetEmpleados(
+        $nTipoEmpleado = null,
+        $nIdNegocio = null,
+        $nIdEmpleado = null,
+        $nEstado = 1,
+        $sOrderBy = null,
+        $sLimit = null
+    ) {
         $sSQL = "SELECT emp.nIdEmpleado,
                         emp.nTipoEmpleado, 
                         IFNULL(cattipo.sDescripcionLargaItem,'') AS sTipoEmpleado, 
                         IFNULL(neg.sNombre,'') AS sNombreNegocio, 
+                        IFNULL(emp.nExperienciaVentas,0) AS nExperienciaVentas,
                         emp.sNombre,
                         emp.nIdNegocio,
                         emp.nIdColor,
+                        emp.nIdSexo,
+                        emp.nIdEstadoCivil,
+                        emp.nCantidadPersonasDependientes,
+                        emp.dFechaNacimiento,
                         emp.nIdSupervisor,
                         IFNULL(emp.sImagen,'') AS sImagen, 
                         IFNULL(catsup.sDescripcionLargaItem,'') AS sColorSuper, -- Este join es cuando se lista los supersiores
@@ -253,15 +276,19 @@ class Empleados
 
         $sWhere = "";
 
-        $sWhere .= (is_null($nEstado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nEstado = $nEstado ");
-
-        $sWhere .= (is_null($nTipoEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nTipoEmpleado = $nTipoEmpleado ");
+        $sWhere .= (is_null($nTipoEmpleado) || empty($nTipoEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nTipoEmpleado = $nTipoEmpleado ");
 
         $sWhere .= (is_null($nIdNegocio) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdNegocio = $nIdNegocio ");
 
         $sWhere .= (is_null($nIdEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdEmpleado = $nIdEmpleado ");
 
+        $sWhere .= (is_null($nEstado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nEstado = $nEstado ");
+
         $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
+
+        $sSQL   .= (is_null($sOrderBy)  ? "" : " ORDER BY $sOrderBy ");
+
+        $sSQL   .= (is_null($sLimit)  ? "" : " LIMIT $sLimit ");
 
         // echo $sSQL;
         // exit;
@@ -282,8 +309,22 @@ class Empleados
         return $this->db->run($sSQL);
     }
 
-    public function fncGetEmpleadosAll($nTipoEmpleado = null, $nIdNegocio = null, $nIdEmpleado = null, $nEstado = null)
+    public function fncBuscarEmpleadosPorCorreo($sCorreo)
     {
+        $sSQL = "SELECT emp.sNombre,emp.sCorreo,emp.sClave,n.sNombre AS sNegocio  FROM empleados AS emp INNER JOIN negocios AS n ON emp.nIdNegocio = n.nIdNegocio WHERE sCorreo = '$sCorreo'   ";
+
+        return $this->db->run($sSQL);
+    }
+
+    public function fncGetEmpleadosAll(
+        $nTipoEmpleado = null,
+        $nIdNegocio = null,
+        $nIdEmpleado = null,
+        $nEstado = null,
+        $sOrderBy = null,
+        $sLimit = null,
+        $nIdSupervisor = null
+    ) {
         $sSQL = "SELECT emp.nIdEmpleado,
                         emp.nTipoEmpleado, 
                         IFNULL(tipodoc.sDescripcionCortaItem,'') AS sTipoDoc, 
@@ -301,6 +342,8 @@ class Empleados
                         emp.sRubroExperiencia,
                         IFNULL(estudio.sDescripcionLargaItem,'') AS sEstudio, 
                         IFNULL(situacionestudio.sDescripcionLargaItem,'') AS sSituacionEstudio, 
+                        IFNULL(sexo.sDescripcionLargaItem,'') AS sSexo, 
+                        IFNULL(estadocivil.sDescripcionLargaItem,'') AS sEstadoCivil, 
                         emp.sCarreraCiclo,
                         emp.nIdSupervisor,
                         emp.sClave ,
@@ -319,23 +362,96 @@ class Empleados
                 LEFT JOIN catalogotabla AS tipodoc ON emp.nTipoDocumento = tipodoc.nIdCatalogoTabla
                 LEFT JOIN catalogotabla AS estudio ON emp.nIdEstudios = estudio.nIdCatalogoTabla
                 LEFT JOIN catalogotabla AS situacionestudio ON emp.nIdSituacionEstudios = situacionestudio.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS sexo ON emp.nIdSexo = sexo.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS estadocivil ON emp.nIdEstadoCivil = estadocivil.nIdCatalogoTabla
+
                ";
 
         $sWhere = "";
 
-        $sWhere .= (is_null($nEstado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nEstado = $nEstado ");
+        $sWhere .= (is_null($nEstado) || strlen($nEstado) == 0  ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nEstado = $nEstado ");
 
         $sWhere .= (is_null($nTipoEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nTipoEmpleado = $nTipoEmpleado ");
 
         $sWhere .= (is_null($nIdNegocio) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdNegocio = $nIdNegocio ");
 
-        $sWhere .= (is_null($nIdEmpleado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdEmpleado = $nIdEmpleado ");
+        $sWhere .= (is_null($nIdEmpleado) || strlen($nIdEmpleado) == 0 ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdEmpleado = $nIdEmpleado ");
+
+        $sWhere .= (is_null($nIdSupervisor) || strlen($nIdSupervisor) == 0 ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdSupervisor = $nIdSupervisor ");
 
         $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
+
+        $sSQL .= (is_null($sOrderBy) ? '' : "  ORDER BY $sOrderBy ");
+
+        $sSQL .= (is_null($sLimit) ? '' : "  LIMIT  $sLimit ");
+
+        // echo $sSQL;
+        // exit;
 
         return $this->db->run(trim($sSQL));
     }
 
 
+    public function fncVerificarExisteColorSupervisor($nIdNegocio, $nIdColor)
+    {
+        $sSQL = "SELECT nIdColor FROM empleados WHERE nIdNegocio = $nIdNegocio AND nIdColor = $nIdColor";
+        return $this->db->run(trim($sSQL));
+    }
 
+
+    public function fncVerificarCorreoEmpleadoPorNegocio($nIdNegocio, $sCorreo)
+    {
+        $sSQL = "SELECT nIdEmpleado FROM empleados WHERE nIdNegocio = $nIdNegocio AND sCorreo = '$sCorreo'";
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncCambiarEstado($nIdEmpleado, $nEstado)
+    {
+        $sSQL = "UPDATE empleados SET nEstado = $nEstado WHERE nIdEmpleado = $nIdEmpleado ";
+        return $this->db->run(trim($sSQL));
+    }
+
+
+    public function fncObtenerDatosBasicos($nIdEmpleado)
+    {
+        $sSQL = "SELECT 
+                    emp.sNombre ,
+                    IFNULL(catsup.sDescripcionLargaItem,'') AS sColorSuper, -- Este join es cuando se lista los supersiores
+                    IFNULL(catsupem.sDescripcionLargaItem,'') AS sColorSuperEmpleado,  -- Este join es cuando se lista los supervisores de los empleados
+                    emp.nEstado
+                FROM empleados AS emp 
+                LEFT JOIN empleados AS empSup ON emp.nIdSupervisor = empSup.nIdEmpleado
+                LEFT JOIN catalogotabla AS catsup   ON emp.nIdColor = catsup.nIdCatalogoTabla
+                LEFT JOIN catalogotabla AS catsupem ON empSup.nIdColor = catsupem.nIdCatalogoTabla
+                WHERE emp.nIdEmpleado = $nIdEmpleado";
+        return $this->db->run(trim($sSQL))[0];
+    }
+
+
+
+
+    public function fncObtenerEmpleadoByRangoFechaCreacion(
+        $nIdNegocio  = null,
+        $dDesde  = null,
+        $dHasta = null,
+        $dFechaMayor = null
+    ) {
+
+        $sSQL = "SELECT nIdEmpleado FROM empleados AS emp";
+
+        $sWhere = "";
+
+        $sWhere .= (is_null($nIdNegocio) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " emp.nIdNegocio = $nIdNegocio ");
+
+        $sWhere .= (is_null($dDesde)  && is_null($dHasta) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . "  emp.dFechaHoraRegistro BETWEEN STR_TO_DATE( '$dDesde 00:00:00', '%d/%m/%Y %H:%i:%s' ) AND STR_TO_DATE( '$dHasta 23:59:59', '%d/%m/%Y %H:%i:%s' ) ");
+
+        $sWhere .= (is_null($dFechaMayor) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . "  DATE(emp.dFechaHoraRegistro) > STR_TO_DATE( '$dFechaMayor' , '%d/%m/%Y' )");
+
+        $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
+
+        // echo $sSQL;
+        // echo "<br>";
+
+        return $this->db->run(trim($sSQL));
+    }
 }

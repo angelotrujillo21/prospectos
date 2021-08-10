@@ -17,6 +17,7 @@ simple Router class for PHP. with the support of Controllers and Middlewares.
 
 ### Features
 - Supports GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD, AJAX and ANY request methods
+- Easy access and manage Request and Response via `symfony/http-foundation` package.
 - Controllers support (Example: HomeController@about)
 - Before and after Route Middlewares support
 - Static Route Patterns
@@ -34,7 +35,7 @@ composer.json file:
 ```json
 {
     "require": {
-        "izniburak/router": "^1"
+        "izniburak/router": "^2.0"
     }
 }
 ```
@@ -53,12 +54,26 @@ $ composer require izniburak/router
 ```php
 require 'vendor/autoload.php';
 
-$router = new Buki\Router();
+use Buki\Router\Router;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-$router->get('/', function() {
-    return 'Hello World!';
+$router = new Router;
+
+// For basic GET URI
+$router->get('/', function(Request $request, Response $response) {
+    $response->setContent('Hello World');
+    return $response;
+
+    # OR
+    # return 'Hello World!';
 });
-$router->get('/controller', 'TestController@main');
+
+// For basic GET URI by using a Controller class.
+$router->get('/test', 'TestController@main');
+
+// For auto discovering all methods and URIs
+$router->controller('/users', 'UserController');
 
 $router->run();
 ```
@@ -66,9 +81,7 @@ $router->run();
 ## Docs
 Documentation page: [Buki\Router Docs][doc-url]
 
-## ToDo
-- Write Test
-- Write Documentation
+Changelogs: [Buki\Router Changelogs][changelog-url]
 
 ## Support
 [izniburak's homepage][author-url]
@@ -91,6 +104,7 @@ Documentation page: [Buki\Router Docs][doc-url]
 - [izniburak](https://github.com/izniburak) İzni Burak Demirtaş - creator, maintainer
 
 [mit-url]: http://opensource.org/licenses/MIT
-[doc-url]: https://github.com/izniburak/php-router/wiki/1.-Home
+[doc-url]: https://github.com/izniburak/php-router/wiki
+[changelog-url]: https://github.com/izniburak/php-router/wiki/Changelogs
 [author-url]: http://burakdemirtas.org
 [twitter-url]: https://twitter.com/izniburak

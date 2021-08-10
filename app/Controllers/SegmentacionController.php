@@ -24,8 +24,8 @@ class SegmentacionController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->segmentacion   = new Segmentacion();
-        $this->session  = new Session();
+        $this->segmentacion     = new Segmentacion();
+        $this->session          = new Session();
         $this->session->init();
     }
 
@@ -51,26 +51,35 @@ class SegmentacionController extends Controller
                 foreach ($arySegmentaciones as $arySegmentacion) {
 
                     $aryDetalle       = [];
+
+                    $sNewState        = $arySegmentacion['nEstado'] == '1' ? '0' : '1';
+                    
+                    $sActionState     = 'fncCambiarEstadoSegmentacion(' . "'" . $arySegmentacion['nIdSegmentacion'] . "'," . $sNewState  . "," . $arySegmentacion['nTipoSegmento'] . " )";
                     $sActionVer       = "fncDetalleSegmentacion(" . $arySegmentacion['nIdSegmentacion'] . "," . $arySegmentacion['nTipoSegmento'] . " , '" . $arySegmentacion['sNombre'] . "' );";
                     $sActionEdit      = "fncMostrarSegmentacion(" . $arySegmentacion['nIdSegmentacion'] . "," . $arySegmentacion['nTipoSegmento'] . ");";
                     $sActionEliminar  = "fncEliminarSegmentacion(" . $arySegmentacion['nIdSegmentacion'] . "," . $arySegmentacion['nTipoSegmento'] . ");";
 
+                    $sIconState     = $arySegmentacion['nEstado'] == '1'  ? 'power_settings_new' : 'check';
+                    $sTitleState    = $arySegmentacion['nEstado'] == '1' ? 'Desactivar' : 'Activar';
+
                     $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
                     $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+                    $sLinkState     = $bIsRolAdmin ? '<a onclick="' . $sActionState . '"  href="javascript:;"  class="text-primary" title="' . $sTitleState . '"><i class="material-icons">' . $sIconState . '</i></a></a>' : '';
 
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
                                     ' . $sLinkEdit . '
+                                    '. $sLinkState  .'
                                     ' . $sLinkEliminar . '
                                 </div>';
 
-                    $aryDetalle = $this->segmentacion->fncGetDetalleSegmentacion($arySegmentacion['nIdSegmentacion']);
+                    $aryDetalle = $this->segmentacion->fncGetDetalleSegmentacion($arySegmentacion['nIdSegmentacion'],1);
                     $aryDetalle = is_array($aryDetalle) && count($aryDetalle) > 0 ? array_column($aryDetalle, 'sNombre') : [];
 
                     $aryRows[] = [
                         "sAcciones"  => $sAcciones,
                         "sNombre"    => $arySegmentacion["sNombre"],
-                        "sValores"   => is_array($aryDetalle) && count($aryDetalle) > 0 ? implode("<br>", $aryDetalle) : "",
+                        "sValores"   => is_array($aryDetalle) && count($aryDetalle) > 0 ? implode(" , ", $aryDetalle) : "",
                         "nEstado"    => $arySegmentacion["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
                     ];
                 }
@@ -78,7 +87,7 @@ class SegmentacionController extends Controller
 
             $this->json($aryRows);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -99,7 +108,7 @@ class SegmentacionController extends Controller
                 foreach ($arySegmentaciones as $arySegmentacion) {
 
                     $aryDetalle = [];
-                    $aryDetalle = $this->segmentacion->fncGetDetalleSegmentacion($arySegmentacion['nIdSegmentacion']);
+                    $aryDetalle = $this->segmentacion->fncGetDetalleSegmentacion($arySegmentacion['nIdSegmentacion'],$nEstado);
 
                     $aryRows[] = [
                         "nIdSegmentacion" => $arySegmentacion["nIdSegmentacion"],
@@ -112,7 +121,7 @@ class SegmentacionController extends Controller
 
             return $aryRows;
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -139,15 +148,24 @@ class SegmentacionController extends Controller
 
                 foreach ($arySegmentaciones as $arySegmentacion) {
 
-
+                    
+                    $sNewState        = $arySegmentacion['nEstado'] == '1' ? '0' : '1';
+                    
+                    $sActionState     = 'fncCambiarEstadoDetalleSegmentacion(' . "'" . $arySegmentacion['nIdDetalleSegmentacion'] . "'," . $sNewState  . "," . $arySegmentacion['nIdSegmentacion'] . " )";
                     $sActionEdit      = "fncMostrarItemSegmentacion(" . $arySegmentacion['nIdDetalleSegmentacion'] . "," . $arySegmentacion['nIdSegmentacion'] . ");";
                     $sActionEliminar  = "fncEliminarDetalleSegmentacion(" . $arySegmentacion['nIdDetalleSegmentacion'] . "," . $arySegmentacion['nIdSegmentacion'] . ");";
 
+
+                    $sIconState     = $arySegmentacion['nEstado'] == '1'  ? 'power_settings_new' : 'check';
+                    $sTitleState    = $arySegmentacion['nEstado'] == '1' ? 'Desactivar' : 'Activar';
+
                     $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
                     $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+                    $sLinkState     = $bIsRolAdmin ? '<a onclick="' . $sActionState . '"  href="javascript:;"  class="text-primary" title="' . $sTitleState . '"><i class="material-icons">' . $sIconState . '</i></a></a>' : '';
 
                     $sAcciones = '<div class="content-acciones">
                                     ' . $sLinkEdit . '
+                                    ' . $sLinkState . '
                                     ' . $sLinkEliminar . '
                                 </div>';
 
@@ -161,7 +179,7 @@ class SegmentacionController extends Controller
 
             $this->json($aryRows);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -194,7 +212,7 @@ class SegmentacionController extends Controller
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -213,7 +231,7 @@ class SegmentacionController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData[0]));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -233,7 +251,7 @@ class SegmentacionController extends Controller
 
             $this->json(array("success" => 'Segmentacion eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -264,7 +282,7 @@ class SegmentacionController extends Controller
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -283,7 +301,7 @@ class SegmentacionController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData[0]));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -303,7 +321,28 @@ class SegmentacionController extends Controller
 
             $this->json(array("success" => 'Item eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
+
+            
+    public function fncCambiarEstadoDetalle()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+        $nEstado     = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdRegistro) || is_null($nEstado)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $this->segmentacion->fncCambiarEstadoDetalle($nIdRegistro, $nEstado);
+            $this->json(array("success" => "Genial se realizo el cambio de estado exitosamente."));
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
 }

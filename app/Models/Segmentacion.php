@@ -33,7 +33,7 @@ class Segmentacion
     public function fncGetDetalleSegmentacion($nIdSegmentacion, $nEstado = null)
     {
         $sSQL  = "SELECT detSeg.nIdDetalleSegmentacion, detSeg.nIdSegmentacion, detSeg.sNombre, detSeg.nEstado FROM detallesegmentacion AS detSeg WHERE detSeg.nIdSegmentacion = $nIdSegmentacion ";
-        $sSQL .=  is_null($nEstado) ? "" : ' AND seg.nEstado  = ' . $nEstado;
+        $sSQL .=  is_null($nEstado) ? "" : ' AND detSeg.nEstado  = ' . $nEstado;
 
         // echo $sSQL;
         // exit;
@@ -123,5 +123,17 @@ class Segmentacion
     {
         $sSQL = "DELETE FROM detallesegmentacion WHERE nIdDetalleSegmentacion = $nIdDetalleSegmentacion ";
         $this->db->run($sSQL);
+    }
+
+    public function fncCambiarEstado($nIdSegmentacion, $nEstado)
+    {
+        $sSQL = "UPDATE segmentacion SET nEstado = $nEstado  WHERE nIdSegmentacion = $nIdSegmentacion ";
+        return $this->db->run($sSQL);
+    }
+
+    public function fncCambiarEstadoDetalle($nIdDetalleSegmentacion , $nEstado)
+    {
+        $sSQL = "UPDATE detallesegmentacion SET nEstado = $nEstado  WHERE nIdDetalleSegmentacion  = $nIdDetalleSegmentacion  ";
+        return $this->db->run($sSQL);
     }
 }

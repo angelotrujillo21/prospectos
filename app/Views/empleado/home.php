@@ -14,6 +14,10 @@
       data-ntipoactividadcita = "<?=$nTipoActividadCita?>"
       data-nidetapaenproceso = "<?=$nIdEtapaEnProceso?>"
       data-nidetaparechazado = "<?=$nIdEtapaRechazado?>"
+      data-nidetapanegociacion = "<?=$nIdEtapaNegociacion?>"
+      data-nidetapacierre = "<?= $nIdEtapaCierre ?>"
+      data-nidetapaenviopropuesta="<?=$nIdEtapaEnvioPropuesta?>"
+      data-ntipoentidadnotaempleado = "<?= $nTipoEntidadNotaEmpleado ?>"
       >
 
     <div class="page-loader">
@@ -30,169 +34,51 @@
 
                 <?php extend_view(['empleado/common/navbar'], $data) ?>
 
-                <div class="main-content-container container-fluid  py-4 px-md-2 px-0 mb-5">
+                <div class="main-content-container container-fluid py-1 px-md-1 px-0 mb-5">
 
                     <div class="container-fluid">
 
                         <div class="row flex-center">
 
-                            <div class="col-12 col-md-6">
 
-                                <a class="d-flex header-toggle collapse show" data-toggle="collapse" href="#card-colaborador" role="button" aria-expanded="false" aria-controls="card-colaborador"> 
-                                    <div class="p-2">Asesor de ventas</div>
-                                    <div class="ml-auto p-2"> <i  class="fas fa-sort-up icon-up"></i>  </div>
-                                </a>
+                            <div class="col-12 col-md-12 mb-4 px-2">
 
-                                <div id="card-colaborador" class="card-colaborador collapse show">
-
-                                
-                                    <div class="row no-gutters">
-                                        <div class="col-3 flex-center">
-                                            <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<?= $user['sNombre']?>">
-                                                <span><?= strtoupper($user['sEmpleadoCorto']) ?></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 text-center">
-                                            <span><?= $user['sNombre']?></span>
-                                            <div class="w-100"></div>
-                                            <span class="font-14"><?= uc($user['sTipoEmpleado']) ?></span>
-                                            <div class="w-100"></div>
-                                            <span class="font-13"><?= strtoupper($user['sNombreNegocio']) ?></span>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="cuadraro-supervisor fondo-<?= strtolower($user['sColorSuperEmpleado'])?>"></div>
-                                            <span class="activo-hace">Activo hace <?= fncSecondsToTime($user['sTimeUltimoAcceso']) ?></span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 my-2">
-
-                                <a class="d-flex header-toggle collapse show" data-toggle="collapse" href="#card-indicativos" role="button" aria-expanded="false" aria-controls="card-indicativos"> 
-                                    <div class="p-2">Indicativos</div>
-                                    <div class="ml-auto p-2"> <i class="fas fa-sort-up icon-up"></i>  </div>
-                                </a>
-
-                                <div id="card-indicativos" class="card-colaborador collapse show">
-
-                               
-
-                                    <div class="row no-gutters">
-                                        <div class="col-12 col-md-12 text-center">
-                                            <p class="title-indicativos">Indicativos</p>
-                                        </div>
-
-                                        <div class="col-6 col-md-7 flex-center">
-                                            <div class="border-card mx-1 card-indicativo-1">
-                                                <p class="title">Avance</p>
-                                                <p id="nAvance">0</p>
-                                                <p class="title">Renta Básica</p>
-                                                <p id="nRentaBasica">0</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-5 flex-center">
-                                            <div class="w-100 border-card mx-1 card-indicativo-2">
-                                                <div class="row no-gutters flex-center p-1">
-                                                    <div class="col-6 title">Compra</div>
-                                                    <div  id="nCompra" class="col-6 value">0</div>
-                                                </div>
-
-                                                <div class="row no-gutters flex-center p-1">
-                                                    <div class="col-6 title">Ticket</div>
-                                                    <div id="nTicket" class="col-6 value">0</div>
-                                                </div>
-
-                                                <div class="row no-gutters flex-center p-1">
-                                                    <div class="col-6 title">Efectividad</div>
-                                                    <div id="nEfectividad" class="col-6 value">0%</div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-12 text-center mt-2">
-                                            <p class="title-indicativos">Indicativos Prospectos</p>
-                                        </div>
-
-                                        <div class="col-4 col-md-4 text-center mt-2">
-                                            <div data-sfiltro="CITAS" class="border-card content-indi-pros content-citas mx-1 btn-filtro">
-                                                <div class="row no-gutters">
-                                                    <div class="col-12 mb-1">
-                                                        <span class="title">Citas</span>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <i class="far fa-calendar-alt font-icon-indi"></i>
-                                                    </div>
-                                                    <div class="col-6 flex-center">
-                                                        <span id="nCitasCercanas" class="title">10</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-4 text-center mt-2">
-                                            <div data-sfiltro="CIERRES" class="border-card content-indi-pros content-cierres mx-1 btn-filtro">
-                                                <div class="row no-gutters">
-                                                    <div class="col-12 mb-1">
-                                                        <span class="title">Cierres</span>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </div>
-                                                    <div class="col-6 flex-center">
-                                                        <span id="nTotalCierre" class="title">10</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-4 text-center mt-2">
-                                            <div data-sfiltro="OPORTUNIDAD" class="border-card content-indi-pros content-oportunidad mx-1 btn-filtro">
-                                                <div class="row no-gutters">
-                                                    <div class="col-12 mb-1">
-                                                        <span class="title">Oportunidad</span>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <i class="fas fa-rocket"></i>
-                                                    </div>
-                                                    <div class="col-6 flex-center">
-                                                        <span id="nOportunidad" class="title">10</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-12 col-md-12 mb-4">
-
-                                <a class="d-flex header-toggle collapse show" data-toggle="collapse" href="#content-prospectos-empleados" role="button" aria-expanded="false" aria-controls="content-prospectos-empleados"> 
+                                <!-- <a class="d-flex header-toggle collapse show" data-toggle="collapse" href="#content-prospectos-empleados" role="button" aria-expanded="false" aria-controls="content-prospectos-empleados"> 
                                     <div class="p-2">Contenido Prospectos</div>
                                     <div class="ml-auto p-2"> <i class="fas fa-sort-up icon-up"></i>  </div>
-                                </a>
+                                </a>-->
 
-                                <div id="content-prospectos-empleados" class="border-card px-1 content-prospectos-empleados collapse show">
+                                <div id="content-prospectos-empleados" class="border-card px-1 content-prospectos-empleados">
                                     <div class="row no-gutters">
                                         <div class="col-12 col-md-12 text-center">
-                                            <p id="btn-borrar-filtros" class="title-indicativos">Prospectos</p>
+                                            
+                                            <div class="d-flex align-items-center p-1">
+
+                                                <div>
+                                                    <p class="title-indicativos">
+                                                        Prospectos
+                                                    </p>
+                                                </div>
+
+                                                <div class="ml-auto">
+                                                    <a id="btn-borrar-filtros" class="font-15" href="javascript:;"> <i class="fas fa-sync"></i> </a>
+                                                </div>
+                                            </div>
                                         </div>
+
+                                      
+
                                         <div class="col-12">
                                             <div class="input-group">
-                                                <input class="form-control py-2 border-right-0 border" type="search" value="" placeholder="Buscar..."  autocomplete="off" name="buscador-prospectos" id="buscador-prospectos">
-                                                <span class="input-group-append">
-                                                    <div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
+                                                <input class="form-control py-2 border-right-0 border" type="search" value="" placeholder="Buscar por cliente , empleado , etapa o fecha de creacion del prospecto ..."  autocomplete="off" name="buscador-prospectos" id="buscador-prospectos">
+                                                <span id="btnBuscar" class="input-group-append fondo-azul">
+                                                    <div class="input-group-text bg-transparent text-white"><i class="fa fa-search"></i></div>
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="list-prospectos mx-1 my-2 my-md-4">
-                                                <div id="content-card-prospectos" class="row m-0 content">
+                                                <div id="content-card-prospectos" class="row m-0 content  pr-card-prospecto-vendedor">
                                                   
                                                 </div>
                                             </div>
@@ -272,21 +158,56 @@
                                                 <div class="flex-grow-1 bd-highlight">
                                                     <p class="m-0 font-16">Etapa Prospecto</p>
                                                 </div>
+
+                                                <div class="bd-highlight font-18">
+                                                    <a id="btnDescargarPdfProspecto" class="text-danger icon-pdf-etapa" target="_blank" href="javascript:;"><i class="far fa-file-pdf"></i></a>
+                                                    <a id="btnVerAdjuntos" href="javascript:;"> <i class="fas fa-paperclip"></i> </a>
+                                                </div>
+
+                                                <div class="ml-auto">
+                                                    <a class="color-azul link-drop" data-toggle="collapse" href="#cllEP" role="button" aria-expanded="false" ><i class="fas fa-caret-down"></i></a>
+                                                </div>
+
                                             </div>
                                         </div>
-                                        <div class="col-12 my-2">
-                                            <select name="nIdEtapa" class="form-control control-extra" id="nIdEtapa">
-                                                <option value="0">Seleccionar</option>
-                                                <?php if(fncValidateArray($aryEtapaProspecto)): ?>
-                                                    <?php foreach($aryEtapaProspecto as $aryEtapa): ?>
-                                                        <option <?= ( $nTipoProspecto == $nTipoProspectoLargo && $aryEtapa["nIdEtapa"] == $nIdEtapaNegociacion ) ? 'disabled="disabled"' : "" ?> value="<?= $aryEtapa["nIdEtapa"] ?>"><?= $aryEtapa["sNombreVendedor"] ?></option>
-                                                    <?php endforeach ?>
-                                                <?php endif ?>
-                                            </select>
+                                        <div id="cllEP" class="col-12 my-2 collapse show">
+                                            <div class="dropdown">
+                                                <a class="btn dropdown-toggle menu-etapa" href="javascript:;" role="button" id="dropdownEtapa" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Seleccionar
+                                                </a>
+                                                <div class="dropdown-menu w-100 dropdown-menu-etapa" aria-labelledby="dropdownEtapa">
+                                                    <?php if(fncValidateArray($aryEtapaProspecto)): ?>
+                                                        <?php foreach($aryEtapaProspecto as $aryEtapa): ?>
+                                                        <?php $bIsDisabled = ( $nTipoProspecto == $nTipoProspectoLargo && $aryEtapa["nIdEtapa"] == $nIdEtapaNegociacion ) ? true : false; ?>
+                                                            <a id="nIdEtapa-<?= $aryEtapa["nIdEtapa"] ?>" class="dropdown-item <?= $bIsDisabled  ? 'disabled'  : "" ?>" <?= $bIsDisabled  ? ' data-disabled="true" '  : "" ?> data-value="<?= $aryEtapa["nIdEtapa"] ?>" href="javascript:;">
+                                                                <?= $aryEtapa["sNombreVendedor"] ?>
+                                                            </a>
+                                                        <?php endforeach ?>
+                                                    <?php endif ?>
+                                                </div>
+                                            </div>                       
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
+                            <div id="content-titulo" class="row no-gutters border-card p-2 mb-4">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 bd-highlight">
+                                            <p class="m-0 font-16">Titulo  :</p>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <a class="color-azul link-drop" data-toggle="collapse" href="#cTP" role="button" aria-expanded="false" ><i class="fas fa-caret-down"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="cTP" class="col-12 my-2 collapse show">
+                                    <input type="text" placeholder="" id="sTituloProspecto" name="sTituloProspecto" class="form-control" autocomplete="off" data-nrequerido="0">
+                                </div>
+                            </div>
+                           
 
                             <div id="content-ce-prospecto" class="row"></div>
 
@@ -298,20 +219,47 @@
                                                 <div class="flex-grow-1 bd-highlight">
                                                     <p class="m-0 font-16">Historico</p>
                                                 </div>
+                                                <div class="ml-auto">
+                                                    <a class="color-azul link-drop" data-toggle="collapse" href="#content-cambios" role="button" aria-expanded="false" ><i class="fas fa-caret-down"></i></a>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="content-cambios" class="row no-gutters my-2 content">
+                                        <div id="content-cambios" class="row no-gutters my-2 content collapse show">
                                             
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row flex-center mt-2 mb-4">
+                            <div class="row flex-center mt-2 mb-1">
                                 <div class="col-12 flex-center">
                                     <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
                                 </div>
                             </div>
+
+                            <div id="content-cambio-consultor" class="row no-gutters border-card p-2">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 bd-highlight">
+                                            <p class="m-0 font-16">Cambiar de consultor  :</p>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <a class="color-azul link-drop" data-toggle="collapse" href="#cCC" role="button" aria-expanded="false" ><i class="fas fa-caret-down"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="cCC" class="col-12 my-2 collapse show">
+                                    <select class="form-control" name="nCambioConsultor" id="nCambioConsultor">
+                                            <option value="0">Seleccionar</option>
+                                            <?php if(fncValidateArray($aryEmpleados)): ?>
+                                                <?php foreach($aryEmpleados as $aryLoop): ?>
+                                                    <option value="<?=$aryLoop["nIdEmpleado"]?>"><?=$aryLoop["sNombre"]?></option>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+                           
                     </div>
                 </form>
             </div>
@@ -490,7 +438,7 @@
                                         <label for="sImagen" class="col-form-label">Contrato:</label>
                                         
                                         <div class="ml-auto dw-contrato">
-                                            <a id="btnDescargarContrato" href="javascript:;" class="color-icon-download-contrato" title="Eliminar">
+                                            <a id="btnDescargarContrato" href="javascript:;" class="color-icon-download-contrato" title="Descargar">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                         </div>
@@ -591,8 +539,7 @@
             </div>
         </div>
     </div>
-
-   
+ 
     <div class="modal fade" id="modalErrorActividadNoCumplida" tabindex="-1" role="dialog" aria-labelledby="modalErrorActividadNoCumplidaLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -603,7 +550,7 @@
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    <div class="modal-bod">
+                    <div class="modal-body">
                         <div class="row">
                             <div class="col-12 text-center">
                               <img src="<?=src('app/error.png')?>" alt="Error">
@@ -624,8 +571,290 @@
         </div>
     </div>
 
-    
+    <div class="modal fade" id="modalDetalleCliente" tabindex="-1" role="dialog" aria-labelledby="modalDetalleClienteLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDetalleClienteLabel">Detalle Cliente</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
 
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered">
+
+                                <tr>
+                                    <th>T. Cliente</th>
+                                    <td id="sTipoClienteDetalle"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>T. Docum. </th>
+                                    <td id="sTipoDocDetalle"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>N° Docum. </th>
+                                    <td id="sNumeroDocumentoDetalle"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Nombre</th>
+                                    <td id="sNombreoRazonSocialDetalle"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Distrito</th>
+                                    <td id="sDistritoDetalle" ></td>
+                                </tr>
+
+                                
+                                <tr>
+                                    <th>Direccion</th>
+                                    <td id="sDireccionDetalle" ></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Contacto</th>
+                                    <td id="sContactoDetalle"></td>
+                                </tr>
+
+
+                                <tr>
+                                    <th>Relacion.</th>
+                                    <td id="sRelacionamientoDetalle"></td>
+                                </tr>
+
+                            
+                                <tr>
+                                    <th>Telefono</th>
+                                    <td id="sTelefonoDetalle" ></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Correo</th>
+                                    <td id="sCorreoDetalle"></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" class="content-buttons-detalle-cliente text-center" id="content-buttons" >
+                                    
+                                    </td>
+                                </tr>
+                                                
+                            </table>
+
+                        </div>
+                                               
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="formIndi" tabindex="-1" role="dialog" aria-labelledby="formIndiLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formIndiLabel">Indicativos</h5>
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                    
+                    
+                        <div class="col-12 col-md-6">
+
+                            <!-- <a class="d-flex header-toggle collapse show" data-toggle="collapse" href="#card-colaborador" role="button" aria-expanded="false" aria-controls="card-colaborador"> 
+                                <div class="p-2">Asesor de ventas</div>
+                                <div class="ml-auto p-2"> <i  class="fas fa-sort-up icon-up"></i>  </div>
+                            </a> -->
+
+                            <div id="card-colaborador" class="card-colaborador">
+                                <div class="row no-gutters">
+                                    <div class="col-3 flex-center">
+                                        <div class="circulo-vendedor" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<?= $user['sNombre']?>">
+                                            <span><?= strtoupper($user['sEmpleadoCorto']) ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span><?= uc($user['sNombre']) ?></span>
+                                        <div class="w-100"></div>
+                                        <span class="font-14"><?= uc($user['sTipoEmpleado']) ?></span>
+                                        <div class="w-100"></div>
+                                        <span class="font-13"><?= uc($user['sNombreNegocio']) ?></span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cuadraro-supervisor fondo-<?= strtolower($user['sColorSuperEmpleado'])?>"></div>
+                                        <span class="activo-hace">Activo hace <?= fncSecondsToTime($user['sTimeUltimoAcceso']) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-12 col-md-6 my-2">
+
+                            <!-- <a class="d-flex header-toggle collapse show" data-toggle="collapse" href="#card-indicativos" role="button" aria-expanded="false" aria-controls="card-indicativos"> 
+                                <div class="p-2">Indicativos</div>
+                                <div class="ml-auto p-2"> <i class="fas fa-sort-up icon-up"></i>  </div>
+                            </a> -->
+
+                            <div id="card-indicativos" class="card-colaborador">
+
+
+                                <div class="row no-gutters">
+                                    <div class="col-12 col-md-12 text-center">
+                                        <p id="titulo-indi" class="title-indicativos">
+                                         Indicativos
+                                        </p>
+                                    </div>
+
+                                    <div class="col-6 col-md-7 flex-center">
+                                        <div class="border-card mx-1 card-indicativo-1">
+                                            <p class="title">Avance</p>
+                                            <p id="nAvance">0</p>
+                                            <p class="title">Renta Básica</p>
+                                            <p id="nRentaBasica">0</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-5 flex-center">
+                                        <div class="w-100 border-card mx-1 card-indicativo-2">
+                                            <div class="row no-gutters flex-center p-1">
+                                                <div class="col-6 title">Compra</div>
+                                                <div  id="nCompra" class="col-6 value">0</div>
+                                            </div>
+
+                                            <div class="row no-gutters flex-center p-1">
+                                                <div class="col-6 title">Ticket</div>
+                                                <div id="nTicket" class="col-6 value">0</div>
+                                            </div>
+
+                                            <div class="row no-gutters flex-center p-1">
+                                                <div class="col-6 title">Efectividad</div>
+                                                <div id="nEfectividad" class="col-6 value">0%</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-12 text-center mt-2">
+                                        <p class="title-indicativos">Indicativos Prospectos</p>
+                                    </div>
+
+                                    <div class="col-4 col-md-4 text-center mt-2">
+                                        <div data-sfiltro="CITAS" class="border-card content-indi-pros content-citas mx-1">
+                                            <div class="row no-gutters">
+                                                <div class="col-12 mb-1">
+                                                    <span class="title">Citas</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <i class="far fa-calendar-alt font-icon-indi"></i>
+                                                </div>
+                                                <div class="col-6 flex-center">
+                                                    <span id="nCitasCercanas" class="title">10</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-4 col-md-4 text-center mt-2">
+                                        <div data-sfiltro="CIERRES" class="border-card content-indi-pros content-cierres mx-1">
+                                            <div class="row no-gutters">
+                                                <div class="col-12 mb-1">
+                                                    <span class="title">Cierres</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </div>
+                                                <div class="col-6 flex-center">
+                                                    <span id="nTotalCierre" class="title">10</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-4 col-md-4 text-center mt-2">
+                                        <div data-sfiltro="OPORTUNIDAD" class="border-card content-indi-pros content-oportunidad mx-1">
+                                            <div class="row no-gutters">
+                                                <div class="col-12 mb-1">
+                                                    <span class="title">Oportunidad</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <i class="fas fa-rocket"></i>
+                                                </div>
+                                                <div class="col-6 flex-center">
+                                                    <span id="nOportunidad" class="title">10</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                                                            
+                                                            
+                                                            
+                </div>
+                <div class="modal-footer">
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="formFilter" tabindex="-1" role="dialog" aria-labelledby="formFilterLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formIndiLabel">Filtrar</h5>
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-12 row">
+                             
+                             <div class="col-6 pr-0">
+                                 <div class="form-group">
+                                     <label for="dDesde" class="col-form-label">Desde</label>
+                                     <input type="date" autocomplete="off" placeholder="dd/mm/yyyy" class="form-control" name="dDesde" id="dDesde">
+                                 </div>
+                             </div>
+
+                             <div class="col-6 pr-0">
+                                 <div class="form-group">
+                                     <label for="dHasta" class="col-form-label">Hasta</label>
+                                     <input type="date" autocomplete="off" placeholder="dd/mm/yyyy" class="form-control" name="dHasta" id="dHasta">
+                                 </div>
+                             </div>
+                             
+                        </div>
+                    </div>
+                                                                                    
+                                                            
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Filtar</button>
+                </div> 
+            </div>
+        </div>
+    </div>
     <!-- Fin de modales -->
 
 
@@ -640,36 +869,47 @@
 <!-- Prospecto -->
 <script>
 
+
     $(document).ready(function() {
 
-        $('a[href="#card-colaborador"]').trigger("click");
-        $('a[href="#card-indicativos"]').trigger("click");
+        $("#dDesde").val(moment().startOf('month').format('YYYY-MM-DD'));
+        $("#dHasta").val(moment().format('YYYY-MM-DD'));
+
+        // $('a[href="#card-colaborador"]').trigger("click");
+        // $('a[href="#card-indicativos"]').trigger("click");
 
         fncValidateActividadesNoCumplidas();
 
         var jsnData = {
             nIdNegocio  : $("body").data("nidnegocio"),
-            nIdEmpleado : $("body").data("nidempleado")
+            nIdEmpleado : $("body").data("nidempleado"),
+            // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+            // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
         };
 
         fncDrawCardProspecto(jsnData,"#content-card-prospectos");
         
         $("#btnCrearProspecto").on("click", function() { 
 
-            $("#content-ce-prospecto").html(fncBuildFormPro($("#formProspecto").data("aryDataForm")));
-            window.fncEventListenerProspecto(); 
+            window.fncTriggerDrawProspecto((bStatus)=>{
 
-            $("#content-etapa-prospecto").hide();
-            $("#content-historico-prospecto").hide();  
+                $("#content-etapa-prospecto").hide();
+                $("#content-historico-prospecto").hide();  
+                $("#content-cambio-consultor").hide();
 
-            $("#formProspecto").data("sAccion","crear");
-            $("#title-prospectos").html("Crear Prospecto");
-            $("#formProspecto").data("nIdRegistro", 0);  
-            $("#formProspecto").modal("show");
+                $("#formProspecto").data("sAccion","crear");
+                $("#title-prospectos").html("Crear Prospecto");
+                $("#formProspecto").data("nIdRegistro", 0);  
+                $("#formProspecto").modal("show");
+            
+            });        
+        
         });
 
         
-        window.fncTriggerDrawProspecto();
+        window.fncTriggerDrawProspecto(()=>{
+
+        });
 
         $("#formProspecto").find("form").on("submit",function(event){
             event.preventDefault();
@@ -677,6 +917,7 @@
            // Items Default 
            var nIdRegistro       = $("#formProspecto").data("nIdRegistro");
            var nIdCliente        = $("#nIdCliente");
+           var sTitulo           = $("#sTituloProspecto");
            var arySegmentaciones = [];
            var aryCatalogos      = [];
            var aryActividades    = [];
@@ -717,13 +958,15 @@
             }
 
 
-            if(nIdCliente.length>0 && nIdCliente.val()==0){
-                toastr.error("Error.Debe de seleccionar un cliente .Porfavor verifique");
-                return;
-            } else if($("#table-servicios").length>0 && $("#table-productos").length>0 && aryCatalogos.length == 0){
+            // if(nIdCliente.length>0 && nIdCliente.val()==0){
+            //     toastr.error("Error.Debe de seleccionar un cliente .Porfavor verifique");
+            //     return;
+            // }
+
+            if($("#table-servicios").length>0 && $("#table-productos").length>0 && aryCatalogos.length == 0){
                 toastr.error("Error.Debe de seleccionar un producto o servicio .Porfavor verifique");
                 return;
-            } else if(nIdRegistro == 0 && $(".content-actividades").length>0  && aryActividades.length == 0 ){
+            } if(nIdRegistro == 0 && $(".content-actividades").length>0  && aryActividades.length == 0 ){
                 toastr.error("Error.Debe de ingresar una cita para el prospecto .Porfavor verifique");
                 return;
             }
@@ -732,12 +975,14 @@
             var jsnData = {
                 nIdRegistro         : nIdRegistro, 
                 nIdCliente          : nIdCliente.length > 0 ? nIdCliente.val() : null,
+                sTitulo             : sTitulo.length>0 ? sTitulo.val()  : null,
                 nIdNegocio          : $("body").data("nidnegocio"),
                 nIdEmpleado         : $("body").data("nidempleado"),
                 aryCatalogos        : aryCatalogos,
                 arySegmentaciones   : arySegmentaciones,
                 aryActividades      : aryActividades,
                 sNota               : sNota.length > 0 ? sNota.val() : null,
+                nTipoEntidadNota    : $("body").data("ntipoentidadnotaempleado"),
                 nEstado             : nIdRegistro == 0 ? 1 : nEstado.val()
             };
             
@@ -813,16 +1058,21 @@
             }
            
             fncGrabarProspecto(jsnData,function(aryData){
+                //alert(JSON.stringify(aryData));
                 if(aryData.success){
 
                     $("#formProspecto").modal("hide");
                     
-                    var jsnData = {
-                        nIdNegocio  : $("body").data("nidnegocio"),
-                        nIdEmpleado : $("body").data("nidempleado")
-                    };
+                    // var jsnData = {
+                    //     nIdNegocio  : $("body").data("nidnegocio"),
+                    //     nIdEmpleado : $("body").data("nidempleado"),
+                    //     // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                    //     // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
+                    // };
+
+                    fncDrawProspectosForState();
                     
-                    window.fncDrawCardProspecto(jsnData,"#content-card-prospectos");
+                    //window.fncDrawCardProspecto(jsnData,"#content-card-prospectos");
                     toastr.success(aryData.success);
 
                 }else{
@@ -835,6 +1085,7 @@
 
         $('#formProspecto').on('hidden.bs.modal', function () {
             fncClearInputs($("#formProspecto").find("form"));
+
             $("#content-actividades").html("");
             $("#content-notas").html("");
             $("#formProspecto").find("table").find("tbody").html("");
@@ -843,17 +1094,15 @@
             $('#formProspecto').find("table").find("tfoot").find(".cantidad-total").html("0");
             $('#formProspecto').find("table").find("tfoot").find(".total").html("0");
             $("#formProspecto").find(".btn-submit").show();
-            // Si 
-            if($("#formProspecto").data("sAccion") == "editar") {
 
-                var jsnData = {
-                    nIdNegocio  : $("body").data("nidnegocio"),
-                    nIdEmpleado : $("body").data("nidempleado")
-                };
-
-                window.fncDrawCardProspecto(jsnData,"#content-card-prospectos");
-
-             }
+            // Si se ha editado actualizamos todos los prospectos 
+            
+            if( $("#formProspecto").data("sAccion") == "editar" ) {
+            
+                // La lista de prospectos se ven por varios filtros desde el buscador o atraves del filtros citas o oportunidades o cierres o tambien se puede listar todos los prospectos es por esto que analizamos en que situacion esta el usuario
+                fncDrawProspectosForState();
+             
+            }
            
         });
 
@@ -862,11 +1111,27 @@
             var jsnData = {
                 nIdNegocio  : $("body").data("nidnegocio"),
                 nIdEmpleado : $("body").data("nidempleado"),
-                sBuscador   : $(this).val()
+                sBuscador   : $(this).val(),
+                // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
             };
 
             fncDrawCardProspecto(jsnData,"#content-card-prospectos",false);
-            
+            $("body").data("sFilterProspectos","BUSCADOR");
+
+        });
+
+        $("#btnBuscar").on("click",function(){
+            var jsnData = {
+                nIdNegocio  : $("body").data("nidnegocio"),
+                nIdEmpleado : $("body").data("nidempleado"),
+                sBuscador   : $(this).val(),
+                dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
+            };
+
+            fncDrawCardProspecto(jsnData,"#content-card-prospectos",true);
+            $("body").data("sFilterProspectos","BUSCADOR");
         });
 
         // Filtros
@@ -875,12 +1140,17 @@
             var jsnData = {
                 nIdNegocio  : $("body").data("nidnegocio"),
                 nIdEmpleado : $("body").data("nidempleado"),
-                sFiltro     : $(this).data("sfiltro")
+                sFiltro     : $(this).data("sfiltro"),
+                // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
             };
 
+            document.querySelector("#content-prospectos-empleados").scrollIntoView({ behavior: 'smooth', block: 'center' });
             fncDrawCardProspecto(jsnData,"#content-card-prospectos");
-        });
 
+            $("body").data("sFilterProspectos","FILTROS");
+            $("body").data("sFiltro", jsnData.sFiltro );
+        });
 
         $(".btnVerInicio").on('click',function(){
             $("#card-colaborador").parent().show();
@@ -888,34 +1158,94 @@
             $("#content-prospectos-empleados").parent().show();
         });
 
+        // $(".btnVerprospectos").on('click',function(){
+        //     $("#card-colaborador").parent().hide();
+        //     $("#card-indicativos").parent().hide();
+        //     $("#content-prospectos-empleados").parent().show();
+        //     $("html, body").animate({ scrollTop: 0 }, "slow");
 
-        $(".btnVerprospectos").on('click',function(){
-            $("#card-colaborador").parent().hide();
-            $("#card-indicativos").parent().hide();
-            $("#content-prospectos-empleados").parent().show();
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+        //     var jsnData = {
+        //         nIdNegocio  : $("body").data("nidnegocio"),
+        //         nIdEmpleado : $("body").data("nidempleado"),
+        //         // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+        //         // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
+        //     };
 
-            var jsnData = {
-                nIdNegocio  : $("body").data("nidnegocio"),
-                nIdEmpleado : $("body").data("nidempleado")
-            };
-
-            fncDrawCardProspecto(jsnData,"#content-card-prospectos");
-        
-        });
+        //     fncDrawCardProspecto(jsnData,"#content-card-prospectos");
+        //     $("body").data("sFilterProspectos","TODOS");
+        // });
 
         $("#btn-borrar-filtros").on('click',function(){
           
             var jsnData = {
                 nIdNegocio  : $("body").data("nidnegocio"),
-                nIdEmpleado : $("body").data("nidempleado")
+                nIdEmpleado : $("body").data("nidempleado"),
+                // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
             };
 
             fncDrawCardProspecto(jsnData,"#content-card-prospectos");
-        
+            $("body").data("sFilterProspectos","TODOS");
+        });
+
+        $("#btnVerAdjuntos").on("click",function(){
+            $("#nIdEtapa-"+$("body").data("nidetapaenproceso")).trigger("click");
         });
 
     });
+
+    window.fncToggleFullScreen = () => {
+        
+        var doc               = window.document;
+        var docEl             = doc.documentElement;
+
+        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+        var cancelFullScreen  = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+        if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+            requestFullScreen.call(docEl);
+        } else {
+            cancelFullScreen.call(doc);
+        }
+        
+    }
+
+    window.fncDrawProspectosForState =  () =>{
+
+        if( $("body").data("sFilterProspectos") == 'BUSCADOR' &&  $("#buscador-prospectos").val().length > 0 ){
+
+            $("#buscador-prospectos").trigger("keyup");
+            console.log("buscador");
+
+        } else if ( $("body").data("sFilterProspectos") == 'FILTROS' && $("body").data("sFiltro").length > 0 ) {
+
+            var jsnData = {
+                nIdNegocio  : $("body").data("nidnegocio"),
+                nIdEmpleado : $("body").data("nidempleado"),
+                sFiltro     : $("body").data("sFiltro"),
+                // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
+
+            };
+
+            fncDrawCardProspecto(jsnData,"#content-card-prospectos");
+            console.log("FILTROS");
+
+        } else {
+
+            var jsnData = {
+                nIdNegocio  : $("body").data("nidnegocio"),
+                nIdEmpleado : $("body").data("nidempleado"),
+                // dDesde      : $("#dDesde").val() == '' ? '' : moment($("#dDesde").val()).format('DD/MM/YYYY'),
+                // dHasta      : $("#dHasta").val() == '' ? '' : moment($("#dHasta").val()).format('DD/MM/YYYY'),
+            };
+
+            window.fncDrawCardProspecto(jsnData,"#content-card-prospectos");
+            console.log("todos");
+
+        }
+
+    } 
 
     window.fncValidateActividadesNoCumplidas = function(){
 
@@ -947,7 +1277,20 @@
     }
 
     window.fncDrawCardProspecto = function(jsnData,sHtmlTag,bShowLoader = true){
-    
+
+        // var dDesde = jsnData.dDesde;
+        // var dHasta = jsnData.dHasta;
+
+        // if ((dDesde != "" && dHasta == "") || (dDesde == "" && dHasta != "")) {
+        //     toastr.error('Error. Si va a especificar fechas, debe ingresar la de inicio y fin. Por favor verificar.');
+        //     return;
+        // }
+        
+        // if (fncCompareDate(dDesde,dHasta) === 1) {
+        //     toastr.error('Error. La fecha de fin debe ser mayor o igual que la fecha de inicio. Por favor verificar.');
+        //     return;
+        // }
+
         var sHtml = ``;
 
         fncGetProspectos(jsnData, bShowLoader , function(aryData){
@@ -959,13 +1302,15 @@
                                         
                                         <div class="row no-gutters mb-1">
                                             <div class="col-10">
-                                                <span class="pr-cliente">Cliente: ${fncUc(aryItem.sCliente)}</span>
-                                                ${ is_admin == true ? ` <div class="w-100"></div> <span class="pr-vendedor">Vend: ${fncUc(aryItem.aryEmpleado.sNombre)}</span> `:``}
+                                                <span class="pr-cliente">
+                                                   
+                                                    ${ aryItem.sCliente.length > 0 ? `Cliente: ${fncUc(fncCutText(aryItem.sCliente))}` : `Titulo : ${fncUc(fncCutText(aryItem.sTitulo))}`  }
+                                                    
+                                                </span>
+                                                ${ is_admin == true ? ` <div class="w-100"></div> <span class="pr-vendedor">Vend: ${fncUc(fncCutText(aryItem.aryEmpleado.sNombre))}</span> `:``}
                                             </div>
                                             <div class="col-2 d-flex justify-content-end">
-                                                <a class="pr-icon-edit" href="javascript:;" onclick="fncEditarProspecto(${aryItem.nIdProspecto});">
-                                                    <i class="far fa-edit"></i>
-                                                </a>
+                                                ${ aryItem.nIdEtapa == $("body").data("nidetapacierre") || aryItem.nIdEtapa == $("body").data("nidetaparechazado") ? `` : ` <a class="pr-icon-edit" href="javascript:;" onclick="fncEditarProspecto(${aryItem.nIdProspecto});"><i class="far fa-edit"></i></a>`}   
                                             </div>
                                         </div>
 
@@ -978,7 +1323,7 @@
                                             
                      sHtml +=          `</div>
                                             <div class="col-6 text-right d-flex justify-content-end align-items-center">
-                                                ${aryItem.aryUltimaCita.sColor != '' && aryItem.aryUltimaCita.dFecha != '' ? `<span class="ult-cita color-text-${aryItem.aryUltimaCita.sColor}"> Ult.Cita ${moment( aryItem.aryUltimaCita.dFecha,'YYYY-MM-DD').format('DD/MM/YYYY')} ${ moment(aryItem.aryUltimaCita.dHora,'HH:mm').format("HH:mm") } </span>` : ``  } 
+                                                ${ (typeof aryItem.aryUltimaCita === 'object') && Object.values(aryItem.aryUltimaCita).length > 0  && aryItem.aryUltimaCita.sColor != '' && aryItem.aryUltimaCita.dFecha != '' ? `<span class="ult-cita color-text-${aryItem.aryUltimaCita.sColor}"> Ult.Cita ${moment( aryItem.aryUltimaCita.dFecha,'YYYY-MM-DD').format('DD/MM/YYYY')} ${ moment(aryItem.aryUltimaCita.dHora,'HH:mm').format("HH:mm") } </span>` : ``  } 
                                             </div>
                                         </div>
 
@@ -987,7 +1332,7 @@
                                                 <span class="font-14 etapa-${aryItem.nIdEtapa}-color">${aryItem.sEtapa}</span>
                                             </div>
                                             <div class="col-5 text-right">
-                                                <span class="ult-ingreso color-text-verde">Ingreso hace ${aryItem.sTimeUltimoAcceso} </span>
+                                              ${aryItem.sTimeUltimoAcceso.length>0 ? `<span class="ult-ingreso color-text-verde">Ingreso hace ${aryItem.sTimeUltimoAcceso} </span>` : `` }  
                                             </div>
                                         </div>
 
@@ -996,12 +1341,15 @@
                     `;
                 });
 
-                sHtml += `<div class="col-12 my-1 text-right"><a href="javascript:;" data-action='show' class="ShowMore">Ver Todo</a></div>`;
+                var sNameIdShowMore       = "btnShowMoreProspectos";
+                var sHtmlTagShowMore      = "#" +sNameIdShowMore ;
+                var sActionAnterior       = typeof $(sHtmlTagShowMore).data("action") == 'undefined' ? 'show' : $(sHtmlTagShowMore).data("action");
+                var sTextActionAnterior   = typeof $(sHtmlTagShowMore).data("action") == 'undefined' ? 'Ver Todo' : 'Ver Menos';
+
+                sHtml += `<div class="col-12 my-1 text-right"><a id="${sNameIdShowMore}" href="javascript:;" data-action='${sActionAnterior}' class="ShowMore">${sTextActionAnterior}</a></div>`;
 
                 $(sHtmlTag).html(sHtml);
 
-                
-                
                 fncEventListenerShowMoreLess();
                  
                  // Indicativos 
@@ -1015,6 +1363,17 @@
                  $("#nCitasCercanas").html(aryIndicativos.nCitasCercanas);
                  $("#nTotalCierre").html(aryIndicativos.nTotalCierre);
                  $("#nOportunidad").html(aryIndicativos.nOportunidad);
+
+                if(dDesde != "" && dHasta !="" ){
+                    $("#titulo-indi").html(
+                            `Indicativos  
+                            <a onclick="$('#formFilter').modal('show');" class="font-15 color-plomo" href="javascript:;"> <i class="fas fa-filter"></i> </a>
+                            <br/> <span style='font-size:15px;'>${dDesde +  " - " + dHasta}"</span>
+                            `);
+                } else {
+                    $("#titulo-indi").html("Indicativos");
+                }
+
                  // Fin de indicativos
 
             }
@@ -1022,17 +1381,21 @@
     }
 
     window.fncEditarProspecto = function(nIdProspecto){
-
+       
         var jsnData = {
             nIdRegistro  : nIdProspecto,
             nIdNegocio   : $("body").data("nidnegocio")
         };
-        
+
+        $("#btnDescargarPdfProspecto").hide();
+        $("#btnVerAdjuntos").hide();
+    
         fncMostrarProspecto(jsnData , function(aryData){
             if(aryData.success){
-
+               
                 $("#content-etapa-prospecto").show();
                 $("#content-historico-prospecto").show();  
+                $("#content-cambio-consultor").show();  
 
                 $("#title-prospectos").html("Editar Prospecto");
                 $("#formProspecto").data("nIdRegistro",nIdProspecto);
@@ -1041,20 +1404,63 @@
                 var aryProspecto             = aryData.aryData.aryProspecto ;
                 var aryProspectoSegmentacion = aryData.aryData.aryProspectoSegmentacion ;
                 var aryConfigExtra           = aryData.aryData.aryConfigExtra ;
+                var sLinkWebCotizacion       = aryData.aryData.sLinkWebCotizacion ;
+              
+                // Si ya exsite un link de una cotiazacion web
 
+                $("#nCambioConsultor").val(aryProspecto.nIdEmpleado);
+              
+                if(
+                    aryProspecto.nIdEtapa == $("body").data("nidetapaenviopropuesta") ||
+                    aryProspecto.nIdEtapa == $("body").data("nidetapanegociacion") ||
+                    aryProspecto.nIdEtapa == $("body").data("nidetapaenproceso") ||
+                    aryProspecto.nIdEtapa == $("body").data("nidetapacierre") 
+                ){
+                    $("#btnDescargarPdfProspecto").attr("href",route( 'admin/prospecto/fncDownloadPropuesta/' + nIdProspecto ) );
+                    $("#btnDescargarPdfProspecto").show();
+                }
+
+                
+                if( aryProspecto.nIdEtapa == $("body").data("nidetapaenproceso") ||
+                    aryProspecto.nIdEtapa == $("body").data("nidetapacierre")  || 
+                    aryProspecto.nIdEtapa == $("body").data("nidetapanegociacion") 
+                ){
+                    $("#btnVerAdjuntos").show();
+                }
                 
                 // Data default
 
                 // Etapa Propsecto 
-                $("#nIdEtapa").val(aryProspecto.nIdEtapa);
+
+                fncSetEtapa(aryProspecto.nIdEtapa);
 
                 // Cliente
                 if($("#nIdCliente").length>0){
+                    
                     $("#nIdCliente").val(aryProspecto.nIdCliente);
-                    $("#btnCrearCliente").hide();
-                    $('#nIdCliente').prop('disabled', true);
+
+                    if(aryProspecto.nIdCliente == 0 || aryProspecto.nIdCliente == ''){
+                        
+                        $("#btnCrearCliente").show();
+                        
+                        $('#nIdCliente').prop('disabled', false);
+                        $("#nIdCliente").attr("onblur","fncActualizarCliente($(this));");
+
+
+                    } else {
+                        $("#btnCrearCliente").hide();
+                        $('#nIdCliente').prop('disabled', true);
+                    }
+                   
                 }
 
+                if($("#sTituloProspecto").length>0){
+                    $("#sTituloProspecto").val(aryProspecto.sTitulo);
+                    $("#sTituloProspecto").data("sTituloOld",aryProspecto.sTitulo);
+                    $("#sTituloProspecto").attr("onblur","fncActualizarTitulo($(this));");
+                }
+
+            
                 // Catalogo
                 if($("#table-servicios").length >0 && $("#table-productos").length > 0 ){
                     var jsnData = {
@@ -1073,6 +1479,7 @@
                     });
                 }
 
+            
                 // Actividades
                 var jsnData = {
                     nIdRegistro     : $("#formProspecto").data("nIdRegistro"),
@@ -1080,18 +1487,19 @@
                 };
 
                 fncListarActividades(jsnData);
-
                 // Notas
 
                 $("#sNota").attr("onblur","fncGrabarNota(0,this);");
-                
+               
                 var jsnData = {
                     nIdRegistro : $("#formProspecto").data("nIdRegistro")
                 };
 
                 fncListarNota(jsnData);
+               
+
                 fncListarCambios(jsnData);
-            
+              
                 // Data default
                
                 // Data Extra 
@@ -1206,22 +1614,82 @@
         });
     }
 
+    window.fncActualizarCliente = function(element){
+
+        if( typeof $("#formProspecto").data("nIdRegistro") != "undefined" && $("#formProspecto").data("nIdRegistro") > 0){
+
+            var nIdCliente = element.val().trim();
+
+            if(nIdCliente != 0){
+
+                var jsnData = {
+                    nIdRegistro : $("#formProspecto").data("nIdRegistro"),
+                    nIdEmpleado : $("body").data("nidempleado"),
+                    sCol        : 'nIdCliente',
+                    sVal        :  nIdCliente
+                };
+
+                fncActualizarControlExtra(jsnData,function(aryData){
+                    if(aryData.success){
+                        toastr.success(aryData.success);
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+                });
+            }
+
+        }
+    }   
+
+    window.fncActualizarTitulo = function(element){
+
+        if( typeof $("#formProspecto").data("nIdRegistro") != "undefined" && $("#formProspecto").data("nIdRegistro") > 0){
+        
+            var sTituloOld = element.data("sTituloOld");
+            var sTitulo    = element.val().trim();
+
+            if(sTituloOld != sTitulo){
+
+                var jsnData = {
+                    nIdRegistro : $("#formProspecto").data("nIdRegistro"),
+                    nIdEmpleado : $("body").data("nidempleado"),
+                    sCol        : 'sTitulo',
+                    sVal        :  sTitulo
+                };
+
+                fncActualizarControlExtra(jsnData,function(aryData){
+                    if(aryData.success){
+                        toastr.success(aryData.success);
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+                });
+            }
+
+        }
+    }
+
     window.fncDrawNotas = function(jsnData){
+
+        var isPropietario =  jsnData.nIdTipoEntidad == $("body").data("nidempleado") ? true: false; 
+       
         var sHtml = `
                  <div class="col-12 my-1 items">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1 bd-highlight">
-                            <p class="m-0 font-14">${jsnData.dFechaActualizacion} - ${fncUc(jsnData.sNombreEmpleado)}</p>
+                            <p class="m-0 font-14">${jsnData.dFechaActualizacion} - ${fncUc(jsnData.sAutor)}</p>
                         </div>
                         <div class="bd-highlight">
-                            <a href="javascript:;" class="text-danger btn-delete-actividad" onclick="fncEliminarNota(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">delete</i> <div></div></a>
+                             ${ isPropietario ? `<a href="javascript:;" class="text-danger btn-delete-actividad" onclick="fncEliminarNota(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">delete</i> <div></div></a>` : ``}
                         </div>
                     </div>
                     <div class="form-group mb-1">
-                     <textarea onblur="fncGrabarNota(${jsnData.nIdRegistro},this);" class="form-control d-block" placeholder="Escribe una nota.."  cols="1" rows="1">${jsnData.sNota}</textarea>
+                     <textarea ${ isPropietario ? `` : `readonly` } data-stext="${jsnData.sNota.replace(/"/g, '&quot;')}" onblur="fncGrabarNota(${jsnData.nIdRegistro},this);" class="form-control d-block" placeholder="Escribe una nota.."  cols="1" rows="1">${jsnData.sNota}</textarea>
                     </div>
                 </div>`;
+        
         return sHtml;
+    
     }
 
     window.fncDrawCardCambios = function(jsnData){
@@ -1287,25 +1755,36 @@
 
     }
 
-    window.fncTriggerDrawProspecto = function(){
+    window.fncTriggerDrawProspecto = function(fncCallback = null){
 
         $("#content-ce-prospecto").html("");
 
         var jsnData = {
-            nIdNegocio: $("body").data("nidnegocio")
+            nIdNegocio      : $("body").data("nidnegocio"),
+            nEstadoCliente  : 1 // como aqui solo vamos a agregar los clientes tenemos que traer solo los activos
         };
 
         fncDrawProspecto(function(bStatus) {
             if(bStatus){
               window.fncEventListenerProspecto();
+              fncCallback(true);
             }
         });
     }
-
+    // Eventoss de formulario de prospecto
     window.fncEventListenerProspecto = function(){
 
+        $("#btnCrearActividad").off();
+        $("#btnAgregarCatalogo").off();
+        $(".dropdown-menu-etapa a").off();
+        $("#btnVerHistorial").off();
+        $("#btnVerDetallesCliente").off();
+        $("#nCambioConsultor").off();
+        
         $("#btnCrearActividad").on("click", function() {
             window.fncCleanAll();
+            window.sLatitudActividad = null;
+            window.sLongitudActividad = null;
             $("#formCEActividad").data("nIdRegistro",0);
             $("#formCEActividad").find(".modal-title").html("Crear Cita");
             $("#content-cumplio-actividad").hide();
@@ -1328,78 +1807,75 @@
             $("#formCECliente").modal("show");
         });
 
+        $(".dropdown-menu-etapa a").click(function(){
 
-        var nIdEtapaAnterior= null;
-        $("#nIdEtapa").on({
-            focus: function () {
-                nIdEtapaAnterior = $(this).find("option:selected").val();
-                $(this).val(0);
-                
-            },
-            change: function () {
-              
-                console.log( $(this).val() );
-                nIdEtapa = $(this).val();
-              
-                this.blur();
-                setTimeout(function () {
-                    
-                if(nIdEtapa == 0) { return false; }
+            $("#dropdownEtapa").text($(this).text());
+            $("#dropdownEtapa").val($(this).text());
 
-                if( $("#formProspecto").data("nIdRegistro") != 0 ){ 
+            var nIdEtapa = $(this).data("value");
 
-                        if(nIdEtapa == $("body").data("nidetapaenproceso")){
+            if( nIdEtapa == 0 ) { return false; }
 
-                            var jsnData = {
-                                nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                            };
+            if( $("#formProspecto").data("nIdRegistro") != 0 ){ 
 
-                            fncDrawAdjuntos(jsnData);
+                if(nIdEtapa == $("body").data("nidetapaenproceso")){
+
+                    var jsnData = {
+                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
+                    };
+
+                    fncDrawAdjuntos(jsnData);
+
+                } else {
+
+                    var jsnData = {
+                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
+                        nIdEmpleado : $("body").data("nidempleado"),
+                        nIdNegocio  : $("body").data("nidnegocio"),
+                        nIdEtapa    : nIdEtapa
+                    };
+
+                    fncActualizarEstadoProspecto(jsnData,function(aryData){
+                       
+                        if(aryData.success){
+                        
+
+                            switch(nIdEtapa){
+                                case $("body").data("nidetaparechazado") : 
+
+                                    alert("Ups.Se rechazo el prospecto porfavor indica una nota porque se rechazo.");
+
+                                    var sNota = document.getElementById("sNota"); 
+                                    sNota.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                
+                                break;
+                                case $("body").data("nidetapaenviopropuesta"):
+
+                                    $("#btnDescargarPdfProspecto").attr("href",route( 'admin/prospecto/fncDownloadPropuesta/' + $("#formProspecto").data("nIdRegistro") ) );
+                                    $("#btnDescargarPdfProspecto").show();
+                                
+                                break;
+                            }
+
+                         
+
+
+                            
+ 
+
+                            toastr.success(aryData.success);
 
                         } else {
-
-                            var jsnData = {
-                                nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                                nIdEtapa    : nIdEtapa
-                            };
-
-                            fncActualizarEstadoProspecto(jsnData,function(aryData){
-                                if(aryData.success){
-                                    var bSend = aryData.bSend;
-                                    if( aryData.bSend === false && aryData.sLinkArchivo.length > 0){
-                                        Object.assign(document.createElement('a'), { target: '_blank', href: aryData.sLinkArchivo }).click();
-                                    }
-                                    toastr.success(aryData.success);
-                                    // Verificar si es rechazado
-                                    if(nIdEtapa == $("body").data("nidetaparechazado")){
-                                        
-                                        alert("Ups.Se rechazo el prospecto porfavor indica una nota porque se rechazo.");
-
-                                        var sNota = document.getElementById("sNota"); 
-                                        sNota.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                                    }
-
-                                } else {
-                                    toastr.error(aryData.error);
-                                }
-                            });
-
+                            alert(aryData.error);
                         }
+
+                    });
+
                 }
-               
-                }, 0);  
-                
-                
-            },
-            blur: function () {
-                if ( $(this).val() == 0) {
-                    $(this).val(nIdEtapaAnterior);
-                }
-            },
+            }
+
+
         });
-
-
 
         $("#btnVerHistorial").on('click',function(){
             
@@ -1429,7 +1905,144 @@
 
         });
 
-    
+        $("#btnVerDetallesCliente").on('click',function(){
+            
+            
+            var nIdCliente = $("#nIdCliente").find("option:selected").val();
+            
+            if(nIdCliente == 0){
+                return;
+            }
+
+            var jsnData = {
+                nIdRegistro : nIdCliente,
+             };
+
+            fncMostrarCliente(jsnData,(aryData)=>{
+
+                if(aryData.success){
+
+                    console.log(aryData);
+                    var aryData = aryData.aryData;
+
+                    $("#sTipoClienteDetalle").html(aryData.sTipoCliente);
+                    $("#sTipoDocDetalle").html(aryData.sTipoDoc);
+                    $("#sNumeroDocumentoDetalle").html(aryData.sNumeroDocumento);
+                    $("#sNombreoRazonSocialDetalle").html(aryData.sNombreoRazonSocial);
+                    $("#sTipoClienteDetalle").html(aryData.sTipoCliente);
+                    $("#sDistritoDetalle").html( aryData.sDpt + ' - ' + aryData.sProvincia + ' - ' + aryData.sDistrito );
+                    $("#sDireccionDetalle").html(aryData.sDireccion);
+                    $("#sContactoDetalle").html(aryData.sContacto);
+                    $("#sRelacionamientoDetalle").html(aryData.sRelacionamiento);
+                    $("#sTelefonoDetalle").html(aryData.sTelefono);
+                    $("#sCorreoDetalle").html(aryData.sCorreo);
+
+
+                    var sButtons = `
+                        ${ aryData.sTelefono.length > 6 ? `<a target="_blank" class="wp" href="https://api.whatsapp.com/send?phone=+51${aryData.sTelefono}&text=Hola%20"><i class="fab fa-whatsapp"></i></a>`: ``} 
+                        ${ aryData.sCorreo.length > 0 ? `<a target="_blank" class="mail" href="mailto:${aryData.sCorreo}"><i class="far fa-envelope-open"></i></a>`: ``} 
+                        ${ aryData.sTelefono.length > 0 ? `<a target="_blank" class="phone" href="tel:${aryData.sTelefono}"><i class="fas fa-phone"></i></a>`: ``} 
+                    `;
+
+                    $("#content-buttons").html(sButtons);
+
+                    $("#modalDetalleCliente").modal("show");
+
+                 } else {
+                    toastr.error(aryData.error);
+                }
+
+            });
+
+        });
+
+        $("#btnEditarCliente").on('click',function(){
+            
+            
+            var nIdCliente  = $("#nIdCliente").find("option:selected").val();
+            
+            if(nIdCliente == 0){
+                return;
+            }
+
+            var jsnData = {
+                nIdRegistro : nIdCliente,
+            };
+
+            var sOpcion = 'editar';
+
+            $("#formCECliente").data("nIdRegistro",nIdCliente);
+
+            fncMostrarCliente(jsnData,(aryData)=>{
+
+                if(aryData.success){
+                   
+                    var aryData = aryData.aryData;
+
+                    if( aryData.nTipoCliente == 1 ){
+                        $("#btnViewFormEmpresa").trigger("click");
+                    } else {
+                        $("#btnViewFormPersona").trigger("click");
+                    }
+
+                    $("#nTipoDocumento" + sEntidadCliente ).val(aryData.nTipoDocumento);
+                    $("#sNumeroDocumento" + sEntidadCliente ).val(aryData.sNumeroDocumento);
+                    $("#sNombreoRazonSocial" + sEntidadCliente ).val(aryData.sNombreoRazonSocial);
+                    $("#sContacto" + sEntidadCliente ).val(aryData.sContacto);
+                    $("#sCorreo" + sEntidadCliente ).val(aryData.sCorreo);
+
+                    $("#nIdDepartamento" + sEntidadCliente ).val(aryData.nIdDepartamento);
+
+                    var jsnData = { nIdDepartamento : aryData.nIdDepartamento};
+                    fncDrawProvincia( "#nIdProvincia" + sEntidadCliente  , jsnData , aryData.nIdProvincia);
+
+                    var jsnData = { nIdProvincia : aryData.nIdProvincia};
+                    fncDrawDistrito(  "#nIdDistrito" + sEntidadCliente  , jsnData , aryData.nIdDistrito);
+
+                    $("#nIdRelacionamiento" + sEntidadCliente ).val(aryData.nIdRelacionamiento);
+                    $("#sTelefono" + sEntidadCliente ).val(aryData.sTelefono);
+                    $("#sDireccion" + sEntidadCliente ).val(aryData.sDireccion);
+                    $("#nEstado" + sEntidadCliente ).val(aryData.nEstado);
+
+                    if(sOpcion == 'ver'){
+                        fncViewForm("#formCECliente" , "Ver Cliente");
+                    } else {
+                        fncEditForm("#formCECliente" , "Editar Cliente");
+                    }
+
+
+                    $("#formCECliente").modal("show");
+
+
+                 } else {
+                    toastr.error(aryData.error);
+                }
+
+            });
+
+        });
+
+        $("#nCambioConsultor").on("change",function(){
+            
+            if($(this).val() == 0) return;
+
+            var jsnData = {
+                nIdProspecto : $("#formProspecto").data("nIdRegistro"),
+                nIdEmpleado  : $(this).val().trim()
+            };
+
+            fncActualizaEmpleadoProspecto(jsnData,(aryData)=>{
+                if(aryData.success){
+                    //alert("Al cambiar el prospecto a otro asesor de ventas ud ya no podra ver este prospecto e");
+                    toastr.success(aryData.success);
+                } else {
+                    toastr.error(aryData.error);
+                }
+            });
+
+        });
+
+
 
 
     }
@@ -1469,16 +2082,19 @@
 
     window.fncGrabarNota  = function(nIdRegistro,element){
         
-        var sNota = $(element).val();
+        var sNota         = $(element).val().trim();
+        var sNotaAnterior = $(element).data("stext").trim();
 
-        if(sNota == '') { return false;}
+        // Si la nota es igual o vacia no lo actualiza 
+        if(sNota == '' || sNotaAnterior == sNota ) { return false;}
 
         var jsnData = {
-            nIdRegistro     : nIdRegistro,
-            nIdEmpleado     : $("body").data("nidempleado"),
-            nIdProspecto    : $("#formProspecto").data("nIdRegistro"),
-            sNota           : sNota,
-            nEstado         : 1
+            nIdRegistro      : nIdRegistro,
+            nIdProspecto     : $("#formProspecto").data("nIdRegistro"),
+            nIdTipoEntidad   : $("body").data("nidempleado"),
+            nTipoEntidad     : $("body").data("ntipoentidadnotaempleado"),
+            sNota            : sNota,
+            nEstado          : 1
         };
 
         fncGrabarProspectoNota(jsnData,function(aryData){
@@ -1529,12 +2145,13 @@
         }
     }
 
-    window.fncGuardarCambio = function(sCambio){
+    window.fncGuardarCambio = function(sCambio,nIdEtapa = ''){
 
         var jsnData = {
             nIdRegistro : $("#formProspecto").data("nIdRegistro"),
             nIdEmpleado : $("body").data("nidempleado"),
             sCambio     : sCambio,
+            nIdEtapa    : nIdEtapa,
             nEstado     : 1
         };
 
@@ -1547,7 +2164,7 @@
                 
                 fncListarCambios(jsnData);
                 
-                toastr.success(aryData.success);
+                //toastr.success(aryData.success);
 
             } else {
                 toastr.error(aryData.error);
@@ -1572,7 +2189,8 @@
 
                         var jsnNota = {
                             nIdRegistro         : element.nIdNota,
-                            sNombreEmpleado     : element.sNombreEmpleado,
+                            sAutor              : element.sAutor,
+                            nIdTipoEntidad      : element.nIdTipoEntidad,
                             dFechaActualizacion : moment(element.dFechaActualizacion,'YYYY-MM-DD').format('DD/MM/YYYY'),
                             sNota               : element.sNota
                         };
@@ -1758,6 +2376,19 @@
 
     }
 
+    window.fncSetEtapa = function(nIdEtapa){
+       var sEtapa =  $("#nIdEtapa-"+nIdEtapa).text();
+       $("#dropdownEtapa").text(sEtapa);
+    }
+
+    window.fncCompareDate = function(dateTimeA, dateTimeB) {
+        var momentA = moment(dateTimeA,"DD/MM/YYYY");
+        var momentB = moment(dateTimeB,"DD/MM/YYYY");
+        if (momentA > momentB) return 1;
+        else if (momentA < momentB) return -1;
+        else return 0;
+    }
+
     // llamadas al servidor
 
     function fncBuildFormProspecto(jsnData, fncCallback) {
@@ -1792,6 +2423,9 @@
             },
             complete: function() {
                 fncOcultarLoader();
+            } ,
+            error :function(error){
+                alert(JSON.stringify(error));
             }
         });
     }
@@ -1857,13 +2491,13 @@
             url: web_root + 'admin/prospecto/fncGetProspectoNotaByIdProspecto',
             data: jsnData,
             beforeSend: function() {
-                fncMostrarLoader();
+               // fncMostrarLoader();
             },
             success: function(data) {
                 fncCallback(data);
             },
             complete: function() {
-                fncOcultarLoader();
+                //fncOcultarLoader();
             }
         });
     }
@@ -1891,24 +2525,6 @@
             type: 'post',
             dataType: 'json',
             url: web_root + 'admin/prospecto/fncEliminarProspectoNota',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncActualizarControlExtra(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncActualizarControlExtra',
             data: jsnData,
             beforeSend: function() {
                 fncMostrarLoader();
@@ -2030,7 +2646,41 @@
         });
     }
 
-    
+    function fncMostrarCliente(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/cliente/fncMostrarRegistro',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncActualizaEmpleadoProspecto(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/prospecto/fncActualizaEmpleadoProspecto',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
 
 </script>
 <!-- Prospecto -->
@@ -2039,7 +2689,9 @@
 
 <!-- Empleado -->
 <script>
+    
     window.sEntidadVendedor = '-3';
+
     $(document).ready(function() {
         fncDrawEmpleado(function(bEstatus) {
             if (bEstatus) {
@@ -2141,7 +2793,8 @@
                 $("#content-sCorreo" + sEntidadVendedor).removeClass("col-md-12");
                 $("#content-sCorreo" + sEntidadVendedor).addClass("col-md-6");
                 $("#nIdEstudios" + sEntidadVendedor).trigger("change");
-
+                
+                fncEventFile();
                 fncMostrarEmpleado();
             }
         });
@@ -2168,6 +2821,8 @@
             var sImagen                         = $("#sImagen" + sEntidadVendedor).length > 0 ?  $("#sImagen" + sEntidadVendedor)[0].files[0] : null;
             var sClave                          = $("#sClave" + sEntidadVendedor);
 
+            var nIdEstadoCivil                  = $("#nIdEstadoCivil" + sEntidadVendedor);
+            var nIdSexo                         = $("#nIdSexo" + sEntidadVendedor);
 
             if (nTipoDocumento.length > 0 && nTipoDocumento.val() == '0') {
                 toastr.error('Error. Seleccione un tipo de documento . Porfavor verifique');
@@ -2184,11 +2839,17 @@
             } else if (dFechaNacimiento.length > 0 && dFechaNacimiento.val() == '') {
                 toastr.error('Error. Ingrese un fecha. Porfavor verifique');
                 return;
-            } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '') {
-                toastr.error('Error. Ingrese la cantidad de personas dependientes. Porfavor verifique');
+            } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '' || isNaN(nCantidadPersonasDependientes.val()) || nCantidadPersonasDependientes.val() < 0 ) {
+                toastr.error('Error. No ha ingresado la cantidad de personas dependientes o el valor no es correcto. Porfavor verifique');
                 return;
             } else if (sClave.length > 0 && sClave.val() == '') {
                 toastr.error('Error. Ingrese una contraseña. Porfavor verifique');
+                return;
+            } else if (nIdEstadoCivil.length > 0 && nIdEstadoCivil.val() == '0') {
+                toastr.error('Error. Seleccione un estado civil. Porfavor verifique');
+                return;
+            } else if (nIdSexo.length > 0 && nIdSexo.val() == '0') {
+                toastr.error('Error. Seleccione un tipo de sexo. Porfavor verifique');
                 return;
             }
 
@@ -2219,7 +2880,11 @@
             formData.append('nTipoDocumento', nTipoDocumento.length > 0 ? nTipoDocumento.val() : "");
             formData.append('sNumeroDocumento',sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : "");
             formData.append('sNombre', sNombre.length > 0 ? sNombre.val() : "");
+
             formData.append('sCorreo', sCorreo.length > 0 ? sCorreo.val() : "");
+            formData.append('nIdSexo', nIdSexo.length > 0 ? nIdSexo.val() : "");
+
+            formData.append('nIdEstadoCivil', nIdEstadoCivil.length > 0 ? nIdEstadoCivil.val() : "");
             formData.append('dFechaNacimiento', dFechaNacimiento.length > 0 ? dFechaNacimiento.val() : "");
             formData.append('nCantidadPersonasDependientes', nCantidadPersonasDependientes.length > 0 ? nCantidadPersonasDependientes.val() : 0);
             formData.append('nExperienciaVentas', nExperienciaVentas.length > 0 ? nExperienciaVentas.val() : "");
@@ -2264,6 +2929,7 @@
     }
 
     function fncMostrarEmpleado() {
+
         var jsnData = {
             nIdRegistro: $("body").data("nidempleado")
         };
@@ -2278,6 +2944,8 @@
                 if ($("#sNumeroDocumento" + sEntidadVendedor).length > 0) $("#sNumeroDocumento" + sEntidadVendedor).val(aryData.sNumeroDocumento);
                 if ($("#sNombre" + sEntidadVendedor).length > 0) $("#sNombre" + sEntidadVendedor).val(aryData.sNombre);
                 if ($("#sCorreo" + sEntidadVendedor).length > 0) $("#sCorreo" + sEntidadVendedor).val(aryData.sCorreo);
+                if ($("#nIdSexo" + sEntidadVendedor ).length > 0 )  $( "#nIdSexo" + sEntidadVendedor ).val( aryData.nIdSexo ); 
+                if ($("#nIdEstadoCivil" + sEntidadVendedor ).length > 0 )  $( "#nIdEstadoCivil" + sEntidadVendedor ).val( aryData.nIdEstadoCivil ); 
                 if ($("#dFechaNacimiento" + sEntidadVendedor).length > 0) $("#dFechaNacimiento" + sEntidadVendedor).val(aryData.dFechaNacimiento);
                 if ($("#nCantidadPersonasDependientes" + sEntidadVendedor).length > 0) $("#nCantidadPersonasDependientes" + sEntidadVendedor).val(aryData.nCantidadPersonasDependientes);
                 if ($("#nExperienciaVentas" + sEntidadVendedor).length > 0) $("#nExperienciaVentas" + sEntidadVendedor).val(aryData.nExperienciaVentas);
@@ -2482,7 +3150,9 @@
 
         // Submit del formulario de Cliente
         $("#formCECliente").find("form").on('submit',function(event){
+            
             event.preventDefault();
+            
             var nIdRegistro            = $("#formCECliente").data("nIdRegistro");
             var nIdNegocio             = $("body").data("nidnegocio");
             var sForm                  = $("#nTipoDocumento" + sEntidadCliente ).data("sForm");
@@ -2510,31 +3180,48 @@
             } else if (sNombreoRazonSocial.length > 0 && sNombreoRazonSocial.val() == '') {
                 toastr.error('Error. Ingrese un nombre o razon social. Porfavor verifique');
                 return;
-            }  else if (sCorreo.length > 0 && sCorreo.val() == '') {
-                toastr.error('Error. Ingrese un correo. Porfavor verifique');
-                return;
-            } else if (nIdDepartamento.length > 0 && nIdDepartamento.val() == '0') {
-                toastr.error('Error. Seleccione un departamento. Porfavor verifique');
-                return;
-            } else if (nIdProvincia.length > 0 && nIdProvincia.val() == '0') {
-                toastr.error('Error. Seleccione una provincia. Porfavor verifique');
-                return;
-            } else if (nIdDistrito.length > 0 && nIdDistrito.val() == '0') {
-                toastr.error('Error. Seleccione un distrito. Porfavor verifique');
-                return;
-            } else if (sTelefono.length > 0 && sTelefono.val() == '') {
-                toastr.error('Error. Ingrese un telefono. Porfavor verifique');
-                return;
-            }  
+            } 
+            
+            // if (nIdDepartamento.length > 0 && nIdDepartamento.val() == '0') {
+            //     toastr.error('Error. Seleccione un departamento. Porfavor verifique');
+            //     return;
+            // } else if (nIdProvincia.length > 0 && nIdProvincia.val() == '0') {
+            //     toastr.error('Error. Seleccione una provincia. Porfavor verifique');
+            //     return;
+            // } else if (nIdDistrito.length > 0 && nIdDistrito.val() == '0') {
+            //     toastr.error('Error. Seleccione un distrito. Porfavor verifique');
+            //     return;
+            // } 
+
+            var bExisteCorreo   = false ;
+            var bExisteTelefono = false ;
+
+            if(sCorreo.length > 0  && sCorreo.val().trim().length > 0) bExisteCorreo = true;
+            if(sTelefono.length > 0  && sTelefono.val().trim().length > 0) bExisteTelefono = true;
+
+            if(!bExisteCorreo){
+                if (sTelefono.length > 0 && sTelefono.val() == '') {
+                    toastr.error('Error. Ingrese un telefono. Porfavor verifique');
+                    return;
+                }
+            }
+
+            if(!bExisteTelefono){
+                if (sCorreo.length > 0 && sCorreo.val() == '') {
+                    toastr.error('Error. Ingrese un correo. Porfavor verifique');
+                    return;
+                }
+            }
+          
 
             if (sForm == 'EMPRESA') {
-                if (sContacto.length > 0 && sContacto.val() == '') {
-                    toastr.error('Error. Ingrese un contacto. Porfavor verifique');
-                    return;
-                } else if (nIdRelacionamiento.length > 0 && nIdRelacionamiento.val() == '0') {
-                    toastr.error('Error. Seleccione un relacionamiento. Porfavor verifique');
-                    return;
-                } 
+                // if (sContacto.length > 0 && sContacto.val() == '') {
+                //     toastr.error('Error. Ingrese un contacto. Porfavor verifique');
+                //     return;
+                // } else if (nIdRelacionamiento.length > 0 && nIdRelacionamiento.val() == '0') {
+                //     toastr.error('Error. Seleccione un relacionamiento. Porfavor verifique');
+                //     return;
+                // } 
             }
 
 
@@ -2757,10 +3444,6 @@
             }
         });
     }
-
-    
-
-
  
 </script>
 <!-- Cliente -->
@@ -3077,8 +3760,10 @@
             var sHoraActividad      = $("#sHoraActividad").val();
             var sNota               = $("#sNotaActividad").val();
             var nCumplioActividad   = $('input[name=nCumplioActividad]:checked').val();
-          
-            if (nCumplioActividad !== undefined && nCumplioActividad !== '1') {
+
+            console.log(nCumplioActividad);
+
+            if ( nCumplioActividad != '1' ) {
                 if (sFechaActividad == "") {
                     toastr.error('Error. Seleccione un fecha de la cita. Porfavor verifique');
                     return;
@@ -3088,13 +3773,6 @@
                 }
             }
 
-    
-            window.sLatitudActividad   = null;
-            window.sLongitudActividad  = null;
-
-            if( nCumplioActividad  == 1 ){
-                fncGetLocation();
-            }
 
             // nTipoActividad - 1 Cita
             var jsnData = {
@@ -3133,7 +3811,7 @@
                         sColor          : "verde",
                         sNombreEmpleado : $("body").data("snombre"),
                         sFechaCreacion  : moment().format('DD/MM/YYYY'),
-                        sFechaActividad :  moment(sFechaActividad,'YYYY-MM-DD').format('DD/MM/YYYY'),
+                        sFechaActividad : moment(sFechaActividad,'YYYY-MM-DD').format('DD/MM/YYYY'),
                         nEdit           : 1,
                         sHoraActividad  : sHoraActividad,
                         sEstado         : "Pendiente"
@@ -3166,8 +3844,9 @@
                             fncListarActividades(jsnData);
 
                             if(aryData.bChangeEstado){
-                                $("#nIdEtapa").val(aryData.nIdEtapaNegociacion);
-                            }
+                                $("#btnVerAdjuntos").show();
+                                fncSetEtapa(aryData.nIdEtapaNegociacion);
+                             }
 
                             toastr.success(aryData.success);
                         } else {
@@ -3185,11 +3864,16 @@
 
         $('input[type=radio][name=nCumplioActividad]').change(function() {
             if (this.value == '1') {
+                fncMostrarLoader();
+                fncGetLocation();
                 $("#content-actividad").hide();
             } else if (this.value == '0') {
+                window.sLatitudActividad   = null;
+                window.sLongitudActividad  = null;
                 $("#content-actividad").show();
             }
         });
+ 
 
        
         
@@ -3226,18 +3910,22 @@
         return sHtml;
     }
 
+
     window.fncSuccessHandler = function (position) {
-        window.sLatitudActividad = position.coords.latitude;
+        toastr.success("Genial!. Ubicacion obtenida exitosamente.");
+        window.sLatitudActividad  = position.coords.latitude;
         window.sLongitudActividad = position.coords.longitude;
+        console.log(window.sLatitudActividad ,  window.sLongitudActividad );
+        fncOcultarLoader();
     };
 
     window.fncErrorHandler = function (error) {
+        
         switch (error.code) {
             case error.PERMISSION_DENIED:
                 //La usuario denegó la solicitud de geolocalización.
-                alert("Te pedimos que actives tu ubicacion porfavor.");
-                //fncGetLocation();
-                break;
+                alert("Para una mejor experiencia te pedimos que actives tu ubicacion.");
+                 break;
             case error.POSITION_UNAVAILABLE:
                 //La información de ubicación no está disponible
                 break;
@@ -3248,14 +3936,19 @@
                 console.log("error no esperado");
                 break;
         }
+
+        fncOcultarLoader();
     };
 
     window.fncGetLocation = function() {
         try {
+            
             navigator.geolocation.getCurrentPosition(fncSuccessHandler, fncErrorHandler, {
+                timeout: 0,
                 enableHighAccuracy: true,
-                maximumAge: 10000,
+                maximumAge: 0,
             });
+
         } catch (error) {
             console.log(error);
         }
@@ -3385,37 +4078,45 @@
             var formData = new FormData();
             formData.append('nIdRegistro', nIdRegistro);
             formData.append('nIdProspecto', nIdProspecto);
+            formData.append('nIdEmpleado', $("body").data("nidempleado"));
             formData.append('nIdAdjuntoContrato',nIdAdjuntoContrato);
             formData.append('sContrato',sContrato);
+
             $.each($('#aryOtros')[0].files,function(key,input){
                 formData.append('aryOtros[]', input);
             });
 
             // console.log(nIdAdjuntoContrato);
 
-            if( sContrato != null ){
-                fncGuardarCambio("Se "+ (nIdRegistro == 0 ? "agrego" : "actualizo")  +" el contrato");
-            } 
-
-            if( $('#aryOtros')[0].files != null &&  $('#aryOtros')[0].files.length > 0 ){
-                fncGuardarCambio("Se agrego "+$('#aryOtros')[0].files.length+" Adjuntos");
-            }
-
+          
             fncGrabarProspectoAdjunto(formData,(aryData)=>{
                 if(aryData.success){
+
                     if(aryData.bChangeEstado){
-                        $("#nIdEtapaEnProceso").val(aryData.nIdEtapaEnProceso).trigger("change");
-                    }
+                        fncSetEtapa(aryData.nIdEtapaEnProceso);
+                     }
 
                     var jsnData = {
                         nIdRegistro : $("#formProspecto").data("nIdRegistro"),
                     };
 
+
+                    if( sContrato != null ){
+                        fncGuardarCambio("Se "+ (nIdRegistro == 0 ? "agrego" : "actualizo")  +" el contrato");
+                    } 
+
+                    if( $('#aryOtros')[0].files != null &&  $('#aryOtros')[0].files.length > 0 ){
+                        fncGuardarCambio("Se agrego "+$('#aryOtros')[0].files.length+" Adjuntos");
+                    }
+
+
+
                     fncDrawAdjuntos(jsnData,false);
 
                     toastr.success(aryData.success);
                 }else{
-                    toastr.error(aryData.error);
+                    alert(aryData.error);
+                    //toastr.error(aryData.error);
                 }
             });
             
@@ -3435,7 +4136,7 @@
                 <div class="card my-2 p-2">
                     <div class="d-flex flex-center">
                         <div><a href="${jsnData.sLinkArchivo}" download="${jsnData.sNombreArchivo}">${jsnData.sNombreArchivo}</a></div>
-                        <div class="ml-auto"><i class="fas fa-download"></i></div>
+                        <div class="ml-auto"><a class="color-black" href="${jsnData.sLinkArchivo}" download="${jsnData.sNombreArchivo}"><i class="fas fa-download"></i></a></div>
                         <div class="mx-2"><a href="javascript:;" class="text-danger font-18" onclick="fncEliminarAdjunto(${jsnData.nIdAdjunto});" title="Eliminar"><i class="material-icons">delete</i></a></div>
                     </div>
                 </div>
@@ -3463,6 +4164,13 @@
 
                         fncDrawAdjuntos(jsnData,false);
                         fncGuardarCambio("Se elimino un adjunto");
+
+                        // En caso se haya eliminado el contrato el prospecto regresa ala etapa anterior 
+                        if(aryData.bChangeEstado){
+                            fncSetEtapa( $("body").data("nidetapanegociacion") );
+                        }
+
+
                         toastr.success(aryData.success);
 
                     } else {
@@ -3471,8 +4179,9 @@
                 });
         }
         
-
     }
+
+
  
     // LLamadas al servidor 
 
@@ -3535,5 +4244,20 @@
     
 </script>
 <!-- Adjuntos -->
+
+
+<script>
+
+// $(".btnIndi").on("click",function(){
+//     $("#formIndi").modal("show");
+// });
+
+// $("#btn-ver-filtros,#btn-ver-filtros2").on("click",function(){
+
+//     $("#formFilter").modal("show");
+// });
+
+
+</script>
 
 </html>

@@ -1,12 +1,7 @@
-*.vagrant
-*.bak
-*.db
-vendor/
-node_modules/
+
+vendor
+public/docs
+public/images/*
 .phpintel/
-public/docs/
-public/docs/images/multi
 .ftpquota
 .idea/
-.vscode/
-

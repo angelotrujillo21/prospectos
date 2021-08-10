@@ -33,7 +33,7 @@ class ApisController extends Controller
                 }
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -41,7 +41,7 @@ class ApisController extends Controller
 
     public function getApiDev($type, $numero)
     {
-        $token = "97998724bbd9aaa9cf8cdc7db419bb1f9016072ce8d7cbd02ad20315e74d0a7d";
+        $token = "4134fef67cc6436a3b5a602ac44a6494564262dd1965c1040a84990aa46fca93";
         $ch    = curl_init("https://apiperu.dev/api/" . $type . "/" . $numero); // Initialise cURL
         $authorization = "Authorization: Bearer " . $token; // Prepare the authorisation token
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization)); // Inject the token into the header
@@ -73,7 +73,7 @@ class ApisController extends Controller
                 }
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 }

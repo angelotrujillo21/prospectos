@@ -34,7 +34,7 @@ class UbigeoController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -53,7 +53,7 @@ class UbigeoController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 }

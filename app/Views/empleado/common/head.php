@@ -1,12 +1,12 @@
 <meta charset="uft-8">
 <meta name="author" content="MM">
-<link rel="shortcut icon" href="<?=src('favicon.ico')?>" />
+<link rel="shortcut icon" href="<?=src('app/favicon.png')?>" />
 <title><?=isset($titulo) && !empty($titulo) ? $titulo : NOMBRE_SITIO?></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="">
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-
+<meta name="theme-color" content="rgba(0, 0, 0, 0.5)">
 <?php load_style([
     'bootstrap',
     'jquery-ui',

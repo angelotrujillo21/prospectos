@@ -30,7 +30,7 @@ class Session
     /**
      * Retorna un elemento a la sesión
      * @param string $key la llave del array de sesión
-     * @return string el valor del array de sesión si tiene valor
+     * @return array el valor del array de sesión si tiene valor
      */
     public function get($key)
     {

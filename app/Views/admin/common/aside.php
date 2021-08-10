@@ -14,60 +14,44 @@
                 <i class="material-icons">&#xE5C4;</i>
             </a>
 
-       
+
         </nav>
-    </div>
 
 
-    <div class="nav-wrapper">
-        <?php if ($menu === true) : ?>
-            <ul class="nav flex-column">
-
-                <div class="menu-item">
-                    <li class="nav-item padre">
-                        <a class="nav-link" href="javascript:;">
-                            <i class="material-icons">dashboard</i>
-                            <span> Dashboard </span>
-                        </a>
-                    </li>
-                    <div class="nav-submenus">
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/home/' . $user["nIdNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                    </div>
-                </div>
-
-                <div class="menu-item">
-                    <li class="nav-item padre">
-                        <a class="nav-link" href="javascript:;">
-                            <i class="material-icons">settings</i>
-                            <span> Configuracion </span>
-                        </a>
-                    </li>
-                    <div class="nav-submenus">
-                        <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link" href="<?= route('admin/configuracion/prospecto/' . $user["nIdNegocio"]) ?>">
-                                <i class="material-icons">chevron_right</i>
-                                <span>Prospectos</span>
-                            </a>
-                        </li>
-
-                    </div>
-                </div>
+        <div class="nav-wrapper">
+            <?php if ($menu === true) : ?>
+                <ul class="nav flex-column">
 
 
-                <div class="menu-item">
-                    <li class="nav-item padre">
-                        <a class="nav-link"  href="<?= route('admin/salir/')?>">
-                            <i class="material-icons">&#xE879;</i>
-                            <span> Salir </span>
-                        </a>
-                    </li>
-                </div>
-            </ul>
-        <?php endif ?>
-    </div>
+                    <?php if (fncValidateArray($aryModulos)) : ?>
+                        <?php foreach ($aryModulos as $aryModulo) :
+
+                        ?>
+                            <div class="menu-item">
+                                <li class="nav-item padre">
+                                    <a class="nav-link" href="<?= $aryModulo["sUrl"] ?>">
+                                        <i class="material-icons"><?= $aryModulo["sIcono"] ?></i>
+                                        <span> <?= $aryModulo["sNombre"] ?> </span>
+                                    </a>
+                                </li>
+                                <?php if (fncValidateArray($aryModulo["arySubModulo"])) : ?>
+                                    <div class="nav-submenus">
+                                        <?php foreach ($aryModulo["arySubModulo"] as $key => $arySubModulo) : ?>
+                                            <li class="nav-item">
+                                                <a class="nav-link reportes item__menu__link" href="<?= $arySubModulo["sUrl"] ?>">
+                                                    <i class="material-icons"><?= $arySubModulo["sIcono"] ?></i>
+                                                    <span><?= $arySubModulo["sNombre"]?></span>
+                                                </a>
+                                            </li>
+                                        <?php endforeach ?>
+                                    </div>
+                                <?php endif ?>
+                            </div>
+                        <?php endforeach ?>
+                    <?php endif ?>
+
+
+                </ul>
+            <?php endif ?>
+        </div>
 </aside>

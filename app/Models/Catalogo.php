@@ -26,27 +26,20 @@ class Catalogo
         $nTipoItem,
         $nPrecio,
         $sDescripcion,
+        $sImagen,
         $nEstado
     ) {
+        $sSQL = $this->db->generateSQLInsert("catalogo", [
+            "nIdNegocio"    => $nIdNegocio,
+            "sNombre"       => $sNombre,
+            "nTipoItem"     => $nTipoItem,
+            "nPrecio"       => $nPrecio,
+            "sDescripcion"  => $sDescripcion,
+            "sImagen"       => $sImagen,
+            "nEstado"       => $nEstado
+        ]);
 
-        $sSQL = "INSERT INTO catalogo(
-                        nIdNegocio,
-                        sNombre,
-                        nTipoItem,
-                        nPrecio,
-                        sDescripcion,
-                        nEstado
-                ) VALUES (
-                    " . (is_null($nIdNegocio) || empty($nIdNegocio) ? "NULL" : "$nIdNegocio") . " ,
-                    " . (is_null($sNombre) || empty($sNombre) ? "NULL" : "'$sNombre'") . " ,
-                    " . (is_null($nTipoItem) || empty($nTipoItem) ? "NULL" : "$nTipoItem") . " ,
-                    " . (is_null($nPrecio) || empty($nPrecio) ? "NULL" : "$nPrecio") . " ,
-                    " . (is_null($sDescripcion) || empty($sDescripcion) ? "NULL" : "'$sDescripcion'") . " ,
-                    " . (is_null($nEstado) || empty($nEstado) ? "NULL" : "$nEstado") . " 
-                )";
-
-
-        return  $this->db->run($sSQL);
+        return $this->db->run($sSQL);
     }
 
 
@@ -57,25 +50,20 @@ class Catalogo
         $nTipoItem,
         $nPrecio,
         $sDescripcion,
+        $sImagen,
         $nEstado
     ) {
 
-        $sSQL = "UPDATE catalogo SET ";
-
-        $sSQL .= (!is_null($nIdNegocio) ? " nIdNegocio = $nIdNegocio " : '  ');
-
-        $sSQL .= (!is_null($sNombre) && !empty($sNombre) ? ", sNombre = '$sNombre' " : ', sNombre = NULL ');
-
-        $sSQL .= (!is_null($nTipoItem) && !empty($nTipoItem) ? ", nTipoItem = $nTipoItem " : ', nTipoItem = NULL ');
-
-        $sSQL .= (!is_null($nPrecio) && !empty($nPrecio) ? ", nPrecio = $nPrecio " : ', nPrecio = NULL ');
-
-        $sSQL .= (!is_null($sDescripcion) && !empty($sDescripcion) ? ", sDescripcion = '$sDescripcion' " : ', sDescripcion = NULL ');
-
-        $sSQL .= (!is_null($nEstado) ? ", nEstado = $nEstado" : ", nEstado = NULL ");
-
-        $sSQL .= " WHERE nIdCatalogo = $nIdCatalogo ";
-
+        $sSQL = $this->db->generateSQLUpdate("catalogo", [
+            "nIdNegocio"    => $nIdNegocio,
+            "sNombre"       => $sNombre,
+            "nTipoItem"     => $nTipoItem,
+            "nPrecio"       => $nPrecio,
+            "sDescripcion"  => $sDescripcion,
+            "sImagen"       => $sImagen,
+            "nEstado"       => $nEstado
+        ],"nIdCatalogo = $nIdCatalogo");
+    
         return  $this->db->run($sSQL);
     }
 
@@ -94,7 +82,8 @@ class Catalogo
                         catTabla.sDescripcionLargaItem AS nTipoItem ,
                         cat.sNombre, 
                         cat.nPrecio, 
-                        cat.sDescripcion, 
+                        cat.sDescripcion,
+                        cat.sImagen,
                         cat.nEstado
                 FROM catalogo AS cat 
                 INNER JOIN catalogotabla AS catTabla ON cat.nTipoItem = catTabla.nIdCatalogoTabla
@@ -116,6 +105,13 @@ class Catalogo
 
     {
         $sSQL = "SELECT * FROM catalogo WHERE sNombre LIKE '%$sFiltro%'";
+        return $this->db->run(trim($sSQL));
+    }
+
+
+    public function fncCambiarEstado($nIdCatalogo, $nEstado)
+    {
+        $sSQL = "UPDATE catalogo SET nEstado = $nEstado  WHERE nIdCatalogo = $nIdCatalogo ";
         return $this->db->run(trim($sSQL));
     }
 }

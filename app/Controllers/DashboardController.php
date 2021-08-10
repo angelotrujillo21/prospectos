@@ -21,6 +21,8 @@ class DashboardController extends Controller
     public $prospecto;
 
     public $users;
+    public $isUser;
+    public $isEmpleado;
 
     public function __construct()
     {
@@ -32,6 +34,10 @@ class DashboardController extends Controller
         $this->empleados     = new Empleados();
         $this->session->init();
         $this->authAdmin($this->session);
+
+        $aryData =  $this->fncGetRoles($this->session);
+        $this->isUser     = $aryData["isUser"];
+        $this->isEmpleado = $aryData["isEmpleado"];
     }
 
     public function index($nIdNegocio)
@@ -40,24 +46,47 @@ class DashboardController extends Controller
             $aryNegocio = $this->negocios->fncGetNegocioById($nIdNegocio);
             if ($aryNegocio != false) {
 
-                $user               = $this->session->get('user');
-                $aryNegocioUsuario  = $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"] ,$nIdNegocio);
+                $user = $this->session->get('user');
 
-                $user["nRol"]       = fncValidateArray($aryNegocioUsuario) ? $aryNegocioUsuario[0]['nRol'] : null;
+                if ($this->isUser) {
+                    $aryNegocioUsuario  = $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"], $nIdNegocio);
+                    $user["nRol"]       = fncValidateArray($aryNegocioUsuario) ? $aryNegocioUsuario[0]['nRol'] : null;
+                } else {
+                    $user["nRol"]   = 0;
+                }
+
                 $user["nIdNegocio"] = $nIdNegocio;
-                
+
                 $this->session->add("user", $user);
 
                 $aryColores = $this->empleados->fncGetColoresEmpleados($nIdNegocio);
                 $sColores   = is_array($aryColores) && count($aryColores) > 0 ? implode(",", array_column($aryColores, 'nIdColor')) : "0";
                 $sIds       = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo") ? $this->fncGetVarConfig("nPorcentajesProspectoLargo") : $this->fncGetVarConfig("nPorcentajesProspectoCorto");
 
-                $nIdEstadoPendiente = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nIdEtapaEnProceso") : $this->fncGetVarConfig("nIdEtapaProgramada");
+                $nIdEtapaPendiente  = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nIdEtapaEnProceso") : $this->fncGetVarConfig("nIdEtapaProgramada");
                 $sEtapas            = $aryNegocio["nTipoProspecto"] == $this->fncGetVarConfig("nTipoProspectoLargo")  ? $this->fncGetVarConfig("nPorcentajesProspectoLargo") : $this->fncGetVarConfig("nPorcentajesProspectoCorto");
-                
-               // var_dump($this->session->get('user'));
 
-                $this->view( 
+                // var_dump($this->session->get('user'));
+                $aryEmpleados = [];
+
+                $nTipoEmpleadoAsesorVentas = $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas");
+
+                $aryEmpleados = $this->empleados->fncGetEmpleados(
+                    $nTipoEmpleadoAsesorVentas,
+                    $nIdNegocio,
+                    null,
+                    1
+                );
+
+                
+                # Evalua si esque existe el widget para citas 
+
+                $nIdActividadesWidget = $this->fncGetVarConfig("nIdActividadesWidget");
+                $aryExistWidgetCitas  = $this->prospecto->fncExistWidgetInConfigProspecto($nIdNegocio, $nIdActividadesWidget, 1);
+                $bExisteWidgetCitas   = fncValidateArray($aryExistWidgetCitas) ? true : false;
+ 
+
+                $this->view(
                     'admin/home',
                     array(
                         'aryNegocio'                  => $aryNegocio,
@@ -66,7 +95,7 @@ class DashboardController extends Controller
                         'menu'                        => true,
                         'titulo'                      => 'Home',
                         'showNotificacion'            => true,
-                        'nIdEstadoPendiente'          => $nIdEstadoPendiente,
+                        'nIdEtapaPendiente'           => $nIdEtapaPendiente, // Este estado sirve para verificar que etapa es pendiente en caso  de que la prospeccion sea larga la etapa pendiente es 90 en caso de corto es de 1
                         'sEtapas'                     => $sEtapas,
                         'nTipoProspecto'              => $aryNegocio["nTipoProspecto"],
                         'aryEtapaProspecto'           => $this->prospecto->fncGetEtapaProspecto($sIds),
@@ -86,18 +115,67 @@ class DashboardController extends Controller
                         'aryTipoEmpleados'            => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
                         'arySupervisores'             => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoSupervisor"), $nIdNegocio),
                         'aryVendedores'               => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio),
+                        'aryVendedoresLimit'          => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio, null, 1, " emp.nIdEmpleado DESC ", 5),
                         'nTipoEmpleadoSupervisor'     => $this->fncGetVarConfig("nTipoEmpleadoSupervisor"),
+                        'nTipoEmpleadoAsesorVentas'   => $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"),
+                        'nTipoEntidadNotaAdmin'       => $this->fncGetVarConfig("nTipoEntidadNotaAdmin"),
+                        'nTipoEntidadNotaEmpleado'    => $this->fncGetVarConfig("nTipoEntidadNotaEmpleado"),
                         'nIdEtapaRechazado'           => $this->fncGetVarConfig("nIdEtapaRechazado"),
-                        'aryTipoItem'                 => $this->catalogoTabla->fncListado('TIPO_ITEM'), 
-                        'nRolProspectoAdmin'          => $this->fncGetVarConfig("nRolProspectoAdmin")
+                        'aryTipoItem'                 => $this->catalogoTabla->fncListado('TIPO_ITEM'),
+                        'nRolProspectoAdmin'          => $this->fncGetVarConfig("nRolProspectoAdmin"),
+                        'isUser'                      => $this->isUser ? "true" : "false",
+                        'isEmpleado'                  => $this->isEmpleado ? "true" : "false",
+                        'aryEmpleados'                => $aryEmpleados,
+                        'aryModulos'                  => $this->fncGetModulos($this->session),
+                        'bExisteWidgetCitas'          => $bExisteWidgetCitas
                     )
                 );
-
             } else {
-                $this->redirect('admin/mis-negocios');
+                $this->redirect('mis-negocios');
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
+        }
+    }
+
+
+
+    public function reporteventas($nIdNegocio)
+    {
+        try {
+
+            $aryNegocio = $this->negocios->fncGetNegocioById($nIdNegocio);
+
+            if ($aryNegocio != false) {
+
+
+                $this->view(
+                    'admin/reporte-ventas',
+                    array(
+                        'aryNegocio'                  => $aryNegocio,
+                        'nIdNegocio'                  => $nIdNegocio,
+                        'user'                        => $this->session->get('user'),
+                        'menu'                        => true,
+                        'titulo'                      => 'Reporte Ventas',
+                        'showNotificacion'            => true,
+                        'aryTipoItem'                 => $this->catalogoTabla->fncListado('TIPO_ITEM'),
+                        'arySupervisores'             => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoSupervisor"), $nIdNegocio),
+                        'aryVendedores'               => $this->empleados->fncGetEmpleados($this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"), $nIdNegocio),
+                        'nTipoItemCatalogoProducto'   => $this->fncGetVarConfig("nTipoItemCatalogoProducto"),
+                        'nTipoItemCatalogoServicio'   => $this->fncGetVarConfig("nTipoItemCatalogoServicio"),
+                        'aryTipoEmpleados'            => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
+                        'nTipoEmpleadoSupervisor'     => $this->fncGetVarConfig("nTipoEmpleadoSupervisor"),
+                        'nTipoEmpleadoAsesorVentas'   => $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"),
+                        'aryModulos'                  => $this->fncGetModulos($this->session),
+
+
+                    )
+                );
+            } else {
+                $this->redirect('mis-negocios');
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
         }
     }
 }

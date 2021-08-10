@@ -100,6 +100,12 @@ function routePdf($path)
     return WEB_ROOT_RESOURCE . 'pdf/' . $path;
 }
 
+
+function docs($path)
+{
+    return WEB_ROOT_RESOURCE . 'docs/' . $path;
+}
+
 function sanitize($url, $flag = false)
 {
     $url = strtolower($url);
@@ -168,7 +174,7 @@ function uc($string)
     return mb_convert_case(mb_strtolower($string, "UTF-8"), MB_CASE_TITLE, "UTF-8");
 }
 
-function sp($input , $nNumber = 8)
+function sp($input, $nNumber = 8)
 {
     return str_pad($input, $nNumber, "0", STR_PAD_LEFT);
 }
@@ -247,44 +253,56 @@ function dividirArrayByKey($arrays, $key)
     }
     return $data;
 }
-function getNameMesById($id_mes)
+function fncGetNameMesById($nIdMes)
 {
     $mes = "";
-    switch ($id_mes) {
+    switch ($nIdMes) {
         case "01":
+        case 1:
             $mes = "Enero";
             break;
         case "02":
+        case 2:
             $mes = "Febrero";
             break;
         case "03":
+        case 3:
             $mes = "Marzo";
             break;
         case "04":
+        case 4:
             $mes = "Abril";
             break;
         case "05":
+        case 5:
             $mes = "Mayo";
             break;
         case "06":
+        case 6:
             $mes = "Junio";
             break;
         case "07":
+        case 7:
             $mes = "Julio";
             break;
         case "08":
+        case 8:
             $mes = "Agosto";
             break;
         case "09":
+        case 9:
             $mes = "Septiembre";
             break;
         case "10":
+        case 10:
             $mes = "Octubre";
             break;
         case "11":
+        case 11:
             $mes = "Noviembre";
             break;
         case "12":
+        case 12:
             $mes = "Diciembre";
             break;
     }
@@ -655,7 +673,19 @@ function fncSecondsToTime($inputSeconds)
     $sMin   =  ($obj['m'] == 0 ? '' : ($obj['m'] == 1 ? (strlen($shoras) > 0 ? ' y ' : ' ') . $obj['m'] . 'm' : (strlen($shoras) > 0 ? ' y ' : ' ') . $obj['m'] . 'm'));
     $sSeg   =  ($obj['s'] == 0 ? '' : ($obj['s'] == 1 ? (strlen($sMin) > 0 ? ' y ' : ' ') . $obj['s'] . 's' : (strlen($sMin) > 0 ? ' y ' : ' ') . $obj['s'] . 's'));
 
-    return $sDias . $shoras . $sMin . $sSeg;
+    $sTime = "";
+
+    if (strlen($sDias) > 0 &&  strlen($shoras) > 0  &&  strlen($sMin) > 0  &&  strlen($sSeg) > 0) {
+        $sTime =  $sDias;
+    } elseif (strlen($shoras) > 0  && strlen($sMin) > 0  &&  strlen($sSeg) > 0) {
+        $sTime =  $shoras;
+    } elseif (strlen($sMin) > 0  &&  strlen($sSeg) > 0) {
+        $sTime =  $sMin;
+    } elseif (strlen($sSeg) > 0) {
+        $sTime =  $sSeg;
+    }
+
+    return trim($sTime);
 }
 
 
@@ -676,7 +706,6 @@ function fncSanitizeDb($str)
 
 function fncCheckInRange($fecha_inicio, $fecha_fin, $fecha)
 {
-
     $fecha_inicio = strtotime($fecha_inicio);
     $fecha_fin = strtotime($fecha_fin);
     $fecha = strtotime($fecha);
@@ -686,4 +715,28 @@ function fncCheckInRange($fecha_inicio, $fecha_fin, $fecha)
     } else {
         return false;
     }
+}
+
+function strup($str)
+{
+    return   mb_strtoupper($str, 'utf-8');
+}
+
+function fncCutTextName($str)
+{
+
+    if (strlen($str) > 8) {
+        return substr($str, 0, 7) . "..";
+    } else {
+        return $str;
+    }
+}
+
+
+function fncExisteImagen($path)
+{
+    if (file_exists(ROOTPATH . "/public/images/" . $path)) {
+        return true;
+    }
+    return false;
 }

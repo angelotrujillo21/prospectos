@@ -71,7 +71,7 @@ class BuildFormController extends Controller
 
             $this->json($aryResponse);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -81,7 +81,8 @@ class BuildFormController extends Controller
     {
         try {
 
-            $nIdNegocio = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+            $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+            $nEstadoCliente = isset($_POST['nEstadoCliente']) ? $_POST['nEstadoCliente'] : null;
 
             // Valida valores del formulario
             if (is_null($nIdNegocio)) {
@@ -99,7 +100,7 @@ class BuildFormController extends Controller
 
                     switch ($ary['sWidgetSystem']) {
                         case 'CLIENTE':
-                            $aryLista = $this->clientes->fncGetClientes($nIdNegocio, 1);
+                            $aryLista = $this->clientes->fncGetClientes($nIdNegocio, $nEstadoCliente  ,  null , " cli.sNombreoRazonSocial ASC ");
                             break;
                         case 'CATALOGO':
                             $aryLista = $this->catalogo->fncGetCatalogos($nIdNegocio, 1);
@@ -137,7 +138,7 @@ class BuildFormController extends Controller
 
             $this->json(["success" => true, "aryData" => $aryData]);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 }

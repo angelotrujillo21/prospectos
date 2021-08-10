@@ -44,6 +44,10 @@ class EmpleadosController extends Controller
             $sNumeroDocumento               = isset($_POST['sNumeroDocumento']) ? $_POST['sNumeroDocumento'] : null;
             $sNombre                        = isset($_POST['sNombre']) ? $_POST['sNombre'] : null;
             $sCorreo                        = isset($_POST['sCorreo']) ? $_POST['sCorreo'] : null;
+
+            $nIdSexo                        = isset($_POST['nIdSexo']) ? $_POST['nIdSexo'] : null;
+            $nIdEstadoCivil                 = isset($_POST['nIdEstadoCivil']) ? $_POST['nIdEstadoCivil'] : null;
+
             $nIdColor                       = isset($_POST['nIdColor']) ? $_POST['nIdColor'] : null;
             $dFechaNacimiento               = isset($_POST['dFechaNacimiento']) ? $_POST['dFechaNacimiento'] : null;
             $nCantidadPersonasDependientes  = isset($_POST['nCantidadPersonasDependientes']) ? $_POST['nCantidadPersonasDependientes'] : null;
@@ -69,6 +73,20 @@ class EmpleadosController extends Controller
 
             // Crear
             if ($nIdRegistro == 0) {
+                if (isset($sCorreo) && !is_null($sCorreo)) {
+                    $aryUsuario = $this->users->fncBuscarUsuarioPorCorreo($sCorreo);
+
+                    if (fncValidateArray($aryUsuario)) {
+                        $this->exception("Error.Ya existe un usuario con este correo asignado en el sistema . Porfavor verifique");
+                    }
+
+                    $aryExisteCorreo =  $this->empleados->fncVerificarCorreoEmpleadoPorNegocio($nIdNegocio, $sCorreo);
+                    if (fncValidateArray($aryExisteCorreo)) {
+                        $this->exception("Error.Ya existe un empleado con este correo asignado . Porfavor verifique");
+                    }
+                }
+
+
                 if (isset($sImagen) && !is_null($sImagen)) {
                     $sNombreImagen = Upload::process($sImagen, 'images/multi');
                 }
@@ -80,6 +98,8 @@ class EmpleadosController extends Controller
                     $sNumeroDocumento,
                     $sNombre,
                     $sCorreo,
+                    $nIdSexo,
+                    $nIdEstadoCivil,
                     $nIdColor,
                     $dFechaNacimiento,
                     $nCantidadPersonasDependientes,
@@ -113,6 +133,8 @@ class EmpleadosController extends Controller
                     $sNumeroDocumento,
                     $sNombre,
                     $sCorreo,
+                    $nIdSexo,
+                    $nIdEstadoCivil,
                     $nIdColor,
                     $dFechaNacimiento,
                     $nCantidadPersonasDependientes,
@@ -130,9 +152,12 @@ class EmpleadosController extends Controller
                 // Si actualizamos el empleado desde la app actualizamos su session
                 $aryEmpleado  = $this->empleados->fncGetEmpleados(null, null, $nIdRegistro);
                 $aryEmpleado  = fncValidateArray($aryEmpleado) ? $aryEmpleado[0] : null;
+                $sRolEmp      = $this->fncGetVarConfig("sRolEmp");
+                $userOld      = $this->session->get("user");
 
-                if (!is_null($this->session->get("userEmpleado"))  && ($aryEmpleado["nTipoEmpleado"] == $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas"))) {
-                    $this->session->add('userEmpleado', $aryEmpleado);
+                if (!is_null($userOld)  && ($userOld["sRol"] == $sRolEmp)) {
+                    $aryEmpleado["sRol"] =  $sRolEmp;
+                    $this->session->add('user', $aryEmpleado);
                 }
             }
 
@@ -140,17 +165,18 @@ class EmpleadosController extends Controller
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
-
 
     public function fncPopulate()
     {
         try {
             $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
             $nTipoEmpleado  = isset($_POST['nTipoEmpleado']) ? $_POST['nTipoEmpleado'] : null;
-            $nRol           = isset($_POST['nRol']) ? $_POST['nRol'] : null;
+            $nEstado        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+            $sOrderBy       = isset($_POST['sOrderBy']) ? $_POST['sOrderBy'] : null;
+            $sLimit         = isset($_POST['sLimit']) ? $_POST['sLimit'] : null;
 
             // Valida valores del formulario
             if (is_null($nIdNegocio)) {
@@ -158,32 +184,57 @@ class EmpleadosController extends Controller
             }
 
             $aryRows      = [];
-            $aryEmpleados  = $this->empleados->fncGetEmpleadosAll($nTipoEmpleado, $nIdNegocio);
+            $aryEmpleados  = $this->empleados->fncGetEmpleadosAll(
+                $nTipoEmpleado,
+                $nIdNegocio,
+                null,
+                $nEstado,
+                $sOrderBy,
+                $sLimit
+            );
 
             $bIsSupervisor = $nTipoEmpleado == $this->fncGetVarConfig("nTipoEmpleadoSupervisor") ? true : false;
+            $bIsAsesor     = $nTipoEmpleado == $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas") ? true : false;
 
             $user          = $this->session->get("user");
             $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
-            
+
             if (fncValidateArray($aryEmpleados)) {
                 foreach ($aryEmpleados as $aryEmpleado) {
+                    $sNewState = $aryEmpleado['nEstado'] == '1' ? '0' : '1';
+
+                    $sActionState      = 'fncCambiarEstadoEmpleado( ' . "'" . $aryEmpleado['nIdEmpleado'] . "', " . $sNewState . ' )';
+                    $sActionMetricas   = 'fncVerEmpleado(' . $aryEmpleado['nIdEmpleado'] . ')';
+
+                    $sIconState     = $aryEmpleado['nEstado'] == '1'  ? 'power_settings_new' : 'check';
+                    $sTitleState    = $aryEmpleado['nEstado'] == '1' ? 'Desactivar' : 'Activar';
 
                     $sActionVer       = "fncMostrarEmpleado(" . $aryEmpleado['nIdEmpleado'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarEmpleado(" . $aryEmpleado['nIdEmpleado'] . ", 'editar' );";
 
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                    ' . ( $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>'  : '') . ' 
+                                    ' .  ($bIsAsesor ? '<a href="javascript:;" onclick="' . $sActionMetricas . '" class="text-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Metricas"><i class="material-icons">moving</i></a></a>' : '') . '
+                                    ' .  ($bIsRolAdmin ? '<a href="javascript:;" onclick="' . $sActionState . '" class="text-primary" data-toggle="tooltip" data-placement="bottom" title="' . $sTitleState . '"><i class="material-icons">' . $sIconState . '</i></a></a>' : '') . '
+                                    ' . ($bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i></a>'  : '') . ' 
                                 </div>';
 
-                    $sCuadradoSuper = ($bIsSupervisor ? '<div class="cuadrado fondo-' . strtolower($aryEmpleado["sColorSuper"]) . '"></div>' : '');
+
+                    $sNombreColor   = $bIsSupervisor ? strtolower($aryEmpleado["sColorSuper"]) : strtolower($aryEmpleado["sColorSuperEmpleado"]);
+                    $sCuadradoSuper = '<div class="cuadrado fondo-' . $sNombreColor . '"></div>';
 
                     $aryRows[] = [
                         "sAcciones"                         => $sAcciones,
                         "nIdEmpleado"                       => $aryEmpleado["nIdEmpleado"],
+                        "sEmpleadoCorto"                    => $aryEmpleado["sEmpleadoCorto"],
+                        "sTipoEmpleado"                     => $aryEmpleado["sTipoEmpleado"],
+                        "sNombreNegocio"                    => $aryEmpleado["sNombreNegocio"],
+                        "sColorSuper"                       => $aryEmpleado["sColorSuper"],
+                        "sColorSuperEmpleado"               => $aryEmpleado["sColorSuperEmpleado"],
                         "nTipoDocumento"                    => $aryEmpleado["sTipoDoc"],
                         "sNumeroDocumento"                  => $aryEmpleado["sNumeroDocumento"],
                         "sColor"                            => $sCuadradoSuper,
+                        "sNombreColor"                      => strtoupper($sNombreColor),
                         "sNombre"                           => $aryEmpleado["sNombre"],
                         "sCorreo"                           => $aryEmpleado["sCorreo"],
                         "nExperienciaVentas"                => $aryEmpleado["nExperienciaVentas"] == 1 ? "SI" : "NO",
@@ -192,32 +243,45 @@ class EmpleadosController extends Controller
                         "nCantidadPersonasDependientes"     => $aryEmpleado["nCantidadPersonasDependientes"],
                         "nIdEstudios"                       => $aryEmpleado["sEstudio"],
                         "nIdSituacionEstudios"              => $aryEmpleado["sSituacionEstudio"],
+                        "nIdSexo"                           => $aryEmpleado["sSexo"],
+                        "nIdEstadoCivil"                    => $aryEmpleado["sEstadoCivil"],
                         "sCarreraCiclo"                     => $aryEmpleado["sCarreraCiclo"],
                         "sClave"                            => $aryEmpleado["sClave"],
+                        "sUltimoAcceso"                     => fncSecondsToTime($aryEmpleado["sTimeUltimoAcceso"]),
                         'sImagen'                           => !empty($aryEmpleado['sImagen']) ? '<img class="user-avatar rounded-circle  img-usuario" src="' . src('multi/' . $aryEmpleado['sImagen'])  . '" alt="' . $aryEmpleado['sImagen'] . '">' : '',
                         "nEstado"                           => $aryEmpleado["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
+
                     ];
                 }
             }
 
             $this->json(array("success" => true, "aryData" => $aryRows));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
-
 
     public function fncFormularioEmpleado($nIdNegocio, $nIdTipoEmpleado, $nIdSupervisoroColor)
     {
         try {
-            $aryNegocio  = $this->negocios->fncGetNegocioById($nIdNegocio);
-
+            $bExisteError = false;
+            $aryNegocio   = $this->negocios->fncGetNegocioById($nIdNegocio);
+            $sMensajeError = "";
             $nTipoEmpleadoSupervisor =  $this->fncGetVarConfig("nTipoEmpleadoSupervisor");
 
             if ($nIdTipoEmpleado == $nTipoEmpleadoSupervisor) {
+
                 // Supervisores
                 $sTitle           = 'Formulario Supervisor';
                 $nIdEntidad       = 4;
+
+                // Verifica si existe el color o supervisor dentro de ese negocio
+                $aryDataColores   = $this->empleados->fncVerificarExisteColorSupervisor($nIdNegocio, $nIdSupervisoroColor);
+
+                if (fncValidateArray($aryDataColores)) {
+                    $bExisteError  = true;
+                    $sMensajeError = "Error. Ya existe un supervisor que se le asigno este color. Porfavor verifique o solicite asistencia.";
+                }
             } else {
                 $sTitle            = 'Formulario Vendedor';
                 $nIdEntidad        = 3;
@@ -230,11 +294,13 @@ class EmpleadosController extends Controller
                 'nIdSupervisoroColor'     => $nIdSupervisoroColor,
                 'aryNegocio'              => $aryNegocio,
                 'nIdEntidad'              => $nIdEntidad,
-                'nTipoEmpleadoSupervisor' => $nTipoEmpleadoSupervisor
+                'nTipoEmpleadoSupervisor' => $nTipoEmpleadoSupervisor,
+                'bExisteError'            => $bExisteError,
+                'sMensajeError'           => $sMensajeError,
 
             ));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -254,7 +320,7 @@ class EmpleadosController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData[0]));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -275,7 +341,7 @@ class EmpleadosController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -320,7 +386,7 @@ class EmpleadosController extends Controller
                 $this->json(array("error" => true, "sUrl" => $sUrl));
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -348,7 +414,7 @@ class EmpleadosController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -369,7 +435,26 @@ class EmpleadosController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryColores));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
+        }
+    }
+
+    public function fncCambiarEstado()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+        $nEstado     = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdRegistro) || is_null($nEstado)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $this->empleados->fncCambiarEstado($nIdRegistro, $nEstado);
+            $this->json(array("success" => "Genial se realizo el cambio de estado exitosamente."));
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
         }
     }
 }

@@ -31,20 +31,34 @@
                     <div class="nav-submenus">
 
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link btnVerInicio"  onclick="$('#btnToogleAside').trigger('click');" href="javascript:;">
+                            <a class="nav-link reportes item__menu__link btnVerInicio"  href="javascript:;">
                                 <i class="material-icons">chevron_right</i>
-                                <span>Inicio</span>
+                                <span>Cotizador</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link reportes item__menu__link btnVerprospectos" onclick="$('#btnToogleAside').trigger('click');" href="javascript:;">
+                            <a class="nav-link reportes item__menu__link btnVerInicio"  href="javascript:;">
                                 <i class="material-icons">chevron_right</i>
-                                <span>Prospectos</span>
+                                <span>Opp</span>
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link reportes item__menu__link btnVerInicio"  href="javascript:;">
+                                <i class="material-icons">chevron_right</i>
+                                <span>Alcance</span>
+                            </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link reportes item__menu__link btnVerInicio"  href="javascript:;">
+                                <i class="material-icons">chevron_right</i>
+                                <span>Citas</span>
+                            </a>
+                        </li>
+
+                
                         <li class="nav-item">
                             <a class="nav-link reportes item__menu__link" href="<?= route('salir')?>">
                                 <i class="material-icons">chevron_right</i>

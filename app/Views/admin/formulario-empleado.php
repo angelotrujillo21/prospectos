@@ -19,30 +19,50 @@
     <div class="container-fluid">
         <div class="w-100 h-100  ">
             <div class="row flex-center">
-                <div class="col-12 col-md-6 border-card bg-white  mt-0 mt-md-5 mb-5">
 
-                    <form enctype="multipart/form-data" id="form-empleado">
-                        <div class="row p-3" id="content-form">
+                    <div class="col-12 col-md-6 border-card bg-white  mt-0 mt-md-5 mb-5">
+                        <?php if($bExisteError): ?>
 
-                            <div id="title-formulario-empleado" class="col-12 text-center my-3">
-                                <h3><?= $sTitle ?></h3>
+                       
+                            <div class="row p-3">
+                                <div class="col-12 text-center">
+                                    <div>
+                                        <h3>Error</h3>
+                                        <img class="img img-fluid img-check" src="<?= src('app/error.png') ?>" alt="">
+                                        <p> <?= isset($sMensajeError) ? $sMensajeError :  "No se encontro el mensaje de error"  ?> </p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="col-12 text-right">
-                                <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
-                            </div>
-                        </div>
-                    </form>
+                        <?php else : ?>   
 
-                    <div class="row p-3" id="content-success" style="display: none;">
-                        <div class="col-12 text-center">
-                            <div>
-                                <h3>Genial Registro Realizado!</h3>
-                                <img class="img img-fluid img-check" src="<?= src('app/success.png') ?>" alt="">
+
+                            <form enctype="multipart/form-data" id="form-empleado">
+                                <div class="row p-3" id="content-form">
+
+                                    <div id="title-formulario-empleado" class="col-12 text-center my-3">
+                                        <h3><?= $sTitle ?></h3>
+                                    </div>
+
+                                    <div class="col-12 text-right">
+                                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="row p-3" id="content-success" style="display: none;">
+                                <div class="col-12 text-center">
+                                    <div>
+                                        <h3>Genial Registro Realizado!</h3>
+                                        <img class="img img-fluid img-check" src="<?= src('app/success.png') ?>" alt="">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            
+                      
+                        <?php endif ?>
                     </div>
-                </div>
+              
             </div>
         </div>
     </div>
@@ -168,6 +188,7 @@
                 $("#content-sCorreo" + sEntidad).addClass("col-md-6");
 
                 $("#nIdEstudios" + sEntidad).trigger("change");
+                fncEventFile();
             }
 
           
@@ -196,9 +217,12 @@
             var nExperienciaVentas              = $("#nExperienciaVentas" + sEntidad);
             var sRubroExperiencia               = $("#sRubroExperiencia" + sEntidad);
 
+            var nIdEstadoCivil                  = $("#nIdEstadoCivil" + sEntidad);
+            var nIdSexo                         = $("#nIdSexo" + sEntidad);
+
             var sImagen                        = $("#sImagen" + sEntidad).length > 0 ?  $("#sImagen" + sEntidad)[0].files[0] : null;
             var sClave                         = $("#sClave" + sEntidad);
-
+        
 
             if (nTipoDocumento.length > 0 && nTipoDocumento.val() == '0') {
                 toastr.error('Error. Seleccione un tipo de documento . Porfavor verifique');
@@ -215,13 +239,20 @@
             } else if (dFechaNacimiento.length > 0 && dFechaNacimiento.val() == '') {
                 toastr.error('Error. Ingrese un fecha. Porfavor verifique');
                 return;
-            } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '') {
-                toastr.error('Error. Ingrese la cantidad de personas dependientes. Porfavor verifique');
+            } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '' || isNaN(nCantidadPersonasDependientes.val()) || nCantidadPersonasDependientes.val() < 0 ) {
+                toastr.error('Error. No ha ingresado la cantidad de personas dependientes o el valor no es correcto. Porfavor verifique');
                 return;
             } else if (sClave.length > 0 && sClave.val() == '') {
                 toastr.error('Error. Ingrese una contraseña. Porfavor verifique');
                 return;
+            }  else if (nIdEstadoCivil.length > 0 && nIdEstadoCivil.val() == '0') {
+                toastr.error('Error. Seleccione un estado civil. Porfavor verifique');
+                return;
+            } else if (nIdSexo.length > 0 && nIdSexo.val() == '0') {
+                toastr.error('Error. Seleccione un tipo de sexo. Porfavor verifique');
+                return;
             }
+
 
             if (nIdEstudios.length > 0 && nIdEstudios.val() == '1') {
 
@@ -251,6 +282,10 @@
             formData.append('sNumeroDocumento',sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : "");
             formData.append('sNombre', sNombre.length > 0 ? sNombre.val() : "");
             formData.append('sCorreo', sCorreo.length > 0 ? sCorreo.val() : "");
+            
+            formData.append('nIdSexo', nIdSexo.length > 0 ? nIdSexo.val() : "");
+            formData.append('nIdEstadoCivil', nIdEstadoCivil.length > 0 ? nIdEstadoCivil.val() : "");
+
             formData.append('dFechaNacimiento', dFechaNacimiento.length > 0 ? dFechaNacimiento.val() : "");
             formData.append('nCantidadPersonasDependientes', nCantidadPersonasDependientes.length > 0 ? nCantidadPersonasDependientes.val() : 0);
             formData.append('nExperienciaVentas', nExperienciaVentas.length > 0 ? nExperienciaVentas.val() : "");
@@ -273,8 +308,20 @@
 
             fncGrabarEmpleado(formData, function(aryData) {
                 if (aryData.success) {
+                    
                     $("#content-form").fadeOut();
+                    
                     $("#content-success").fadeIn();
+
+                    var messageJSON = {
+                        type       : 'NUEVO_EMPLEADO',
+                        message    : {
+                            nIdNegocio : $("body").data("nidnegocio")
+                        }
+                    };
+
+                    websocket.send(JSON.stringify(messageJSON));
+
                 } else {
                     toastr.error(aryData.error);
                 }

@@ -9,19 +9,27 @@ use Application\Libs\Session;
 use Application\Models\Users;
 use Application\Models\Negocios;
 use Application\Core\Controller as Controller;
+use Application\Models\Empleados;
 
 class UsuariosController extends Controller
 {
 
     //model principal
+    public $session;
     public $negocios;
+    public $empleados;
+
     public $users;
 
     public function __construct()
     {
         parent::__construct();
+        $this->session  = new Session();
         $this->negocios = new Negocios();
         $this->users    = new Users();
+        $this->empleados    = new Empleados();
+
+        $this->session->init();
     }
 
     public function fncGrabarUsuario()
@@ -86,13 +94,27 @@ class UsuariosController extends Controller
                     $nEstado
                 );
                 $nIdUsuarioNew = $nIdRegistro;
+
+                $sRolUser     = $this->fncGetVarConfig("sRolUser");
+                $aryUser      = $this->users->getUser($nIdRegistro);
+                $userOld      = $this->session->get("user");
+
+                if (!is_null($userOld)  && ($userOld["sRol"] == $sRolUser)) {
+
+                    if (array_key_exists("nIdNegocio", $userOld)) {
+                        $aryUser["nIdNegocio"]   = $userOld["nIdNegocio"];
+                    }
+
+                    $aryUser["sRol"] =  $sRolUser;
+                    $this->session->add('user', $aryUser);
+                }
             }
 
             $sSuccess =  $nIdRegistro == 0 ? 'Usuario registrado exitosamente...' : 'Usuario actualizado exitosamente...';
 
             $this->json(array("success" => $sSuccess, 'nIdUsuarioNew' => $nIdUsuarioNew));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -121,9 +143,30 @@ class UsuariosController extends Controller
 
             $this->json(array("success" => 'Usuario eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
+
+
+    public function fncMostrarUsuario()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdRegistro)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryData = $this->users->getUser($nIdRegistro);
+
+            $this->json(array("success" => true, "aryData" => $aryData));
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
 
 
     public function fncRecuperarClave()
@@ -139,6 +182,7 @@ class UsuariosController extends Controller
             }
 
             $aryData = $this->users->fncBuscarUsuarioPorCorreo($sEmail);
+            $mail = new Mail();
 
             if (fncValidateArray($aryData)) {
 
@@ -146,7 +190,6 @@ class UsuariosController extends Controller
 
                 $aryUser = $this->users->getUser($aryData["nIdUsuario"]);
 
-                $mail = new Mail();
 
                 $sHtml = '
                 <div>
@@ -179,10 +222,48 @@ class UsuariosController extends Controller
                     $this->exception("Error. Se encontro al usuario pero no se pudo enviar el correo . Intentelo mas tarde porfavor");
                 }
             } else {
-                $this->exception("Error. No se encontro data con el correo ingresado. Porfavor veriique");
+
+                $sMsgFinal = "";
+                $aryDataEmpleados = $this->empleados->fncBuscarEmpleadosPorCorreo($sEmail);
+                if (fncValidateArray($aryDataEmpleados)) {
+                    foreach ($aryDataEmpleados as $aryLoop) {
+
+                        $sHtml = '
+                        <div>
+                            <p>
+                                <b><span style="font-size:14px;font-family:Arial">
+                                        Estimados señor(a): </span></b>
+                                <span style="font-size:14px;font-family:Arial">' . uc($aryLoop["sNombre"]) . '</span>
+                            </p>
+                            <p>
+                                <span style="font-size:14px;font-family:Arial">Por medio de la presente y de acuerdo a su
+                                    solicitud, sometemos a brindarle la informacion para el acceso  a la plataforma de prospectos <br> <b>Porfavor no comparta su informacion con nadie</b> </span>
+                            </p>
+
+                            <p>
+                            <span style="font-size:14px;font-family:Arial"><b>Login :</b> ' . $aryLoop["sCorreo"] . '  </span>
+                            </p>
+
+                            <p>
+                                <span style="font-size:14px;font-family:Arial"><b>Clave :</b> ' . $aryLoop["sClave"] . '  </span>
+                            </p>
+                        
+                            <p>
+                                <span style="font-size:14px;font-family:Arial">Saludos</span><br> 
+                            </p>
+                        </div>';
+
+                        if ($mail->send(['sFrom' => 'Auth', 'subject' => 'Recuperacion de acceso' . $aryLoop["sNegocio"], 'body' => $sHtml, 'sCorreo' => $aryLoop["sCorreo"], 'sNombre' => $aryLoop["sNombre"]])) {
+                            $sMsgFinal .= "Genial!.Enviamos los datos de acceso ". $aryLoop["sNegocio"] ."  de al correo " . $aryLoop["sCorreo"]  . ". Porfavor verifique." ."<br><br>";
+                        }
+                    }
+                    $this->json(array("success" => $sMsgFinal));
+                } else {
+                    $this->exception("Error. No se encontro ningun usuario del sistema con este correo. Porfavor verifique");
+                }
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -196,13 +277,7 @@ class UsuariosController extends Controller
                 'nRol'          => $nRol,
             ));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
-
-
-  
-
-
-
 }

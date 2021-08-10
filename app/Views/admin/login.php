@@ -14,46 +14,70 @@
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
-            <div class="content-wrapper d-flex align-items-center auth fondo-login">
-                <div class="row flex-grow">
-                    <div class="col-lg-4 mx-auto">
-                        <?php if (isset($error) && !empty($error)) : ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?= $error ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        <?php endif; ?>
-                        <div class="auth-form-light text-center p-5">
+            <div class="content-wrapper d-flex align-items-center auth fondo-login p-0 h-100vh">
+                <div class="row flex-grow h-100vh">
+                    <div class="col-12 col-lg-5 h-100vh p-0">
+                       
+                        <div class="auth-form-light text-center p-5 h-100vh " style="overflow-y: auto;">
                             <div class="brand-logo">
                                 <img class="img img-fluid" style="max-width: 100px;margin: 15px 0px;" src="<?= src('app/qway.png') ?>">
                             </div>
                             <h4>¡Hola! empecemos</h4>
                             <h6 class="font-weight-light">Inicia sesión para continuar.</h6>
-                            <form id="form-auth" method="post" action="<?= route('admin/acceso') ?>" class="pt-3">
+                            <form id="form-auth" method="post" class="pt-3">
 
-                                <div class="form-group">
+                                <div class="form-group mx-md-5 mx-0">
                                     <input type="text" name="sUsuario" class="form-control form-control-lg" id="sUsuario" placeholder="Usuario" required>
                                 </div>
-                                <div class="form-group">
-                                    <input type="password" name="sClave" class="form-control form-control-lg" id="sClave" placeholder="Password" required>
+                                <div class="form-group mx-md-5 mx-0">
+                                    <div class="input-group content-password">
+                                        <input type="password" placeholder="Clave" class="form-control form-control-lg input-password"  name="sClave"  id="sClave" aria-label="Password" required>
+                                        <div data-visible="true" class="input-group-append btnToggleVisible cursor-pointer">
+                                            <span class="input-group-text"> <i style="display: none;" class="far fa-eye icon-view"></i>  <i class="far fa-eye-slash icon-slash"></i> </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mt-3">
+                                <div class="text-right  mx-md-5 mx-0">
+                                    <div class="col-12">
+                                        <a id="btnRecuperar" class="link-registrar" href="javascript:;">¿Olvidaste tu constraseña?</a>
+                                    </div>
+                                </div>
+                                <div class="mt-3  mx-md-5 mx-0">
                                     <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Ingresar</button>
                                 </div>
                             </form>
 
-                            <div class="row mt-4">
-                                <div class="col-6">
-                                    <a id="btnRegistrar" class="link-registrar" href="javascript:;">Registrar</a>
-                                </div>
-                                <div class="col-6">
-                                    <a id="btnRecuperar" class="link-registrar" href="javascript:;">Recuperar Clave</a>
+                            <div class="row mt-4  mx-md-5 mx-0">
+                                <div class="col-12">
+                                    <a id="btnRegistrar" class="link-registrar" href="javascript:;">Registrarse</a>
                                 </div>
                             </div>
 
                         </div>
+                    </div>
+
+                    <div class="col-12 col-lg-7 h-100vh p-0">
+
+                        <div id="carousel" class="carousel slide  h-100vh" data-ride="carousel">
+                            <div class="carousel-inner  h-100vh">
+                                <div class="carousel-item active h-100vh">
+                                    <img class="d-block w-100 h-100vh" style="object-fit: fill;" src="<?=src('app/slider-login/s1.jpg')?>" alt="First slide">
+                                </div>
+                                <div class="carousel-item h-100vh">
+                                    <img class="d-block w-100 h-100vh" style="object-fit: fill;"  src="<?=src('app/slider-login/s2.jpg')?>" alt="Second slide">
+                                </div>
+                               
+                            </div>
+                            <a class="carousel-control-prev d-none" href="#carouselExampleControls" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next d-none" href="#carouselExampleControls" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -178,12 +202,80 @@
 
 <?php extend_view(['admin/common/scripts'], $data) ?>
 
+
+<!-- Login -->
+<script>
+    $(function() {
+
+        
+
+        $("#form-auth").on('submit', function(event) {
+
+            event.preventDefault();
+
+            var sUsuario     = $("#sUsuario").val();
+            var sClave       = $("#sClave").val();
+
+            var jsnData = {
+                sUsuario : sUsuario,
+                sClave   : sClave
+            };
+             
+
+            accesoAjax(jsnData, function(aryData) {
+                if (aryData.success) {
+                    
+                    toastr.success(aryData.msg);
+                    
+                    location.reload();
+
+                } else {
+                    toastr.error(aryData.msg);
+                }
+            });
+
+        });
+
+ 
+    });
+
+   
+
+
+    // Llamadas al servidor
+
+    function accesoAjax(formData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'accesoAjax',
+            data: formData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+  
+</script>
+<!-- Login -->
+
+
+
 <!-- Usuario -->
 <script>
     $(function() {
 
         // Formulario Negocios 
-
+        $('#carousel').carousel({
+            interval: 2000
+        });
 
         $("#btnRegistrar").on('click', function() {
             fncCleanAll();
@@ -372,6 +464,6 @@
         });
     }
 </script>
-<!-- Usuario -->
+<!-- Recuperar -->
 
 </html>

@@ -4,12 +4,13 @@ namespace Application\Controllers;
 
 use Exception;
 use Application\Libs\Mail;
+use Application\Libs\Upload;
 use Application\Libs\Session;
+use Application\Models\Catalogo;
 use Application\Models\Negocios;
+use Application\Models\Empleados;
 use Application\Models\CatalogoTabla;
 use Application\Core\Controller as Controller;
-use Application\Models\Catalogo;
-use Application\Models\Empleados;
 
 class CatalogoController extends Controller
 {
@@ -52,17 +53,24 @@ class CatalogoController extends Controller
             if (is_array($aryCatalogos) && count($aryCatalogos) > 0) {
                 foreach ($aryCatalogos as $aryCatalogo) {
 
+
+                    $sNewState        = $aryCatalogo['nEstado'] == '1' ? '0' : '1';
+                    $sActionState     = 'fncCambiarEstadoCatalogo( ' . "'" . $aryCatalogo['nIdCatalogo'] . "', " . $sNewState . ' )';
                     $sActionVer       = "fncMostrarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ", 'editar' );";
                     $sActionEliminar  = "fncEliminarCatalogo(" . $aryCatalogo['nIdCatalogo'] . ");";
 
+                    $sIconState     = $aryCatalogo['nEstado'] == '1'  ? 'power_settings_new' : 'check';
+                    $sTitleState    = $aryCatalogo['nEstado'] == '1' ? 'Desactivar' : 'Activar';
 
                     $sLinkEdit      = $bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i> </a>' : '';
                     $sLinkEliminar  = $bIsRolAdmin ? '<a onclick="' . $sActionEliminar . '" href="javascript:;"  title="Eliminar" class="text-danger"><i class="material-icons">delete</i> </a>' : '';
+                    $sLinkState     = $bIsRolAdmin ? '<a onclick="' . $sActionState . '"  href="javascript:;"  class="text-primary" title="' . $sTitleState . '"><i class="material-icons">' . $sIconState . '</i></a></a>' : '';
 
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
                                     ' . $sLinkEdit . '
+                                    ' . $sLinkState . '
                                     ' . $sLinkEliminar . '
                                 </div>';
 
@@ -72,6 +80,7 @@ class CatalogoController extends Controller
                         "nPrecio"       => $aryCatalogo["nPrecio"],
                         "nTipoItem"     => $aryCatalogo["nTipoItem"],
                         "sDescripcion"  => $aryCatalogo["sDescripcion"],
+                        'sImagen'       => !empty($aryCatalogo['sImagen']) ? '<img style="width: 35px;height: 35px;" class="user-avatar rounded-circle  img-usuario" src="' . src('multi/' . $aryCatalogo['sImagen'])  . '" alt="' . $aryCatalogo['sImagen'] . '">' : '',
                         "nEstado"       => $aryCatalogo["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
                     ];
 
@@ -80,7 +89,7 @@ class CatalogoController extends Controller
 
             $this->json($aryRows);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -94,12 +103,18 @@ class CatalogoController extends Controller
             $nPrecio          = isset($_POST['nPrecio']) ? $_POST['nPrecio'] : null;
             $sNombre          = isset($_POST['sNombre']) ? $_POST['sNombre'] : null;
             $sDescripcion     = isset($_POST['sDescripcion']) ? $_POST['sDescripcion'] : null;
+            $sImagen          = isset($_FILES['sImagen']) ? $_FILES['sImagen'] : null;
             $nEstado          = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
 
             // Valida valores del formulario
             if (is_null($nIdRegistro) || is_null($nIdNegocio)) {
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
+            }
+
+            $sNombreImagen  = null;
+            if (isset($sImagen) && !is_null($sImagen)) {
+                $sNombreImagen = Upload::process($sImagen, 'images/multi');
             }
 
 
@@ -111,6 +126,7 @@ class CatalogoController extends Controller
                     $nTipoItem,
                     $nPrecio,
                     $sDescripcion,
+                    $sNombreImagen,
                     $nEstado
                 );
             } else {
@@ -122,6 +138,7 @@ class CatalogoController extends Controller
                     $nTipoItem,
                     $nPrecio,
                     $sDescripcion,
+                    $sNombreImagen,
                     $nEstado
                 );
             }
@@ -130,7 +147,7 @@ class CatalogoController extends Controller
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -150,7 +167,7 @@ class CatalogoController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -170,7 +187,28 @@ class CatalogoController extends Controller
             $this->catalogo->fncEliminarCatalogo($nIdRegistro);
             $this->json(array("success" => 'Catalogo eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
+
+        
+    public function fncCambiarEstado()
+    {
+        $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+        $nEstado     = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+
+        try {
+
+            // Valida valores del formulario
+            if (is_null($nIdRegistro) || is_null($nEstado)) {
+                $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $this->catalogo->fncCambiarEstado($nIdRegistro, $nEstado);
+            $this->json(array("success" => "Genial se realizo el cambio de estado exitosamente."));
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
 }

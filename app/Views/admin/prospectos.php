@@ -87,8 +87,10 @@
 
 
     <!-- Modales -->
+    
+    <?php extend_view(['admin/common/modales-editar'], $data) ?>
 
-    <div class="modal fade" id="formSegmentacion" tabindex="-1" role="dialog" aria-labelledby="formSegmentacionLabel" aria-hidden="true">
+    <div class="modal fade  modal-full-screen" id="formSegmentacion" tabindex="-1" role="dialog" aria-labelledby="formSegmentacionLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -97,7 +99,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-body-scroll">
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center bd-highlight">
@@ -180,7 +182,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-body-scroll">
 
                     <div class="col-12">
                             <div class="d-flex align-items-center bd-highlight">
@@ -282,7 +284,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="formClientes" tabindex="-1" role="dialog" aria-labelledby="formClientesLabel" aria-hidden="true">
+    <div class="modal fade  modal-full-screen" id="formClientes" tabindex="-1" role="dialog" aria-labelledby="formClientesLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -291,7 +293,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-body-scroll">
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center bd-highlight">
@@ -361,7 +363,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="formProductos" tabindex="-1" role="dialog" aria-labelledby="formProductosLabel" aria-hidden="true">
+    <div class="modal fade  modal-full-screen" id="formProductos" tabindex="-1" role="dialog" aria-labelledby="formProductosLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -370,7 +372,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-body-scroll ">
                     <div class="row">
 
                         <div class="col-12">
@@ -438,10 +440,6 @@
 
 
     <!-- Fin de modales -->
-
-
-
-
 </body>
 
 
@@ -897,7 +895,13 @@
         // Formulario Catalogo
         fncDrawCatalogo(function(bStatus){
             if(bStatus){
-                // Ya se cargo el formulario
+
+                $("#content-sImagen"+sEntidadCatalogo).removeClass();
+                $("#content-sImagen"+sEntidadCatalogo).addClass("col-12");
+                $("#content-sImagen"+sEntidadCatalogo).addClass("col-md-6");
+                fncEventFile();
+
+                 // Ya se cargo el formulario
             }
         });
 
@@ -926,6 +930,7 @@
             var nPrecio       = $("#nPrecio"  + sEntidadCatalogo );
             var sDescripcion  = $("#sDescripcion" + sEntidadCatalogo);
             var nEstado       = $("#nEstado" + sEntidadCatalogo);
+            var sImagen       = $("#sImagen" + sEntidadCatalogo);
 
             if (sNombre.length > 0 && sNombre.val() == '') {
                 toastr.error('Error. Ingrese un nombre de item. Porfavor verifique');
@@ -938,18 +943,38 @@
                 return;
             } 
             
+            var formData = new FormData();
 
-            var jsnData = {
-                nIdRegistro   : nIdRegistro,
-                nIdNegocio    : nIdNegocio,
-                sNombre       : sNombre.length > 0 ? sNombre.val() : null,
-                nTipoItem     : nTipoItem.length > 0 ? nTipoItem.val() : null,
-                nPrecio       : nPrecio.length > 0 ? nPrecio.val() : null,
-                sDescripcion  : sDescripcion.length > 0 ? sDescripcion.val() : null,
-                nEstado       : nEstado.length > 0 ? nEstado.val() : null,
-            };
+            formData.append('nIdRegistro', nIdRegistro);
+            formData.append('nIdNegocio', nIdNegocio);
 
-            fncGrabarCatalogo(jsnData, function(aryData){
+
+            if(sNombre.length > 0){
+                formData.append('sNombre', sNombre.val());
+            }
+            
+            if(nTipoItem.length > 0){
+                formData.append('nTipoItem', nTipoItem.val());
+            }
+
+            if(nPrecio.length > 0){
+                formData.append('nPrecio', nPrecio.val());
+            }
+
+            if(sDescripcion.length > 0){
+                formData.append('sDescripcion', sDescripcion.val());
+            }
+
+            if(sImagen.length > 0){
+                formData.append('sImagen', sImagen[0].files[0]);
+            }
+
+            if(nEstado.length > 0){
+                formData.append('nEstado', nEstado.val());
+            }
+
+
+            fncGrabarCatalogo(formData, function(aryData){
                 if(aryData.success){
                     fncCleanAll();
                     $("#formCEProducto").modal("hide");
@@ -1059,7 +1084,7 @@
                     <div class="col-12 col-md-6 my-2">
 
                       <div class="custom-control custom-switch">
-                          <input type="checkbox" ${aryElement.nEstado == '1' ? 'checked':''}  value="${aryElement.nIdConfigProspecto}" class="custom-control-input check-box-prospecto" id="customSwitches${aryElement.nIdConfigProspecto}">
+                          <input type="checkbox" ${aryElement.nEstado == '1' ? 'checked':''}  ${aryElement.nDisabled == '1' ? 'disabled':''} value="${aryElement.nIdConfigProspecto}" class="custom-control-input check-box-prospecto" id="customSwitches${aryElement.nIdConfigProspecto}">
                           <label class="custom-control-label" for="customSwitches${aryElement.nIdConfigProspecto}">${aryElement.sWidget}</label>
                           <span>`
 
@@ -1118,15 +1143,18 @@
             switch(nIdWidget){
                 case 1: 
                     // Cliente
+                    fncOcultarAside();
                     $("#formClientes").modal("show");
                  break;
                  case 2: 
                     //Catalogo
+                    fncOcultarAside();
                     $("#formProductos").modal("show");
                  break;
                  case 3: 
                     //Compentecia
-                    
+                    fncOcultarAside();
+
                     $("#title-segmentacion").html("Competencia");
                     $("#tblSegmentacion").data("nTipoSegmento",2);
 
@@ -1143,7 +1171,7 @@
                  break; 
                  case 4: 
                     // Segmentacion
-                 
+                    fncOcultarAside();                 
                     $("#title-segmentacion").html("Segmetacion");
                     $("#tblSegmentacion").data("nTipoSegmento",1);
                     
@@ -1323,6 +1351,8 @@
                     $("#nPrecio" + sEntidadCatalogo ).val(aryData.nPrecio);
                     $("#nEstado" + sEntidadCatalogo ).val(aryData.nEstado);
                     $("#sDescripcion" + sEntidadCatalogo ).val(aryData.sDescripcion);
+                    
+                    if(aryData.sImagen.length >0) $("#sImagen" + sEntidadCatalogo).next().html(aryData.sImagen);
 
                     if(sOpcion == 'ver'){
                         fncViewForm("#formCEProducto" , "Ver Producto o Servicio");
@@ -1353,6 +1383,29 @@
         });
 
     }
+
+    function fncCambiarEstadoCatalogo(nIdRegistro, nNuevoEstado) {
+
+        var sEstado = nNuevoEstado == '1' ? 'mostrará' : 'ocultará';
+
+        if(confirm( 'Esta acción ' + sEstado + ' el registro en todo el sistema. ¿ Esta seguro de continuar ?', )){
+
+                var jsnData = {
+                    nIdRegistro : nIdRegistro,
+                    nEstado     : nNuevoEstado
+                };
+
+                fncEjecutarCambiarEstadoCatalogo(jsnData, (aryData)=>{
+                    if(aryData.success){
+                        $("#tblCatalogo").bootstrapTable('refresh');
+                        toastr.success( aryData.success );
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+                });
+        }
+    }
+
 
     // Fin de tabla catalogo
 
@@ -1481,6 +1534,68 @@
             $("#formDetalleSegmentacion").modal("show");
         });
     }
+
+    function fncCambiarEstadoSegmentacion(nIdRegistro, nNuevoEstado, nTipoSegmento) {
+
+        var sEstado = nNuevoEstado == '1' ? 'mostrará' : 'ocultará';
+
+        if(confirm( 'Esta acción ' + sEstado + ' el registro en todo el sistema. ¿ Esta seguro de continuar ?', )){
+
+                var jsnData = {
+                    nIdRegistro : nIdRegistro,
+                    nEstado     : nNuevoEstado
+                };
+
+                fncEjecutarCambiarEstadoSegmentacion(jsnData, (aryData)=>{
+                    if(aryData.success){
+                        
+                        var jsnData = {
+                            nIdNegocio    : $("body").data("nidnegocio"),
+                            nTipoSegmento : nTipoSegmento
+                        };
+                        
+                        fncPopulateSegmentacion(jsnData,function(aryDataSeg){
+                            $("#tblSegmentacion").bootstrapTable("load" , aryDataSeg);
+                        });
+
+                        toastr.success( aryData.success );
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+                });
+        }
+    }
+
+    function fncCambiarEstadoDetalleSegmentacion(nIdRegistro, nNuevoEstado, nIdSegmentacion) {
+         
+        var sEstado = nNuevoEstado == '1' ? 'mostrará' : 'ocultará';
+
+        if(confirm( 'Esta acción ' + sEstado + ' el registro en todo el sistema. ¿ Esta seguro de continuar ?', )){
+
+                var jsnData = {
+                    nIdRegistro : nIdRegistro,
+                    nEstado     : nNuevoEstado
+                };
+
+                fncEjecutarCambiarEstadoSegmentacionDetalle(jsnData, (aryData)=>{
+                    if(aryData.success){
+                        
+                        var jsnData = {
+                            nIdSegmentacion : nIdSegmentacion  
+                        };
+                    
+                        fncPopulateDetalleSegmentacion(jsnData,function(aryDataSeg){
+                            $("#tblDetalleSegmentacion").bootstrapTable("load" , aryDataSeg);
+                        });
+                      
+                        toastr.success( aryData.success );
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+                });
+        }
+    }
+    
     // Fin de tabla Segmentacion
 
 
@@ -1545,6 +1660,7 @@
 
                     $("#nIdRelacionamiento" + sEntidadCliente ).val(aryData.nIdRelacionamiento);
                     $("#sTelefono" + sEntidadCliente ).val(aryData.sTelefono);
+                    $("#sDireccion" + sEntidadCliente ).val(aryData.sDireccion);
                     $("#nEstado" + sEntidadCliente ).val(aryData.nEstado);
 
                     if(sOpcion == 'ver'){
@@ -1627,6 +1743,29 @@
 
     }
 
+    function fncCambiarEstadoCliente(nIdRegistro, nNuevoEstado) {
+
+        var sEstado = nNuevoEstado == '1' ? 'mostrará' : 'ocultará';
+
+        if(confirm( 'Esta acción ' + sEstado + ' el registro en todo el sistema. ¿ Esta seguro de continuar ?', )){
+
+                var jsnData = {
+                    nIdRegistro : nIdRegistro,
+                    nEstado     : nNuevoEstado
+                };
+
+                fncEjecutarCambiarEstadoCliente(jsnData, (aryData)=>{
+                    if(aryData.success){
+                        
+                        $("#tblClientes").bootstrapTable('refresh');
+                        toastr.success( aryData.success );
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+                });
+        }
+    }
+
     // Fin de tabla cliente
 
 
@@ -1687,6 +1826,9 @@
             }
         });
     }
+
+  
+
 
     // Prospecto
 
@@ -1788,12 +1930,15 @@
 
     // Catalogo 
 
-    function fncGrabarCatalogo(jsnData, fncCallback) {
+    function fncGrabarCatalogo(formData, fncCallback) {
         $.ajax({
             type: 'post',
             dataType: 'json',
             url: web_root + 'admin/catalogo/fncGrabarCatalogo',
-            data: jsnData,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
             beforeSend: function() {
                 fncMostrarLoader();
             },
@@ -1828,6 +1973,25 @@
         $.ajax({
             type: 'post',
             url: web_root + 'admin/catalogo/fncEliminarRegistro',
+            data: jsnData,
+            dataType: 'json',
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function( data ) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+
+        });
+    }
+
+    function fncEjecutarCambiarEstadoCatalogo(jsnData , fncCallback) {    
+        $.ajax({
+            type: 'post',
+            url: web_root + 'admin/catalogo/fncCambiarEstado',
             data: jsnData,
             dataType: 'json',
             beforeSend: function () {
@@ -1915,6 +2079,24 @@
                 fncCallback(data);
             },
             complete: function () {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncEjecutarCambiarEstadoCliente(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/cliente/fncCambiarEstado',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
                 fncOcultarLoader();
             }
         });
@@ -2072,8 +2254,46 @@
         });
     }
 
+    function fncEjecutarCambiarEstadoSegmentacion( jsnData , fncCallback ) {    
+        $.ajax({
+            type: 'post',
+            url: web_root + 'admin/segmentacion/fncCambiarEstado',
+            data: jsnData,
+            dataType: 'json',
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function( data ) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
 
-    // Fin de cliente 
+        });
+    }
+
+    function fncEjecutarCambiarEstadoSegmentacionDetalle( jsnData , fncCallback ) {    
+        $.ajax({
+            type: 'post',
+            url: web_root + 'admin/segmentacion/fncCambiarEstadoDetalle',
+            data: jsnData,
+            dataType: 'json',
+            beforeSend: function () {
+                fncMostrarLoader();
+            },
+            success: function( data ) {
+                fncCallback(data);
+            },
+            complete: function () {
+                fncOcultarLoader();
+            }
+
+        });
+    }
+    
+
+    // Fin de Segmentacion 
 
 
 

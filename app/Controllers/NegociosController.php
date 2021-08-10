@@ -41,7 +41,10 @@ class NegociosController extends Controller
         try {
             // El usuario 1 es el administrador general del sistema
             $user = $this->session->get('user');
-            if (isset($user["nIdUsuario"]) && !empty($user["nIdUsuario"])) {
+
+            // var_dump($user);
+
+            if (!is_null($user)) {
                 $aryConfigClientes        = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCliente"));
                 $aryConfigCatalogos       = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCatalogo"));
                 $aryConfigVendedores      = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadVendedor"));
@@ -60,15 +63,14 @@ class NegociosController extends Controller
                         'aryConfigVendedores'    => $aryConfigVendedores,
                         'aryConfigSupervisores'  => $aryConfigSupervisores,
                         'aryTipoProspectos'      => $aryTipoProspectos,
-                        'nRolProspectoAdmin'     => $this->fncGetVarConfig("nRolProspectoAdmin")
+                        'nRolProspectoAdmin'     => $this->fncGetVarConfig("nRolProspectoAdmin"),
+                        'sRolUser'               => $this->fncGetVarConfig("sRolUser"),
+
                     )
                 );
-            } else {
-                $this->session->close();
-                $this->redirect('admin/acceso');
             }
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -176,7 +178,7 @@ class NegociosController extends Controller
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -184,12 +186,31 @@ class NegociosController extends Controller
     public function fncGetNegocios()
     {
         try {
+
             //El usuario 1 es el administrador general del sistema
-            $user = $this->session->get('user');
-            $aryNegocios = $user["nIdUsuario"] == '1' ? $this->negocios->fncGetNegocios() : $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"]);
+            $user         = $this->session->get('user');
+            $sRolUser     = $this->fncGetVarConfig("sRolUser");
+            $aryNegocios  = [];
+
+            // var_dump($user);
+            // exit;
+
+            // Nuevo Update si el usuario es user vera sus negocios podra editarlo y todo ello si es empleado solo vera sus negocios
+
+            if ($user["sRol"] == $sRolUser) {
+                $aryNegocios = $user["nIdUsuario"] == '1' ? $this->negocios->fncGetNegocios() : $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"]);
+            } else {
+                // Empleado  traemos todos los negocios de los empleados
+                if (isset($user["nIdEmpleado"])) {
+                    $aryNegocios = $this->negocios->fncGetNegociosByEmpleado($user["nIdEmpleado"]);
+                } else {
+                    $this->exception("Error no se pudo ubicar el usuario");
+                }
+            }
+
             $this->json(array("success" => true, "aryData" => $aryNegocios));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -223,7 +244,7 @@ class NegociosController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -259,7 +280,7 @@ class NegociosController extends Controller
 
             $this->json(array("success" => 'Negocio eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -280,7 +301,7 @@ class NegociosController extends Controller
 
             $this->json(array("success" => true, "aryData" => $aryData));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -344,7 +365,7 @@ class NegociosController extends Controller
 
             $this->json(array("success" => " Se realizo la invitancion ..",  "bSend" => $bSend));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -365,9 +386,8 @@ class NegociosController extends Controller
             $this->negocios->fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nRol);
 
             $this->json(array("success" => 'Usuario registrado exitosamente...'));
-
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
@@ -385,13 +405,39 @@ class NegociosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-            $this->negocios->fncEliminarUsuarioNegocio($nIdUsuario,$nIdNegocio);
+            $this->negocios->fncEliminarUsuarioNegocio($nIdUsuario, $nIdNegocio);
             $this->json(array("success" => 'Usuario Eliminado correctamente.'));
-
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+            echo $ex->getMessage();
         }
     }
 
 
+
+
+    public function fncMostrarUsuariosNegocios()
+    {
+        try {
+
+            $nIdNegocio    = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+
+
+            // Valida valores del formulario
+            if (is_null($nIdNegocio)) {
+                $this->exception('Error. Existen valores vacios. Por favor verifique.');
+            }
+
+            $aryData = $this->negocios->fncMostrarUsuariosNegocios($nIdNegocio);
+
+            // Eliminamos el primer elemento ya que es la persona quien creo el negocio el no se puede eliminar la relacion 
+            unset($aryData[0]);
+
+            // Reordenamos las keys de el arreglo 
+            $aryData = array_values($aryData);
+
+            $this->json(array("success" => 'Mostrando datos encontrados...', 'aryData' => $aryData));
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
 }

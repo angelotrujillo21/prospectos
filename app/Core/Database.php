@@ -426,4 +426,131 @@ class Database extends PDO
     {
         print_r($msg);
     }
+
+
+
+
+    /* GENERATE SQL INSERT */
+
+    public function generateSQLInsert($table, $array)
+    {
+        $sql = "";
+
+        if (count($array) > 0 && is_array($array)) {
+            $sql = "INSERT INTO $table ";
+
+            $sql .= "( " . implode(",", array_keys($array)) . " )";
+
+            $arrayValues = [];
+
+            foreach ($array as $sKey => $sValue) {
+                $arrayValues[] =  (is_null($sValue) ? "NULL" : ($sValue == 'NOW()' || $sValue == 'CURDATE()' || substr($sValue, 0, 11) == 'STR_TO_DATE' ? $sValue :  $this->quote($sValue)));
+            }
+
+            $sql .= " VALUES ( " . implode(",", array_values($arrayValues)) . " ); ";
+        }
+
+        return $sql;
+    }
+
+
+
+
+
+    /* GENERATE SQL UPDATE */
+    public function generateSQLUpdate($table, $array, $where)
+    {
+        $sql = "";
+
+        if (count($array) > 0 && is_array($array)) {
+            $sql = "UPDATE " . $table . " SET ";
+
+            $nContador = 0;
+
+            $sCol = "";
+            
+            foreach ($array as $sKey => $sValue) {
+
+                if (!is_null($sValue) && $nContador > 0) {
+                         
+                    $sCol .= strlen($sCol)  > 0 ? " , " : "";
+                }
+
+                $sCol .= (!is_null($sValue)  ?
+                     
+                    ($sValue == 'NOW()' || $sValue == 'CURDATE()' 
+                    || substr($sValue, 0, 11) == 'STR_TO_DATE' ? " $sKey = $sValue " : "  $sKey = {$this->quote($sValue)} ")
+
+
+                    : "");
+
+                $nContador++;
+            }
+
+            $sql .= $sCol. " WHERE " . $where . ";";
+        }
+
+        // echo $sql;
+        // exit;
+        return $sql;
+    }
+
+
+
+    public function generateSQLDelete($table, $where)
+    {
+        $sql = "DELETE FROM " . $table . " WHERE " . $where . ";";
+        return $sql;
+    }
+
+
+    // public function generateSQLSelect($table, $fields, $joins = "", $arrayWhere,  $aryFilter = [])
+    // {
+    //     $sql = "SELECT " . $fields . " FROM " . $table . $joins;
+
+    //     $sWhere = "";
+
+    //     if (is_array($arrayWhere) && count($arrayWhere) > 0) {
+    //         foreach ($arrayWhere as $sKey => $sValue) {
+
+    //             $sql .=  (strlen($sWhere) > 0 ? " AND " : '') . " $sKey  = $sValue ";
+    //         }
+    //     }
+
+    //     $sGroupBy = "";
+    //     return $sql;
+    // }
+
+
+    public function isNull($value = null)
+    {
+        if (is_array($value) && count($value) === 0) {
+            return true;
+        } else if (is_null($value)) {
+            return true;
+        } else if (is_string($value) && strlen($value) === 0) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public function filterArray($aryInput, $aryAllFilters)
+    {
+        if (is_array($aryInput) && count($aryInput) == 0) {
+            return $aryAllFilters;
+        }
+
+        $newArray = [];
+        if (is_array($aryAllFilters) && count($aryAllFilters) > 0) {
+            foreach ($aryAllFilters as $sKey => $valueLoop) {
+                if (array_key_exists($sKey, $aryInput)) {
+                    $newArray[$sKey] = $aryInput[$sKey];
+                } else {
+                    $newArray[$sKey] = $valueLoop;
+                }
+            }
+        }
+        return $newArray;
+    }
 }

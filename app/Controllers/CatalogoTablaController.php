@@ -39,7 +39,7 @@ class CatalogoTablaController extends Controller
                 )
             );
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -88,7 +88,7 @@ class CatalogoTablaController extends Controller
 
             $this->json($aryRows);
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -118,7 +118,7 @@ class CatalogoTablaController extends Controller
 
             $this->json(array('success' => 'Tabla ' . stripslashes($sNombreCatalogo) . ' registrada exitosamente...'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -175,7 +175,7 @@ class CatalogoTablaController extends Controller
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -195,7 +195,7 @@ class CatalogoTablaController extends Controller
 
             $this->json(array("success" => true, "data" => $aryData[0]));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -216,7 +216,7 @@ class CatalogoTablaController extends Controller
 
             $this->json(array("success" => true, "data" => $aryResultados));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -242,7 +242,7 @@ class CatalogoTablaController extends Controller
 
             $this->json(array("success" => 'El registro se actualizo correctamente'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 
@@ -267,7 +267,7 @@ class CatalogoTablaController extends Controller
 
             $this->json(array("success" => 'Registro eliminado exitosamente.'));
         } catch (Exception $ex) {
-            $this->json(array("error" => $ex->getMessage()));
+             echo $ex->getMessage();
         }
     }
 }

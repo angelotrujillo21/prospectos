@@ -15,17 +15,34 @@ class Mail
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
+
         //Server settings
+
         $this->mail->isSMTP();                                            // Send using SMTP
+
         $this->mail->SMTPDebug  = 0;
-        $this->mail->Host       = HOST_MAIL;                              // Set the SMTP server to send through
+
+        $this->mail->SMTPAutoTLS = false;
+
+        $this->mail->SMTPSecure = false;                                // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+
         $this->mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+
+        $this->mail->Host       = HOST_MAIL;                              // Set the SMTP server to send through
+
         $this->mail->Username   = USER_MAIL;                              // SMTP username
-        $this->mail->From       = USER_MAIL; 
+
+        $this->mail->From       = USER_MAIL;
+
         $this->mail->Password   = PASSWORD_MAIL;                               // SMTP password
-        $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-        $this->mail->Port       = 587;
+
+        //$this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+
+        $this->mail->Port       = 26;
+
         $this->mail->CharSet    = 'UTF-8';
+
+
 
         // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
     }
@@ -40,6 +57,8 @@ class Mail
                 // Attachments
                 $this->mail->addAttachment($data['sLinkArchivo']);
             }
+
+
             // Content
             $this->mail->isHTML(true);                                  // Set email format to HTML
             $this->mail->Subject = $data['subject'];
