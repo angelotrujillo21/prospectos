@@ -7,8 +7,6 @@ use Exception;
 
 class Controller
 {
-
-
     public function __construct()
     {
         $this->load_helper(['view']);
@@ -61,15 +59,16 @@ class Controller
      */
     protected function view($view, $data = [])
     {
-        if (file_exists(VIEWS_PATH . $view . '.php')) {
+        if (file_exists(VIEWS_PATH . $view . '.phtml')) {
             // Set each index of data to its named variable.
             if (count($data) > 0) {
                 foreach ($data as $key => $value) {
                     $$key = $value;
                 }
             }
-            require_once VIEWS_PATH . $view . '.php';
+            require_once VIEWS_PATH . $view . '.phtml';
         } else {
+            $this->exception("Error No se pudo encontrar la vista");
             return false;
         }
     }
@@ -111,40 +110,51 @@ class Controller
         }
     }
 
-    protected function fncGetRoles($session)
-    {
-        $user   =  $session->get('user');
-        $sRolUser           = $this->fncGetVarConfig("sRolUser");
-        $sRolEmp            = $this->fncGetVarConfig("sRolEmp");
+    // protected function fncGetRoles($session)
+    // {
+    //     $user      = $session->get('user');
+    //     $sRolUser  = $this->fncGetVarConfig("sRolUser");
+    //     $sRolEmp   = $this->fncGetVarConfig("sRolEmp");
 
-        return [
-            "isUser"     =>  $user["sRol"] == $sRolUser,
-            "isEmpleado" =>  $user["sRol"] == $sRolEmp,
-        ];
-    }
-
+    //     return [
+    //         "isUser"     =>  $user["sRol"] == $sRolUser,
+    //         "isEmpleado" =>  $user["sRol"] == $sRolEmp,
+    //     ];
+    // }
 
     protected function fncGetModulos($session)
     {
-        $user               =  $session->get('user');
+        $user =  $session->get('user');
 
-        $sRolUser                   = $this->fncGetVarConfig("sRolUser");
-        $sRolEmp                    = $this->fncGetVarConfig("sRolEmp");
-        $nTipoEmpleadoSupervisor    = $this->fncGetVarConfig("nTipoEmpleadoSupervisor");
-        $nTipoEmpleadoAsesorVentas  = $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas");
+        if (!isset($user["nIdRol"])) {
+            $this->redirect("mis-negocios");
+        }
 
-        $isUser             =  $user["sRol"] == $sRolUser;
-        $isEmpleado         =  $user["sRol"] == $sRolEmp;
+        $nIdRolAdmin            = $this->fncGetVarConfig("nIdRolAdmin");
+        $nIdRolVisitante        = $this->fncGetVarConfig("nIdRolVisitante");
+        $nIdRolAsesor           = $this->fncGetVarConfig("nIdRolAsesor");
+        $nIdRolSupervisor       = $this->fncGetVarConfig("nIdRolSupervisor");
 
-        $isAsesor  = $isEmpleado && ($user["nTipoEmpleado"] == $nTipoEmpleadoAsesorVentas) ? true : false;
-        $isSuper   = $isEmpleado && ($user["nTipoEmpleado"] == $nTipoEmpleadoSupervisor) ? true : false;
+        $isAdmin         = $user["nIdRol"] == $nIdRolAdmin;
+        $isVistante      = $user["nIdRol"] == $nIdRolVisitante;
+        $isAsesor        = $user["nIdRol"] == $nIdRolAsesor;
+        $isSupervisor    = $user["nIdRol"] == $nIdRolSupervisor;
+
         $aryModulos = [];
-        if ($isUser) {
+
+        if ($isAsesor || $isSupervisor) {
+            if (!isset($user["nIdNegocio"])) {
+                $this->redirect("mis-negocios");
+                return;
+            }
+        }
+
+        if ($isAdmin || $isVistante) {
             $aryModulos  = [
                 [
                     "sNombre"      => "Home",
                     "sIcono"       => "dashboard",
-                    "sUrl"         => route('home/' . $user["nIdNegocio"]),
+                    "sUrl"         => route('home/' . $user["nIdNegocio"] . "/" . $user["nIdRol"]),
                     "arySubModulo" => []
                 ],
                 [
@@ -154,30 +164,30 @@ class Controller
                     "arySubModulo" => [
                         [
                             "sNombre" => "Reporte de ventas",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rVentas"),
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
                         [
                             "sNombre" => "Reporte por consultor",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rConsultor"),
+                            "sUrl"    => route('reporte-consultor/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
                         [
                             "sNombre" => "Analisis de venta",
-                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
+                            "sUrl"    => route('reporte-grafico/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
                         [
                             "sNombre" => "Reporte Basico Empleado",
-                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"] . "?query=rBasicoEmpleado"),
+                            "sUrl"    => route('reporte-grafico/' . $user["nIdNegocio"] . "?query=rBasicoEmpleado"),
                             "sIcono"  => "chevron_right"
                         ],
 
                         [
                             "sNombre" => "Base de datos cliente",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rClientes"),
+                            "sUrl"    => route('reporte-cliente/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
@@ -196,7 +206,7 @@ class Controller
                         ],
                         [
                             "sNombre" => "Base de empleados",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rEmpleados"),
+                            "sUrl"    => route('listado-empleados/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
                     ]
@@ -208,12 +218,14 @@ class Controller
                     "arySubModulo" => []
                 ],
             ];
-        } else if ($isSuper) {
+        } elseif ($isSupervisor) {
+
+
             $aryModulos  = [
                 [
                     "sNombre"      => "Home",
                     "sIcono"       => "dashboard",
-                    "sUrl"         => route('home/' . $user["nIdNegocio"]),
+                    "sUrl"         => route('home/' . $user["nIdNegocio"] . "/" . $user["nIdRol"]),
                     "arySubModulo" => []
                 ],
                 [
@@ -223,30 +235,30 @@ class Controller
                     "arySubModulo" => [
                         [
                             "sNombre" => "Reporte de ventas",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rVentas"),
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
                         [
                             "sNombre" => "Reporte por consultor",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rConsultor"),
+                            "sUrl"    => route('reporte-consultor/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
                         [
                             "sNombre" => "Analisis de venta",
-                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
+                            "sUrl"    => route('reporte-grafico/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
                         [
                             "sNombre" => "Reporte Basico Empleado",
-                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"] . "?query=rBasicoEmpleado"),
+                            "sUrl"    => route('reporte-grafico/' . $user["nIdNegocio"] . "?query=rBasicoEmpleado"),
                             "sIcono"  => "chevron_right"
                         ],
 
                         [
                             "sNombre" => "Base de datos cliente",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rClientes"),
+                            "sUrl"    => route('reporte-cliente/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
@@ -261,12 +273,12 @@ class Controller
                     "arySubModulo" => []
                 ],
             ];
-        } else if ($isAsesor) {
+        } elseif ($isAsesor) {
             $aryModulos  = [
                 [
                     "sNombre"      => "Home",
                     "sIcono"       => "dashboard",
-                    "sUrl"         => route('home/' . $user["nIdNegocio"]),
+                    "sUrl"         => route('home/' . $user["nIdNegocio"] . "/" . $user["nIdRol"]),
                     "arySubModulo" => []
                 ],
                 [
@@ -276,7 +288,13 @@ class Controller
                     "arySubModulo" => [
                         [
                             "sNombre" => "Reporte de ventas",
-                            "sUrl"    => route('home/' . $user["nIdNegocio"] . "?query=rVentas"),
+                            "sUrl"    => route('reporte-ventas/' . $user["nIdNegocio"]),
+                            "sIcono"  => "chevron_right"
+                        ],
+
+                        [
+                            "sNombre" => "Base de datos cliente",
+                            "sUrl"    => route('reporte-cliente/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
 
@@ -295,13 +313,4 @@ class Controller
 
         return $aryModulos;
     }
-
-
-
-    // protected function authEmpleado($session)
-    // {
-    //     if ($session->getStatus() === 1 || empty($session->get('userEmpleado'))) {
-    //         $this->redirect('acceso');
-    //     }
-    // }
 }

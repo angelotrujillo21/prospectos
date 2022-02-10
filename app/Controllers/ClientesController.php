@@ -6,6 +6,7 @@ use Exception;
 use Application\Libs\Session;
 use Application\Core\Controller as Controller;
 use Application\Models\Clientes;
+use Application\Models\Prospecto;
 
 class ClientesController extends Controller
 {
@@ -13,12 +14,15 @@ class ClientesController extends Controller
     public $users;
     public $clientes; // Es mi modelo
     public $session;
+    public $prospectos;
 
     public function __construct()
     {
         parent::__construct();
         $this->clientes = new Clientes();
         $this->session  = new Session();
+        $this->prospectos = new Prospecto();
+
         $this->session->init();
     }
 
@@ -32,7 +36,7 @@ class ClientesController extends Controller
             }
 
             $user          = $this->session->get("user");
-            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+            $bIsRolAdmin   = $user["nIdRol"] == $this->fncGetVarConfig("nIdRolAdmin") ? true : false;
 
             $aryRows       = [];
             $aryClientes   = $this->clientes->fncGetClientes($nIdNegocio);
@@ -204,6 +208,12 @@ class ClientesController extends Controller
             // Valida valores del formulario
             if ($nIdRegistro == null) {
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
+            }
+
+            $aryProspecto = $this->prospectos->fncObtenerProspectosByIdCliente($nIdRegistro);
+
+            if(fncValidateArray($aryProspecto)){
+                $this->exception('Error. No se puede eliminar el cliente porque se esta utilizando en el sistema. Por favor verifique.');
             }
 
 

@@ -20,10 +20,8 @@ class CatalogoController extends Controller
     public $catalogoTabla;
     public $catalogo;
     public $negocios;
-    public $empleados;
-
-    public $users;
-
+ 
+ 
     public function __construct()
     {
         parent::__construct();
@@ -48,7 +46,7 @@ class CatalogoController extends Controller
             $aryCatalogos = $this->catalogo->fncGetCatalogos($nIdNegocio);
 
             $user          = $this->session->get("user");
-            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+            $bIsRolAdmin   = $user["nIdRol"] == $this->fncGetVarConfig("nIdRolAdmin") ? true : false;
 
             if (is_array($aryCatalogos) && count($aryCatalogos) > 0) {
                 foreach ($aryCatalogos as $aryCatalogo) {

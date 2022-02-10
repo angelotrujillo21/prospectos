@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="no-js h-100" lang="es">
+
+<head>
+    <?php extend_view(['admin/common/head'], $data) ?>
+    <?php extend_view(['admin/common/head'], $data) ?>
+    <?php load_style(['bootstrap', 'jquery-ui', 'admin/style', 'admin/shards-dashboards.1.1.0.min']); ?>
+    <?php load_style_plugin(['toast/toastr.min', 'select2/select2', 'select2/select2-bootstrap', 'bootstrap-table/bootstrap-table']); ?>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body data-nidnegocio="<?= $nIdNegocio ?>">
+
+    <div class="page-loader">
+        <div class="loader-dual-ring"></div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <?php extend_view(['admin/common/aside'], $data) ?>
+
+            <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+
+                <?php extend_view(['admin/common/navbar'], $data) ?>
+
+                <div class="main-content-container container-fluid px-2 my-2">
+
+                    <div class="container-fluid px-2">
+                        <div class="page-header row no-gutters py-0">
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="card card-small">
+                                    <div class="card-body pt-1 pb-5">
+
+                                        <!-- Fila Cabecera -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="d-flex ">
+                                                    <div class="d-flex align-items-center p-2">
+                                                        <span class="title-prospectos">Reporte de ventas</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Fin de Fila Cabecera -->
+
+
+
+
+                                        <div id="toolbarReporteVentas">
+                                            
+                                            <button id="btnFilter" class="btn btn-gradient-primary-table mx-1" type="button" title="Filtros">
+                                                <i class="fas fa-filter"></i>
+                                            </button>
+                                            
+                                        </div>
+ 
+                                        <div class="table-responsive">
+
+                                            <table 
+                                                id="tblReporteVentas" 
+                                                data-toggle="table"
+                                                data-show-export="true" 
+                                                data-export-types="['json', 'xml', 'csv', 'txt', 'pdf', 'excel']"   
+                                                data-export-options='{
+                                                    "fileName": "tableExport",
+                                                    "ignoreColumn": ["sAcciones"],
+                                                    "worksheetName": "tableExport",
+                                                    "htmlContent" : "true",
+                                                    "jspdf": {
+                                                            "autotable": {
+                                                                "startY": 30,
+                                                                "bodyStyles": {"valign": "top"},
+                                                                "styles": {"overflow": "none", "rowHeight": 30, "fontSize": 6, "font": "helvetica"},
+                                                                "headerStyles": {"fillColor": [41, 128, 185]},
+                                                                "tableWidth": "wrap",
+                                                                "columnStyles" : { "columnWidth" : "auto"  }
+                                                            }
+                                                        }
+                                                    }' 
+                                                data-mobile-responsive="true"  
+                                                data-search="true" 
+                                                data-query-params="queryParams" 
+                                                toolbarAlign="left" 
+                                                data-show-refresh="false" 
+                                                data-pagination="true" 
+                                                data-maintain-selected="true"
+                                                data-toolbar="#toolbarReporteVentas" 
+                                                data-buttons-align="left" 
+                                                data-show-columns="true" 
+                                                data-pagination-h-align="left" 
+                                                data-pagination-detail-h-align="right" 
+                                                data-classes="table table-hover table-condensed" 
+                                                data-striped="true" 
+                                                data-buttons-class="gradient-primary-table" 
+                                                data-page-size="14" 
+                                                data-sort-name="" 
+                                                data-sort-order="asc">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-field="sAcciones" data-sortable="true" data-tableexport-display="none">Acciones</th>
+                                                        <th data-field="nItem" data-sortable="true">Item</th>
+                                                        <th data-field="nIdProspecto" data-sortable="true">Id Prospecto</th>
+                                                        <th data-field="dFechaCreacion" data-sortable="true">Fecha</th>
+                                                        <th data-field="sEmpleado" data-sortable="true">Empleado</th>
+                                                        <th data-field="sCliente" data-sortable="true">Cliente</th>
+                                                        <th data-field="sTelefono" data-sortable="true">Numero</th>
+                                                        <th data-field="sDocumento" data-sortable="true">Documento</th>
+                                                        <th class="text-left text-md-center" data-field="sDetalle" data-sortable="true">Detalle <br> Item | Cant x Precio </th>
+                                                        <th data-field="nCantidad" data-sortable="true">Cantidad</th>
+                                                        <th data-field="nTotal" data-sortable="true">Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="formViewAdjuntos" tabindex="-1" role="dialog" aria-labelledby="formViewAdjuntosLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formViewAdjuntosLabel">Ver Adjuntos</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="row">
+
+                            <div id="content-contrato-view" class="col-md-12 col-12">
+                                <p class="mb-0">Contrato: </p>
+                            </div>
+
+                            <div id="content-adjuntos-view" class="col-md-12 col-12">
+                                <p class="mb-0">Adjuntos: </p>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="formFilter" tabindex="-1" role="dialog" aria-labelledby="formFiltersLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form enctype="multipart/form-data">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formFiltersLabel">Filtrar reporte </h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="nTipoItemCatalogo" class="col-form-label">Tipo Item:</label>
+                                    <select class="form-control" name="nTipoItemCatalogo" id="nTipoItemCatalogo">
+                                        <option value="0">TODOS</option>
+                                        <?php if (is_array($aryTipoItem)  && count($aryTipoItem) > 0) : ?>
+                                            <?php foreach ($aryTipoItem as $aryTipo) : ?>
+                                                <option value="<?= $aryTipo['nIdCatalogoTabla'] ?>"><?= $aryTipo['sDescripcionLargaItem'] ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="nIdUsuarioSupervisor" class="col-form-label">Supervisor:</label>
+                                    <select multiple class="form-control" name="nIdUsuarioSupervisor" id="nIdUsuarioSupervisor">
+                                        <?php if (fncValidateArray($arySupervisores)) : ?>
+                                            <?php foreach ($arySupervisores as $arySuper) : ?>
+                                                <option value="<?= $arySuper['nIdUsuario'] ?>"><?= $arySuper['sNombre'] ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-12 col-12">
+                                <div class="form-group">
+                                    <label for="nIdUsuarioAsesor" class="col-form-label">Asesor:</label>
+                                    <select multiple class="form-control" name="nIdUsuarioAsesor" id="nIdUsuarioAsesor">
+                                        <?php if (fncValidateArray($aryVendedores)) : ?>
+                                            <?php foreach ($aryVendedores as $aryVendedor) : ?>
+                                                <option value="<?= $aryVendedor['nIdUsuario'] ?>"><?= $aryVendedor['sNombre'] ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="dDesde" class="col-form-label">Desde:</label>
+                                    <input type="text" class="form-control datepicker" id="dDesde" autocomplete="off" name="dDesde">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="dHasta" class="col-form-label">Hasta:</label>
+                                    <input type="text" class="form-control datepicker" id="dHasta" autocomplete="off" name="dHasta">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Filtrar</button>
+                    </div>
+                
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+
+
+<?php extend_view(['admin/common/scripts'], $data) ?>
+ 
+
+<?php load_script(['jquery', 'jquery-ui', 'popper', 'bootstrap', 'moment', 'admin/custom', 'admin/functions', 'admin/edit-user-empleado', 'admin/app']); ?>
+<?php load_script_plugin([
+    'toast/toastr.min',
+    'select2/select2',
+
+    'bootstrap-table/bootstrap-table',
+    'bootstrap-table/bootstrap-table-es-ES',
+
+    'bootstrap-table/export/tableExport/tableExport',
+    'bootstrap-table/export/tableExport/html2canvas',
+    'bootstrap-table/export/tableExport/jquery.base64',
+    'bootstrap-table/export/tableExport/tableExport',
+    'bootstrap-table/export/bootstrap-table-export',
+
+
+    'bootstrap-table/mobile/bootstrap-table-mobile',
+    'bootstrap-table/tableExport/libs/FileSaver/FileSaver.min',
+    'bootstrap-table/tableExport/libs/js-xlsx/xlsx.core.min',
+    'bootstrap-table/tableExport/libs/jsPDF/jspdf.min',
+    'bootstrap-table/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable',
+    'bootstrap-table/tableExport/libs/pdfmake/pdfmake.min',
+    'bootstrap-table/tableExport/libs/pdfmake/vfs_fonts',
+    'bootstrap-table/tableExport/tableExport.min',
+]); ?>
+
+
+<!-- Reporte Ventas -->
+<script>
+
+    $(document).ready(function() {
+
+
+        $("#btnFilter").on("click",function(){
+            $("#formFilter").modal("show");
+        });
+         
+      
+        $("#formFilter").find("form").on("submit",function(event){
+            
+            event.preventDefault();
+
+            var nIdTipoItem      = $("#nTipoItemCatalogo").val(); 
+            var dDesde           = $("#dDesde").datepicker('getDate');
+            var dHasta           = $("#dHasta").datepicker('getDate');
+            var arySupervisor    = $("#nIdUsuarioSupervisor :selected").map(function(nIndex, item) { return $(item).val(); }).get();
+            var aryAsesor        = $("#nIdUsuarioAsesor :selected").map(function(nIndex, item) { return $(item).val(); }).get();
+
+            if ((dDesde != null && dHasta == null) || (dDesde == null && dHasta != null)) {
+                toastr.error('Error. Si va a especificar fechas, debe ingresar la inicio y fin. Por favor verificar.');
+                return;
+            }
+
+            if (dHasta < dDesde) {
+                toastr.error('Error. La fecha de fin debe ser mayor o igual que la fecha de inicio. Por favor verificar.');
+                return;
+            } 
+
+            var jsnData = {
+                nIdNegocio      : '<?=$nIdNegocio?>',
+                nIdEtapa        : '<?=$nIdEtapaCierre?>',
+                nIdTipoItem     : nIdTipoItem,
+                dDesde          : $('#dDesde').val(),
+                dHasta          : $('#dHasta').val(),
+                arySupervisor   : arySupervisor,
+                aryAsesor       : aryAsesor
+            };
+
+            fncDrawTableReporteVentas(jsnData);
+        });
+
+        $("#btnResetReporteVentas").on("click",function(){
+
+            fncClearInputs( $("#formFilter").find("form") );
+            $("#nIdUsuarioSupervisor").val([]).trigger("change");
+            $("#nIdUsuarioAsesor").val([]).trigger("change");
+            setTimeout(() => {
+                $("#formFilter").find("form").trigger("submit");
+            }, 300);
+
+        });
+
+        setTimeout(() => {
+            
+            $("#nIdUsuarioAsesor,#nIdUsuarioSupervisor").select2({
+                placeholder : "TODOS",
+                allowClear  : true
+            });
+
+            $("#formFilter").find("form").trigger("submit");
+
+        }, 100);
+        
+        
+    });
+
+ 
+    // Funciones Auxiliares 
+
+    window.fncVerAdjuntosReporteVentas = function(nIdProspecto){
+
+        
+        var jsnData = {
+            nIdRegistro :nIdProspecto,
+        };
+
+        $("#content-contrato-view").html(`<p class="mb-0">Contrato: </p>`);
+        $("#content-adjuntos-view").html(`<p class="mb-0">Adjuntos: </p>`);
+
+        fncObtenerProspectoAdjuntosByIdProspecto(jsnData,function(aryData){
+            if(aryData.success){
+
+                var aryData = aryData.aryData;
+            
+                if(aryData.length > 0){
+
+                    var bExisteAdjuntos = false;
+                    aryData.forEach(aryElement => {
+
+                        var sHtmlAdjunto = `` ;
+
+                        
+                        sHtmlAdjunto += `<div class="card my-2 p-2">
+                                                <div class="d-flex flex-center">
+                                                    <div><a href="${docs(aryElement.sNombreArchivo)}" download="${aryElement.sNombreArchivo}">${aryElement.sNombreArchivo}</a></div>
+                                                    <div class="ml-auto"><a class="color-black" href="${docs(aryElement.sNombreArchivo)}" download="${aryElement.sNombreArchivo}"><i class="fas fa-download"></i></a></div>
+                                                </div>
+                                            </div>`;
+
+                        if(aryElement.nContrato == 1){
+
+                            $("#content-contrato-view").append(sHtmlAdjunto);
+                                                          
+                        } else {
+                            bExisteAdjuntos = true;
+                            $("#content-adjuntos-view").append(sHtmlAdjunto);
+                            
+                        }
+
+                    });
+
+                    if(!bExisteAdjuntos){
+                        $("#content-adjuntos-view").append(`<div class="my-2 p-2">No existen adjuntos</div>`);
+                    }
+
+                    $("#formViewAdjuntos").modal("show");
+                }               
+
+            } else {
+                toastr.error(error);
+            }
+
+        });
+
+    }
+
+    // Este metodo regresa al prospecto a la etapa de pendiente 
+    window.fncEliminarProspectoCerrado = function(nIdRegistro){
+
+
+        if(confirm("¿Estas seguro de eliminar este prospecto del reporte de ventas?")){
+
+                var jsnData = {
+                    nIdRegistro : nIdRegistro,
+                    nIdEtapa    : '<?=$nIdEtapaPendiente?>',
+                };
+
+                fncEjecutarEliminarProspectoCerrado(jsnData, function(aryData){
+
+                    if(aryData.success){
+                        
+                        $("#form-filtros-reporte-ventas").trigger("submit");
+
+                    } else {
+                        toastr.error(aryData.error);
+                    }
+
+                });
+
+ 
+        }
+
+    }
+
+    window.fncDrawTableReporteVentas = function(jsnData){
+
+        fncGetProspectosParaReporteVentas(jsnData, (aryData)=>{
+
+            if(aryData.success){
+
+                $("#tblReporteVentas").bootstrapTable("load",aryData.aryData);
+                $("#formFilter").modal("hide");
+
+            } else {
+                toastr.error(aryData.error);
+            }
+
+        });
+    }
+        
+
+     
+    // LLamadas al servidor 
+
+    function fncGetProspectosParaReporteVentas(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/prospecto/fncGetProspectosParaReporteVentas',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncEjecutarEliminarProspectoCerrado(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/prospecto/fncEliminarProspectoCerrado',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncObtenerProspectoAdjuntosByIdProspecto(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/prospecto/fncObtenerProspectoAdjuntosByIdProspecto',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+    
+</script>
+<!-- Reporte Ventas -->
+
+
+</html>

@@ -1,24 +1,38 @@
 /********************** BOTON EDITAR **********************/
+sEntidadEmpleado = '';
+nIdIdRolEmpleado = '';
 
-$(function() {
+$(function () {
 
     // Boton Editar
-    $("#btnEditarUsuarioEmpleado").on('click', function() {
+    $("#btnEditarUsuarioEmpleado").on('click', function () {
 
-        var nId = $(this).data("nid");
-
-         if ($(this).data("srol") == "USER"){
+        var nIdNegocio = $(this).data("nidnegocio");
+        var nIdRol = $(this).data("nidrol");
+        var nId = $(this).data("nid"); // id usuario
+        // Esto valida que sea administrador en el negocio o que este en la parte de mis negocios 
+        if (nIdNegocio == 0 && nIdRol == 0 || nIdNegocio > 0 && nIdRol == 1) {
             fncMostrarUsuarioEdit(nId);
         } else {
-            
-            fncMostrarEmpleadoE(nId);
-    
+            sEntidadEmpleado = '-' + nIdRol;
+            nIdIdRolEmpleado = nIdRol;
+
+            if (nIdRol == 3) {
+                $("#formEmpleadoE").find("h4").html("Editar Asesor de ventas");
+            } else if (nIdRol == 4) {
+                $("#formEmpleadoE").find("h4").html("Editar Supervisor");
+            } else {
+                alert("No se pudo ubicar un rol definido ..");
+                return;
+            }
+
+            fncLoadEmpleado((bStatus)=>{
+                fncMostrarEmpleadoE(nId);
+            });
+
         }
     });
 
-
-
- 
 });
 
 
@@ -27,30 +41,26 @@ $(function() {
 
 /*  -------------------------------------- USER --------------------------------------  */
 
-$(function() {
-  
-    $("#formUsuarioE").find('form').on('submit', function(event) {
+$(function () {
+
+    $("#formUsuarioE").find('form').on('submit', function (event) {
 
         event.preventDefault();
 
-        var nIdRegistro     = $("#formUsuarioE").data("nIdRegistro");
-        var sNombre         = $("#sNombreUE").val().trim();
-        var sApellidos      = $("#sApellidosUE").val().trim();
-        var sEmail          = $("#sEmailUE").val().trim();
-        var sLogin          = $("#sLoginUE").val().trim();
-        var sClave          = $("#sClaveUE").val().trim();
-        var sImagen         = $("#sImagenUE")[0].files[0];
-        var nIdRol          = 1;
-        var nEstado         = 1;
+        var nIdRegistro = $("#formUsuarioE").data("nIdRegistro");
+        var sNombre = $("#sNombreUE").val().toUpperCase().trim();
+        var sCorreo = $("#sEmailUE").val().trim();
+        var sLogin = $("#sLoginUE").val().trim();
+        var sClave = $("#sClaveUE").val().trim();
+        var sImagen = $("#sImagenUE")[0].files[0];
+        var nIdRol = 1;
+        var nEstado = 1;
 
 
         if (sNombre == '') {
             toastr.error('Error. Debe ingresar el nombre del usuario.');
             return false;
-        } else if (sApellidos == '') {
-            toastr.error('Error. Debe ingresar el apellido del usuario.');
-            return false;
-        } else if (sEmail == '') {
+        } else if (sCorreo == '') {
             toastr.error('Error. Debe ingresar el email del usuario.');
             return false;
         } else if (sLogin == '') {
@@ -62,19 +72,18 @@ $(function() {
         }
 
         var formData = new FormData();
-      
+
         formData.append('nIdRegistro', nIdRegistro);
         formData.append('sNombre', sNombre);
-        formData.append('sApellidos', sApellidos);
-        formData.append('sCorreo', sEmail);
+        formData.append('sCorreo', sCorreo);
         formData.append('sLogin', sLogin);
         formData.append('sClave', sClave);
         formData.append('sImagen', sImagen);
         formData.append('nIdRol', nIdRol);
         formData.append('nEstado', parseInt(nEstado));
-    
 
-        fncGrabarUsuarioE(formData, function(aryData) {
+
+        fncGrabarUsuarioE(formData, function (aryData) {
             if (aryData.success) {
                 toastr.success(aryData.success);
                 location.reload();
@@ -85,38 +94,37 @@ $(function() {
 
 
     });
-   
+
 });
 
 
 
 function fncMostrarUsuarioEdit(nIdRegistro) {
 
-    $("#formUsuarioE").data("nIdRegistro",nIdRegistro);
-  
+    $("#formUsuarioE").data("nIdRegistro", nIdRegistro);
+
     var jsnData = {
         nIdRegistro: nIdRegistro
     };
- 
-    fncMostrarUsuarioE(jsnData, function(aryResponse){
-        
-            if (aryResponse.success) {
-                var aryData = aryResponse.aryData;
 
-                $("#sNombreUE").val(aryData.sNombre);
-                $("#sApellidosUE").val(aryData.sApellidos);
-                $("#sEmailUE").val(aryData.sEmail);
-                $("#sLoginUE").val(aryData.sLogin);
-                $("#sClaveUE").val(aryData.sClave);
+    fncMostrarUsuarioE(jsnData, function (aryResponse) {
 
-                if(aryData.sImagen.length> 0)$("#sImagenUE").parent().find(".custom-file-label").html(aryData.sImagen);
+        if (aryResponse.success) {
+            var aryData = aryResponse.aryData;
 
-                $("#formUsuarioE").find(".modal-title").html('Editar Usuario');
-                $("#formUsuarioE").modal("show");
+            $("#sNombreUE").val(aryData.sNombre);
+            $("#sEmailUE").val(aryData.sCorreo);
+            $("#sLoginUE").val(aryData.sLogin);
+            $("#sClaveUE").val(aryData.sClave);
 
-            } else {
-                toastr.error(aryData.error);
-            }
+            if (aryData.sImagen.length > 0) $("#sImagenUE").parent().find(".custom-file-label").html(aryData.sImagen);
+
+            $("#formEmpleadoE").find(".modal-title").html('Editar Usuario');
+            $("#formUsuarioE").modal("show");
+
+        } else {
+            toastr.error(aryData.error);
+        }
     });
 
 }
@@ -132,13 +140,13 @@ function fncGrabarUsuarioE(formData, fncCallback) {
         cache: false,
         contentType: false,
         processData: false,
-        beforeSend: function() {
+        beforeSend: function () {
             fncMostrarLoader();
         },
-        success: function(data) {
+        success: function (data) {
             fncCallback(data);
         },
-        complete: function() {
+        complete: function () {
             fncOcultarLoader();
         }
     });
@@ -150,14 +158,14 @@ function fncMostrarUsuarioE(jsnData, fncCallback) {
         dataType: 'json',
         url: web_root + 'admin/usuarios/fncMostrarUsuario',
         data: jsnData,
-        beforeSend: function() {
-         fncMostrarLoader();
+        beforeSend: function () {
+            fncMostrarLoader();
         },
-        success: function(data) {
+        success: function (data) {
             fncCallback(data);
         },
-        complete: function() {
-             fncOcultarLoader();
+        complete: function () {
+            fncOcultarLoader();
         }
     });
 }
@@ -165,140 +173,34 @@ function fncMostrarUsuarioE(jsnData, fncCallback) {
 
 
 /*  -------------------------------------- EMPLEADO --------------------------------------  */
-window.sEntidadVendedor = '-3';
 
-$(function() {
-
-    fncDrawEmpleadoE(function(bEstatus) {
-        console.log(bEstatus);
-        if (bEstatus) {
-            // Ya cargo el formulario
+$(function () {
 
 
-            // Si todo esta cooreecto agrergo los eventos
 
-            $("#nIdEstudios" + sEntidadVendedor).on('change', function() {
-
-                switch ($(this).val()) {
-                    case '0':
-                    case '602':
-                    case '605':
-                        // Educaccion Basica y ninguno
-                        $("#content-nIdSituacionEstudios" + sEntidadVendedor).hide();
-                        $("#content-sCarreraCiclo" + sEntidadVendedor).hide();
-                        break;
-                    case '604':
-                    case '603':
-                        // Educaccion Superior y teecnico
-                        $("#content-nIdSituacionEstudios" + sEntidadVendedor).show();
-                        $("#content-sCarreraCiclo" + sEntidadVendedor).show();
-                        break;
-
-                }
-
-            });
-
-            $("#nExperienciaVentas" + sEntidadVendedor).on('change', function() {
-                if ($(this).val() == 1) {
-                    $("#content-sRubroExperiencia" + sEntidadVendedor).show();
-                } else {
-                    $("#content-sRubroExperiencia" + sEntidadVendedor).hide();
-                }
-            });
-
-            $("#nTipoDocumento" + sEntidadVendedor).change(function() {
-                if ($(this).val() > 0) {
-                    fncMaxLengthTypeDocument($(this).find('option:selected').text().trim().toUpperCase(), "#sNumeroDocumento" + sEntidadVendedor);
-                }
-            });
-
-            $("#sNumeroDocumento" + sEntidadVendedor).on('keyup change', function() {
-
-                switch ($("#nTipoDocumento" + sEntidadVendedor).find("option:selected").text()) {
-
-                    case 'RUC':
-
-                        if ($("#sNumeroDocumento" + sEntidadVendedor).val().length == 11) {
-
-                            // Lanzamos el evento
-                            var jsnData = {
-                                sTipo: "ruc",
-                                sNumeroDoc: $("#sNumeroDocumento" + sEntidadVendedor).val()
-                            };
-
-                            fncBuscarDocument(jsnData, function(aryData) {
-                                if (aryData.success) {
-                                    $("#sNombre" + sEntidadVendedor).val(aryData.success.razonSocial);
-                                }
-                            });
-
-                        }
-
-                        break;
-
-                    case 'DNI':
-                        if ($("#sNumeroDocumento" + sEntidadVendedor).val().length == 7 || $("#sNumeroDocumento" + sEntidadVendedor).val().length == 8) {
-
-                            // Lanzamos el evento
-                            var jsnData = {
-                                sTipo: "dni",
-                                sNumeroDoc: $("#sNumeroDocumento" + sEntidadVendedor).val()
-                            };
-
-                            fncBuscarDocument(jsnData, function(aryData) {
-                                if (aryData.success) {
-                                    $("#sNombre" + sEntidadVendedor).val(aryData.success.razonSocial);
-                                }
-                            });
-
-                        }
-                        break;
-
-                }
-
-
-            });
-
-            $("#nIdSituacionEstudios" + sEntidadVendedor).on('change', function() {
-                if ($(this).val() == '608') {
-                    $("label[for='sCarreraCiclo" + sEntidadVendedor + "']").html("Carrera");
-                } else {
-                    $("label[for='sCarreraCiclo" + sEntidadVendedor + "']").html("Carrera y ciclo");
-                }
-            });
-
-            $("#content-sCorreo" + sEntidadVendedor).removeClass("col-md-12");
-            $("#content-sCorreo" + sEntidadVendedor).addClass("col-md-6");
-            $("#nIdEstudios" + sEntidadVendedor).trigger("change");
-            
-            fncEventFile();
-             
-        }
-    });
-
-    $("#formEmpleadoE").find("form").on('submit', function(event) {
+    $("#formEmpleadoE").find("form").on('submit', function (event) {
 
         event.preventDefault();
-        
-        var nIdRegistro                     = $("#formEmpleadoE").data("nIdRegistro");
-        var nTipoDocumento                  = $("#nTipoDocumento" + sEntidadVendedor);
-        var sNumeroDocumento                = $("#sNumeroDocumento" + sEntidadVendedor);
-        var sNombre                         = $("#sNombre" + sEntidadVendedor);
-        var sCorreo                         = $("#sCorreo" + sEntidadVendedor);
-        var dFechaNacimiento                = $("#dFechaNacimiento" + sEntidadVendedor);
-        var nCantidadPersonasDependientes   = $("#nCantidadPersonasDependientes" + sEntidadVendedor);
-        var nIdEstudios                     = $("#nIdEstudios" + sEntidadVendedor);
-        var nIdSituacionEstudios            = $("#nIdSituacionEstudios" + sEntidadVendedor);
-        var sCarreraCiclo                   = $("#sCarreraCiclo" + sEntidadVendedor);
+        console.log(sEntidadEmpleado);
+        var nIdRegistro = $("#formEmpleadoE").data("nIdRegistro");
+        var nTipoDocumento = $("#formEmpleadoE").find("#nTipoDocumento" + sEntidadEmpleado);
+        var sNumeroDocumento = $("#formEmpleadoE").find("#sNumeroDocumento" + sEntidadEmpleado);
+        var sNombre = $("#formEmpleadoE").find("#sNombre" + sEntidadEmpleado);
+        var sCorreo = $("#formEmpleadoE").find("#sCorreo" + sEntidadEmpleado);
+        var dFechaNacimiento = $("#formEmpleadoE").find("#dFechaNacimiento" + sEntidadEmpleado);
+        var nCantidadPersonasDependientes = $("#formEmpleadoE").find("#nCantidadPersonasDependientes" + sEntidadEmpleado);
+        var nIdEstudios = $("#formEmpleadoE").find("#nIdEstudios" + sEntidadEmpleado);
+        var nIdSituacionEstudios = $("#formEmpleadoE").find("#nIdSituacionEstudios" + sEntidadEmpleado);
+        var sCarreraCiclo = $("#formEmpleadoE").find("#sCarreraCiclo" + sEntidadEmpleado);
 
-        var nIdNegocio                      = $("body").data("nidnegocio");
-        var nExperienciaVentas              = $("#nExperienciaVentas" + sEntidadVendedor);
-        var sRubroExperiencia               = $("#sRubroExperiencia" + sEntidadVendedor);
-        var sImagen                         = $("#sImagen" + sEntidadVendedor).length > 0 ?  $("#sImagen" + sEntidadVendedor)[0].files[0] : null;
-        var sClave                          = $("#sClave" + sEntidadVendedor);
+        var nIdNegocio = $("body").data("nidnegocio");
+        var nExperienciaVentas = $("#formEmpleadoE").find("#nExperienciaVentas" + sEntidadEmpleado);
+        var sRubroExperiencia = $("#formEmpleadoE").find("#sRubroExperiencia" + sEntidadEmpleado);
+        var sImagen = $("#formEmpleadoE").find("#sImagen" + sEntidadEmpleado).length > 0 ? $("#sImagen" + sEntidadEmpleado)[0].files[0] : null;
+        var sClave = $("#formEmpleadoE").find("#sClave" + sEntidadEmpleado);
 
-        var nIdEstadoCivil                  = $("#nIdEstadoCivil" + sEntidadVendedor);
-        var nIdSexo                         = $("#nIdSexo" + sEntidadVendedor);
+        var nIdEstadoCivil = $("#formEmpleadoE").find("#nIdEstadoCivil" + sEntidadEmpleado);
+        var nIdSexo = $("#formEmpleadoE").find("#nIdSexo" + sEntidadEmpleado);
 
         if (nTipoDocumento.length > 0 && nTipoDocumento.val() == '0') {
             toastr.error('Error. Seleccione un tipo de documento . Porfavor verifique');
@@ -315,7 +217,7 @@ $(function() {
         } else if (dFechaNacimiento.length > 0 && dFechaNacimiento.val() == '') {
             toastr.error('Error. Ingrese un fecha. Porfavor verifique');
             return;
-        } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '' || isNaN(nCantidadPersonasDependientes.val()) || nCantidadPersonasDependientes.val() < 0 ) {
+        } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '' || isNaN(nCantidadPersonasDependientes.val()) || nCantidadPersonasDependientes.val() < 0) {
             toastr.error('Error. No ha ingresado la cantidad de personas dependientes o el valor no es correcto. Porfavor verifique');
             return;
         } else if (sClave.length > 0 && sClave.val() == '') {
@@ -354,7 +256,7 @@ $(function() {
         formData.append('nIdRegistro', nIdRegistro);
         formData.append('nIdNegocio', nIdNegocio);
         formData.append('nTipoDocumento', nTipoDocumento.length > 0 ? nTipoDocumento.val() : "");
-        formData.append('sNumeroDocumento',sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : "");
+        formData.append('sNumeroDocumento', sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : "");
         formData.append('sNombre', sNombre.length > 0 ? sNombre.val() : "");
 
         formData.append('sCorreo', sCorreo.length > 0 ? sCorreo.val() : "");
@@ -365,14 +267,15 @@ $(function() {
         formData.append('nCantidadPersonasDependientes', nCantidadPersonasDependientes.length > 0 ? nCantidadPersonasDependientes.val() : 0);
         formData.append('nExperienciaVentas', nExperienciaVentas.length > 0 ? nExperienciaVentas.val() : "");
         formData.append('sRubroExperiencia', sRubroExperiencia.length > 0 ? sRubroExperiencia.val() : "");
-        formData.append('nIdEstudios',nIdEstudios.length > 0 ? nIdEstudios.val() : "");
+        formData.append('nIdEstudios', nIdEstudios.length > 0 ? nIdEstudios.val() : "");
         formData.append('nIdSituacionEstudios', nIdSituacionEstudios.length > 0 ? nIdSituacionEstudios.val() : "");
         formData.append('sCarreraCiclo', sCarreraCiclo.length > 0 ? sCarreraCiclo.val() : "");
         formData.append('sClave', sClave.length > 0 ? sClave.val() : "");
         formData.append('sImagen', sImagen);
+        formData.append('nIdRol', nIdIdRolEmpleado);
         formData.append('nEstado', 1);
-        
-        fncGrabarEmpleadoE(formData, function(aryData) {
+
+        fncGrabarUsuarioE(formData, function (aryData) {
             if (aryData.success) {
                 toastr.success(aryData.success);
                 $("#formEmpleadoE").modal("hide");
@@ -383,27 +286,138 @@ $(function() {
         });
 
     });
-  
-   
+
+
 });
 
+function fncLoadEmpleado(fncLoad =null) {
+    fncDrawEmpleadoE(function (bEstatus) {
+        console.log(bEstatus);
+        if (bEstatus) {
+            // Ya cargo el formulario
+
+
+            // Si todo esta cooreecto agrergo los eventos
+
+            $("#formEmpleadoE").find("#nIdEstudios" + sEntidadEmpleado).on('change', function () {
+
+                switch ($(this).val()) {
+                    case '0':
+                    case '602':
+                    case '605':
+                        // Educaccion Basica y ninguno
+                        $("#formEmpleadoE").find("#content-nIdSituacionEstudios" + sEntidadEmpleado).hide();
+                        $("#formEmpleadoE").find("#content-sCarreraCiclo" + sEntidadEmpleado).hide();
+                        break;
+                    case '604':
+                    case '603':
+                        // Educaccion Superior y teecnico
+                        $("#formEmpleadoE").find("#content-nIdSituacionEstudios" + sEntidadEmpleado).show();
+                        $("#formEmpleadoE").find("#content-sCarreraCiclo" + sEntidadEmpleado).show();
+                        break;
+
+                }
+
+            });
+
+            $("#formEmpleadoE").find("#nExperienciaVentas" + sEntidadEmpleado).on('change', function () {
+                if ($(this).val() == 1) {
+                    $("#formEmpleadoE").find("#content-sRubroExperiencia" + sEntidadEmpleado).show();
+                } else {
+                    $("#formEmpleadoE").find("#content-sRubroExperiencia" + sEntidadEmpleado).hide();
+                }
+            });
+
+            $("#formEmpleadoE").find("#nTipoDocumento" + sEntidadEmpleado).change(function () {
+                if ($(this).val() > 0) {
+                    fncMaxLengthTypeDocument($(this).find('option:selected').text().trim().toUpperCase(), "#sNumeroDocumento" + sEntidadEmpleado);
+                }
+            });
+
+            $("#formEmpleadoE").find("#sNumeroDocumento" + sEntidadEmpleado).on('keyup change', function () {
+
+                switch ($("#formEmpleadoE").find("#nTipoDocumento" + sEntidadEmpleado).find("option:selected").text()) {
+
+                    case 'RUC':
+
+                        if ($("#sNumeroDocumento" + sEntidadEmpleado).val().length == 11) {
+
+                            // Lanzamos el evento
+                            var jsnData = {
+                                sTipo: "ruc",
+                                sNumeroDoc: $("#formEmpleadoE").find("#sNumeroDocumento" + sEntidadEmpleado).val()
+                            };
+
+                            fncBuscarDocumentE(jsnData, function (aryData) {
+                                if (aryData.success) {
+                                    $("#formEmpleadoE").find("#sNombre" + sEntidadEmpleado).val(aryData.success.razonSocial);
+                                }
+                            });
+
+                        }
+
+                        break;
+
+                    case 'DNI':
+                        if ($("#sNumeroDocumento" + sEntidadEmpleado).val().length == 7 || $("#sNumeroDocumento" + sEntidadEmpleado).val().length == 8) {
+
+                            // Lanzamos el evento
+                            var jsnData = {
+                                sTipo: "dni",
+                                sNumeroDoc: $("#formEmpleadoE").find("#sNumeroDocumento" + sEntidadEmpleado).val()
+                            };
+
+                            fncBuscarDocumentE(jsnData, function (aryData) {
+                                if (aryData.success) {
+                                    $("#formEmpleadoE").find("#sNombre" + sEntidadEmpleado).val(aryData.success.razonSocial);
+                                }
+                            });
+
+                        }
+                        break;
+
+                }
+
+
+            });
+
+            $("#nIdSituacionEstudios" + sEntidadEmpleado).on('change', function () {
+                if ($(this).val() == '608') {
+                    $("#formEmpleadoE").find("label[for='sCarreraCiclo" + sEntidadEmpleado + "']").html("Carrera");
+                } else {
+                    $("#formEmpleadoE").find("label[for='sCarreraCiclo" + sEntidadEmpleado + "']").html("Carrera y ciclo");
+                }
+            });
+
+            $("#formEmpleadoE").find("#content-sCorreo" + sEntidadEmpleado).removeClass("col-md-12");
+            $("#formEmpleadoE").find("#content-sCorreo" + sEntidadEmpleado).addClass("col-md-6");
+            $("#formEmpleadoE").find("#nIdEstudios" + sEntidadEmpleado).trigger("change");
+
+            fncEventFile();
+
+            if( fncLoad != null){
+                fncLoad(true);
+            }
+
+        }
+    });
+}
 
 function fncDrawEmpleadoE(fncCallback) {
-    console.log(1);
-    if(typeof $('body').data('nidnegocio')  != "undefined" ){
-        
+    if (typeof $('body').data('nidnegocio') != "undefined") {
+
         var jsnData = {
-            nIdEntidad: 3,
+            nIdEntidad: nIdIdRolEmpleado,
             nIdNegocio: $('body').data('nidnegocio')
         };
 
-        fncObtenerDataFormE(jsnData, function(aryData) {
+        fncObtenerDataFormE(jsnData, function (aryData) {
             console.log(aryData);
             $("#content-empleado-edit").html(fncBuildForm(aryData));
             fncCallback(true);
         });
 
-    } else { 
+    } else {
         fncCallback(false);
     }
 }
@@ -414,47 +428,47 @@ function fncMostrarEmpleadoE(nIdRegistro) {
         nIdRegistro: nIdRegistro
     };
 
-    fncMostrarRegistroEmpleadoE(jsnData, function(aryData) {
+    fncMostrarRegistroEmpleadoE(jsnData, function (aryData) {
         if (aryData.success) {
             var aryData = aryData.aryData;
 
-            $("#formEmpleadoE").data("nIdRegistro", aryData.nIdEmpleado);
+            $("#formEmpleadoE").data("nIdRegistro", aryData.nIdUsuario);
 
-            if ($("#nTipoDocumento" + sEntidadVendedor).length > 0) $("#nTipoDocumento" + sEntidadVendedor).val(aryData.nTipoDocumento);
-            if ($("#sNumeroDocumento" + sEntidadVendedor).length > 0) $("#sNumeroDocumento" + sEntidadVendedor).val(aryData.sNumeroDocumento);
-            if ($("#sNombre" + sEntidadVendedor).length > 0) $("#sNombre" + sEntidadVendedor).val(aryData.sNombre);
-            if ($("#sCorreo" + sEntidadVendedor).length > 0) $("#sCorreo" + sEntidadVendedor).val(aryData.sCorreo);
-            if ($("#nIdSexo" + sEntidadVendedor ).length > 0 )  $( "#nIdSexo" + sEntidadVendedor ).val( aryData.nIdSexo ); 
-            if ($("#nIdEstadoCivil" + sEntidadVendedor ).length > 0 )  $( "#nIdEstadoCivil" + sEntidadVendedor ).val( aryData.nIdEstadoCivil ); 
-            if ($("#dFechaNacimiento" + sEntidadVendedor).length > 0) $("#dFechaNacimiento" + sEntidadVendedor).val(aryData.dFechaNacimiento);
-            if ($("#nCantidadPersonasDependientes" + sEntidadVendedor).length > 0) $("#nCantidadPersonasDependientes" + sEntidadVendedor).val(aryData.nCantidadPersonasDependientes);
-            if ($("#nExperienciaVentas" + sEntidadVendedor).length > 0) $("#nExperienciaVentas" + sEntidadVendedor).val(aryData.nExperienciaVentas);
-            if ($("#sRubroExperiencia" + sEntidadVendedor).length > 0) $("#sRubroExperiencia" + sEntidadVendedor).val(aryData.sRubroExperiencia);
-            if ($("#nIdEstudios" + sEntidadVendedor).length > 0) $("#nIdEstudios" + sEntidadVendedor).val(aryData.nIdEstudios);
-            if ($("#nIdSituacionEstudios" + sEntidadVendedor).length > 0) $("#nIdSituacionEstudios" + sEntidadVendedor).val(aryData.nIdSituacionEstudios);
-            if ($("#sCarreraCiclo" + sEntidadVendedor).length > 0) $("#sCarreraCiclo" + sEntidadVendedor).val(aryData.sCarreraCiclo);
-            if ($("#nEstado" + sEntidadVendedor).length > 0) $("#nEstado" + sEntidadVendedor).val(aryData.nEstado);
-            if ($("#sClave" + sEntidadVendedor).length > 0) $("#sClave" + sEntidadVendedor).val(aryData.sClave);
-            
+            if ($("#formEmpleadoE").find("#nTipoDocumento" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nTipoDocumento" + sEntidadEmpleado).val(aryData.nTipoDocumento);
+            if ($("#formEmpleadoE").find("#sNumeroDocumento" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#sNumeroDocumento" + sEntidadEmpleado).val(aryData.sNumeroDocumento);
+            if ($("#formEmpleadoE").find("#sNombre" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#sNombre" + sEntidadEmpleado).val(aryData.sNombre);
+            if ($("#formEmpleadoE").find("#sCorreo" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#sCorreo" + sEntidadEmpleado).val(aryData.sCorreo);
+            if ($("#formEmpleadoE").find("#nIdSexo" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nIdSexo" + sEntidadEmpleado).val(aryData.nIdSexo);
+            if ($("#formEmpleadoE").find("#nIdEstadoCivil" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nIdEstadoCivil" + sEntidadEmpleado).val(aryData.nIdEstadoCivil);
+            if ($("#formEmpleadoE").find("#dFechaNacimiento" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#dFechaNacimiento" + sEntidadEmpleado).val(aryData.dFechaNacimiento);
+            if ($("#formEmpleadoE").find("#nCantidadPersonasDependientes" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nCantidadPersonasDependientes" + sEntidadEmpleado).val(aryData.nCantidadPersonasDependientes);
+            if ($("#formEmpleadoE").find("#nExperienciaVentas" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nExperienciaVentas" + sEntidadEmpleado).val(aryData.nExperienciaVentas);
+            if ($("#formEmpleadoE").find("#sRubroExperiencia" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#sRubroExperiencia" + sEntidadEmpleado).val(aryData.sRubroExperiencia);
+            if ($("#formEmpleadoE").find("#nIdEstudios" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nIdEstudios" + sEntidadEmpleado).val(aryData.nIdEstudios);
+            if ($("#formEmpleadoE").find("#nIdSituacionEstudios" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nIdSituacionEstudios" + sEntidadEmpleado).val(aryData.nIdSituacionEstudios);
+            if ($("#formEmpleadoE").find("#sCarreraCiclo" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#sCarreraCiclo" + sEntidadEmpleado).val(aryData.sCarreraCiclo);
+            if ($("#formEmpleadoE").find("#nEstado" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#nEstado" + sEntidadEmpleado).val(aryData.nEstado);
+            if ($("#formEmpleadoE").find("#sClave" + sEntidadEmpleado).length > 0) $("#formEmpleadoE").find("#sClave" + sEntidadEmpleado).val(aryData.sClave);
+
             $("#formEmpleadoE").modal("show");
         }
     });
 }
-//  Llamadas al servidor
 
+//Llamadas al servidor
 function fncObtenerDataFormE(jsnData, fncCallback) {
     $.ajax({
         type: 'post',
         dataType: 'json',
         url: web_root + 'formularios/fncBuildForm',
         data: jsnData,
-        beforeSend: function() {
+        beforeSend: function () {
             fncMostrarLoader();
         },
-        success: function(data) {
+        success: function (data) {
             fncCallback(data);
         },
-        complete: function() {
+        complete: function () {
             fncOcultarLoader();
         }
     });
@@ -464,36 +478,32 @@ function fncMostrarRegistroEmpleadoE(jsnData, fncCallback) {
     $.ajax({
         type: 'post',
         dataType: 'json',
-        url: web_root + 'empleados/fncMostrarRegistro',
+        url: web_root + 'usuarios/fncMostrarRegistro',
         data: jsnData,
-        beforeSend: function() {
+        beforeSend: function () {
             fncMostrarLoader();
         },
-        success: function(data) {
+        success: function (data) {
             fncCallback(data);
         },
-        complete: function() {
+        complete: function () {
             fncOcultarLoader();
         }
     });
 }
 
-function fncGrabarEmpleadoE(formData, fncCallback) {
+function fncBuscarDocumentE(jsnData, fncCallback) {
     $.ajax({
         type: 'post',
         dataType: 'json',
-        url: web_root + 'empleados/fncGrabarEmpleado',
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        beforeSend: function() {
+        url: web_root + 'api/' + jsnData.sTipo + '/' + jsnData.sNumeroDoc,
+        beforeSend: function () {
             fncMostrarLoader();
         },
-        success: function(data) {
+        success: function (data) {
             fncCallback(data);
         },
-        complete: function() {
+        complete: function () {
             fncOcultarLoader();
         }
     });

@@ -10,11 +10,10 @@ use Application\Libs\Upload;
 use Application\Libs\Session;
 use Application\Models\Clientes;
 use Application\Models\Negocios;
-use Application\Models\Empleados;
+use Application\Models\Usuarios;
 use Application\Models\Entidades;
 use Application\Models\Prospecto;
 use Application\Models\CatalogoTabla;
-use setasign\Fpdi\PdfParser\Filter\Flate;
 use Application\Core\Controller as Controller;
 
 class ProspectosController extends Controller
@@ -26,7 +25,7 @@ class ProspectosController extends Controller
     public $users;
     public $prospecto;
     public $entidades;
-    public $empleado;
+    public $usuarios;
     public $clientes;
     public $catalogoTabla;
 
@@ -38,46 +37,17 @@ class ProspectosController extends Controller
         $this->catalogoTabla = new CatalogoTabla();
         $this->prospecto     = new Prospecto();
         $this->clientes      = new Clientes();
-        $this->empleado      = new Empleados();
+        $this->usuarios      = new Usuarios();
         $this->entidades     = new Entidades();
         $this->session->init();
     }
 
-    public function index($nIdNegocio)
-    {
-        try {
-            $this->authAdmin($this->session);
 
-            $aryCamposClientes = $this->negocios->fncGetConfiguracionCampo($nIdNegocio, 1, 1, true);
-            $aryCamposCatalogo = $this->negocios->fncGetConfiguracionCampo($nIdNegocio, 2, 1, true);
-            $aryTipoCampos     = $this->entidades->fnGetTipoCampos(1, "7");
-
-            $this->view(
-                'admin/prospectos',
-                [
-                    "titulo"                 => "Configuracion de prospectos",
-                    "menu"                   => true,
-                    "user"                   => $this->session->get('user'),
-                    'aryNotificaciones'      => $this->prospecto->fncObtenerCambiosForAdmin($nIdNegocio, 1),
-                    'showNotificacion'       => true,
-                    'nIdNegocio'             => $nIdNegocio,
-                    'aryCamposClientes'      => $aryCamposClientes,
-                    'aryCamposCatalogo'      => $aryCamposCatalogo,
-                    'aryTipoCampos'          => $aryTipoCampos,
-                    'nRolProspectoAdmin'     => $this->fncGetVarConfig("nRolProspectoAdmin"),
-                    'aryModulos'             => $this->fncGetModulos($this->session)
-
-                ]
-            );
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
-    }
 
     public function fncGetProspectos()
     {
         $nIdNegocio           = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
-        $nIdEmpleado          = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario           = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $sBuscador            = isset($_POST['sBuscador']) ? $_POST['sBuscador'] : null;
         $sFiltro              = isset($_POST['sFiltro']) ? $_POST['sFiltro'] : null;
         $nValidacionAdmin     = isset($_POST['nValidacionAdmin']) ? $_POST['nValidacionAdmin'] : null;
@@ -99,7 +69,7 @@ class ProspectosController extends Controller
             $aryData = [];
             $aryProspectos  = $this->prospecto->fncGetProspectoAll(
                 $nIdNegocio,
-                $nIdEmpleado,
+                $nIdUsuario,
                 $sBuscador,
                 $nValidacionAdmin,
                 $nIdEtapa,
@@ -130,8 +100,9 @@ class ProspectosController extends Controller
 
             if (fncValidateArray($aryProspectos)) {
                 foreach ($aryProspectos as $aryProspecto) {
-                    $aryEmpleado =  ($this->empleado->fncGetEmpleados(null, $nIdNegocio, $aryProspecto["nIdEmpleado"], null));
-                    $aryEmpleado =   fncValidateArray($aryEmpleado) > 0 ? $aryEmpleado[0] : [];
+
+                    $aryEmpleado = ($this->usuarios->fncGetUsuarios(null, $nIdNegocio, $aryProspecto["nIdUsuario"], null));
+                    $aryEmpleado = fncValidateArray($aryEmpleado) > 0 ? $aryEmpleado[0] : [];
 
                     $aryUltimaCita = ($this->prospecto->fncGetProspectoActividadByIdProspecto($aryProspecto["nIdProspecto"], $nTipoActividadCita, null, null, " act.nIdActividad DESC ", 1));
                     $aryUltimaCita = fncValidateArray($aryUltimaCita) > 0 ? $aryUltimaCita[0] : [];
@@ -201,7 +172,7 @@ class ProspectosController extends Controller
                 "nCitasCercanas"            => $nCitasCercanas,
                 "nTotalCierre"              => $nTotalCierre,
                 "nOportunidad"              => $nOportunidad,
-                "nTotal"                    => $nTotal,
+                "nTotal"                    => nf($nTotal),
                 "nTotalCantidadProspectos"  => $nTotalCantidadProspectos,
                 "nTotalUnidades"            => $nTotalUnidades
             ];
@@ -231,7 +202,7 @@ class ProspectosController extends Controller
     public function fncGetProspectosParaReporteVentas()
     {
         $nIdNegocio           = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
-        $nIdEmpleado          = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario           = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $sBuscador            = isset($_POST['sBuscador']) ? $_POST['sBuscador'] : null;
         $nValidacionAdmin     = isset($_POST['nValidacionAdmin']) ? $_POST['nValidacionAdmin'] : null;
         $nIdEtapa             = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
@@ -252,7 +223,7 @@ class ProspectosController extends Controller
             $aryData = [];
             $aryProspectos  = $this->prospecto->fncGetProspectoAll(
                 $nIdNegocio,
-                $nIdEmpleado,
+                $nIdUsuario,
                 $sBuscador,
                 $nValidacionAdmin,
                 $nIdEtapa,
@@ -268,7 +239,7 @@ class ProspectosController extends Controller
             );
 
             $user         = $this->session->get("user");
-            $bIsRolAdmin  = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+            $bIsRolAdmin  = $user["nIdRol"] == $this->fncGetVarConfig("nIdRolAdmin") ? true : false;
 
             if (fncValidateArray($aryProspectos)) {
                 foreach ($aryProspectos as $nKey => $aryProspecto) {
@@ -408,7 +379,7 @@ class ProspectosController extends Controller
             $nIdCliente         = isset($_POST['nIdCliente']) ? $_POST['nIdCliente'] : null;
             $sTitulo            = isset($_POST['sTitulo']) ? $_POST['sTitulo'] : null;
 
-            $nIdEmpleado        = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+            $nIdUsuario         = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $aryCatalogos       = isset($_POST['aryCatalogos']) ? $_POST['aryCatalogos'] : null;
             $arySegmentaciones  = isset($_POST['arySegmentaciones']) ? $_POST['arySegmentaciones'] : null;
             $aryActividades     = isset($_POST['aryActividades']) ? $_POST['aryActividades'] : null;
@@ -422,6 +393,10 @@ class ProspectosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
+            if (is_null($nIdUsuario) || $nIdUsuario == '0' || $nIdUsuario == '') {
+                $this->exception('Error. No ha enviado el asesor responsable . Por favor verifique o solicite asistencia.');
+            }
+
             $aryValueExtra   = is_array($aryValueExtra) && count($aryValueExtra) > 0 ?  $this->fncBuildArrayValues($aryValueExtra) : [];
 
 
@@ -429,9 +404,9 @@ class ProspectosController extends Controller
 
                 $nIdEtapa        = $this->fncGetVarConfig("nIdEtapaProgramada");
 
-                $nIdNewProspecto = $this->prospecto->fncGrabarProspecto($sTitulo, $nIdCliente, $nIdNegocio, $nIdEmpleado, $nIdEtapa, $nEstado, $aryValueExtra);
+                $nIdNewProspecto = $this->prospecto->fncGrabarProspecto($sTitulo, $nIdCliente, $nIdNegocio, $nIdUsuario, $nIdEtapa, $nEstado, $aryValueExtra);
 
-                $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdEmpleado, null, "Se creo el prospecto - " . date("d/m/Y h:i:s"), $nEstado);
+                $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdUsuario, null, "Se creo el prospecto - " . date("d/m/Y h:i:s"), $nEstado);
 
                 if (fncValidateArray($aryCatalogos)) {
                     foreach ($aryCatalogos as $aryCata) {
@@ -449,7 +424,7 @@ class ProspectosController extends Controller
                     foreach ($aryActividades as $aryActi) {
                         $this->prospecto->fncGrabarProspectoActividad(
                             $nIdNewProspecto,
-                            $aryActi["nIdEmpleado"],
+                            $aryActi["nIdUsuario"],
                             $aryActi["nTipoActividad"],
                             $aryActi["nIdEstadoActividad"],
                             $aryActi["sFechaActividad"],
@@ -461,11 +436,13 @@ class ProspectosController extends Controller
                         );
                     }
                     $sCambio = ("Se creo " . count($aryActividades) . (count($aryActividades) == 1 ? " cita " : " citas "));
-                    $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdEmpleado, null, $sCambio, $nEstado);
+                    $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdUsuario, null, $sCambio, $nEstado);
                 }
 
                 if (!empty($sNota)) {
-                    $this->prospecto->fncGrabarProspectoNota($nIdNewProspecto, $nIdEmpleado, $nTipoEntidadNota, $sNota, 1);
+
+
+                    $this->prospecto->fncGrabarProspectoNota($nIdNewProspecto, $nIdUsuario, $sNota, 1);
                 }
             } else {
                 // Actualizar
@@ -487,13 +464,12 @@ class ProspectosController extends Controller
             $nIdRegistro        = 0;
             $nIdNegocio         = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
             $nIdCliente         = isset($_POST['nIdCliente']) ? $_POST['nIdCliente'] : null;
-            $nIdEmpleado        = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+            $nIdUsuario         = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $sTitulo            = isset($_POST['sTitulo']) ? $_POST['sTitulo'] : null;
 
             $bExisteWidgetCitas = isset($_POST['bExisteWidgetCitas']) ? $_POST['bExisteWidgetCitas'] : null;
 
             $aryActi            = isset($_POST['aryActividades']) ? $_POST['aryActividades'] : null;
-            $nTipoEntidadNota   = isset($_POST['nTipoEntidadNota']) ? $_POST['nTipoEntidadNota'] : null;
             $sNota              = isset($_POST['sNota']) ? $_POST['sNota'] : null;
             $nEstado            = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
@@ -511,17 +487,17 @@ class ProspectosController extends Controller
 
                 $nIdEtapa        = $this->fncGetVarConfig("nIdEtapaProgramada");
 
-                $nIdNewProspecto = $this->prospecto->fncGrabarProspecto($sTitulo, $nIdCliente, $nIdNegocio, $nIdEmpleado, $nIdEtapa, $nEstado, []);
+                $nIdNewProspecto = $this->prospecto->fncGrabarProspecto($sTitulo, $nIdCliente, $nIdNegocio, $nIdUsuario, $nIdEtapa, $nEstado, []);
 
-                $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdEmpleado, null, "Se creo el prospecto - " . date("d/m/Y h:i:s"), $nEstado);
+                $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdUsuario, null, "Se creo el prospecto - " . date("d/m/Y h:i:s"), $nEstado);
 
                 # Atraves de la vista paso la validacion si esque el widget de citas
-                
-                if ($bExisteWidgetCitas) {
+
+                if ($bExisteWidgetCitas === 'true') {
 
                     $this->prospecto->fncGrabarProspectoActividad(
                         $nIdNewProspecto,
-                        $aryActi["nIdEmpleado"],
+                        $aryActi["nIdUsuario"],
                         $aryActi["nTipoActividad"],
                         $aryActi["nIdEstadoActividad"],
                         $aryActi["sFechaActividad"],
@@ -533,11 +509,11 @@ class ProspectosController extends Controller
                     );
 
                     $sCambio = "Se creo 1 cita";
-                    $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdEmpleado, null, $sCambio, $nEstado);
+                    $this->prospecto->fncGrabarCambioProspecto($nIdNewProspecto, $nIdUsuario, null, $sCambio, $nEstado);
                 }
 
                 if (!empty($sNota)) {
-                    $this->prospecto->fncGrabarProspectoNota($nIdNewProspecto, $nIdEmpleado, $nTipoEntidadNota, $sNota, 1);
+                    $this->prospecto->fncGrabarProspectoNota($nIdNewProspecto, $nIdUsuario, $sNota, 1);
                 }
             }
 
@@ -604,12 +580,12 @@ class ProspectosController extends Controller
                 "aryConfigExtra"            => $aryConfig
             ];
 
-            // Solo si esta consultando un empleado se actualiza si es el admin no actualiza  
+            // Solo si esta consultando un usuarios se actualiza si es el admin no actualiza  
 
             $user = $this->session->get("user");
-            $sRolEmp = $this->fncGetVarConfig("sRolEmp");
+            $nIdRolAsesor = $this->fncGetVarConfig("nIdRolAsesor");
 
-            if (!is_null($user) && is_array($user) && $user["sRol"] == $sRolEmp  && ($aryProspecto["nIdEmpleado"] == $user["nIdEmpleado"])) {
+            if (isset($user["nIdRol"]) && $user["nIdRol"] == $nIdRolAsesor  && ($aryProspecto["nIdUsuario"] == $user["nIdUsuario"])) {
                 $this->prospecto->fncActualizarFechaUltimoAccesoProspecto($nIdRegistro);
             }
 
@@ -907,7 +883,7 @@ class ProspectosController extends Controller
         try {
             $nIdRegistro           = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
             $nIdProspecto          = isset($_POST['nIdProspecto']) ? $_POST['nIdProspecto'] : null;
-            $nIdEmpleado           = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+            $nIdUsuario           = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $nTipoActividad        = isset($_POST['nTipoActividad']) ? $_POST['nTipoActividad'] : null;
             $nIdEstadoActividad    = isset($_POST['nIdEstadoActividad']) ? $_POST['nIdEstadoActividad'] : null;
             $sFechaActividad       = isset($_POST['sFechaActividad']) ? $_POST['sFechaActividad'] : null;
@@ -929,7 +905,7 @@ class ProspectosController extends Controller
             if ($nIdRegistro == 0) {
                 $this->prospecto->fncGrabarProspectoActividad(
                     $nIdProspecto,
-                    $nIdEmpleado,
+                    $nIdUsuario,
                     $nTipoActividad,
                     $nIdEstadoActividad,
                     $sFechaActividad,
@@ -945,7 +921,7 @@ class ProspectosController extends Controller
                 $this->prospecto->fncActualizaProspectoActividad(
                     $nIdRegistro,
                     $nIdProspecto,
-                    $nIdEmpleado,
+                    $nIdUsuario,
                     $nTipoActividad,
                     $nIdEstadoActividad,
                     $sFechaActividad,
@@ -960,7 +936,7 @@ class ProspectosController extends Controller
             }
 
 
-            $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdEmpleado, null, $sCambio, 1);
+            $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdUsuario, null, $sCambio, 1);
 
             // Validar 2 Citas Efectivas
             $bChangeEstado = false;
@@ -969,7 +945,7 @@ class ProspectosController extends Controller
             // Si existen mas de dos citas efectivas se actualiza el estado de prospecto a negociacion
             if ($aryData["nCantidad"] >= 2) {
                 $this->prospecto->fncActualizarEstadoProspecto($nIdProspecto, $nIdEtapaNegociacion);
-                $this->fncGuardarCambioEtapa($nIdProspecto, $nIdEmpleado, $nIdEtapaNegociacion);
+                $this->fncGuardarCambioEtapa($nIdProspecto, $nIdUsuario, $nIdEtapaNegociacion);
                 $bChangeEstado = true;
             }
             // Fin de validacion
@@ -1024,24 +1000,26 @@ class ProspectosController extends Controller
         try {
             $nIdRegistro           = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
             $nIdProspecto          = isset($_POST['nIdProspecto']) ? $_POST['nIdProspecto'] : null;
-            $nIdTipoEntidad        = isset($_POST['nIdTipoEntidad']) ? $_POST['nIdTipoEntidad'] : null;
-            $nTipoEntidad          = isset($_POST['nTipoEntidad']) ? $_POST['nTipoEntidad'] : null;
+            $nIdUsuario            = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $sNota                 = isset($_POST['sNota']) ? $_POST['sNota'] : null;
             $nEstado               = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+            $nIdNegocio            = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
+
 
             // Valida valores del formulario
-            if (is_null($nIdRegistro) || is_null($nIdProspecto)) {
+            if (is_null($nIdRegistro) || is_null($nIdProspecto) || is_null($nIdNegocio)) {
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
             $sCambio  = null;
 
+
             if ($nIdRegistro == 0) {
+
 
                 $this->prospecto->fncGrabarProspectoNota(
                     $nIdProspecto,
-                    $nIdTipoEntidad,
-                    $nTipoEntidad,
+                    $nIdUsuario,
                     $sNota,
                     $nEstado
                 );
@@ -1052,8 +1030,7 @@ class ProspectosController extends Controller
                 $this->prospecto->fncActualizaProspectoNota(
                     $nIdRegistro,
                     $nIdProspecto,
-                    $nIdTipoEntidad,
-                    $nTipoEntidad,
+                    $nIdUsuario,
                     $sNota,
                     $nEstado
                 );
@@ -1061,11 +1038,14 @@ class ProspectosController extends Controller
                 $sCambio = "Se actualizo una nota";
             }
 
-            if ($this->fncGetVarConfig("nTipoEntidadNotaEmpleado") ==  $nIdTipoEntidad) {
-                $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdTipoEntidad, null, $sCambio, 1);
+
+            $aryUser = $this->usuarios->fncGetUsuarioById($nIdUsuario, $nIdNegocio)[0];
+
+            if ($this->fncGetVarConfig("nIdRolAdmin") ==  $aryUser["nIdRol"]) {
+                $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdUsuario, null, $sCambio, 1);
             }
 
-            $sSuccess =  $nIdRegistro == 0 ? 'Nota registrado exitosamente...' : 'Nota actualizado exitosamente...';
+            $sSuccess = $nIdRegistro == 0 ? 'Nota registrado exitosamente...' : 'Nota actualizado exitosamente...';
 
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
@@ -1095,7 +1075,7 @@ class ProspectosController extends Controller
     public function fncActualizarControlExtra()
     {
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
-        $nIdEmpleado = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario  = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $sWidget     = isset($_POST['sWidget']) ? $_POST['sWidget'] : null;
         $sCol        = isset($_POST['sCol']) ? $_POST['sCol'] : null;
         $sVal        = isset($_POST['sVal']) ? $_POST['sVal'] : null;
@@ -1109,7 +1089,7 @@ class ProspectosController extends Controller
 
             if (!is_null($sWidget) && strlen($sWidget) > 0) {
                 $sCambio = "Se hizo una actualizacion en el campo " . $sWidget;
-                $this->prospecto->fncGrabarCambioProspecto($nIdRegistro, $nIdEmpleado, null, $sCambio, 1);
+                $this->prospecto->fncGrabarCambioProspecto($nIdRegistro, $nIdUsuario, null, $sCambio, 1);
             }
 
             $this->prospecto->fncActualizarControlExtra($nIdRegistro, $sCol, $sVal);
@@ -1140,7 +1120,7 @@ class ProspectosController extends Controller
     public function fncGrabarCambioProspecto()
     {
         $nIdRegistro    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
-        $nIdEmpleado    = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario    = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $nIdEtapa       = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
         $sCambio        = isset($_POST['sCambio']) ? $_POST['sCambio'] : null;
         $nEstado        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
@@ -1152,7 +1132,7 @@ class ProspectosController extends Controller
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
 
-            $this->prospecto->fncGrabarCambioProspecto($nIdRegistro, $nIdEmpleado, $nIdEtapa, $sCambio, $nEstado);;
+            $this->prospecto->fncGrabarCambioProspecto($nIdRegistro, $nIdUsuario, $nIdEtapa, $sCambio, $nEstado);;
             $this->json(array("success" => "Cambio agregado  correctamente."));
         } catch (Exception $ex) {
             echo $ex->getMessage();
@@ -1162,7 +1142,7 @@ class ProspectosController extends Controller
     public function fncActualizarEstadoProspecto()
     {
         $nIdRegistro    = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
-        $nIdEmpleado    = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario     = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $nIdEtapa       = isset($_POST['nIdEtapa']) ? $_POST['nIdEtapa'] : null;
         $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
 
@@ -1233,7 +1213,7 @@ class ProspectosController extends Controller
             } else {
                 $sSucces = "Actualizado estado del prospecto correctamente.";
                 $this->prospecto->fncActualizarEstadoProspecto($nIdRegistro, $nIdEtapa);
-                $this->fncGuardarCambioEtapa($nIdRegistro, $nIdEmpleado, $nIdEtapa);
+                $this->fncGuardarCambioEtapa($nIdRegistro, $nIdUsuario, $nIdEtapa);
             }
 
             $this->json(array("success" => $sSucces,  "sLinkArchivo" => $sLinkArchivo, "bSend" => $bSend));
@@ -1326,7 +1306,7 @@ class ProspectosController extends Controller
 
             ob_start();
 
-            $this->view("empleado/cotizacion-pdf", [
+            $this->view("admin/cotizacion-pdf", [
                 "aryDataProspecto"          => $aryDataProspecto[0],
                 "aryCliente"                => $aryCliente[0],
                 "aryDataProspectoDetalle"   => $aryDataProspectoDetalle,
@@ -1372,7 +1352,7 @@ class ProspectosController extends Controller
             $nIdAdjuntoContrato   = isset($_POST['nIdAdjuntoContrato']) ? $_POST['nIdAdjuntoContrato'] : null;
             $sContrato            = isset($_FILES['sContrato']) ? $_FILES['sContrato'] : null;
             $aryOtros             = isset($_FILES['aryOtros']) ? $_FILES['aryOtros'] : null;
-            $nIdEmpleado          = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+            $nIdUsuario          = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
 
 
             // Valida valores del formulario
@@ -1462,7 +1442,7 @@ class ProspectosController extends Controller
 
             if ($bChangeEstado) {
                 $this->prospecto->fncActualizarEstadoProspecto($nIdProspecto, $nIdEtapaEnProceso);
-                $this->fncGuardarCambioEtapa($nIdProspecto, $nIdEmpleado, $nIdEtapaEnProceso);
+                $this->fncGuardarCambioEtapa($nIdProspecto, $nIdUsuario, $nIdEtapaEnProceso);
             }
 
             $sSuccess =  $nIdRegistro == 0 ? 'Adjuntos registrado exitosamente...' : 'Adjuntos actualizado exitosamente...';
@@ -1473,12 +1453,12 @@ class ProspectosController extends Controller
     }
 
 
-    public function fncGuardarCambioEtapa($nIdProspecto, $nIdEmpleado, $nIdEtapa)
+    public function fncGuardarCambioEtapa($nIdProspecto, $nIdUsuario, $nIdEtapa)
     {
         try {
             $aryEtapa = $this->prospecto->fncObtenerEtapaProspectoById($nIdEtapa);
 
-            $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdEmpleado, $nIdEtapa, "Se cambio de etapa a " . $aryEtapa["sNombre"], 1);
+            $this->prospecto->fncGrabarCambioProspecto($nIdProspecto, $nIdUsuario, $nIdEtapa, "Se cambio de etapa a " . $aryEtapa["sNombre"], 1);
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }
@@ -1602,7 +1582,7 @@ class ProspectosController extends Controller
 
             if (fncValidateArray($aryProspectos)) {
                 foreach ($aryProspectos as $nKey => $aryProspecto) {
-                    $aryEmpleado =  ($this->empleado->fncGetEmpleados(null, $nIdNegocio, $aryProspecto["nIdEmpleado"]));
+                    $aryEmpleado =  ($this->usuarios->fncGetUsuarios(null, $nIdNegocio, $aryProspecto["nIdUsuario"]));
                     $aryEmpleado =   fncValidateArray($aryEmpleado) > 0 ? $aryEmpleado[0] : [];
 
                     // Totales del prospecto
@@ -1617,7 +1597,7 @@ class ProspectosController extends Controller
                         "sCliente"               => $aryProspecto["sCliente"],
                         "sEmpleado"              => $aryProspecto["sEmpleado"],
                         "sNombreEtapa"           => $aryProspecto["sNombreEtapa"],
-                        "nTotal"                 => $aryCatalogo["nTotal"],
+                        "nTotal"                 => isset($aryCatalogo["nTotal"]) ? $aryCatalogo["nTotal"] : 0,
                         "dFechaCreacion"         => $aryProspecto["dFechaCreacion"],
                         "dFechaHoraUltimoAcceso" => $aryProspecto["dFechaHoraUltimoAcceso"],
                     ];
@@ -1634,7 +1614,7 @@ class ProspectosController extends Controller
     {
         try {
             $nIdNegocio       = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
-            $nIdEmpleado      = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+            $nIdUsuario       = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $sBuscador        = isset($_POST['sBuscador']) ? $_POST['sBuscador'] : null;
             $nIdSupervisor    = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
 
@@ -1645,7 +1625,7 @@ class ProspectosController extends Controller
 
             $aryProspectos  = $this->prospecto->fncGetProspectoAll(
                 $nIdNegocio,
-                $nIdEmpleado,
+                $nIdUsuario,
                 $sBuscador,
                 null,
                 $this->fncGetVarConfig("nIdEtapaCierre"),
@@ -1677,7 +1657,7 @@ class ProspectosController extends Controller
                 null,
                 $this->fncGetVarConfig("nTipoActividadCita"),
                 $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
-                $nIdEmpleado,
+                $nIdUsuario,
                 date("d/m/Y"),
                 $nIdNegocio,
                 $nIdSupervisor
@@ -1687,7 +1667,7 @@ class ProspectosController extends Controller
 
             $aryProspectosHoy  = $this->prospecto->fncGetProspectoAll(
                 $nIdNegocio,
-                $nIdEmpleado,
+                $nIdUsuario,
                 $sBuscador,
                 null,
                 null,
@@ -1700,7 +1680,7 @@ class ProspectosController extends Controller
             $aryEmpleadosHoy = [];
             if (fncValidateArray($aryProspectosHoy)) {
                 foreach ($aryProspectosHoy as $aryLoop) {
-                    array_push($aryEmpleadosHoy, $aryLoop["nIdEmpleado"]);
+                    array_push($aryEmpleadosHoy, $aryLoop["nIdUsuario"]);
                 }
             }
 
@@ -1724,10 +1704,12 @@ class ProspectosController extends Controller
     public function fncGetActividadesNoCumplidas()
     {
         try {
-            $nIdEmpleado  = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+
+            $nIdUsuario  = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
+            $nIdNegocio  = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
 
             // Valida valores del formulario
-            if (is_null($nIdEmpleado)) {
+            if (is_null($nIdUsuario) || is_null($nIdNegocio) ) {
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
 
@@ -1741,10 +1723,11 @@ class ProspectosController extends Controller
                 null,
                 $this->fncGetVarConfig("nTipoActividadCita"),
                 $this->fncGetVarConfig("nIdEstadoActividadPendiente"),
-                $nIdEmpleado,
+                $nIdUsuario,
                 null,
                 null,
-                $sEtapasNot
+                $sEtapasNot,
+                $nIdNegocio
             );
 
             $nCantidadActividad  = 0;
@@ -1777,7 +1760,7 @@ class ProspectosController extends Controller
     public function fncGetIndicativosGeneral()
     {
         $nIdNegocio           = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
-        $nIdEmpleado          = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario           = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $sBuscador            = isset($_POST['sBuscador']) ? $_POST['sBuscador'] : null;
         $sFiltro              = isset($_POST['sFiltro']) ? $_POST['sFiltro'] : null;
         $nValidacionAdmin     = isset($_POST['nValidacionAdmin']) ? $_POST['nValidacionAdmin'] : null;
@@ -1795,7 +1778,7 @@ class ProspectosController extends Controller
             $aryData = [];
             $aryProspectos  = $this->prospecto->fncGetProspectoAll(
                 $nIdNegocio,
-                $nIdEmpleado,
+                $nIdUsuario,
                 $sBuscador,
                 null,
                 null,
@@ -1829,8 +1812,11 @@ class ProspectosController extends Controller
                         $nTotalCierre++;
                     }
 
-                    array_push($aryIdEmpleados, $aryProspecto["nIdEmpleado"]);
-                    array_push($aryIdClientes, $aryProspecto["nIdCliente"]);
+                    array_push($aryIdEmpleados, $aryProspecto["nIdUsuario"]);
+
+                    if($aryProspecto["nIdCliente"] !=""){
+                        array_push($aryIdClientes, $aryProspecto["nIdCliente"]);
+                    }
 
                     // Si es un prospecto combinado es decir que existen productos y servicios solo se suma los prospectos
                     $aryDetalleCatalogo = $this->fncGetDetalleCatalogoByIdProspecto($aryProspecto["nIdProspecto"]);
@@ -1847,14 +1833,15 @@ class ProspectosController extends Controller
                 }
             }
 
-
-
+ 
             $aryIdEmpleados  = array_unique($aryIdEmpleados);
             $aryIdClientes   = array_unique($aryIdClientes);
 
             $nCantidadEmpleadosDentroRango = count($aryIdEmpleados);
             $nCantidadClientesDentroRango  = count($aryIdClientes);
             $nTotalCantidadProspectos      = count($aryProspectos);
+
+          //  var_dump($nCantidadClientesDentroRango , $nTotalCantidadProspectos);
 
             $nProductividadUnidades  = $nCantidadEmpleadosDentroRango > 0 ?  $nAvance / $nCantidadEmpleadosDentroRango : 0;
             $nProductividadMonto     = $nCantidadEmpleadosDentroRango > 0 ?  $nRentaBasica / $nCantidadEmpleadosDentroRango : 0;
@@ -1864,8 +1851,8 @@ class ProspectosController extends Controller
 
 
             // Nueva formula de efectividad Cantidad de prospectos del 100% / entre la cantidad prospecto
-            $nTipoEmpleadoAsesorVentas   = $this->fncGetVarConfig("nTipoEmpleadoAsesorVentas");
-            $aryEmpleadosActivos         = $this->empleado->fncGetEmpleadosAll($nTipoEmpleadoAsesorVentas, $nIdNegocio, $nIdEmpleado, 1, null, null, $nIdSupervisor);
+            $nIdRolAsesorVentas   = $this->fncGetVarConfig("nIdRolAsesor");
+            $aryEmpleadosActivos         = $this->usuarios->fncGetUsuariosAll($nIdRolAsesorVentas, $nIdNegocio, $nIdUsuario, 1, null, null, $nIdSupervisor);
 
             $aryData = [
                 "nAvance"                   => $nAvance,
@@ -1995,7 +1982,7 @@ class ProspectosController extends Controller
                 foreach ($aryProspectos as $aryProspecto) {
                     $aryDetalle = $this->fncGetDetalleCatalogoByIdProspecto($aryProspecto["nIdProspecto"], $nTipoItem);
 
-                    array_push($aryIdEmpleados, $aryProspecto["nIdEmpleado"]);
+                    array_push($aryIdEmpleados, $aryProspecto["nIdUsuario"]);
                     array_push($aryIdClientes, $aryProspecto["nIdCliente"]);
 
                     if ($aryProspecto["nIdEtapa"] == $nIdEtapaCierre) {
@@ -2165,7 +2152,7 @@ class ProspectosController extends Controller
 
                         $aryDataProductividadMes[$sNamekey]['nUnidades'] += $aryDetalle["nCantidad"];
 
-                        $aryDataProductividadMes[$sNamekey]['aryEmpleados'][] = $aryProspecto["nIdEmpleado"];
+                        $aryDataProductividadMes[$sNamekey]['aryEmpleados'][] = $aryProspecto["nIdUsuario"];
 
                         $aryDataProductividadMes[$sNamekey]['aryEmpleados'] = array_unique($aryDataProductividadMes[$sNamekey]['aryEmpleados']);
                     }
@@ -2342,7 +2329,7 @@ class ProspectosController extends Controller
             $aryEmpleados  = [];
             if (fncValidateArray($aryProspectos)) {
                 foreach ($aryProspectos as $aryLoop) {
-                    $aryEmpleados[] = $aryLoop["nIdEmpleado"];
+                    $aryEmpleados[] = $aryLoop["nIdUsuario"];
                 }
             }
 
@@ -2353,7 +2340,7 @@ class ProspectosController extends Controller
             $nIdEtapaCierre = $this->fncGetVarConfig("nIdEtapaCierre");
 
             if (fncValidateArray($aryEmpleados)) {
-                foreach ($aryEmpleados as $nKey => $nIdEmpleado) {
+                foreach ($aryEmpleados as $nKey => $nIdUsuario) {
 
 
                     $nAvance                     = 0;
@@ -2364,7 +2351,7 @@ class ProspectosController extends Controller
 
                     $aryProspectosEmpleado  = $this->prospecto->fncGetProspectoAll(
                         $nIdNegocio,
-                        $nIdEmpleado,
+                        $nIdUsuario,
                         null,
                         null,
                         null,
@@ -2379,7 +2366,7 @@ class ProspectosController extends Controller
                         $aryAsesor
                     );
 
-                    $aryEmpleado = $this->empleado->fncObtenerDatosBasicos($nIdEmpleado);
+                    $aryEmpleado = $this->usuarios->fncObtenerDatosBasicos($nIdUsuario, $nIdNegocio);
 
                     if (fncValidateArray($aryProspectosEmpleado)) {
                         foreach ($aryProspectosEmpleado as $aryProspecto) {
@@ -2405,8 +2392,8 @@ class ProspectosController extends Controller
                     }
 
                     if ($aryEmpleado["nEstado"] == 1) {
-                        $aryProspectosHoy  = $this->prospecto->fncGetProspectoAll($nIdNegocio, $nIdEmpleado, null, null, null, null, null, null, date("d/m/Y"));
-                        $sColor            = '<div class="cuadrado fondo-' . strtolower($aryEmpleado["sColorSuperEmpleado"]) . '"></div>' . '<div style="visibility: hidden;" >' . strtolower($aryEmpleado["sColorSuperEmpleado"]) . '</div>';
+                        $aryProspectosHoy  = $this->prospecto->fncGetProspectoAll($nIdNegocio, $nIdUsuario, null, null, null, null, null, null, date("d/m/Y"));
+                        $sColor            = '<div class="cuadrado fondo-' . strtolower($aryEmpleado["sColorSuperEmpleado"]) . ' cuadrado-reporte"></div>' . '<div style="visibility: hidden;" >' . strtolower($aryEmpleado["sColorSuperEmpleado"]) . '</div>';
                         $aryRows[] = [
                             "sColor"                      => $sColor,
                             "sColorNombre"                => strup($aryEmpleado["sColorSuperEmpleado"]),
@@ -2428,10 +2415,10 @@ class ProspectosController extends Controller
     }
 
 
-    public function fncGetReporteBasicoEmpleados()
+    public function fncGetReporteBasicoUsuarios()
     {
         $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
-        $nTipoEmpleado  = isset($_POST['nTipoEmpleado']) ? $_POST['nTipoEmpleado'] : null;
+        $nIdRol         = isset($_POST['nIdRol']) ? $_POST['nIdRol'] : null;
 
         try {
 
@@ -2440,7 +2427,7 @@ class ProspectosController extends Controller
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
 
-            $aryEmpleados = $this->empleado->fncGetEmpleados($nTipoEmpleado, $nIdNegocio, null, 1);
+            $aryEmpleados = $this->usuarios->fncGetUsuarios($nIdRol, $nIdNegocio, null, 1);
 
             $nIdSexoMasculino = $this->fncGetVarConfig("nIdSexoMasculino");
             $nIdSexoFemenino  = $this->fncGetVarConfig("nIdSexoFemenino");
@@ -2478,27 +2465,27 @@ class ProspectosController extends Controller
                 foreach ($aryEmpleados as $aryLoop) {
 
 
-                    // Sexo de los empleados
+                    // Sexo de los usuarioss
 
                     switch ($aryLoop["nIdSexo"]) {
 
                         case $nIdSexoMasculino:
-                            array_push($aryHombres, $aryLoop["nIdEmpleado"]);
+                            array_push($aryHombres, $aryLoop["nIdUsuario"]);
                             break;
 
                         case $nIdSexoFemenino:
-                            array_push($aryMujeres, $aryLoop["nIdEmpleado"]);
+                            array_push($aryMujeres, $aryLoop["nIdUsuario"]);
                             break;
                     }
 
-                    // End Sexo de los empleados
+                    // End Sexo de los usuarioss
 
                     // Experiencia en ventas
 
                     if ($aryLoop["nExperienciaVentas"] == 1) {
-                        array_push($aryConExp, $aryLoop["nIdEmpleado"]);
+                        array_push($aryConExp, $aryLoop["nIdUsuario"]);
                     } else {
-                        array_push($arySinExp, $aryLoop["nIdEmpleado"]);
+                        array_push($arySinExp, $aryLoop["nIdUsuario"]);
                     }
                     // End Experiencia en ventas
                     // Edades
@@ -2511,13 +2498,13 @@ class ProspectosController extends Controller
 
 
                     if ($nEdad >= 18 && $nEdad <= 23) {
-                        array_push($aryRangeEdad1, $aryLoop["nIdEmpleado"]);
+                        array_push($aryRangeEdad1, $aryLoop["nIdUsuario"]);
                     } elseif ($nEdad >= 24 && $nEdad <= 29) {
-                        array_push($aryRangeEdad2, $aryLoop["nIdEmpleado"]);
+                        array_push($aryRangeEdad2, $aryLoop["nIdUsuario"]);
                     } elseif ($nEdad >= 30 && $nEdad <= 35) {
-                        array_push($aryRangeEdad3, $aryLoop["nIdEmpleado"]);
+                        array_push($aryRangeEdad3, $aryLoop["nIdUsuario"]);
                     } elseif ($nEdad >= 36) {
-                        array_push($aryRangeEdad4, $aryLoop["nIdEmpleado"]);
+                        array_push($aryRangeEdad4, $aryLoop["nIdUsuario"]);
                     }
 
                     // End Edades
@@ -2526,19 +2513,19 @@ class ProspectosController extends Controller
 
                     switch ($aryLoop["nIdEstadoCivil"]) {
                         case $nIdEstadoCivilCasado:
-                            array_push($aryCasados, $aryLoop["nIdEmpleado"]);
+                            array_push($aryCasados, $aryLoop["nIdUsuario"]);
                             break;
                         case $nIdEstadoCivilSoltero:
-                            array_push($arySoltero, $aryLoop["nIdEmpleado"]);
+                            array_push($arySoltero, $aryLoop["nIdUsuario"]);
                             break;
                         case $nIdEstadoCivilViudo:
-                            array_push($aryViudo, $aryLoop["nIdEmpleado"]);
+                            array_push($aryViudo, $aryLoop["nIdUsuario"]);
                             break;
                         case $nIdEstadoCivilDivorciado:
-                            array_push($aryDivorciado, $aryLoop["nIdEmpleado"]);
+                            array_push($aryDivorciado, $aryLoop["nIdUsuario"]);
                             break;
                         case $nIdEstadoCivilConviviente:
-                            array_push($aryConviviente, $aryLoop["nIdEmpleado"]);
+                            array_push($aryConviviente, $aryLoop["nIdUsuario"]);
                             break;
                     }
 
@@ -2548,9 +2535,9 @@ class ProspectosController extends Controller
                     // Cantidad de hijos o personas dependientes 
 
                     if ($aryLoop["nCantidadPersonasDependientes"] > 0) {
-                        array_push($aryConHijos, $aryLoop["nIdEmpleado"]);
+                        array_push($aryConHijos, $aryLoop["nIdUsuario"]);
                     } else {
-                        array_push($arySinHijos, $aryLoop["nIdEmpleado"]);
+                        array_push($arySinHijos, $aryLoop["nIdUsuario"]);
                     }
                 }
             }
@@ -2688,7 +2675,7 @@ class ProspectosController extends Controller
 
             $nIdEtapaCierre = $this->fncGetVarConfig("nIdEtapaCierre");
 
-            if (fncValidateArray($aryProspectos)) {
+            if (fncValidateArray($aryProspectos) && fncValidateArray($aryAsesor)) {
                 foreach ($aryProspectos as $aryProspecto) {
 
 
@@ -2727,13 +2714,13 @@ class ProspectosController extends Controller
     public function fncActualizaEmpleadoProspecto()
     {
         $nIdProspecto               = isset($_POST['nIdProspecto']) ? $_POST['nIdProspecto'] : null;
-        $nIdEmpleado                = isset($_POST['nIdEmpleado']) ? $_POST['nIdEmpleado'] : null;
+        $nIdUsuario                = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
 
         try {
 
             $this->prospecto->fncActualizaEmpleadoProspecto(
                 $nIdProspecto,
-                $nIdEmpleado
+                $nIdUsuario
             );
 
             $this->json(array("success" => 'Prospecto actualizado exitosamente.'));
@@ -2741,4 +2728,8 @@ class ProspectosController extends Controller
             echo $ex->getMessage();
         }
     }
+
+    
+ 
+
 }

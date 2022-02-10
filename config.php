@@ -9,7 +9,7 @@ define('WEB_ROOT', WEB . 'prospectos/');
 
 define('DB_DRIVER', 'mysql'); // mysql, mysqli, sqlite are options for use with the Base Model.
 define('DB_HOSTNAME', 'localhost');
-define('DB_DATABASE', 'newprospectostwo');
+define('DB_DATABASE', 'bdprospectos');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
@@ -34,4 +34,4 @@ define('SIMBOLO_MONEDA', ' S./ ');
 define('TEXTO_MONEDA', ' SOLES ');
 define('HOST_NAME', "192.168.1.103");
 define('PORT', "8090");
-define('WEB_SOCKET_JS', "ws://" . HOST_NAME . ":" . PORT . "/");
+define('WEB_SOCKET_JS', "ws://" . HOST_NAME . ":" . PORT . "/wss2");

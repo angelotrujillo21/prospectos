@@ -21,7 +21,6 @@ class BuildFormController extends Controller
     public $negocios;
     public $ubigeo;
     public $session;
-    public $users;
     public $catalogoTabla;
     public $prospecto;
     public $clientes;

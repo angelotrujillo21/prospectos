@@ -1,0 +1,28 @@
+Prospectos 
+--------------------------
+- Validar que se registre el empleado al enviar un correo 
+
+Home
+------------------
+- La pantalla blanca que ocupe el 100% de la pagina 
+
+Prospecto Simple
+------------------------
+- No debe de registrar un cliente el cliente quitarlo porque es un prospecto simple
+ - Segun la logica puedo seleccionar un cliente o escribir un titulo o es o uno u otro 
+
+Prospecto Normal 
+---------------------
+- Agregar un select 2 para busqueda de clientes 
+- Configurar si voy a vender productos o servicios por filtro 
+
+Mejoras prospectos 19/11/21
+---------------------
+- Poner en el sistema un solo solo usuario 
+- Este usuario en un negocio puede ser dueño de negocio en otro negocio puede ser supervisor y en otro puede ser asesor de ventas
+- Al registrar un empleado agregar su usuario que le permitar loguear por correo o por usuario
+- Poner el titulo de la empresa dentro del home 
+- Quitar el titulo en el propsecto largo 
+- Quitat cliente el prospecto largo 
+
+- Al crear un prospecto la parte de porudctos y servicios deberia aparecer en blanco respecto alo que vaya agregando most5rar la tabla deproductos o servicios

@@ -31,11 +31,17 @@ class Negocios
 
     public function fncGetNegociosByIdUsuario($nIdUsuario = null, $nIdNegocio = null)
     {
-        $sSQL = "SELECT DISTINCT  neg.nIdNegocio, usuneg.nIdUsuario,  neg.sNombre, neg.sDireccion, neg.sImagen, neg.nTipoProspecto, usuneg.nRol, neg.nEstado
-                FROM
-                    negocios AS neg
-                INNER JOIN usuariosnegocios AS usuneg ON neg.nIdNegocio = usuneg.nIdNegocio
-                ";
+        $sSQL = "SELECT DISTINCT 
+                        neg.nIdNegocio, 
+                        usuneg.nIdUsuario,  
+                        neg.sNombre, 
+                        neg.sDireccion, 
+                        neg.sImagen, 
+                        neg.nTipoProspecto, 
+                        usuneg.nIdRol, 
+                        neg.nEstado
+                FROM negocios AS neg
+                INNER JOIN usuariosnegocios AS usuneg ON neg.nIdNegocio = usuneg.nIdNegocio";
 
         $sWhere = "";
 
@@ -126,16 +132,16 @@ class Negocios
         return $this->db->run($sSQL);
     }
 
-    public function fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nRol)
+    public function fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nIdRol)
     {
         $sSQL = "INSERT INTO usuariosnegocios(
                   nIdUsuario,
                   nIdNegocio,
-                  nRol
+                  nIdRol
                 ) VALUES (
                     " . (is_null($nIdUsuario) || empty($nIdUsuario) ? "NULL" : "$nIdUsuario") . " ,
                     " . (is_null($nIdNegocio) || empty($nIdNegocio) ? "NULL" : "$nIdNegocio") . " ,
-                    " . (is_null($nRol) || empty($nRol) ? "NULL" : "$nRol") . " 
+                    " . (is_null($nIdRol) || empty($nIdRol) ? "NULL" : "$nIdRol") . " 
                 )";
 
         return  $this->db->run($sSQL);
@@ -186,12 +192,24 @@ class Negocios
     }
 
 
-    public function fncMostrarUsuariosNegocios($nIdNegocio)
+    public function fncMostrarUsuariosNegocios($nIdNegocio, $sIdsRoles = null)
     {
-        $sSQL = "SELECT un.nIdUsuarioNegocio, IFNULL(CONCAT(usu.sNombre , ' ' , usu.sApellidos),'') AS sUsuario, un.nIdUsuario, un.nIdNegocio, un.nRol , (CASE WHEN un.nRol = 1 THEN 'Administrador' ELSE 'Visitante' END) AS sRol
+        $sSQL = "SELECT 
+                    un.nIdUsuarioNegocio, 
+                    IFNULL(CONCAT(usu.sNombre),'') AS sUsuario, 
+                    un.nIdUsuario, 
+                    un.nIdNegocio, 
+                    un.nIdRol, 
+                    IFNULL(rol.sNombreRol,'') AS sRol
                 FROM usuariosnegocios AS un
                 INNER JOIN usuarios AS usu ON un.nIdUsuario = usu.nIdUsuario
-                WHERE un.nIdNegocio = $nIdNegocio ORDER BY  un.nIdUsuarioNegocio ASC";
+                INNER JOIN roles AS rol ON un.nIdRol = rol.nIdRol
+                WHERE un.nIdNegocio = $nIdNegocio ";
+
+        $sSQL .= is_null($sIdsRoles) ? "" : " AND un.nIdRol IN ( $sIdsRoles )"  ;
+
+        $sSQL .= " ORDER BY un.nIdUsuarioNegocio ASC";
+
 
         // echo $sSQL;
         // exit;
@@ -205,7 +223,7 @@ class Negocios
     }
 
 
-    public function fncGetNegociosByEmpleado($nIdEmpleado)
+    public function fncGetNegociosByEmpleado($nIdUsuario)
     {
         $sSQL = "SELECT   
             n.nIdNegocio,
@@ -214,7 +232,7 @@ class Negocios
             n.sImagen,
             n.nTipoProspecto,
             n.nEstado
-         FROM negocios AS n INNER JOIN empleados AS emp ON n.nIdNegocio = emp.nIdNegocio WHERE  emp.nIdEmpleado = $nIdEmpleado ";
+         FROM negocios AS n INNER JOIN empleados AS emp ON n.nIdNegocio = emp.nIdNegocio WHERE  emp.nIdUsuario = $nIdUsuario ";
         return $this->db->run($sSQL);
     }
 

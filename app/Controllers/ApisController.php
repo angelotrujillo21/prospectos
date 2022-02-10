@@ -41,7 +41,7 @@ class ApisController extends Controller
 
     public function getApiDev($type, $numero)
     {
-        $token = "4134fef67cc6436a3b5a602ac44a6494564262dd1965c1040a84990aa46fca93";
+        $token = "f0c69e2b5a717ddf44e3815f3ae97bf3d232d896b52cbd52132893623d8b1846";
         $ch    = curl_init("https://apiperu.dev/api/" . $type . "/" . $numero); // Initialise cURL
         $authorization = "Authorization: Bearer " . $token; // Prepare the authorisation token
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization)); // Inject the token into the header

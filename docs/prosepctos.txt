@@ -1,0 +1,11 @@
+
+Mejoras prospectos 18/01/22
+
+- Para realizar el reporte se saca de la fecha de cierre del prospecto., esto aplica tambien para el reporte de ventas 
+
+- Opp activas son de todos los tiempos.
+
+- Tasa de clientes es la cantidad de clientes nuevos que se han echo prospecto dentro del mes , entre el total de clientes que han eecho prospecto en el mes la taza es porcentjae 
+Por ejemplo tengo 26 prospecto del mes de enero21 y de esos 26 prospectos tengo 5 clientes , de esos 5 clientes he creado dos este mes el indice de apertura o ratio
+
+- verificar en mobil que no se muestran bien 

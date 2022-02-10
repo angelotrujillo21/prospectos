@@ -1,0 +1,57 @@
+Analisis de venta 
+Esto solo aplica a los prospectos que han sido cerrados o vendedios y todos se van acumular por monto 
+
+Producto/ servicio TipoCliente : 
+-----------------------------------------------------------------------
+Solo de las ventas - Detalle esto se tiene que acumular por monto 
+
+Producto - Persona
+Servicio - Persona
+
+Servicio - Empresa
+Servicio - Empresa
+
+Tipo Cliente vs Localidad 
+------------------------------------------------------------
+Mostrar en un grafico de barras por ejemplo en la localidad 
+Barras Empresa 100 Persona 50
+EJE X  Lima
+Barras Empresa 40 Persona 20
+EJE X  Arequipa
+
+-Se va a eliminar Segmentacion por localidad  
+
+- En la segunda fila se va a mostrar un  grafico multiple que mostrar por mes 
+ - Cuanto volumen de ingreso hay en una linea o renta basica 
+ - Cuanto ticket promedio hay o ticket en otra linea 
+ - Cuanto valor de compra promedio hay o compra 
+ - Cuanta productividad hay en otra linea
+ - Prospectos totales en otra linea 
+
+
+Tercera fila 
+------------------------------------------------------------------
+- En las opciones agregar un radio button para que solo se pueda seleccionar un grafico o bien segmentacion o buen tipo cliente o bien productos y servicios
+
+ En los combos vga a cargar la segamnetaciones que tiene esa empresa
+
+ En tipo de lciente los tipos de  clientes
+
+En productos y servicios todos los productos y servicios 
+
+el combo puede ser multiple 
+
+y por cada seleccion se va cargando la data al grafico 
+
+Nuevo indicador : 
+
+Tiempo promedio de conversión : Diferencia de dias de fecha de cierre y fecha de creacion todo eto se acumula y se  promedia 
+
+
+Boton de cotizacion : 
+Un titulo , una nota y que se le pueda adjuntar productos y que se pueda descargar en PDF 
+
+PDF :
+Quitar el IGV poner solo propeusta total 
+
+

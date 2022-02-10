@@ -11,6 +11,7 @@ use Application\Models\Entidades;
 use Application\Models\Prospecto;
 use Application\Models\CatalogoTabla;
 use Application\Core\Controller as Controller;
+use Application\Models\Usuarios;
 
 class NegociosController extends Controller
 {
@@ -21,7 +22,8 @@ class NegociosController extends Controller
     public $entidades;
     public $catalogoTabla;
     public $prospecto;
-    public $users;
+    public $usuarios;
+    public $sMsg  = "";
 
     public function __construct()
     {
@@ -32,46 +34,9 @@ class NegociosController extends Controller
         $this->entidades     = new Entidades();
         $this->catalogoTabla = new CatalogoTabla();
         $this->prospecto     = new Prospecto();
+        $this->usuarios      = new Usuarios();
         $this->session->init();
         $this->authAdmin($this->session);
-    }
-
-    public function misNegocios()
-    {
-        try {
-            // El usuario 1 es el administrador general del sistema
-            $user = $this->session->get('user');
-
-            // var_dump($user);
-
-            if (!is_null($user)) {
-                $aryConfigClientes        = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCliente"));
-                $aryConfigCatalogos       = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCatalogo"));
-                $aryConfigVendedores      = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadVendedor"));
-                $aryConfigSupervisores    = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdSupervisor"));
-                $aryTipoProspectos        = $this->catalogoTabla->fncListado('TIPO_PROSPECTO');
-
-                $this->view(
-                    'admin/mis-negocios',
-                    array(
-                        'user'                   => $this->session->get('user'),
-                        'menu'                   => false,
-                        'showNotificacion'       => false,
-                        'titulo'                 => 'Mis Negocios',
-                        'aryConfigClientes'      => $aryConfigClientes,
-                        'aryConfigCatalogos'     => $aryConfigCatalogos,
-                        'aryConfigVendedores'    => $aryConfigVendedores,
-                        'aryConfigSupervisores'  => $aryConfigSupervisores,
-                        'aryTipoProspectos'      => $aryTipoProspectos,
-                        'nRolProspectoAdmin'     => $this->fncGetVarConfig("nRolProspectoAdmin"),
-                        'sRolUser'               => $this->fncGetVarConfig("sRolUser"),
-
-                    )
-                );
-            }
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
     }
 
 
@@ -111,7 +76,7 @@ class NegociosController extends Controller
             if ($nIdRegistro == 0) {
                 $nIdNegocio = $this->negocios->fncGrabarNegocio($sNombre, $sDireccion, $sNombreImagen, $nTipoProspecto, $nEstado);
 
-                $this->negocios->fncGrabarUsuarioNegocio($user['nIdUsuario'], $nIdNegocio, $this->fncGetVarConfig("nRolProspectoAdmin"));
+                $this->negocios->fncGrabarUsuarioNegocio($user['nIdUsuario'], $nIdNegocio, $this->fncGetVarConfig("nIdRolAdmin"));
 
                 if (count($aryConfiguracionCliente) > 0) {
                     foreach ($aryConfiguracionCliente as $aryCliente) {
@@ -189,24 +154,10 @@ class NegociosController extends Controller
 
             //El usuario 1 es el administrador general del sistema
             $user         = $this->session->get('user');
-            $sRolUser     = $this->fncGetVarConfig("sRolUser");
             $aryNegocios  = [];
 
-            // var_dump($user);
-            // exit;
 
-            // Nuevo Update si el usuario es user vera sus negocios podra editarlo y todo ello si es empleado solo vera sus negocios
-
-            if ($user["sRol"] == $sRolUser) {
-                $aryNegocios = $user["nIdUsuario"] == '1' ? $this->negocios->fncGetNegocios() : $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"]);
-            } else {
-                // Empleado  traemos todos los negocios de los empleados
-                if (isset($user["nIdEmpleado"])) {
-                    $aryNegocios = $this->negocios->fncGetNegociosByEmpleado($user["nIdEmpleado"]);
-                } else {
-                    $this->exception("Error no se pudo ubicar el usuario");
-                }
-            }
+            $aryNegocios = $this->negocios->fncGetNegociosByIdUsuario($user["nIdUsuario"]);
 
             $this->json(array("success" => true, "aryData" => $aryNegocios));
         } catch (Exception $ex) {
@@ -310,8 +261,6 @@ class NegociosController extends Controller
     {
         $nIdNegocio             = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
         $sNombre                = isset($_POST['sNombre']) ? $_POST['sNombre'] : null;
-        $nTipoUsuarioInvitar    = isset($_POST['nTipoUsuarioInvitar']) ? $_POST['nTipoUsuarioInvitar'] : null;
-        $nIdUsuario             = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
         $sCorreoInvitacion      = isset($_POST['sCorreoInvitacion']) ? $_POST['sCorreoInvitacion'] : null;
         $nRol                   = isset($_POST['nRol']) ? $_POST['nRol'] : null;
 
@@ -324,15 +273,24 @@ class NegociosController extends Controller
 
             $bSend  = false;
 
-            if ($nTipoUsuarioInvitar  == '1') {
+            # Validar si esque el usuario existe
+            $aryUser = $this->usuarios->fncBuscarUsuarioPorCorreo($sCorreoInvitacion);
 
-                // Usuario Existente
-                $nIdUsuarioNegocio = $this->negocios->fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nRol);
+            if (fncValidateArray($aryUser)) {
+                $aryUser = $aryUser[0];
+                # Si esque existe el usuario vamos a relacionarlo pero antes de relacionarlo vamos a verificar si ya esta relacionado
+
+                # Valido si esque ya esta relacionado
+                $aryNegocio = $this->negocios->fncGetNegociosByIdUsuario($aryUser["nIdUsuario"], $nIdNegocio);
+                if (fncValidateArray($aryNegocio)) {
+                    $this->sMsg = "El usuario ya se encuentra relacionado .Porfavor verifique";
+                } else {
+                    # Vamos relacionar usuario a negocio
+                    $this->usuarios->fncGrabarUsuarioNegocio($aryUser["nIdUsuario"], $nIdNegocio, null, $nRol);
+                    $this->sMsg = "Se relaciono el usuario ya existente de forma existosa";
+                }
             } else {
-
-
                 if (strlen($sCorreoInvitacion) > 0) {
-
                     $sUrl = route("formulario-usuario/" . $nIdNegocio . "/" . $nRol);
 
                     $mail = new Mail();
@@ -340,8 +298,7 @@ class NegociosController extends Controller
                     $html = '
                     <div>
                         <p>
-                            <b><span style="font-size:14px;font-family:Arial">
-                                    Estimado(a): </span></b>
+                            <b><span style="font-size:14px;font-family:Arial">Estimado(a): </span></b>
                         </p>
                         <p>
                             <span style="font-size:14px;font-family:Arial">Se le a invitado para visualizar el tablero del negocio "' . $sNombre . '"
@@ -350,20 +307,19 @@ class NegociosController extends Controller
                                 <a style="color: #188ff6 !important " href="' . $sUrl . '">Aquí</a>
                             </span>
                         </p>
-                       
-                     
-                        
+                    
                     </div>';
-
                     if ($mail->send(['sFrom' => NOMBRE_SITIO, 'subject' => 'Invitacion Negocio', 'body' => $html, 'sCorreo' => $sCorreoInvitacion, 'sNombre' => '',])) {
                         $bSend  = true;
+                        $this->sMsg = "Genial se realizo el envio de la invitacion ...";
                     } else {
                         $bSend  = false;
+                        $this->sMsg = "Ups.. hubo un error al enviar la invitacion la invitacion ...";
                     }
                 }
             }
 
-            $this->json(array("success" => " Se realizo la invitancion ..",  "bSend" => $bSend));
+            $this->json(array("success" =>  $this->sMsg,  "bSend" => $bSend));
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }
@@ -372,7 +328,6 @@ class NegociosController extends Controller
     public function fncGrabarUsuarioNegocio()
     {
         try {
-
             $nIdUsuario    = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $nIdNegocio    = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
             $nRol          = isset($_POST['nRol']) ? $_POST['nRol'] : null;
@@ -395,7 +350,6 @@ class NegociosController extends Controller
     public function fncEliminarUsuarioNegocio()
     {
         try {
-
             $nIdUsuario    = isset($_POST['nIdUsuario']) ? $_POST['nIdUsuario'] : null;
             $nIdNegocio    = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
 
@@ -418,7 +372,6 @@ class NegociosController extends Controller
     public function fncMostrarUsuariosNegocios()
     {
         try {
-
             $nIdNegocio    = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
 
 
@@ -427,12 +380,18 @@ class NegociosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-            $aryData = $this->negocios->fncMostrarUsuariosNegocios($nIdNegocio);
+            $nIdRolAdmin = $this->fncGetVarConfig("nIdRolAdmin");
+            $nIdRolVisitante = $this->fncGetVarConfig("nIdRolVisitante");
 
-            // Eliminamos el primer elemento ya que es la persona quien creo el negocio el no se puede eliminar la relacion 
+            $sIds = "  $nIdRolAdmin , $nIdRolVisitante ";
+
+            // Solo mostrata los registros de administradores y visitantes
+            $aryData = $this->negocios->fncMostrarUsuariosNegocios($nIdNegocio, $sIds);
+
+            // Eliminamos el primer elemento ya que es la persona quien creo el negocio el no se puede eliminar la relacion
             unset($aryData[0]);
 
-            // Reordenamos las keys de el arreglo 
+            // Reordenamos las keys de el arreglo
             $aryData = array_values($aryData);
 
             $this->json(array("success" => 'Mostrando datos encontrados...', 'aryData' => $aryData));

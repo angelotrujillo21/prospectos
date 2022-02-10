@@ -32,11 +32,16 @@
 }
 
 body {
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 300;
   color: #5a6169;
   background-color: #fff;
 }
+
+table {
+  font-size: 13px !important;
+}
+
 
 a {
   color: #007bff;
@@ -254,7 +259,7 @@ pre {
 
 .table td,
 .table th {
-  padding: 0.75rem;
+  padding: 5px;
 }
 
 .table .table {
@@ -883,7 +888,7 @@ select.form-control-lg:not([size]):not([multiple]) {
   font-weight: 400;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,"Helvetica Neue", Arial, sans-serif;
   border: 1px solid transparent;
-  padding: 0.875rem 2.5rem;
+  padding: 11px 15px;
   font-size: 0.875rem;
   line-height: 1;
   border-radius: 0.25rem;
@@ -6157,14 +6162,14 @@ a.text-accent:hover {
     "Helvetica Neue", Arial, sans-serif;
   will-change: background-color, box-shadow, color;
   transition: box-shadow 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-  font-size: 0.85rem;
+  font-size: 0.77rem;
 }
 
 .main-sidebar .nav .nav-item .nav-link {
   border-bottom: 1px solid #e1e5eb;
   font-weight: 400;
   color: #3d5170;
-  padding: 0.9375rem 1.5625rem;
+  padding: 5px;
 }
 
 .main-sidebar .nav .nav-item .nav-link i {

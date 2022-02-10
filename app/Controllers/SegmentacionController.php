@@ -44,7 +44,7 @@ class SegmentacionController extends Controller
 
 
             $user          = $this->session->get("user");
-            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+            $bIsRolAdmin   = $user["nIdRol"] == $this->fncGetVarConfig("nIdRolAdmin") ? true : false;
 
             if (is_array($arySegmentaciones) && count($arySegmentaciones) > 0) {
 
@@ -141,7 +141,7 @@ class SegmentacionController extends Controller
 
 
             $user          = $this->session->get("user");
-            $bIsRolAdmin   = $user["nRol"] == $this->fncGetVarConfig("nRolProspectoAdmin") ? true : false;
+            $bIsRolAdmin   = $user["nIdRol"] == $this->fncGetVarConfig("nIdRolAdmin") ? true : false;
 
 
             if (is_array($arySegmentaciones) && count($arySegmentaciones) > 0) {

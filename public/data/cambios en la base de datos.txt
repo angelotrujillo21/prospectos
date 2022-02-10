@@ -1,0 +1,57 @@
+Nueva integracion 
+
+- Eliminar la tabla de usuarios
+- Eliminar la relacion actividad - empleados
+
+ALTER TABLE  actividades DROP FOREIGN KEY actividades_ibfk_2`;
+
+ALTER TABLE `actividades` DROP INDEX `nIdUsuario`;
+
+- Cambiar nIdUsuario por nIdUsuario
+
+- Eliminar la relacion cambiosprospecto - empleados
+
+ ALTER TABLE cambiosprospecto DROP FOREIGN KEY cambiosprospecto_ibfk_2`;
+
+ALTER TABLE `cambiosprospecto` CHANGE `nIdUsuario` `nIdUsuario` INT(11) NULL DEFAULT NULL; 
+
+ALTER TABLE `cambiosprospecto` DROP INDEX `nIdUsuario`;
+
+- Cambiar la tabla empleados por usuarios
+
+- Eliminar la relacion nota - prospecto 
+- ALTER TABLE `notas` CHANGE `nIdTipoEntidad` `nIdUsuario` INT(11) NULL DEFAULT NULL; 
+
+- Eliminar la relacion usuario - negocio 
+
+ALTER TABLE `usuariosnegocios` DROP INDEX `nIdUsuario`;
+
+ALTER TABLE newprospectostwo.usuariosnegocios DROP FOREIGN KEY usuariosnegocios_ibfk_1`;
+
+
+
+- Eliminar la relacion prospectos - usuarios 
+ALTER TABLE `prospectos` DROP INDEX `nIdUsuario`;
+ALTER TABLE `prospectos` CHANGE `nIdUsuario` `nIdUsuario` INT(11) NULL DEFAULT NULL; 
+
+ALTER TABLE newprospectostwo.prospectos DROP FOREIGN KEY prospectos_ibfk_2`;
+
+- Cambiar la tabla de empleados 
+- Renombrar la tabla empleados por usuarios 
+- Eliminar en primary key 
+ALTER TABLE `usuarios` DROP PRIMARY KEY;
+
+ALTER TABLE `usuarios` CHANGE `nIdUsuario` `nIdUsuario` INT(11) NOT NULL AUTO_INCREMENT; 
+
+Agregaar en el catalogo de tablas 
+INSERT INTO `catalogotabla` (`nIdCatalogoTabla`, `nIdCatalogoTablaPadre`, `sNombreCatalogo`, `sCodigoItem`, `sDescripcionCortaItem`, `sDescripcionLargaItem`, `sTipoItem`, `sMostrarCliente`, `sDefecto`, `sDetalleItem`, `sEstado`, `nOrden`) 
+VALUES 
+  (NULL, NULL, 'TIPO_USUARIO', '1', 'ADMIN', 'ADMINISTRADOR', '2', '0', '0', NULL, '0', NULL),
+  (NULL, NULL, 'TIPO_USUARIO', '2', 'VST', 'VISITANTE', '2', '0', '0', NULL, '0', NULL),
+  (NULL, NULL, 'TIPO_USUARIO', '3', 'SUPER', 'SUPERVISOR', '2', '0', '0', NULL, '0', NULL),
+  (NULL, NULL, 'TIPO_USUARIO', '4', 'ASESOR', 'ASESOR DE VENTAS', '2', '0', '0', NULL, '0', NULL)
+  ;
+
+
+
+

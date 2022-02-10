@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 require_once 'config.php';
 require_once 'vendor/autoload.php';
 set_time_limit(0);

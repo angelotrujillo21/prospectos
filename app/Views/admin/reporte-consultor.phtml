@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="no-js h-100" lang="es">
+
+<head>
+    <?php extend_view(['admin/common/head'], $data) ?>
+    <?php load_style(['bootstrap', 'jquery-ui', 'admin/style', 'admin/shards-dashboards.1.1.0.min']); ?>
+    <?php load_style_plugin(['toast/toastr.min', 'select2/select2', 'select2/select2-bootstrap', 'bootstrap-table/bootstrap-table']); ?>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body data-nidnegocio="<?= $nIdNegocio ?>">
+
+
+    <div class="page-loader">
+        <div class="loader-dual-ring"></div>
+    </div>
+
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <?php extend_view(['admin/common/aside'], $data) ?>
+
+            <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+
+                <?php extend_view(['admin/common/navbar'], $data) ?>
+
+                <div class="main-content-container container-fluid px-2 py-2">
+
+                    <div class="container-fluid px-0">
+                        <div class="page-header row no-gutters pb-4">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="">
+                                    <div class="pt-0 pb-5 mx-3">
+
+                                        <div class="row flex-center">
+                                            <div class="col-12 col-md-12 card my-0  pb-5">
+
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="d-flex ">
+                                                            <div class="d-flex align-items-center p-2">
+                                                                <span class="title-prospectos">Reporte por consultor</span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="toolbarRC">
+                                                    <button id="btnFilter" class="btn btn-gradient-primary-table mx-1" type="button" title="Filtros">
+                                                        <i class="fas fa-filter"></i>
+                                                    </button>
+                                                </div>
+
+                                                <div class="table-responsive">
+
+                                                    <table data-toggle="table" id="tblReporteConsultor" data-export-types="['json', 'xml', 'csv', 'txt', 'pdf', 'excel']" data-export-options='{
+                                                            "fileName": "tableExport",
+                                                            "ignoreColumn": [],
+                                                            "worksheetName": "tableExport",
+                                                            "htmlContent" : "true",
+                                                            "jspdf": {
+                                                                    "autotable": {
+                                                                        "startY": 30,
+                                                                        "bodyStyles": {"valign": "top"},
+                                                                        "styles": {"overflow": "linebreak", "rowHeight": 20, "fontSize": 8, "font": "helvetica"},
+                                                                        "headerStyles": {"fillColor": [41, 128, 185]},
+                                                                        "tableWidth": "wrap",
+                                                                        "columnStyles" : { "columnWidth" : "auto"  }
+                                                                    }
+                                                                }
+                                                            }' data-show-export="true" data-mobile-responsive="true" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="false" data-pagination="true" data-toolbar="#toolbarRC" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-page-size="14" data-sort-name="" data-sort-order="asc">
+                                                        <thead>
+                                                            <tr>
+                                                                <th data-sortable="true" data-field="sColor">Color</th>
+                                                                <th data-sortable="true" data-visible="false" data-field="sColorNombre">Nombre color</th>
+                                                                <th data-sortable="true" data-field="sEmpleado">Consultor</th>
+                                                                <th data-sortable="true" data-field="nAvance">Avance Cantidad</th>
+                                                                <th data-sortable="true" data-field="nRentaBasica">Avance Soles</th>
+                                                                <th data-sortable="true" data-field="nProspectosHoy">Prospecto del dia</th>
+                                                                <th data-sortable="true" data-field="nTotalProspectos">Prospecto Totales</th>
+                                                                <th data-sortable="true" data-field="nCantidadProspectoOppActivo">OPP Activa</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+
+
+    <!-- Modales -->
+
+
+    <?php extend_view(['admin/common/modales-editar'], $data) ?>
+
+
+    <div class="modal fade" id="formFilter" tabindex="-1" role="dialog" aria-labelledby="formFiltersLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form enctype="multipart/form-data">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formFiltersLabel">Filtrar reporte </h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row py-2">
+ 
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="nTipoItemCatalogoRC" class="col-form-label">Tipo Item:</label>
+                                    <select class="form-control" name="nTipoItemCatalogoRC" id="nTipoItemCatalogoRC">
+                                        <option value="0">TODOS</option>
+                                        <?php if (is_array($aryTipoItem)  && count($aryTipoItem) > 0) : ?>
+                                            <?php foreach ($aryTipoItem as $aryTipo) : ?>
+                                                <option value="<?= $aryTipo['nIdCatalogoTabla'] ?>"><?= $aryTipo['sDescripcionLargaItem'] ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="nIdUsuarioSupervisorRC" class="col-form-label">Supervisor:</label>
+                                    <select multiple class="form-control select2" name="nIdUsuarioSupervisorRC" id="nIdUsuarioSupervisorRC">
+                                        <?php if (fncValidateArray($arySupervisores)) : ?>
+                                            <?php foreach ($arySupervisores as $arySuper) : ?>
+                                                <option value="<?= $arySuper['nIdUsuario'] ?>"><?= $arySuper['sNombre'] ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-12 col-12  ">
+                                <div class="form-group">
+                                    <label for="nIdUsuarioAsesorRC" class="col-form-label">Asesor:</label>
+                                    <select multiple class="form-control select2" name="nIdUsuarioAsesorRC" id="nIdUsuarioAsesorRC">
+                                        <?php if (fncValidateArray($aryVendedores)) : ?>
+                                            <?php foreach ($aryVendedores as $aryVendedor) : ?>
+                                                <option value="<?= $aryVendedor['nIdUsuario'] ?>"><?= $aryVendedor['sNombre'] ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="dDesdeRC" class="col-form-label">Desde:</label>
+                                    <input type="text" class="form-control datepicker" id="dDesdeRC" autocomplete="off" name="dDesdeRC">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="dHastaRC" class="col-form-label">Hasta:</label>
+                                    <input type="text" class="form-control datepicker" id="dHastaRC" autocomplete="off" name="dHastaRC">
+                                </div>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Filtrar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Fin de modales -->
+
+
+</body>
+
+<?php extend_view(['admin/common/scripts'], $data) ?>
+
+<?php load_script(['jquery', 'jquery-ui', 'popper', 'bootstrap', 'moment', 'admin/custom', 'admin/functions', 'admin/edit-user-empleado', 'admin/app']); ?>
+<?php load_script_plugin([
+    'toast/toastr.min',
+    'select2/select2',
+
+    'bootstrap-table/bootstrap-table',
+    'bootstrap-table/bootstrap-table-es-ES',
+
+    'bootstrap-table/export/tableExport/tableExport',
+    'bootstrap-table/export/tableExport/html2canvas',
+    'bootstrap-table/export/tableExport/jquery.base64',
+    'bootstrap-table/export/tableExport/tableExport',
+    'bootstrap-table/export/bootstrap-table-export',
+
+
+    'bootstrap-table/mobile/bootstrap-table-mobile',
+    'bootstrap-table/tableExport/libs/FileSaver/FileSaver.min',
+    'bootstrap-table/tableExport/libs/js-xlsx/xlsx.core.min',
+    'bootstrap-table/tableExport/libs/jsPDF/jspdf.min',
+    'bootstrap-table/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable',
+    'bootstrap-table/tableExport/libs/pdfmake/pdfmake.min',
+    'bootstrap-table/tableExport/libs/pdfmake/vfs_fonts',
+    'bootstrap-table/tableExport/tableExport.min',
+]); ?>
+
+
+<!-- Reporte Consultor -->
+<script>
+
+    $(document).ready(function() {
+
+        $("#btnFilter").on("click",function(){
+            $("#formFilter").modal("show");
+        });
+
+      
+
+        $("#formFilter").find("form").on("submit",function(event){
+            
+            event.preventDefault();
+
+            var nIdTipoItem      = $("#nTipoItemCatalogoRC").val(); 
+            var dDesde           = $("#dDesdeRC").datepicker('getDate');
+            var dHasta           = $("#dHastaRC").datepicker('getDate');
+            var arySupervisor    = $("#nIdUsuarioSupervisorRC :selected").map(function(nIndex, item) { return $(item).val(); }).get();
+            var aryAsesor        = $("#nIdUsuarioAsesorRC :selected").map(function(nIndex, item) { return $(item).val(); }).get();
+
+            if ((dDesde != null && dHasta == null) || (dDesde == null && dHasta != null)) {
+                toastr.error('Error. Si va a especificar fechas, debe ingresar la inicio y fin. Por favor verificar.');
+                return;
+            }
+
+            if (dHasta < dDesde) {
+                toastr.error('Error. La fecha de fin debe ser mayor o igual que la fecha de inicio. Por favor verificar.');
+                return;
+            } 
+
+            var jsnData = {
+                nIdNegocio      : '<?=$nIdNegocio?>',
+                nIdTipoItem     : nIdTipoItem,
+                dDesde          : $('#dDesdeRC').val(),
+                dHasta          : $('#dHastaRC').val(),
+                arySupervisor   : arySupervisor,
+                aryAsesor       : aryAsesor
+            };
+
+            fncGetReporteAsesor(jsnData,(aryData)=>{
+                if(aryData.success){
+
+                    toastr.success(aryData.success);
+
+                    var aryData = aryData.aryData;
+
+                    $("#tblReporteConsultor").bootstrapTable("load",aryData);
+                    $("#formFilter").modal("hide");
+
+                } else {
+                    toastr.error(aryData.error);
+                }
+
+            });
+        });
+
+        
+        $("#btnCleanFiltrosRC").on("click",function(){
+
+            $("#nTipoItemCatalogoRC").val(0);
+            $("#nIdUsuarioSupervisorRC").val([]).trigger("change");
+            $("#nIdUsuarioAsesorRC").val([]).trigger("change");
+            $("#dDesdeRC").val('');
+            $("#dHastaRC").val('');
+
+            setTimeout(() => {
+                $("#form-reporte-consultor").trigger("submit");
+            }, 200);
+
+        });
+
+     
+        
+    });
+
+    // Funciones Auxiliares
+
+   
+    // llamadas al servidor 
+    function fncGetReporteAsesor(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/prospecto/fncGetReporteAsesor',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }    
+</script>
+<!-- Reporte Consultor -->
+
+
+
+</html>

@@ -145,7 +145,7 @@ class Clientes
                    IFNULL(relac.sDescripcionLargaItem,'') AS sRelacionamiento,                    
                    cli.nTipoDocumento,
                    cli.sNumeroDocumento,
-                   cli.sNombreoRazonSocial,
+                   UPPER(cli.sNombreoRazonSocial) AS  sNombreoRazonSocial,
                    cli.sContacto,
                    cli.sCorreo,
                    cli.nIdDepartamento,

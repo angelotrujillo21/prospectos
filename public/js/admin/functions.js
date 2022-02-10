@@ -166,8 +166,6 @@ window.fncOcultarAside = function () {
 };
 
 
-
-
 function fncBuildForm(aryData) {
   let sHtml = ``;
   if (aryData.length > 0) {
@@ -287,12 +285,12 @@ function fncBuildFormPro(aryData) {
                                           </div>
                                           <div class="bd-highlight">
                                             <a class="color-azul font-16" id="btnCrearCliente" href="javascript:;" ><i class="fas fa-plus-circle"></i></a>
-                                            <a class="color-azul link-drop collapsed" data-toggle="collapse" href="#content-cliente" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                            <a class="color-azul link-drop collapsed collap" data-toggle="collapse" href="#content-cliente" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                           </div>
                                       </div>
                                   </div>
                                   <div id="content-cliente" class="col-12 my-2 collapse show">
-                                      ${fncDrawSelect(aryItem.aryLista, "nIdCliente", "nIdCliente", "sNombreoRazonSocial")}
+                                      ${fncDrawSelect(aryItem.aryLista, "nIdCliente", "nIdCliente", "sNombreoRazonSocial", false)}
                                   </div>
                               </div>
                           </div>`;
@@ -323,7 +321,7 @@ function fncBuildFormPro(aryData) {
                                           <div class="bd-highlight">
 
                                               <a class="color-azul font-16" id="btnAgregarCatalogo" href="javascript:;" ><i class="fas fa-plus-circle"></i></a>
-                                              <a class="color-azul link-drop collapsed" data-toggle="collapse" href="#content-catalogo-tablas" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                              <a class="color-azul link-drop collapsed collap" data-toggle="collapse" href="#content-catalogo-tablas" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                           </div>
                                       </div>
                                   </div>
@@ -397,7 +395,7 @@ function fncBuildFormPro(aryData) {
                                                   <p class="m-0 font-16">${aryItem.sWidget} :</p>
                                               </div>
                                               <div class="ml-auto">
-                                                <a class="color-azul link-drop collapsed" data-toggle="collapse" href="#c${aryItem.sWidget}" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                                <a class="color-azul link-drop collapsed collap" data-toggle="collapse" href="#c${aryItem.sWidget}" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                               </div>
                                           </div>
                                       </div>
@@ -423,7 +421,7 @@ function fncBuildFormPro(aryData) {
                                               </div>
                                               <div class="bd-highlight">
                                                 <a class="color-azul font-16" id="btnCrearActividad" href="javascript:;" ><i class="fas fa-plus-circle"></i></a>  
-                                                <a class="color-azul link-drop" data-toggle="collapse" href="#content-actividades" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                                <a class="color-azul link-drop collap" data-toggle="collapse" href="#content-actividades" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                               </div>
                                           </div>
                                       </div>
@@ -445,7 +443,7 @@ function fncBuildFormPro(aryData) {
                                                       <p class="m-0 font-16">${aryItem.sWidget} :</p>
                                                   </div>
                                                   <div class="ml-auto">
-                                                    <a class="color-azul link-drop" data-toggle="collapse" href="#c-notas" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                                    <a class="color-azul link-drop collap" data-toggle="collapse" href="#c-notas" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                                   </div>
                                               </div>
                                           </div>
@@ -475,7 +473,7 @@ function fncBuildFormPro(aryData) {
                                           <p class="m-0 font-16">${aryItem.sWidget}  :</p>
                                       </div>
                                       <div class="ml-auto">
-                                        <a class="color-azul link-drop" data-toggle="collapse" href="#c${aryItem.sWidgetSystem}" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
+                                        <a class="color-azul link-drop collap" data-toggle="collapse" href="#c${aryItem.sWidgetSystem}" role="button" aria-expanded="false"><i class="fas fa-caret-down"></i></a>
                                       </div>
                                   </div>
                               </div>

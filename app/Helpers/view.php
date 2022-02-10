@@ -20,7 +20,7 @@ function extend_view($paths, $data)
 
     foreach ($paths as $path) {
         ob_start();
-        include VIEWS_PATH . $path . '.php';
+        include VIEWS_PATH . $path . '.phtml';
         ob_flush();
     }
 }
@@ -661,10 +661,10 @@ function fncSecondsToTime($inputSeconds)
 
     // return the final array
     $obj = array(
-        'd' => (int) $days,
-        'h' => (int) $hours,
-        'm' => (int) $minutes,
-        's' => (float) $seconds,
+        'd' => (int) abs($days),
+        'h' => (int)abs($hours),
+        'm' => (int) abs($minutes),
+        's' => (float) abs($seconds),
     );
 
 
@@ -737,6 +737,7 @@ function fncExisteImagen($path)
 {
     if (file_exists(ROOTPATH . "/public/images/" . $path)) {
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
