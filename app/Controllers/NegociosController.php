@@ -54,6 +54,13 @@ class NegociosController extends Controller
             $aryConfiguracionVendedores = isset($_POST['aryConfiguracionVendedores']) ? $_POST['aryConfiguracionVendedores'] : null;
             $aryConfiguracionSupervisor = isset($_POST['aryConfiguracionSupervisor']) ? $_POST['aryConfiguracionSupervisor'] : null;
 
+            # Nuevos campos
+            $nIdPais                    = isset($_POST['nIdPais']) ? $_POST['nIdPais'] : null;
+            $sCiudad                    = isset($_POST['sCiudad']) ? $_POST['sCiudad'] : null;
+            $nIdMoneda                  = isset($_POST['nIdMoneda']) ? $_POST['nIdMoneda'] : null;
+            $nPorcentajeTributo         = isset($_POST['nPorcentajeTributo']) ? $_POST['nPorcentajeTributo'] : null;
+
+
             // Valida valores del formulario
             if (is_null($nIdRegistro) || is_null($sNombre) || is_null($sDireccion) || is_null($nTipoProspecto) || is_null($nEstado)) {
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
@@ -74,9 +81,10 @@ class NegociosController extends Controller
 
             // Crear
             if ($nIdRegistro == 0) {
-                $nIdNegocio = $this->negocios->fncGrabarNegocio($sNombre, $sDireccion, $sNombreImagen, $nTipoProspecto, $nEstado);
+                $nIdNegocio = $this->negocios->fncGrabarNegocio($sNombre, $sDireccion, $sNombreImagen, $nTipoProspecto, $nEstado, $nIdPais, $sCiudad, $nIdMoneda, $nPorcentajeTributo);
 
-                $this->negocios->fncGrabarUsuarioNegocio($user['nIdUsuario'], $nIdNegocio, $this->fncGetVarConfig("nIdRolAdmin"));
+
+                $this->usuarios->fncGrabarUsuarioNegocio($user["nIdUsuario"],  $nIdNegocio, null, $this->fncGetVarConfig("nIdRolAdmin"), 1);
 
                 if (count($aryConfiguracionCliente) > 0) {
                     foreach ($aryConfiguracionCliente as $aryCliente) {
@@ -111,7 +119,7 @@ class NegociosController extends Controller
                 }
             } else {
                 //Actualizar
-                $this->negocios->fncActualizarNegocio($sNombre, $sDireccion, $sNombreImagen, $nTipoProspecto, $nEstado, $nIdRegistro);
+                $this->negocios->fncActualizarNegocio($nIdRegistro, $sNombre, $sDireccion, $sNombreImagen, $nTipoProspecto, $nIdPais, $sCiudad, $nIdMoneda, $nPorcentajeTributo, $nEstado);
 
                 if (count($aryConfiguracionCliente) > 0) {
                     foreach ($aryConfiguracionCliente as $aryCliente) {
@@ -124,7 +132,6 @@ class NegociosController extends Controller
                         $this->negocios->fncActualizarConfiguracionCampos($aryCatalogo->nEstado, $aryCatalogo->nIdConfiguracionCampo);
                     }
                 }
-
 
                 if (count($aryConfiguracionVendedores) > 0) {
                     foreach ($aryConfiguracionVendedores as $aryVendedor) {
@@ -139,8 +146,7 @@ class NegociosController extends Controller
                 }
             }
 
-            $sSuccess =  $nIdRegistro == 0 ? 'Negocio registrado exitosamente...' : 'Negocio actualizado exitosamente...';
-
+            $sSuccess = $nIdRegistro == 0 ? 'Negocio registrado exitosamente...' : 'Negocio actualizado exitosamente...';
             $this->json(array("success" => $sSuccess));
         } catch (Exception $ex) {
             echo $ex->getMessage();
@@ -283,10 +289,10 @@ class NegociosController extends Controller
                 # Valido si esque ya esta relacionado
                 $aryNegocio = $this->negocios->fncGetNegociosByIdUsuario($aryUser["nIdUsuario"], $nIdNegocio);
                 if (fncValidateArray($aryNegocio)) {
-                    $this->sMsg = "El usuario ya se encuentra relacionado .Porfavor verifique";
+                    $this->sMsg = "El usuario ya se encuentra relacionado al negocio.Porfavor verifique";
                 } else {
                     # Vamos relacionar usuario a negocio
-                    $this->usuarios->fncGrabarUsuarioNegocio($aryUser["nIdUsuario"], $nIdNegocio, null, $nRol);
+                    $this->usuarios->fncGrabarUsuarioNegocio($aryUser["nIdUsuario"], $nIdNegocio, null, $nRol, 1);
                     $this->sMsg = "Se relaciono el usuario ya existente de forma existosa";
                 }
             } else {
@@ -338,7 +344,7 @@ class NegociosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-            $this->negocios->fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nRol);
+            $this->usuarios->fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, null, $nRol, 1);
 
             $this->json(array("success" => 'Usuario registrado exitosamente...'));
         } catch (Exception $ex) {

@@ -53,54 +53,46 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $nSubtotal = 0; ?>
                 <?php foreach ($aryDataProspectoDetalle as $nkey => $aryDetalle) : ?>
                     <?php
                     $nTotalItem = $aryDetalle["nPrecio"] * $aryDetalle["nCantidad"];
-                    $nSubtotal += $nTotalItem;
                     ?>
                     <tr>
                         <td class="service"><?= ($nkey + 1) ?></td>
                         <td class="service"><?= $aryDetalle["sTipoItem"] ?></td>
-                        <td class="desc"><?= $aryDetalle["sNombreCatalogo"] ?></td>
+                        <td class="desc"><?= $aryDetalle["sNombreCatalogo"] . "<br>" . nl2br($aryDetalle["sDescripcionCatalogo"]); ?></td>
                         <td class="desc">
                             <?php if (strlen($aryDetalle["sImagenCatalogo"]) > 0 && fncExisteImagen('multi/' . $aryDetalle["sImagenCatalogo"])) : ?>
                                 <img style="width:50px; height: 50px;" src="<?= strlen($aryDetalle["sImagenCatalogo"]) > 0 ? src('multi/' . $aryDetalle["sImagenCatalogo"]) : "" ?>" />
                             <?php endif ?>
                         </td>
                         <td><?= nf($aryDetalle["nCantidad"]) ?></td>
-                        <td><?= SIMBOLO_MONEDA . nf($aryDetalle["nPrecio"]) ?></td>
-                        <td><?= SIMBOLO_MONEDA . nf($nTotalItem) ?> </td>
+                        <td><?= $aryDataProspecto["sMoneda"] . nf($aryDetalle["nPrecio"]) ?></td>
+                        <td><?= $aryDataProspecto["sMoneda"] . nf($nTotalItem) ?> </td>
                     </tr>
                 <?php endforeach ?>
 
-                <?php
+                <?php if ($aryDataProspecto["nPorcentajeTributo"] > 0) : ?>
+                    <tr>
+                        <td colspan="6">OP. GRAVADAS:</td>
+                        <td class="total"><?= $aryDataProspecto["sMoneda"] . nf($aryDataProspecto["nSubTotal"]) ?></td>
+                    </tr>
 
-                $nIgv       = $nSubtotal * (IGV / 100);
-                $nSubtotal  = $nSubtotal - $nIgv;
-                $nTotal     = $nSubtotal + $nIgv;
-
-                ?>
-
-                <tr>
-                    <td colspan="6">OP. GRAVADAS:</td>
-                    <td class="total"><?= SIMBOLO_MONEDA . nf($nSubtotal) ?></td>
-                </tr>
-
-                <tr>
-                    <td colspan="6">IGV</td>
-                    <td class="total"><?= SIMBOLO_MONEDA . nf($nIgv) ?></td>
-                </tr>
+                    <tr>
+                        <td colspan="6">TRIBUTO (<?= $aryDataProspecto["nPorcentajeTributo"] ?>%)</td>
+                        <td class="total"><?= $aryDataProspecto["sMoneda"] . nf($aryDataProspecto["nTributo"]) ?></td>
+                    </tr>
+                <?php endif; ?>
 
                 <tr>
                     <td colspan="6" class="grand total">TOTAL A PAGAR</td>
-                    <td class="grand total"> <?= SIMBOLO_MONEDA . nf($nTotal) ?> </td>
+                    <td class="grand total"> <?= $aryDataProspecto["sMoneda"] . nf($aryDataProspecto["nTotal"]) ?> </td>
                 </tr>
             </tbody>
         </table>
 
         <div>
-            <p>SON : <?= convertir($nTotal) ?></p>
+            <p>SON : <?= convertir($aryDataProspecto["nTotal"] ,  $aryDataProspecto["sMonedaLarga"]) ?></p>
         </div>
         <div id="notices">
             <div class="notice"></div>

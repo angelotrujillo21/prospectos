@@ -1,5 +1,5 @@
 Analisis de venta 
-Esto solo aplica a los prospectos que han sido cerrados o vendedios y todos se van acumular por monto 
+Esto solo aplica a los prospectos que han sido cerrados o vendidors y todos se van acumular por monto 
 
 Producto/ servicio TipoCliente : 
 -----------------------------------------------------------------------

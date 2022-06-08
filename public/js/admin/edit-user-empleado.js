@@ -50,7 +50,6 @@ $(function () {
         var nIdRegistro = $("#formUsuarioE").data("nIdRegistro");
         var sNombre = $("#sNombreUE").val().toUpperCase().trim();
         var sCorreo = $("#sEmailUE").val().trim();
-        var sLogin = $("#sLoginUE").val().trim();
         var sClave = $("#sClaveUE").val().trim();
         var sImagen = $("#sImagenUE")[0].files[0];
         var nIdRol = 1;
@@ -63,10 +62,7 @@ $(function () {
         } else if (sCorreo == '') {
             toastr.error('Error. Debe ingresar el email del usuario.');
             return false;
-        } else if (sLogin == '') {
-            toastr.error('Error. Debe ingresar el login del usuario.');
-            return false;
-        } else if (sClave == '') {
+        }  else if (sClave == '') {
             toastr.error('Error. Debe ingresar la clave del usuario.');
             return false;
         }
@@ -76,7 +72,6 @@ $(function () {
         formData.append('nIdRegistro', nIdRegistro);
         formData.append('sNombre', sNombre);
         formData.append('sCorreo', sCorreo);
-        formData.append('sLogin', sLogin);
         formData.append('sClave', sClave);
         formData.append('sImagen', sImagen);
         formData.append('nIdRol', nIdRol);

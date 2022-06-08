@@ -41,7 +41,7 @@ class Negocios
                         usuneg.nIdRol, 
                         neg.nEstado
                 FROM negocios AS neg
-                INNER JOIN usuariosnegocios AS usuneg ON neg.nIdNegocio = usuneg.nIdNegocio";
+                INNER JOIN usuariosnegocios AS usuneg ON neg.nIdNegocio = usuneg.nIdNegocio AND usuneg.nEstado = 1 ";
 
         $sWhere = "";
 
@@ -51,60 +51,51 @@ class Negocios
 
         $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
 
-        // $resultIds = $this->db->run("SELECT IFNULL(GROUP_CONCAT(usuanego.nIdNegocio),0) as ids FROM usuariosnegocios as usuanego WHERE usuanego.nIdUsuario = $idUsuario");
-        // $results   = $this->db->run("SELECT * FROM negocios WHERE nIdNegocio IN (" . $resultIds[0]["ids"] . ")");
         return $this->db->run(trim($sSQL));
     }
 
 
-    public function fncGrabarNegocio($sNombre, $sDireccion, $sImagen, $nTipoProspecto, $nEstado)
+    public function fncGrabarNegocio($sNombre, $sDireccion, $sImagen, $nTipoProspecto, $nEstado, $nIdPais, $sCiudad, $nIdMoneda, $nPorcentajeTributo)
     {
-        $sSQL = "INSERT INTO negocios(
-                    sNombre,
-                    sDireccion,
-                    sImagen,
-                    nTipoProspecto,
-                    nEstado
-                ) VALUES (
-                    " . (is_null($sNombre) || empty($sNombre) ? "NULL" : "'$sNombre'") . " ,
-                    " . (is_null($sDireccion) || empty($sDireccion) ? "NULL" : "'$sDireccion'") . " ,
-                    " . (is_null($sImagen) || empty($sImagen) ? "NULL" : "'$sImagen'") . " ,
-                    " . (is_null($nTipoProspecto) || empty($nTipoProspecto) ? "NULL" : $nTipoProspecto) . " ,
-                    " . $nEstado . " 
-                )";
+
+        $sSQL =  $this->db->generateSQLInsert("negocios", [
+            "sNombre"                             => $sNombre,
+            "sDireccion"                          => $sDireccion,
+            "sImagen"                             => $sImagen,
+            "nTipoProspecto"                      => $nTipoProspecto,
+            "nIdPais"                             => $nIdPais,
+            "sCiudad"                             => $sCiudad,
+            "nIdMoneda"                           => $nIdMoneda,
+            "nPorcentajeTributo"                  => $nPorcentajeTributo,
+            "nEstado"                             => $nEstado
+        ]);
 
         return  $this->db->run($sSQL);
     }
 
-
-
-    public function fncActualizarNegocio($sNombre, $sDireccion, $sImagen, $nTipoProspecto, $nEstado, $nIdNegocio)
+    public function fncActualizarNegocio($nIdNegocio, $sNombre, $sDireccion, $sImagen, $nTipoProspecto, $nIdPais, $sCiudad, $nIdMoneda, $nPorcentajeTributo, $nEstado)
     {
-        $sSQL = "UPDATE negocios SET ";
 
-        $sSQL .= (!is_null($sNombre) ? " sNombre = '$sNombre' " : ' sNombre = NULL ');
-
-        $sSQL .= (!is_null($sDireccion) ? ", sDireccion = '$sDireccion'" : ', sDireccion = "" ');
-
-        $sSQL .= (!is_null($sImagen) ? ", sImagen = '$sImagen'" : '');
-
-        $sSQL .= (!is_null($nTipoProspecto) && !empty($nTipoProspecto) ? ", nTipoProspecto = $nTipoProspecto" : ', nTipoProspecto = NULL ');
-
-        $sSQL .= (!is_null($nEstado) ? ", nEstado = $nEstado" : ', nEstado = NULL ');
-
-        $sSQL .= " WHERE nIdNegocio = $nIdNegocio ";
+        $sSQL =  $this->db->generateSQLUpdate("negocios", [
+            "sNombre"                             => $sNombre,
+            "sDireccion"                          => $sDireccion,
+            "sImagen"                             => $sImagen,
+            "nTipoProspecto"                      => $nTipoProspecto,
+            "nIdPais"                             => $nIdPais,
+            "sCiudad"                             => $sCiudad,
+            "nIdMoneda"                           => $nIdMoneda,
+            "nPorcentajeTributo"                  => $nPorcentajeTributo,
+            "nEstado"                             => $nEstado
+        ], "nIdNegocio = $nIdNegocio");
 
         return  $this->db->run($sSQL);
     }
-
 
     public function fncEliminarNegocio($nIdNegocio)
     {
         $sSQL = "DELETE FROM negocios WHERE nIdNegocio = $nIdNegocio ";
         $this->db->run($sSQL);
     }
-
-
 
     public function fncGrabarConfiguracionCampos($nIdNegocio, $nIdCampo, $nEstado)
     {
@@ -132,16 +123,18 @@ class Negocios
         return $this->db->run($sSQL);
     }
 
-    public function fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nIdRol)
+    public function fncGrabarUsuarioNegocio($nIdUsuario, $nIdNegocio, $nIdRol, $nEstado)
     {
         $sSQL = "INSERT INTO usuariosnegocios(
                   nIdUsuario,
                   nIdNegocio,
-                  nIdRol
+                  nIdRol,
+                  nEstado
                 ) VALUES (
                     " . (is_null($nIdUsuario) || empty($nIdUsuario) ? "NULL" : "$nIdUsuario") . " ,
                     " . (is_null($nIdNegocio) || empty($nIdNegocio) ? "NULL" : "$nIdNegocio") . " ,
-                    " . (is_null($nIdRol) || empty($nIdRol) ? "NULL" : "$nIdRol") . " 
+                    " . (is_null($nIdRol) || empty($nIdRol) ? "NULL" : "$nIdRol") . " ,
+                    " . (is_null($nEstado) || empty($nEstado) ? "NULL" : "$nEstado") . "
                 )";
 
         return  $this->db->run($sSQL);
@@ -206,7 +199,7 @@ class Negocios
                 INNER JOIN roles AS rol ON un.nIdRol = rol.nIdRol
                 WHERE un.nIdNegocio = $nIdNegocio ";
 
-        $sSQL .= is_null($sIdsRoles) ? "" : " AND un.nIdRol IN ( $sIdsRoles )"  ;
+        $sSQL .= is_null($sIdsRoles) ? "" : " AND un.nIdRol IN ( $sIdsRoles )";
 
         $sSQL .= " ORDER BY un.nIdUsuarioNegocio ASC";
 
@@ -236,6 +229,13 @@ class Negocios
         return $this->db->run($sSQL);
     }
 
-
-
+    public function fncObtenerMoneda($nIdNegocio)
+    {
+        $sSQL = "SELECT 
+                    IFNULL(n.nIdMoneda,0) AS nIdMoneda, 
+                    IFNULL(moneda.sDescripcionCortaItem,'') AS sMoneda
+                FROM negocios AS n
+                LEFT JOIN catalogotabla AS moneda ON moneda.nIdCatalogoTabla = n.nIdMoneda WHERE n.nIdNegocio = $nIdNegocio ";
+        return $this->db->run($sSQL);
+    }
 }

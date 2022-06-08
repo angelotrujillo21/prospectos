@@ -63,8 +63,6 @@ class UsuariosController extends Controller
         $sImagen                        = isset($_FILES['sImagen']) ? $_FILES['sImagen'] : null;
         $nIdRol                         = isset($_POST['nIdRol']) ? $_POST['nIdRol'] : null;
         $nCrearNegocio                  = isset($_POST['nCrearNegocio']) ? $_POST['nCrearNegocio'] : 0;
-
-
         $nEstado                        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
 
@@ -78,18 +76,28 @@ class UsuariosController extends Controller
             // $nIdRolAdmin        = $this->fncGetVarConfig("nIdRolAdmin");
             // $nIdRolVisitante    = $this->fncGetVarConfig("nIdRolVisitante");
             // $nIdRolAsesor       = $this->fncGetVarConfig("nIdRolAsesor");
-            // $nIdRolSupervisor   = $this->fncGetVarConfig("nIdRolSupervisor");
+            $nIdRolSupervisor   = $this->fncGetVarConfig("nIdRolSupervisor");
 
             // Crear
             if ($nIdRegistro == 0) {
+
+                # Validar por usuario o login
                 if (isset($sCorreo) && !is_null($sCorreo)) {
                     $aryUsuario = $this->usuarios->fncBuscarUsuarioPorCorreoOrLogin($sCorreo, $sLogin);
 
                     if (fncValidateArray($aryUsuario)) {
-                        $this->exception("Error.Ya existe un usuario con este correo o el login ya se encuentra asignado en el sistema . Porfavor verifique");
+                        $this->exception("Error.Ya existe un usuario con este correo asignado en el sistema . Porfavor verifique");
                     }
                 }
 
+                # Si es un supervisor vamos a validar que no se repita el color
+                if ($nIdRol == $nIdRolSupervisor) {
+                    $aryUsuario = $this->usuarios->fncBuscarSupervisorColor($nIdNegocio, $nIdColor);
+
+                    if (fncValidateArray($aryUsuario)) {
+                        $this->exception("Error.Ya existe un supervisor con el color seleccionado. Porfavor seleccione otro.");
+                    }
+                }
 
                 if (isset($sImagen) && !is_null($sImagen)) {
                     $sImagen = Upload::process($sImagen, 'images/multi');
@@ -119,7 +127,7 @@ class UsuariosController extends Controller
                 # Registrar usuario por negocio
                 if (!is_null($nIdNegocio) && $nIdNewUsuario > 0) {
                     # Grabar relacion usuario negocio
-                    $this->usuarios->fncGrabarUsuarioNegocio($nIdNewUsuario, $nIdNegocio, $nIdColor, $nIdRol);
+                    $this->usuarios->fncGrabarUsuarioNegocio($nIdNewUsuario, $nIdNegocio, $nIdColor, $nIdRol, 1);
                 }
 
                 # Registrar relacion supervisor - vendedor
@@ -128,6 +136,23 @@ class UsuariosController extends Controller
                     $this->usuarios->fncGrabarSupervisorVendedor($nIdNegocio, $nIdSupervisor, $nIdNewUsuario);
                 }
             } else {
+
+                # Validar por usuario o login que no se repita 
+                if (isset($sCorreo) && !is_null($sCorreo)) {
+                    $aryUsuario = $this->usuarios->fncValidarPorCorreoOrLogin($nIdRegistro, $sCorreo, $sLogin);
+                    if (fncValidateArray($aryUsuario)) {
+                        $this->exception("Error.Ya existe un usuario con este correo o el login ya se encuentra asignado en el sistema . Porfavor verifique");
+                    }
+                }
+
+                # Si es un supervisor vamos a validar que no se repita el color
+                if ($nIdRol == $nIdRolSupervisor) {
+                    $aryUsuario = $this->usuarios->fncValidarSupervisorColor($nIdRegistro, $nIdNegocio, $nIdColor);
+
+                    if (fncValidateArray($aryUsuario)) {
+                        $this->exception("Error.Ya existe un supervisor con color seleccionado. Porfavor seleccione otro.");
+                    }
+                }
 
                 # Si existe la imgen la buscamos y la borramos fisicamente
                 if (isset($sImagen) && !is_null($sImagen)) {
@@ -142,10 +167,11 @@ class UsuariosController extends Controller
 
                 # Vamos a eliminar la relacion de supervisor - vendedor
                 if (!is_null($nIdNegocio) && !is_null($nIdSupervisor) && $nIdRegistro > 0) {
-                    $this->usuarios->fncEliminarSupervisorVendedor($nIdSupervisor, $nIdRegistro);
+                    $aryUsuario = $this->usuarios->fncObtenerSupervisor($nIdNegocio, $nIdRegistro);
+                    $this->usuarios->fncEliminarSupervisorVendedor($aryUsuario["nIdSupervisor"], $nIdRegistro);
                 }
 
-                # Vamos e aeliminar la relacion usuuario negocio
+                # Vamos e eliminar la relacion usuuario negocio
                 if (!is_null($nIdNegocio) && $nIdRegistro > 0) {
                     $this->usuarios->fncEliminarUsuarioNegocio($nIdRegistro, $nIdNegocio);
                 }
@@ -158,7 +184,7 @@ class UsuariosController extends Controller
                 # Registrar usuario por negocio
                 if (!is_null($nIdNegocio) && $nIdRegistro > 0) {
                     # Grabar relacion usuario negocio
-                    $this->usuarios->fncGrabarUsuarioNegocio($nIdRegistro, $nIdNegocio, $nIdColor, $nIdRol);
+                    $this->usuarios->fncGrabarUsuarioNegocio($nIdRegistro, $nIdNegocio, $nIdColor, $nIdRol, 1);
                 }
 
                 # Actualizar
@@ -180,13 +206,12 @@ class UsuariosController extends Controller
                     $sLogin,
                     $sClave,
                     $sImagen,
-                    $nCrearNegocio,
                     $nEstado
                 );
 
                 $user = $this->session->get("user");
 
-                if( !is_null($user) && ($user["nIdUsuario"] == $nIdRegistro) ){
+                if (!is_null($user) && ($user["nIdUsuario"] == $nIdRegistro)) {
 
                     // Actualizamos la sesion del usuario
                     $aryUser  = $this->usuarios->fncGetUsuarioById($nIdRegistro, $nIdNegocio);
@@ -314,12 +339,15 @@ class UsuariosController extends Controller
 
     public function fncPopulate()
     {
-
-        $nIdNegocio     = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
-        $nIdRol         = isset($_POST['nIdRol']) ? $_POST['nIdRol'] : null;
-        $nEstado        = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
+        $nIdNegocio     = isset($_REQUEST['nIdNegocio']) ? $_REQUEST['nIdNegocio'] : null;
+        $nIdRol         = isset($_REQUEST['nIdRol']) ? $_REQUEST['nIdRol'] : null;
+        $nEstado        = isset($_REQUEST['nEstado']) ? $_REQUEST['nEstado'] : null;
         $sOrderBy       = isset($_POST['sOrderBy']) ? $_POST['sOrderBy'] : null;
         $sLimit         = isset($_POST['sLimit']) ? $_POST['sLimit'] : null;
+
+        $bPopulate      = isset($_REQUEST['bPopulate']) ? $_REQUEST['bPopulate'] : 'false';
+
+
 
         try {
 
@@ -329,7 +357,7 @@ class UsuariosController extends Controller
                 $this->exception('Error. Existen valores vacios. Por favor verifique.');
             }
 
-            $aryRows      = [];
+            $aryRows  = [];
             $aryEmpleados  = $this->usuarios->fncGetUsuariosAll(
                 $nIdRol,
                 $nIdNegocio,
@@ -347,20 +375,19 @@ class UsuariosController extends Controller
 
             if (fncValidateArray($aryEmpleados)) {
                 foreach ($aryEmpleados as $aryEmpleado) {
-                    $sNewState = $aryEmpleado['nEstado'] == '1' ? '0' : '1';
+                    $sNewState      = $aryEmpleado['nEstadoUN'] == '1' ? '0' : '1';
 
                     $sActionState      = 'fncCambiarEstadoEmpleado( ' . "'" . $aryEmpleado['nIdUsuario'] . "', " . $sNewState . ' )';
                     $sActionMetricas   = 'fncVerEmpleado(' . $aryEmpleado['nIdUsuario'] . ')';
 
-                    $sIconState     = $aryEmpleado['nEstado'] == '1'  ? 'power_settings_new' : 'check';
-                    $sTitleState    = $aryEmpleado['nEstado'] == '1' ? 'Desactivar' : 'Activar';
+                    $sIconState     = $aryEmpleado['nEstadoUN'] == '1'  ? 'power_settings_new' : 'check';
+                    $sTitleState    = $aryEmpleado['nEstadoUN'] == '1' ? 'Desactivar' : 'Activar';
 
                     $sActionVer       = "fncMostrarEmpleado(" . $aryEmpleado['nIdUsuario'] . ", 'ver' );";
                     $sActionEdit      = "fncMostrarEmpleado(" . $aryEmpleado['nIdUsuario'] . ", 'editar' );";
 
                     $sAcciones = '<div class="content-acciones">
                                     <a onclick="' . $sActionVer . '" href="javascript:;"  title="Ver" class="text-primary"><i class="material-icons">remove_red_eye</i> </a>
-                                    ' .  ($bIsAsesor ? '<a href="javascript:;" onclick="' . $sActionMetricas . '" class="text-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Metricas"><i class="material-icons">moving</i></a></a>' : '') . '
                                     ' .  ($bIsRolAdmin ? '<a href="javascript:;" onclick="' . $sActionState . '" class="text-primary" data-toggle="tooltip" data-placement="bottom" title="' . $sTitleState . '"><i class="material-icons">' . $sIconState . '</i></a></a>' : '') . '
                                     ' . ($bIsRolAdmin ? '<a onclick="' . $sActionEdit . '" href="javascript:;"   title="Editar" class="text-primary"><i class="material-icons">edit</i></a>'  : '') . '
                                 </div>';
@@ -371,11 +398,12 @@ class UsuariosController extends Controller
 
                     $aryRows[] = [
                         "sAcciones"                         => $sAcciones,
-                        "nIdUsuario"                       => $aryEmpleado["nIdUsuario"],
-                        "sUsuarioCorto"                    => $aryEmpleado["sUsuarioCorto"],
+                        "nIdUsuario"                        => $aryEmpleado["nIdUsuario"],
+                        "sUsuarioCorto"                     => $aryEmpleado["sUsuarioCorto"],
                         "sRol"                              => $aryEmpleado["sRol"],
                         "sNombreNegocio"                    => $aryEmpleado["sNombreNegocio"],
                         "sColorSuper"                       => $aryEmpleado["sColorSuper"],
+                        "sSupervisor"                       => $aryEmpleado["sSupervisor"], // Nombre del  supervisor de un vendedor
                         "sColorSuperEmpleado"               => $aryEmpleado["sColorSuperEmpleado"],
                         "nTipoDocumento"                    => $aryEmpleado["sTipoDoc"],
                         "sNumeroDocumento"                  => $aryEmpleado["sNumeroDocumento"],
@@ -395,13 +423,17 @@ class UsuariosController extends Controller
                         "sClave"                            => $aryEmpleado["sClave"],
                         "sUltimoAcceso"                     => fncSecondsToTime($aryEmpleado["sTimeUltimoAcceso"]),
                         'sImagen'                           => !empty($aryEmpleado['sImagen']) ? '<img class="user-avatar rounded-circle  img-usuario" src="' . src('multi/' . $aryEmpleado['sImagen'])  . '" alt="' . $aryEmpleado['sImagen'] . '">' : '',
-                        "nEstado"                           => $aryEmpleado["nEstado"] == 1 ? "ACTIVO" : "DESACTIVO",
+                        "nEstado"                           => $aryEmpleado["nEstadoUN"] == 1 ? "ACTIVO" : "DESACTIVO",
 
                     ];
                 }
             }
 
-            $this->json(array("success" => true, "aryData" => $aryRows));
+            if ($bPopulate == 'true') {
+                $this->json($aryRows);
+            } else {
+                $this->json(array("success" => true, "aryData" => $aryRows));
+            }
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }
@@ -414,7 +446,6 @@ class UsuariosController extends Controller
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
-
             $user = $this->session->get("user");
 
             // Valida valores del formulario
@@ -435,7 +466,6 @@ class UsuariosController extends Controller
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
 
         try {
-
             $user = $this->session->get("user");
 
             if (!isset($user["nIdNegocio"]) || is_null($nIdRegistro)) {
@@ -460,6 +490,7 @@ class UsuariosController extends Controller
             $nIdRol              =  isset($_POST['nIdRol']) ? $_POST['nIdRol'] : null; # El tipo empleado es el rol puede ser 3 asesor 4 supervisor
             $nIdColor            = isset($_POST['nIdColor']) ? $_POST['nIdColor'] : null;
             $nIdSupervisor       = isset($_POST['nIdSupervisor']) ? $_POST['nIdSupervisor'] : null;
+
 
             // Valida valores del formulario
             if (is_null($sEmail) || is_null($nIdRol)) {
@@ -487,7 +518,7 @@ class UsuariosController extends Controller
                 } else {
                     # Si no existe en negocio pero si existe en el sistema vamos  a registrarlo
                     # Reegistra la relacion usuario - negocio
-                    $this->usuarios->fncGrabarUsuarioNegocio($aryUser["nIdUsuario"], $user["nIdNegocio"], $nIdColor, $nIdRol);
+                    $this->usuarios->fncGrabarUsuarioNegocio($aryUser["nIdUsuario"], $user["nIdNegocio"], $nIdColor, $nIdRol, 1);
 
                     if ($nIdRol == $this->fncGetVarConfig("nIdRolSupervisor")) {
                         $this->sMsg = "Este usuario ya existe asi que, Se registro el supervisor de forma automatica .Porfavor actualize para que pueda visualizarlo";
@@ -585,6 +616,7 @@ class UsuariosController extends Controller
     public function fncCambiarEstado()
     {
         $nIdRegistro = isset($_POST['nIdRegistro']) ? $_POST['nIdRegistro'] : null;
+        $nIdNegocio  = isset($_POST['nIdNegocio']) ? $_POST['nIdNegocio'] : null;
         $nEstado     = isset($_POST['nEstado']) ? $_POST['nEstado'] : null;
 
         try {
@@ -594,7 +626,9 @@ class UsuariosController extends Controller
                 $this->exception('Error. El código de identificación del registro no es el correcto. Por favor verifique.');
             }
 
-            $this->usuarios->fncCambiarEstado($nIdRegistro, $nEstado);
+            $this->usuarios->fncCambiarEstadoUsuarioNegocio($nIdRegistro, $nIdNegocio, $nEstado);
+
+
             $this->json(array("success" => "Genial se realizo el cambio de estado exitosamente."));
         } catch (Exception $ex) {
             echo $ex->getMessage();

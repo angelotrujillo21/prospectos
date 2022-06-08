@@ -126,6 +126,30 @@ function copyToClipboard(sHtmlTag) {
   copyText.setSelectionRange(0, 99999);
   document.execCommand("copy");
 }
+ 
+ 
+function copyToClipboard2(text) {
+  console.log(text);
+  if (window.clipboardData && window.clipboardData.setData) {
+      // IE specific code path to prevent textarea being shown while dialog is visible.
+      return clipboardData.setData("Text", text); 
+
+  } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+      var textarea = document.createElement("textarea");
+      textarea.textContent = text;
+      textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+          return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+      } catch (ex) {
+          console.warn("Copy to clipboard failed.", ex);
+          return false;
+      } finally {
+          document.body.removeChild(textarea);
+      }
+  }
+}
 
 function fncValidateEmail(sString) {
   if (
@@ -152,19 +176,18 @@ function fncUc(str) {
 
 window.fncOcultarAside = function () {
   //console.log("ocularaside");
-  var mq = window.matchMedia( "(max-width: 768px)" );
+  var mq = window.matchMedia("(max-width: 768px)");
   if (mq.matches) {
     // console.log("mobile");
     //el ancho de la ventana es inferior a 570 px
   } else {
     // el ancho de la ventana es mayor que 570px
-   // console.log("desktop");
+    // console.log("desktop");
     if (!$(".main-sidebar").hasClass("d-none")) {
-       $("#btn-toogle-desktop").trigger("click");
+      $("#btn-toogle-desktop").trigger("click");
     }
   }
 };
-
 
 function fncBuildForm(aryData) {
   let sHtml = ``;
@@ -176,83 +199,90 @@ function fncBuildForm(aryData) {
       sHtml += `<div class="form-group">`;
       sHtml += `<label for="${sNameorId}" class="col-form-label">${aryItem.sNombreUsuario}</label>`;
 
-      switch (aryItem.sNombreTipoCampo) {
-        case "text":
-        case "tel":
-        case "date":
-          sHtml += `<input type="${aryItem.sNombreTipoCampo}" autocomplete="off" placeholder="${aryItem.sPlaceHolder}" class="form-control" name="${sNameorId}" id="${sNameorId}">`;
-          break;
-        case "select":
-          switch (aryItem.sNombreConfig) {
-            case "CONDICIONAL":
-              sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">
-                          <option value="1">SI</option>
-                          <option value="0">NO</option>
-                      </select>`;
-              break;
-            case "ESTADO":
-              sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">
-                            <option value="1">ACTIVO</option>
-                            <option value="0">DESACTIVO</option>
+      if (aryItem.sNombre == "sNumeroDocumento") {
+
+        sHtml += `
+          <div class="input-group mb-3">
+            <input type="${aryItem.sNombreTipoCampo}" autocomplete="off" placeholder="${aryItem.sPlaceHolder}" class="form-control" name="${sNameorId}" id="${sNameorId}">
+            <div  id="btn${sNameorId}" class="input-group-append"><span class="input-group-text btn-gradient-primary cursor-pointer"><i class="fas fa-search"></i></span></div>
+          </div>`;
+
+      } else {
+        switch (aryItem.sNombreTipoCampo) {
+          case "text":
+          case "tel":
+          case "date":
+            sHtml += `<input type="${aryItem.sNombreTipoCampo}" autocomplete="off" placeholder="${aryItem.sPlaceHolder}" class="form-control" name="${sNameorId}" id="${sNameorId}">`;
+            break;
+          case "select":
+            switch (aryItem.sNombreConfig) {
+              case "CONDICIONAL":
+                sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">
+                            <option value="1">SI</option>
+                            <option value="0">NO</option>
                         </select>`;
-              break;
+                break;
+              case "ESTADO":
+                sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">
+                              <option value="1">ACTIVO</option>
+                              <option value="0">DESACTIVO</option>
+                          </select>`;
+                break;
 
-            case "UBIGEO_DEPARTAMENTO":
-              if (aryItem.aryLista.length > 0) {
-                sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">`;
-                sHtml += `<option value="0">SELECCIONAR</option>`;
-                aryItem.aryLista.forEach((aryItemLista) => {
-                  sHtml += `<option value="${aryItemLista.nIdDepartamento}">${aryItemLista.sNombre}</option>`;
-                });
-                sHtml += `</select>`;
-              }
-              break;
+              case "UBIGEO_DEPARTAMENTO":
+                if (aryItem.aryLista.length > 0) {
+                  sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">`;
+                  sHtml += `<option value="0">SELECCIONAR</option>`;
+                  aryItem.aryLista.forEach((aryItemLista) => {
+                    sHtml += `<option value="${aryItemLista.nIdDepartamento}">${aryItemLista.sNombre}</option>`;
+                  });
+                  sHtml += `</select>`;
+                }
+                break;
 
-            case "UBIGEO_PROVINCIA":
-            case "UBIGEO_DISTRITO":
-              sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">
-                          <option value="0">SELECCIONAR</option>
-                        </select>`;
-              break;
+              case "UBIGEO_PROVINCIA":
+              case "UBIGEO_DISTRITO":
+                sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">
+                            <option value="0">SELECCIONAR</option>
+                          </select>`;
+                break;
 
-            default:
-              if (aryItem.aryLista.length > 0) {
-                sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">`;
-                sHtml += `<option value="0">SELECCIONAR</option>`;
+              default:
+                if (aryItem.aryLista.length > 0) {
+                  sHtml += `<select class="form-control" name="${sNameorId}" id="${sNameorId}">`;
+                  sHtml += `<option value="0">SELECCIONAR</option>`;
 
-                aryItem.aryLista.forEach((aryItemLista) => {
-                  sHtml += `<option value="${aryItemLista.nIdCatalogoTabla}">${aryItem.sNombre == "nTipoDocumento"
-                      ? aryItemLista.sDescripcionCortaItem
-                      : aryItemLista.sDescripcionLargaItem
-                    }</option>`;
-                });
-                sHtml += `</select>`;
-              }
-              break;
-          }
+                  aryItem.aryLista.forEach((aryItemLista) => {
+                    sHtml += `<option value="${aryItemLista.nIdCatalogoTabla
+                      }">${aryItem.sNombre == "nTipoDocumento"
+                        ? aryItemLista.sDescripcionCortaItem
+                        : aryItemLista.sDescripcionLargaItem
+                      }</option>`;
+                  });
+                  sHtml += `</select>`;
+                }
+                break;
+            }
 
-          break;
-        case "textarea":
-          sHtml += `<textarea name="${sNameorId}" id="${sNameorId}" cols="20" rows="5" class="form-control" autocomplete="off"></textarea>`;
-          break;
+            break;
+          case "textarea":
+            sHtml += `<textarea name="${sNameorId}" id="${sNameorId}" cols="20" rows="5" class="form-control" autocomplete="off"></textarea>`;
+            break;
+          case "file":
+            var sAccept = aryItem.sNombre == "sImagen" ? "image/*" : "*";
 
-        case "file":
-
-          var sAccept = aryItem.sNombre == 'sImagen' ? 'image/*' : '*';
-
-          sHtml += `
-          
-              <div class="input-group">
-                  <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="${sNameorId}" accept="${sAccept}" name="${sNameorId}" lang="es">
-                      <label class="custom-file-label" for="${sNameorId}">Selecciona un archivo</label>
-                  </div>
-              </div>
-          
-          `;
-          sHtml += `<small>${aryItem.sPlaceHolder}</small>`;
-
-          break;  
+            sHtml += `
+            
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="form-control" id="${sNameorId}" accept="${sAccept}" name="${sNameorId}" lang="es">
+                    </div>
+                </div>
+            
+            `;
+            sHtml += `<small>${aryItem.sPlaceHolder}</small>`;
+            break;
+        }
       }
 
       sHtml += `</div>`;
@@ -267,7 +297,6 @@ function fncBuildFormPro(aryData) {
   let aryDataExtra = [];
   if (aryData.length > 0) {
     $.each(aryData, function (nKeyItem, aryItem) {
-
       if (aryItem.nDefault == 1) {
         switch (aryItem.sWidgetSystem) {
           case "CLIENTE":
@@ -277,7 +306,8 @@ function fncBuildFormPro(aryData) {
                                   <div class="col-12">
                                       <div class="d-flex align-items-center">
                                           <div class="flex-grow-1 bd-highlight">
-                                              <p class="m-0 font-16">${aryItem.sWidget}  : 
+                                              <p class="m-0 font-16">${aryItem.sWidget
+              }  : 
                                                 <a id="btnVerDetallesCliente" href="javascript:;"><i class="far fa-eye"></i></a> 
                                                 <a id="btnVerHistorial" href="javascript:;"><i class="fas fa-history"></i></a> 
                                                 <a id="btnEditarCliente" href="javascript:;"><i class="fas fa-edit"></i></a> 
@@ -290,13 +320,18 @@ function fncBuildFormPro(aryData) {
                                       </div>
                                   </div>
                                   <div id="content-cliente" class="col-12 my-2 collapse show">
-                                      ${fncDrawSelect(aryItem.aryLista, "nIdCliente", "nIdCliente", "sNombreoRazonSocial", false)}
+                                      ${fncDrawSelect(
+                aryItem.aryLista,
+                "nIdCliente",
+                "nIdCliente",
+                "sNombreoRazonSocial",
+                false
+              )}
                                   </div>
                               </div>
                           </div>`;
             break;
           case "CATALOGO":
-
             // Opciones para el formulario de catalogo
             if (aryItem.aryLista.length > 0) {
               var sOption = ``;
@@ -386,7 +421,6 @@ function fncBuildFormPro(aryData) {
             break;
           case "SEGMENTACION":
           case "SEGMENTACION_COMPETENCIA":
-
             sHtml += `<div class="col-12 col-md-6 mb-4 ">
                                   <div class="row no-gutters border-card p-2">
                                       <div class="col-12">
@@ -401,10 +435,17 @@ function fncBuildFormPro(aryData) {
                                       </div>
                                       <div id="c${aryItem.sWidget}" class="col-12 my-2 collapse show"> `;
             aryItem.aryLista.forEach((element) => {
-
               sHtml += `  <div class="form-group content-segmetacion">
-                                          <label data-nidsegmentacion="${element.nIdSegmentacion}" for="nIdDetalleSegmentacion-${element.nIdSegmentacion}">${element.sNombre}</label>
-                                          ${fncDrawSelect(element.aryDetalle, "nIdDetalleSegmentacion-" + element.nIdSegmentacion, "nIdDetalleSegmentacion", "sNombre")}
+                                          <label data-nidsegmentacion="${element.nIdSegmentacion
+                }" for="nIdDetalleSegmentacion-${element.nIdSegmentacion
+                }">${element.sNombre}</label>
+                                          ${fncDrawSelect(
+                  element.aryDetalle,
+                  "nIdDetalleSegmentacion-" +
+                  element.nIdSegmentacion,
+                  "nIdDetalleSegmentacion",
+                  "sNombre"
+                )}
                                       </div> `;
             });
             sHtml += `</div></div></div>`;
@@ -464,7 +505,6 @@ function fncBuildFormPro(aryData) {
             break;
         }
       } else {
-
         sHtml += ` <div class="col-12 col-md-12 mb-4">
                           <div class="row no-gutters border-card p-2">
                               <div class="col-12">
@@ -479,34 +519,68 @@ function fncBuildFormPro(aryData) {
                               </div>
                               <div id="c${aryItem.sWidgetSystem}" class="col-12 my-2 collapsed show">`;
 
-        switch (aryItem.sTipoCampoSystem) {
+        var jsnDataWidget = {
+          nIdWidget: aryItem.nIdWidget,
+          sTipoCampoSystem: aryItem.sTipoCampoSystem,
+          sWidgetSystem: aryItem.sWidgetSystem,
+          nRequerido: aryItem.nRequerido,
+          sWidget: aryItem.sWidget,
+        };
 
+        switch (aryItem.sTipoCampoSystem) {
           case "text":
           case "tel":
           case "date":
-            sHtml += `${fncDrawInput(aryItem.sWidgetSystem, aryItem.sTipoCampoSystem, aryItem.sPlaceHolder, "form-control control-extra", aryItem.nRequerido)}`;
+            sHtml += `${fncDrawInput(
+              aryItem.sWidgetSystem,
+              aryItem.sTipoCampoSystem,
+              aryItem.sPlaceHolder,
+              "form-control control-extra",
+              aryItem.nRequerido,
+              jsnDataWidget
+            )}`;
             break;
 
           case "select":
-            sHtml += `${fncDrawSelect(aryItem.aryLista, aryItem.sWidgetSystem, "", "", true, "form-control control-extra", aryItem.nRequerido)}`;
+            sHtml += `${fncDrawSelect(
+              aryItem.aryLista,
+              aryItem.sWidgetSystem,
+              "",
+              "",
+              true,
+              "form-control control-extra",
+              aryItem.nRequerido,
+              jsnDataWidget
+            )}`;
             break;
 
           case "radio":
-            sHtml += `${fncDrawRadio(aryItem.aryLista, aryItem.sWidgetSystem, aryItem.nRequerido, "control-extra")}`;
+            sHtml += `${fncDrawRadio(
+              aryItem.aryLista,
+              aryItem.sWidgetSystem,
+              aryItem.nRequerido,
+              "control-extra",
+              jsnDataWidget
+            
+            )}`;
             break;
           case "textarea":
-            sHtml += `${fncDrawTextArea(aryItem.sWidgetSystem, aryItem.sPlaceHolder, "form-control control-extra", aryItem.nRequerido)}`;
+            sHtml += `${fncDrawTextArea(
+              aryItem.sWidgetSystem,
+              aryItem.sPlaceHolder,
+              "form-control control-extra",
+              aryItem.nRequerido,
+              2,
+              2,
+              jsnDataWidget
+            )}`;
             break;
-
         }
 
         sHtml += `</div></div></div>`;
 
         aryDataExtra.push({
-          sTipoCampoSystem: aryItem.sTipoCampoSystem,
-          sWidgetSystem: aryItem.sWidgetSystem,
-          nRequerido: aryItem.nRequerido,
-          sWidget: aryItem.sWidget
+
         });
 
       }
@@ -516,42 +590,76 @@ function fncBuildFormPro(aryData) {
   return sHtml;
 }
 
-
-function fncDrawSelect(aryLista, sNameorId, sItemValue, sItemOption, nEstatusItemOne = true, sClass = "form-control", nRequerido = 0) {
+function fncDrawSelect(
+  aryLista,
+  sNameorId,
+  sItemValue,
+  sItemOption,
+  nEstatusItemOne = true,
+  sClass = "form-control",
+  nRequerido = 0,
+  jsnDataWidget = null
+) {
   sHtml = ``;
-  sHtml += `<select name="${sNameorId}" class="${sClass}" id="${sNameorId}" data-nrequerido="${nRequerido}">`;
+  sHtml += `<select name="${sNameorId}" class="${sClass}" id="${sNameorId}" data-nrequerido="${nRequerido}" ${jsnDataWidget != null ? `data-jsndatawidget='${JSON.stringify(jsnDataWidget)}'` : ``}>`;
   sHtml += nEstatusItemOne ? `<option value="0">Seleccionar</option>` : ``;
   if (aryLista.length > 0) {
     aryLista.forEach((element) => {
-      sHtml += `<option value="${sItemValue == "" ? element : element[sItemValue]}">${sItemOption == "" ? element : element[sItemOption]}</option>`;
+      sHtml += `<option value="${sItemValue == "" ? element : element[sItemValue]
+        }">${sItemOption == "" ? element : element[sItemOption]}</option>`;
     });
   }
   sHtml += `</select>`;
   return sHtml;
 }
 
-function fncDrawInput(sNameorId, sType, sPlaceHolder = "", sClass = "form-control", nRequerido = 0) {
-  sHtml = `<input type="${sType}" placeholder="${sPlaceHolder}" id="${sNameorId}" name="${sNameorId}"  class="${sClass}" autocomplete="off" data-nrequerido="${nRequerido}" />`;
+function fncDrawInput(
+  sNameorId,
+  sType,
+  sPlaceHolder = "",
+  sClass = "form-control",
+  nRequerido = 0,
+  jsnDataWidget = null
+) {
+  sHtml = `<input type="${sType}" placeholder="${sPlaceHolder}" id="${sNameorId}" name="${sNameorId}"  class="${sClass}" autocomplete="off" data-nrequerido="${nRequerido}" ${jsnDataWidget != null ? `data-jsndatawidget='${JSON.stringify(jsnDataWidget)}'` : ``}/>`;
   return sHtml;
 }
 
-function fncDrawTextArea(sNameorId, sPlaceHolder = "", sClass = "form-control", nRequerido = 0, cols = "2", rows = "2") {
-  sHtml = `<textarea rows="${rows}" cols="${cols}" placeholder="${sPlaceHolder}" id="${sNameorId}" name="${sNameorId}"  class="${sClass}" data-nrequerido="${nRequerido}"></textarea>`;
+function fncDrawTextArea(
+  sNameorId,
+  sPlaceHolder = "",
+  sClass = "form-control",
+  nRequerido = 0,
+  cols = "2",
+  rows = "2",
+  jsnDataWidget = null
+) {
+  sHtml = `<textarea rows="${rows}" cols="${cols}" placeholder="${sPlaceHolder}" id="${sNameorId}" name="${sNameorId}"  class="${sClass}" data-nrequerido="${nRequerido}" ${jsnDataWidget != null ? `data-jsndatawidget='${JSON.stringify(jsnDataWidget)}'` : ``} ></textarea>`;
   return sHtml;
 }
 
-function fncDrawRadio(aryLista, sNameorId, nRequerido = 0, sClassExtra = "") {
+function fncEncodeHTMLValue(str) {
+  return str.replace(/'/gm, "&apos;").replace(/"/gm, "&quot;").replace(/\n/gm, "&#10;");
+}
+
+function fncDecodeHTMLValue(str) {
+  return str.replace(/&quot;/gm, '"').replace(/&apos;/gm, "'").replace(/&#10;/gm, "\n");
+}
+
+function fncDrawRadio(aryLista, sNameorId, nRequerido = 0, sClassExtra = "" , jsnDataWidget = null) {
   sHtml = ``;
   if (aryLista.length > 0) {
-    aryLista.forEach(function (element, nIndex) {
 
+    sHtml += `<div class="control-extra" data-nrequerido="${nRequerido}"  ${jsnDataWidget != null ? `data-jsndatawidget='${JSON.stringify(jsnDataWidget)}'` : ``}>`;
+    
+    aryLista.forEach(function (element, nIndex) {
       sHtml += `<div class="custom-control custom-radio">
-                      <input data-nrequerido="${nRequerido}" type="radio" id="${sNameorId}-${nIndex}" name="${sNameorId}" value="${element}" class="custom-control-input ${sClassExtra}">
-                      <label class="custom-control-label ml-label-radio w-100" for="${sNameorId}-${nIndex}">${element}</label>
-                  </div>`;
+                  <input type="radio" id="${sNameorId}-${nIndex}" name="${sNameorId}" value="${element}" class="custom-control-input">
+                  <label class="custom-control-label ml-label-radio w-100" for="${sNameorId}-${nIndex}">${element}</label>
+                </div>`;
     });
+
+    sHtml += `</div>`;
   }
   return sHtml;
 }
-
-

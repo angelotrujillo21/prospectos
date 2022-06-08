@@ -615,7 +615,7 @@ function milmillon($nummierod)
 }
 
 
-function convertir($numero)
+function convertir($numero , $sMoneda = TEXTO_MONEDA )
 {
     $num = str_replace(",", "", $numero);
     $num = number_format($num, 2, '.', '');
@@ -624,7 +624,7 @@ function convertir($numero)
 
     $numf = milmillon($num);
 
-    return   $numf . " CON " . $cents . "/100" . TEXTO_MONEDA;
+    return   $numf . " CON " . $cents . "/100" . " " . $sMoneda;
 }
 
 

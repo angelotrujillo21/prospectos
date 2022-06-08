@@ -11,6 +11,8 @@ use Application\Models\Entidades;
 use Application\Models\Prospecto;
 use Application\Models\CatalogoTabla;
 use Application\Core\Controller as Controller;
+use Application\Models\Paises;
+use Application\Models\Ubigeo;
 
 class VistasController extends Controller
 {
@@ -21,6 +23,7 @@ class VistasController extends Controller
     public $catalogoTabla;
     public $usuarios;
     public $prospecto;
+    public $ubigeo;
 
     public $users;
     public $isUser;
@@ -35,11 +38,9 @@ class VistasController extends Controller
         $this->catalogoTabla = new CatalogoTabla();
         $this->usuarios      = new Usuarios();
         $this->entidades     = new Entidades();
+        $this->ubigeo        = new Ubigeo();
+        $this->paises        = new Paises();
         $this->session->init();
-
-        // $aryData =  $this->fncGetRoles($this->session);
-        // $this->isUser     = $aryData["isUser"];
-        // $this->isEmpleado = $aryData["isEmpleado"];
     }
 
 
@@ -50,17 +51,18 @@ class VistasController extends Controller
 
             // El usuario 1 es el administrador general del sistema
             $user = $this->session->get('user');
- 
-            if (!is_null($user) && isset($user["nIdUsuario"]) ) {
+
+            if (!is_null($user) && isset($user["nIdUsuario"])) {
                 $aryConfigClientes        = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCliente"));
                 $aryConfigCatalogos       = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadCatalogo"));
                 $aryConfigVendedores      = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdEntidadVendedor"));
                 $aryConfigSupervisores    = $this->entidades->fncGetCamposByEntidad($this->fncGetVarConfig("nIdSupervisor"));
                 $aryTipoProspectos        = $this->catalogoTabla->fncListado('TIPO_PROSPECTO');
 
-                $user["nIdRol"] = 0;
+                $user["nIdRol"]     = 0;
                 $user["nIdNegocio"] = 0;
                 $this->session->add('user', $user);
+
                 $this->view(
                     'admin/mis-negocios',
                     array(
@@ -75,10 +77,12 @@ class VistasController extends Controller
                         'aryTipoProspectos'      => $aryTipoProspectos,
                         'nRolProspectoAdmin'     => $this->fncGetVarConfig("nIdRolAdmin"),
                         'sRolUser'               => $this->fncGetVarConfig("sRolUser"),
+                        'aryPaises'              => $this->paises->fncObtenerPaises(["nEstado" => 1]),
+                        'aryMoneda'              => $this->catalogoTabla->fncListaItems(0, "TIPO_MONEDA")
 
                     )
                 );
-            } else{
+            } else {
                 # Si se pierde la sesion vamos a salir de la app
                 $authController  = new AuthController();
                 $authController->salir();
@@ -197,6 +201,7 @@ class VistasController extends Controller
                         'nIdRolVisitante'             => $this->fncGetVarConfig("nIdRolVisitante"),
                         'nIdRolAsesor'                => $this->fncGetVarConfig("nIdRolAsesor"),
                         'nIdRolSupervisor'            => $this->fncGetVarConfig("nIdRolSupervisor"),
+                        'nMaximoMB'                   => 5
 
                     )
                 );
@@ -235,6 +240,7 @@ class VistasController extends Controller
                         'aryTipoEmpleados'            => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
                         'nIdRolSupervisor'            => $this->fncGetVarConfig("nIdRolSupervisor"),
                         'nIdRolAsesorVentas'          => $this->fncGetVarConfig("nIdRolAsesor"),
+                        'aryDpt'                      => $this->ubigeo->fncObtenerDepartamentos(),
                         'aryModulos'                  => $this->fncGetModulos($this->session),
 
 
@@ -347,38 +353,58 @@ class VistasController extends Controller
         }
     }
 
-    public function listadoEmpleados($nIdNegocio)
+    public function supervisores($nIdNegocio)
     {
         try {
             $this->authAdmin($this->session);
 
             $aryNegocio = $this->negocios->fncGetNegocioById($nIdNegocio);
 
-            $aryColores = $this->usuarios->fncGetColoresEmpleados($nIdNegocio);
-            $sColores   = is_array($aryColores) && count($aryColores) > 0 ? implode(",", array_column($aryColores, 'nIdColor')) : "0";
+            if ($aryNegocio != false) {
+                $this->view(
+                    'admin/supervisores',
+                    array(
+                        'aryNegocio'               => $aryNegocio,
+                        'user'                     => $this->session->get('user'),
+                        'menu'                     => true,
+                        'titulo'                   => 'Mantenimiento Supervisor',
+                        'showNotificacion'         => true,
+                        'aryModulos'               => $this->fncGetModulos($this->session),
+                        'nIdSupervisor'            => $this->fncGetVarConfig("nIdSupervisor"), // Entidad supervisor
+                        'aryColores'               => $this->catalogoTabla->fncListado('COLORES'),
+                        'nIdRolSupervisor'         => $this->fncGetVarConfig("nIdRolSupervisor"), // Rol supervisor 
+                        'aryConfigTabla'           => $this->negocios->fncGetConfiguracionCampo($nIdNegocio, $this->fncGetVarConfig("nIdSupervisor"), 1, true)
+                    )
+                );
+            } else {
+                $this->redirect('mis-negocios');
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public function asesoresVentas($nIdNegocio)
+    {
+        try {
+            $this->authAdmin($this->session);
+
+            $aryNegocio = $this->negocios->fncGetNegocioById($nIdNegocio);
 
             if ($aryNegocio != false) {
                 $this->view(
-                    'admin/listado-empleados',
+                    'admin/asesores-ventas',
                     array(
-                        'aryNegocio'                  => $aryNegocio,
-                        'nIdNegocio'                  => $nIdNegocio,
-                        'user'                        => $this->session->get('user'),
-                        'menu'                        => true,
-                        'titulo'                      => 'Base de datos de el empleado',
-                        'showNotificacion'            => true,
-                        'aryTipoItem'                 => $this->catalogoTabla->fncListado('TIPO_ITEM'),
-                        'arySupervisores'             => $this->usuarios->fncGetUsuarios($this->fncGetVarConfig("nIdRolSupervisor"), $nIdNegocio),
-                        'aryVendedores'               => $this->usuarios->fncGetUsuarios($this->fncGetVarConfig("nIdRolAsesor"), $nIdNegocio),
-                        'aryModulos'                  => $this->fncGetModulos($this->session),
-                        'nIdEtapaCierre'              => $this->fncGetVarConfig("nIdEtapaCierre"),
-                        'nIdEntidadVendedor'          => $this->fncGetVarConfig("nIdEntidadVendedor"),
-
-                        'nIdSupervisor'               => $this->fncGetVarConfig("nIdSupervisor"),
-                        'aryColores'                  => $this->catalogoTabla->fncListado('COLORES', "nIdCatalogoTabla NOT IN($sColores)"),
-                        'aryTipoEmpleados'            => $this->catalogoTabla->fncListado('TIPO_EMPLEADO'),
-                        'nIdRolSupervisor'     => $this->fncGetVarConfig("nIdRolSupervisor"),
-                        'nIdRolAsesorVentas'   => $this->fncGetVarConfig("nIdRolAsesor"),
+                        'aryNegocio'               => $aryNegocio,
+                        'user'                     => $this->session->get('user'),
+                        'menu'                     => true,
+                        'titulo'                   => 'Mantenimiento Asesores ventas',
+                        'showNotificacion'         => true,
+                        'arySupervisores'          => $this->usuarios->fncGetUsuarios($this->fncGetVarConfig("nIdRolSupervisor"), $nIdNegocio),
+                        'aryModulos'               => $this->fncGetModulos($this->session),
+                        'nIdEntidadVendedor'       => $this->fncGetVarConfig("nIdEntidadVendedor"),
+                        'nIdRolAsesorVentas'       => $this->fncGetVarConfig("nIdRolAsesor"),
+                        'aryConfigTabla'           => $this->negocios->fncGetConfiguracionCampo($nIdNegocio, $this->fncGetVarConfig("nIdEntidadVendedor"), 1, true)
                     )
                 );
             } else {

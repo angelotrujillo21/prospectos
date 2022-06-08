@@ -78,10 +78,10 @@
 
                                                                         <div class="col-12 col-md-12">
                                                                             <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
+                                                                                <div class="col-auto col-md-auto bold p-0">
                                                                                     Volumen de ventas :
                                                                                 </div>
-                                                                                <div class="col-7 col-md-7  p-0">
+                                                                                <div class="col-auto col-md-auto  p-0">
                                                                                     <span id="sAvance"></span>
                                                                                 </div>
                                                                             </div>
@@ -89,10 +89,22 @@
 
                                                                         <div class="col-12 col-md-12">
                                                                             <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
-                                                                                    Ticket :
+                                                                                <div class="col-auto col-md-auto bold p-0">
+                                                                                    Volumen de ingresos :
                                                                                 </div>
-                                                                                <div class="col-7 col-md-7  p-0">
+                                                                                <div class="col-auto col-md-auto  p-0">
+                                                                                    <span id="sRB"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="col-12 col-md-12">
+                                                                            <div class="row">
+                                                                                <div class="col-auto col-md-auto bold p-0">
+                                                                                    Valor Ticket Promedio :
+                                                                                </div>
+                                                                                <div class="col-auto col-md-auto  p-0">
                                                                                     <span id="sTicket"></span>
                                                                                 </div>
                                                                             </div>
@@ -100,10 +112,10 @@
 
                                                                         <div class="col-12 col-md-12">
                                                                             <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
-                                                                                    Compra :
+                                                                                <div class="col-auto col-md-auto bold p-0">
+                                                                                    Valor Compra Promedio :
                                                                                 </div>
-                                                                                <div class="col-7 col-md-7  p-0">
+                                                                                <div class="col-auto col-md-auto  p-0">
                                                                                     <span id="sCompra"></span>
                                                                                 </div>
                                                                             </div>
@@ -111,43 +123,10 @@
 
                                                                         <div class="col-12 col-md-12">
                                                                             <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
-                                                                                    Prosp. Prom :
-                                                                                </div>
-                                                                                <div class="col-7 col-md-7  p-0">
-                                                                                    <span id="sProspeccionPromedio"> </span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
-                                                                                    Cant OPP. Activa :
-                                                                                </div>
-                                                                                <div class="col-7 col-md-7 p-0">
-                                                                                    <span id="sCantidadOppActiva"></span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
-                                                                                    OPP. Activa :
-                                                                                </div>
-                                                                                <div class="col-7 col-md-7  p-0">
-                                                                                    <span id="sOppActiva"></span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
+                                                                                <div class="col-auto col-md-auto bold p-0">
                                                                                     Productividad :
                                                                                 </div>
-                                                                                <div class="col-7 col-md-7 p-0">
+                                                                                <div class="col-auto col-md-auto p-0">
                                                                                     <span id="sProductividad"></span>
                                                                                 </div>
                                                                             </div>
@@ -155,11 +134,22 @@
 
                                                                         <div class="col-12 col-md-12">
                                                                             <div class="row">
-                                                                                <div class="col-5 col-md-5 bold p-0">
-                                                                                    Tasa de clientes :
+                                                                                <div class="col-auto col-md-auto bold p-0">
+                                                                                    Tiempo P. de conversion :
                                                                                 </div>
-                                                                                <div class="col-7 col-md-7 p-0">
-                                                                                    <span id="sTasaCliente"></span>
+                                                                                <div class="col-auto col-md-auto p-0">
+                                                                                    <span id="sTiempoConversion"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-12 col-md-12">
+                                                                            <div class="row">
+                                                                                <div class="col-auto col-md-auto bold p-0">
+                                                                                    Efectividad Lead-Venta :
+                                                                                </div>
+                                                                                <div class="col-auto col-md-auto p-0">
+                                                                                    <span id="sEfectividad"></span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -608,6 +598,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-12 col-md-12">
+                                            <div class="mb-1">
+                                                <label for="aryIdDpt" class="col-form-label">Localidad:</label>
+                                                <select multiple class="form-control" name="aryIdDpt" id="aryIdDpt">
+                                                    <?php if (fncValidateArray($aryDpt)) : ?>
+                                                        <?php foreach ($aryDpt as $aryLoop) : ?>
+                                                            <option value="<?= $aryLoop['nIdDepartamento'] ?>"><?= $aryLoop['sNombre'] ?></option>
+                                                        <?php endforeach ?>
+                                                    <?php endif ?>
+                                                </select>
+                                            </div>
+                                        </div>
 
                                         <div class="col-12 col-md-6">
                                             <div class="mb-1">
@@ -678,9 +680,8 @@
         fncOcultarAside();
         
         setTimeout(() => {
-            $("#nIdUsuarioAsesor,#nIdUsuarioSupervisor").select2({
+            $("#nIdUsuarioAsesor,#nIdUsuarioSupervisor,#aryIdDpt").select2({
                 placeholder: "TODOS",
- 
             });
         }, 500);
        
@@ -698,6 +699,7 @@
             var dHasta           = $("#dHasta").datepicker('getDate');
             var arySupervisor    = $("#nIdUsuarioSupervisor :selected").map(function(nIndex, item) { return $(item).val(); }).get();
             var aryAsesor        = $("#nIdUsuarioAsesor :selected").map(function(nIndex, item) { return $(item).val(); }).get();
+            var aryDpt           = $("#aryIdDpt :selected").map(function(nIndex, item) { return $(item).val(); }).get();
 
             if ((dDesde != null && dHasta == null) || (dDesde == null && dHasta != null)) {
                 toastr.error('Error. Si va a especificar fechas, debe ingresar la inicio y fin. Por favor verificar.');
@@ -715,7 +717,8 @@
                 dDesde          : $('#dDesde').val(),
                 dHasta          : $('#dHasta').val(),
                 arySupervisor   : arySupervisor,
-                aryAsesor       : aryAsesor
+                aryAsesor       : aryAsesor,
+                aryDpt          : aryDpt,
             };
 
             fncGetReporteProspectos(jsnData,(aryData)=>{
@@ -944,9 +947,10 @@
             $("#nTipoItemCatalogo").val(0);
             $("#nIdUsuarioSupervisor").val([]).trigger("change");
             $("#nIdUsuarioAsesor").val([]).trigger("change");
+            $("#aryIdDpt").val([]).trigger("change");
             $("#dDesde").val('');
             $("#dHasta").val('');
-
+            
             setTimeout(() => {
                 $("#form-reporte").trigger("submit");
             }, 200);

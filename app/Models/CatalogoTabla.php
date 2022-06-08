@@ -221,7 +221,7 @@ class CatalogoTabla
 
 
     // Nueva versión del 25/06/2018
-    public function fncListaItems($nIdCatalogoTablaPadre, $sNombreCatalogo, $sDescripcionCorta, $sIds, $nOrden = null)
+    public function fncListaItems($nIdCatalogoTablaPadre, $sNombreCatalogo, $sDescripcionCorta = NULL, $sIds = NULL, $nOrden = null)
     {
         /*
        - Funcion que devuelve todas las columnas y registros según los parametros

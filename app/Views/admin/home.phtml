@@ -38,35 +38,42 @@
                                 <div class="card card-small">
                                     <div  class="card-body pt-1 pb-5">
                                     
-                                    <div class="row flex-center" >
+                                    <div class="row flex-center" style="position: absolute; width: 99%;" >
                                         <div class="col-12 col-md-7 content-indicativos-dashboard p-0 d-none d-md-block d-lg-block zoom">
                                             <div class="row mx-2 mx-md-0">
 
                                                 <div id="cI1" class="col-6 col-md-12 p-0">
                                                     <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                                                        
                                                         <span class="font-weight-bold color-azul"> General : </span> 
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Avance" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceGeneral">  0 </span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Renta Basica" class="font-weight-bold span-t">Volumen de ingreso : </span> <span class="span-d nRBGeneral"> 0 </span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Oportunidad"  class="font-weight-bold span-t">OPP de ventas activas : </span> <span class="span-d nOportunidad"> 0 </span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Total prospectos"  class="font-weight-bold span-t">Leads : </span> <span class="span-d nTotalProspectosGeneral"> 0</span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Ticket"  class="font-weight-bold span-t">Valor Ticket promedio :</span> <span class="span-d nTicketGeneral"> 0  </span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Compra"  class="font-weight-bold span-t">Valor de compra promedio :</span> <span class="span-d nCompraGeneral"> 0 </span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Efectividad"  class="font-weight-bold span-t">Efectividad Lead - Vent : </span> <span class="span-d nEfectividadGeneral"> 0</span>  <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Empleados Activos"  class="font-weight-bold span-t">Vendedores registrados : </span> <span class="span-d nEmpleadosActivos"> 0</span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Productividad"  class="font-weight-bold span-t">Productividad promedio : </span> <span class="span-d nProductividadGeneral"> 0</span> <span class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Indice de apertura"  class="font-weight-bold span-t">Ratio de OPP nuevos : </span> <span class="span-d nIndiceApertura"> 0</span>
+                                                        
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Volumen de ventas" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceGeneral">  0 </span> <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Volumen de ingreso" class="font-weight-bold span-t">Volumen de ingreso : </span> <span class="span-d nRBGeneral"> 0 </span> <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Oportunidad activas"  class="font-weight-bold span-t">OPP de ventas activas : </span> <span class="span-d nOportunidad"> 0 </span> <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Total prospectos"  class="font-weight-bold span-t">Leads : </span> <span class="span-d nTotalProspectosGeneral"> 0</span> <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Efectividad"  class="font-weight-bold span-t">Efectividad Lead - Venta: </span> <span class="span-d nEfectividadGeneral"> 0</span>  <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Ratio de OPP nuevos"  class="font-weight-bold span-t">Ratio de OPP nuevos : </span> <span class="span-d nIndiceApertura"> 0</span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Clientes nuevos" class="font-weight-bold span-t">Clientes nuevos : </span> <span class="span-d nCierresRG">  0 </span> <span  class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Asesores de ventas activos"  class="font-weight-bold span-t">Vendedores registrados : </span> <span class="span-d nEmpleadosActivos"> 0</span> <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Productividad"  class="font-weight-bold span-t">Productividad promedio : </span> <span class="span-d nProductividadGeneral"> 0</span> <span class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top" data-original-title="Tiempo promedio de conversion" class="font-weight-bold span-t">Tiempo promedio de conversion : </span> <span class="span-d nTipoPromedioConversionRG">  0 </span> 
+
+                                                        <!-- 
+                                                            <span data-toggle="tooltip" data-placement="top"  data-original-title="Ticket"  class="font-weight-bold span-t">Valor Ticket promedio :</span> <span class="span-d nTicketGeneral"> 0  </span> <span class="break"> - </span>
+                                                            <span data-toggle="tooltip" data-placement="top"  data-original-title="Compra"  class="font-weight-bold span-t">Valor de compra promedio :</span> <span class="span-d nCompraGeneral"> 0 </span> <span class="break"> - </span>
+                                                        -->
                                                     </marquee>
                                                 </div>
 
                                                 <div id="cI2"  class="col-6 col-md-12 p-0">
                                                     <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
                                                         <span class="font-weight-bold color-azul"> R. Hoy : </span>
-                                                        <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Avance" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceHoy">  0 </span> <span  class="break"> - </span> 
-                                                        <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Cierre" class="font-weight-bold span-t">Clientes nuevos : </span> <span class="span-d nCierreHoy">  0 </span> <span  class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Renta Basica" class="font-weight-bold span-t"> Volumen de ingreso : </span> <span class="span-d nRBHoy"> 0 </span> <span  class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Citas" class="font-weight-bold span-t"> Citas Activas : </span> <span class="span-d nCitasHoy"> 0 </span> <span  class="break"> - </span>
-                                                        <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Prospectos de hoy" class="font-weight-bold span-t"> Leads : </span> <span class="span-d nProspectosHoy"> 0 </span> <span  class="break"> - </span> 
-                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Empleados que realizaron prospectos hoy"  class="font-weight-bold span-t"> Vendedores registrados: </span> <span class="span-d nCantidadEmpleadosHoy"> 0</span>  
+                                                        <span data-toggle="tooltip" data-placement="bottom" data-original-title="Volumen de ventas" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceHoy">  0 </span> <span  class="break"> - </span> 
+                                                        <span data-toggle="tooltip" data-placement="bottom" data-original-title="Volumen de ingreso " class="font-weight-bold span-t"> Volumen de ingreso : </span> <span class="span-d nRBHoy"> 0 </span> <span  class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="bottom" data-original-title="Prospectos de hoy" class="font-weight-bold span-t"> Leads : </span> <span class="span-d nProspectosHoy"> 0 </span> <span  class="break"> - </span> 
+                                                        <span data-toggle="tooltip" data-placement="bottom" data-original-title="Cierres de hoy" class="font-weight-bold span-t">Clientes nuevos : </span> <span class="span-d nCierreHoy">  0 </span> <span  class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="bottom" data-original-title="Citas" class="font-weight-bold span-t"> Citas Activas : </span> <span class="span-d nCitasHoy"> 0 </span> <span  class="break"> - </span>
+                                                        <span data-toggle="tooltip" data-placement="top"  data-original-title="Vendedores que realizaron prospectos hoy"  class="font-weight-bold span-t"> Vendedores Activos hoy: </span> <span class="span-d nCantidadEmpleadosHoy"> 0</span>  
                                                     </marquee>
                                                 </div>
 
@@ -75,7 +82,7 @@
                                     </div>
 
                                         <!-- Fila Cabecera -->
-                                        <div class="row">
+                                        <div class="row my-2">
                                             <div class="col-12">
                                                 <div class="d-inline-block d-md-flex content-cab">
 
@@ -213,7 +220,7 @@
                                                     </div>
 
                                                     <div class="d-inline-block d-md-flex align-items-center p-0 p-md-2 ic-bus">
-                                                        <a href="javascript:;" class="btnFiltro" data-sfiltro="CITAS" data-toggle="tooltip" data-placement="bottom" title="Filtro de citas">
+                                                        <a href="javascript:;" class="btnFiltro" data-sfiltro="CITAS" data-toggle="tooltip" data-placement="bottom" title="Ver las citas proximas">
                                                             <span class="material-icons">list_alt</span>
                                                         </a>
                                                     </div>
@@ -298,26 +305,27 @@
 
                                                                 <div class="col-12 col-md-12 p-0">
                                                                     <span class="font-weight-bold color-azul">  Hoy : </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Avance" class="font-weight-bold span-t"> Volumen de ventas : </span> <span class="span-d nAvanceHoy">  0 </span> <span  class="break"> - </span>  <br>
-                                                                    <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Cierre" class="font-weight-bold span-t"> Clientes nuevos : </span> <span class="span-d nCierreHoy">  0 </span> <span  class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Renta Basica" class="font-weight-bold span-t"> Volumen de ingreso : </span> <span class="span-d nRBHoy"> 0 </span> <span  class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Citas" class="font-weight-bold span-t">Citas Activas : </span> <span class="span-d nCitasHoy"> 0 </span> <span  class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Prospectos de hoy" class="font-weight-bold span-t"> Leads : </span> <span class="span-d nProspectosHoy"> 0 </span> <span  class="break"> - </span>  <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Empleados que realizaron prospectos hoy"  class="font-weight-bold span-t"> Vendedores registrados : </span> <span class="span-d nCantidadEmpleadosHoy"> 0</span>  <br>
-                                                                </div>
+                                                                    <span data-toggle="tooltip" data-placement="bottom" data-original-title="Volumen de ventas" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceHoy">  0 </span> <span  class="break"> - </span>  <br>
+                                                                    <span data-toggle="tooltip" data-placement="bottom" data-original-title="Volumen de ingreso " class="font-weight-bold span-t"> Volumen de ingreso : </span> <span class="span-d nRBHoy"> 0 </span> <span  class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="bottom" data-original-title="Prospectos de hoy" class="font-weight-bold span-t"> Leads : </span> <span class="span-d nProspectosHoy"> 0 </span> <span  class="break"> - </span>  <br>
+                                                                    <span data-toggle="tooltip" data-placement="bottom" data-original-title="Cierres de hoy" class="font-weight-bold span-t">Clientes nuevos : </span> <span class="span-d nCierreHoy">  0 </span> <span  class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="bottom" data-original-title="Citas" class="font-weight-bold span-t"> Citas Activas : </span> <span class="span-d nCitasHoy"> 0 </span> <span  class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="bottom"  data-original-title="Vendedores que realizaron prospectos hoy"  class="font-weight-bold span-t"> Vendedores Activos hoy: </span> <span class="span-d nCantidadEmpleadosHoy"> 0</span> <br>
+                                                                 </div>
 
                                                                 <div class="col-12 col-md-12 p-0">
                                                                     <span class="font-weight-bold color-azul"> General : </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Avance" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceGeneral">  0 </span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Renta Basica" class="font-weight-bold span-t">Volumen de ingreso : </span> <span class="span-d nRBGeneral"> 0 </span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Oportunidad"  class="font-weight-bold span-t">OPP de ventas activas : </span> <span class="span-d nOportunidad"> 0 </span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Total prospectos"  class="font-weight-bold span-t">Leads : </span> <span class="span-d nTotalProspectosGeneral"> 0</span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Ticket"  class="font-weight-bold span-t">Valor Ticket promedio : </span> <span class="span-d nTicketGeneral"> 0  </span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Compra"  class="font-weight-bold span-t">Valor de compra promedio :</span> <span class="span-d nCompraGeneral"> 0 </span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Efectividad"  class="font-weight-bold span-t">Efectividad Lead - Venta : </span> <span class="span-d nTicketGeneral"> 0</span>  <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Empleados Activos"  class="font-weight-bold span-t">Vendedores registrados : </span> <span class="span-d nEmpleadosActivos"> 0</span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Productividad"  class="font-weight-bold span-t">Productividad promedio  :  </span> <span class="span-d nProductividadGeneral"> 0</span> <span class="break"> - </span> <br>
-                                                                    <span data-toggle="tooltip" data-placement="top"  data-original-title="Indice de apertura"  class="font-weight-bold span-t mb-4">Ratio de OPP nuevos : </span> <span class="span-d nIndiceApertura"> 0</span>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Volumen de ventas" class="font-weight-bold span-t">Volumen de ventas : </span> <span class="span-d nAvanceGeneral">  0 </span> <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Volumen de ingreso" class="font-weight-bold span-t">Volumen de ingreso : </span> <span class="span-d nRBGeneral"> 0 </span> <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Oportunidad activas"  class="font-weight-bold span-t">OPP de ventas activas : </span> <span class="span-d nOportunidad"> 0 </span> <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Total prospectos"  class="font-weight-bold span-t">Leads : </span> <span class="span-d nTotalProspectosGeneral"> 0</span> <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Efectividad"  class="font-weight-bold span-t">Efectividad Lead - Venta: </span> <span class="span-d nEfectividadGeneral"> 0</span>  <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Ratio de OPP nuevos"  class="font-weight-bold span-t">Ratio de OPP nuevos : </span> <span class="span-d nIndiceApertura"> 0</span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Clientes nuevos" class="font-weight-bold span-t">Clientes nuevos : </span> <span class="span-d nCierresRG">  0 </span> <span  class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Asesores de ventas activos"  class="font-weight-bold span-t">Vendedores registrados : </span> <span class="span-d nEmpleadosActivos"> 0</span> <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Productividad"  class="font-weight-bold span-t">Productividad promedio : </span> <span class="span-d nProductividadGeneral"> 0</span> <span class="break"> - </span> <br>
+                                                                    <span data-toggle="tooltip" data-placement="top" data-original-title="Tiempo promedio de conversion" class="font-weight-bold span-t">T.Prom de conversion : </span>  <span class="span-d nTipoPromedioConversionRG">0</span>  
+
                                                                 </div>
 
                                                           
@@ -586,22 +594,18 @@
         </div>
     </div>
 
-
-    <div class="modal fade" id="formProspecto" tabindex="-1" role="dialog" aria-labelledby="formProspectoLabel" aria-hidden="true">
+    <div class="modal fade" id="formProspecto" tabindex="-1" role="dialog" aria-labelledby="formProspectoLabel" aria-hidden="true" style="overflow-y: scroll;">
         <div class="modal-dialog m-0 m-md-auto" role="document">
             <div class="modal-content" style="height: 100vh !important;">
                 <form>
-                    <div class="modal-header  modal-header-recuperar">
-                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0 btn-close-app-prospecto" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-header d-flex align-items-center" style="padding: 10px;">
+                        <h5 class="mb-0" id="title-prospectos">Crear Prospecto</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0 m-0" data-dismiss="modal" aria-label="Close">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body" style="height: 90vh;overflow-y: auto;">
-                    
-                            <div class="row flex-center">
-                                <p id="title-prospectos" class="title-indicativos">Crear Prospecto</p>
-                            </div>
-
+                    <div class="modal-body bg-white" style="height: 90vh;overflow-y: auto;">
+                
                             <div id="content-etapa-prospecto" class="row">
                                 <div class="col-12 col-md-12 mb-4">
                                     <div class="row no-gutters border-card p-2">
@@ -612,8 +616,9 @@
                                                 </div>
 
                                                 <div class="bd-highlight font-18">
-                                                    <a id="btnDescargarPdfProspecto" class="text-danger icon-pdf-etapa" target="_blank" href="javascript:;"><i class="far fa-file-pdf"></i></a>
-                                                    <a id="btnVerAdjuntos" href="javascript:;"> <i class="fas fa-paperclip"></i> </a>
+                                                    <a id="btnLinkEnviarPropuesta" class="text-primary icon-pdf-etapa"  href="javascript:;" title="Copiar link para enviar propuesta al cliente"><i class="fa fa-link"></i></a>
+                                                    <a id="btnDescargarPdfProspecto" class="text-danger icon-pdf-etapa" target="_blank" href="javascript:;" title="Descargar PDF del prospecto"><i class="far fa-file-pdf"></i></a>
+                                                    <a id="btnVerAdjuntos" href="javascript:;" title="Ver Adjuntos"> <i class="fas fa-paperclip"></i> </a>
                                                 </div>
 
                                                 <div class="ml-auto">
@@ -623,21 +628,19 @@
                                             </div>
                                         </div>
                                         <div id="cllEP" class="col-12 my-2 collapse show">
-                                            <div class="dropdown">
-                                                <a class="btn dropdown-toggle menu-etapa" href="javascript:;" role="button" id="dropdownEtapa" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Seleccionar
-                                                </a>
-                                                <div class="dropdown-menu w-100 dropdown-menu-etapa" aria-labelledby="dropdownEtapa">
-                                                    <?php if(fncValidateArray($aryEtapaProspecto)): ?>
+                                            <select class="form-control" name="nIdEtapa" id="nIdEtapa">
+                                                <option value="0">Seleccionar</option>
+                                                <?php if(fncValidateArray($aryEtapaProspecto)): ?>
                                                         <?php foreach($aryEtapaProspecto as $aryEtapa): ?>
-                                                        <?php $bIsDisabled = ( $nTipoProspecto == $nTipoProspectoLargo && $aryEtapa["nIdEtapa"] == $nIdEtapaNegociacion ) ? true : false; ?>
-                                                            <a id="nIdEtapa-<?= $aryEtapa["nIdEtapa"] ?>" class="dropdown-item <?= $bIsDisabled  ? 'disabled'  : "" ?>" <?= $bIsDisabled  ? ' data-disabled="true" '  : "" ?> data-value="<?= $aryEtapa["nIdEtapa"] ?>" href="javascript:;">
+                                                        <?php $bIsDisabled = 
+                                                            ( $nTipoProspecto == $nTipoProspectoLargo && ($aryEtapa["nIdEtapa"] == $nIdEtapaNegociacion  ||  $aryEtapa["nIdEtapa"] == $nIdEtapaEnvioPropuesta) ) 
+                                                            ? true : false; ?>
+                                                            <option <?= $bIsDisabled  ? 'disabled'  : "" ?> value="<?= $aryEtapa["nIdEtapa"] ?>">
                                                                 <?= $aryEtapa["sNombreVendedor"] ?>
-                                                            </a>
+                                                            </option>
                                                         <?php endforeach ?>
-                                                    <?php endif ?>
-                                                </div>
-                                            </div>                       
+                                                <?php endif ?>
+                                            </select>                
                                         </div>
                                     </div>
                                 </div>
@@ -664,8 +667,6 @@
                                     </select>
                                 </div>
                             </div>
-
-
 
                             <div id="content-titulo" class="row no-gutters border-card p-2 mb-4">
                                 <div class="col-12">
@@ -705,19 +706,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row flex-center mt-2 mb-1">
-                                <div class="col-12 flex-center">
-                                    <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
-                                </div>
-                            </div>
-
-                           
+                        
+                    </div>
+                    <div class="modal-footer bg-white">
+                        <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="formCECatalogo" tabindex="-1" role="dialog" aria-labelledby="formCECatalogoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -850,68 +847,60 @@
 
                         <div class="row">
 
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
 
-                                <div class="d-flex align-items-center">
+                            <div class="col-md-12 p-0 mb-3">
 
-                                    <label for="sImagen" class="col-form-label">Contrato:</label>
+                                <div class="row card mx-2">
 
-                                    <div class="ml-auto dw-contrato">
-                                        <a id="btnDescargarContrato" href="javascript:;" class="color-icon-download-contrato" title="Eliminar">
-                                            <i class="fas fa-download"></i>
-                                        </a>
-                                    </div>
-
-                                    <div class="mx-2 dw-contrato">
-                                        <a id="btnEliminarContrato" href="javascript:;" class="text-danger font-18" title="Eliminar">
-                                        <i class="material-icons">delete</i></a>
-                                    </div>
-
-                                </div>
-
-
-                                     
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="sContrato" lang="es" name="sContrato">
-                                            <label class="custom-file-label" for="sContrato">Elija el archivo</label>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group mb-1">
+                                            <div class="d-flex align-items-center">
+                                                <label for="sImagen" class="col-form-label">Contrato:</label>
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="form-control" id="sContrato" lang="es" name="sContrato">
+                                                </div>
+                                            </div>
+                                            <small>Archivo maximo <?=$nMaximoMB?>MB</small>
                                         </div>
                                     </div>
+
+                                    <div id="contenedor-archivo-contrato" class="col-md-12 col-12" style="display: none;">
+                                        <label for="" class="col-form-label">Archivo Contrato:</label>
+                                        <div class="" id="content-contrato"></div>
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="sImagen" class="col-form-label">Otros:</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="aryOtros" lang="es" name="aryOtros" multiple>
-                                            <label class="custom-file-label" for="aryOtros">Seleccione los archivos</label>
+                           
+                            <div class="col-md-12 p-0">
+                                <div class="row card mx-2">
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="sImagen" class="col-form-label">Otros:</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="form-control" id="aryOtros" lang="es" name="aryOtros" multiple>
+                                                </div>
+                                            </div>
+                                            <small>Archivos maximo <?=$nMaximoMB?>MB</small>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div id="content-adjuntos" class="col-md-12 col-12">
-
-
-                               
-
-                                                        
-
-
-                            </div>
                             
+                                    <div id="contenedor-adjuntos" class="col-md-12 col-12" style="display: none;">
+                                        <label for="" class="col-form-label">Adjuntos  :</label>
+                                        <div class="" id="content-adjuntos"></div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
-                            
-                           
-                        
                     </div>
-                    <div class="modal-footer">
+                    <!-- <div class="modal-footer">
                         <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>
@@ -1334,9 +1323,34 @@
         </div>
     </div>
 
-
+    <div class="modal fade" id="formLinkPropuesta" tabindex="-1" role="dialog" aria-labelledby="formLinkPropuestaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formLinkPropuestaLabel">Link de propuesta para enviar al cliente</h5>
+                        <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                         <div id="content-link-copy" class="row">
+                             <div class="col-12">
+                                 <div class="input-group mb-3">
+                                     <input type="text" id="sLinkCopyEP" readonly class="form-control" placeholder="Copia el link.." aria-label="Copia el link.." aria-describedby="basic-copy">
+                                     <div id="btnCopyLinkEP" class="input-group-append cursor-pointer" >
+                                         <span class="input-group-text" id="basic-copy"><i class="far fa-copy"></i></span>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                  
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Fin de modales -->
-
 
 </body>
 
@@ -1362,13 +1376,11 @@
         window.isVistante = <?= $nIdRolVisitante == $user["nIdRol"] ? "true" : "false"?>; 
         window.isSuper    = <?= $nIdRolSupervisor == $user["nIdRol"]? "true" : "false" ?>;
         window.isAsesor   = <?= $nIdRolAsesor == $user["nIdRol"] ? "true" : "false"?>;
-
         
         fncValidarRol();
         fncOcultarAside();
         $("#content-5").hide();
          
-        
         fncGetProspectosForEtapas();
         fncDrawIndicativosGeneralHoy();
         // Formulario Invitar
@@ -1412,7 +1424,7 @@
         $("body").data("nIdSupervisor",nIdUsuario);
         $("body").data("sFilterProspectos","SUPER");
         fncGetProspectosForEtapas(nIdUsuario);
-        fncDrawIndicativosGeneralHoy();
+        // fncDrawIndicativosGeneralHoy();
     };
 
     window.fncVerEmpleado = (nIdUsuario)=>{
@@ -1500,10 +1512,12 @@
             $("#btnPendiente").show();
         } else if (window.isVistante){
             // Visitante 
+            $("#btnCrearProspecto,#btnCrearCotizacion,#btnCrearPS").parent().attr("style", "display: none !important"); 
             $("#btnCrearInvitacion").hide();
             $("#btnPendiente").hide();
         } else if(window.isSuper){
             // Si es supervisor
+            $("#btnCrearProspecto,#btnCrearCotizacion,#btnCrearPS").parent().attr("style", "display: none !important"); 
             $("#btnCrearInvitacion").show();
             $("#btnPendiente").show();
             fncValidateActividadesNoCumplidas();
@@ -1541,14 +1555,17 @@
                 $(".nAvanceGeneral").html(aryData.nAvance);
                 $(".nRBGeneral").html(aryData.nRentaBasica);
                 $(".nOportunidad").html(aryData.nOportunidad);
-                $(".nCompraGeneral").html(aryData.nCompra);
-                $(".nTicketGeneral").html(aryData.nTicket);
-                $(".nEfectividadGeneral").html(aryData.nEfectividad);
                 $(".nTotalProspectosGeneral").html(aryData.nTotalCantidadProspectos);
+                $(".nEfectividadGeneral").html(aryData.nEfectividad);
+                $(".nIndiceApertura").html(aryData.nTasaCliente);
+                $(".nCierresRG").html(aryData.nTotalCierre);
                 $(".nEmpleadosActivos").html(aryData.nEmpleadosActivos);
                 $(".nProductividadGeneral").html(aryData.sProductividad);
-                $(".nIndiceApertura").html(aryData.nTasaCliente);
+                $(".nTipoPromedioConversionRG").html(aryData.nTiempoPromedioConversion);
 
+
+                // $(".nCompraGeneral").html(aryData.nCompra);
+                // $(".nTicketGeneral").html(aryData.nTicket);
  
                 fncIndicativosHoy(jsnData,false,(aryData)=>{
 
@@ -1593,7 +1610,6 @@
             };
 
          
-
             fncDrawCardProspecto(jsnData, "#list-p-"+ jsnData.nIdEtapa ,false , true, bShowLoader);
 
             var jsnData = {
@@ -1622,13 +1638,13 @@
             fncDrawCardProspecto(jsnData, "#list-p-"+ jsnData.nIdEtapa ,false , true, bShowLoader);
 
             var jsnData = {
-                nIdNegocio      : '<?=$nIdNegocio?>',
-                nIdEtapa        : '<?=$nIdEtapaEnProceso?>',
-                nIdSupervisor   : nIdSupervisor,
-                nIdUsuario      : window.isAsesor ? '<?=$user["nIdUsuario"]?>' : "",
-                sFiltro         : $("body").data("sfiltro"),
-                sBuscador       : sBuscador
-
+                nIdNegocio          : '<?=$nIdNegocio?>',
+                nIdEtapa            : '<?=$nIdEtapaEnProceso?>',
+                nIdSupervisor       : nIdSupervisor,
+                nIdUsuario          : window.isAsesor ? '<?=$user["nIdUsuario"]?>' : "",
+                sFiltro             : $("body").data("sfiltro"),
+                sBuscador           : sBuscador,
+                nValidacionAdmin    : 0
             };
 
             fncDrawCardProspecto(jsnData, "#list-p-"+ jsnData.nIdEtapa ,false , true, bShowLoader);
@@ -1678,10 +1694,9 @@
 
             fncDrawCardProspecto(jsnData, "#list-p-"+ jsnData.nIdEtapa ,false , true, bShowLoader);
         }
-
     }
 
-    window.fncDrawCardProspecto = function(jsnData,sHtmlTag,bPendiente = true, bSowMore = true , bShowLoader = true ){
+    window.fncDrawCardProspecto = function(jsnData,sHtmlTag,bPendiente = true, bSowMore = true , bShowLoader = true , bPrintIndicativos = true ){
         
         var sHtml = ``;
 
@@ -1700,8 +1715,7 @@
             
                 $.each(aryData.aryData, function (nKeyItem, aryItem) {
  
-                  //console.log(aryItem.aryUltimaCita ,  (typeof aryItem.aryUltimaCita === 'object')  );
-                    sHtml += `<div class="col-12 col-md-12 px-0 px-md-0 items">
+                     sHtml += `<div class="col-12 col-md-12 px-0 px-md-0 items">
                                 <div class="card-prospecto border-top-pr border-left-pr etapa-${aryItem.nIdEtapa}-border-left border-top-${aryItem.aryEmpleado.sColorSuperEmpleado.toLowerCase()} mb-3">  
                                         <div class="row no-gutters mb-1">
                                             <div class="col-10">
@@ -1715,7 +1729,7 @@
                                             </div>
                                             <div class="col-2 d-flex justify-content-end">
                                                 ${bPendiente ? 
-                                                `<a class="pr-icon-edit" href="javascript:;" onclick="fncTerminarProspecto(${aryItem.nIdProspecto},'${aryItem.nIdProspectoFormat}',${aryItem.aryEmpleado.nIdUsuario},'${fncUc(aryItem.aryEmpleado.sNombre)}', '${unescape(fncUc(aryItem.sCliente.replace(/"/g, '&quot;').replace(/"/g, '\\\\\"').replace( "'", " ")))}' );"><i class="far fa-check-circle"></i></a>`  : 
+                                                `<a class="pr-icon-edit" href="javascript:;" onclick="fncTerminarProspecto(${aryItem.nIdProspecto});"><i class="far fa-check-circle"></i></a>`  : 
                                                 `<a class="pr-icon-edit" href="javascript:;" onclick="fncEditarProspecto(${aryItem.nIdProspecto});"> ${ bEdit ? `<i class="far fa-edit"></i>` : `<i class="far fa-eye"></i>` } </a>`}
                                             </div>
                                         </div>
@@ -1748,9 +1762,10 @@
                                 </div>`;
                 });
 
+ 
                 var  aryIndicativos = aryData.aryIndicativos ;
 
-                var sHtmlIndi    = `<b>${aryIndicativos.nTotalCantidadProspectos}</b> por <b>${simbolo_moneda + aryIndicativos.nTotal}</b> y <b>${aryIndicativos.nTotalUnidades} ${aryIndicativos.nTotalUnidades == 1 ? 'Unidad' : 'Unidades'} </b> `;
+                var sHtmlIndi    = `<b>${aryIndicativos.nTotalCantidadProspectos}</b> por <b>${aryIndicativos.sMonedaNegocio + aryIndicativos.nTotal}</b> y <b>${aryIndicativos.nTotalUnidades} ${aryIndicativos.nTotalUnidades == 1 ? 'Unidad' : 'Unidades'} </b> `;
                 var sDivHtmlIndi = `#descr-prospec-${jsnData.nIdEtapa}`;
                 
                 if(bSowMore){
@@ -1768,7 +1783,10 @@
                 }
 
                 $(sHtmlTag).html(sHtml);
-                $(sDivHtmlIndi).html(sHtmlIndi);
+
+                if(bPrintIndicativos){
+                    $(sDivHtmlIndi).html(sHtmlIndi);
+                }
 
                 if(bSowMore){
                     setTimeout(() => {
@@ -1813,8 +1831,6 @@
 
 
     // Oculatar o mostrar el siderbar 
-
-  
     function fncGetProspectos(jsnData, bShowLoader= true , fncCallback) {
         $.ajax({
             type: 'post',
@@ -2038,14 +2054,13 @@
 </script>
 <!-- Invitar -->
 
-
 <!-- Pendientes -->
 <script>
   
     $(function() {
 
         // Formulario Pendientes
-        
+
         $("#btnPendiente").on('click', function() {
             
             var jsnData = {
@@ -2053,17 +2068,14 @@
                 nIdEtapa         : '<?=$nIdEtapaPendiente?>',
                 nValidacionAdmin : 1
             };
-
-            fncDrawCardProspecto(jsnData,"#content-pendientes",true,false);
+            // snData,sHtmlTag,bPendiente = true, bSowMore = true , bShowLoader = true , bPrintIndicativos = true )
+            fncDrawCardProspecto(jsnData,"#content-pendientes",true,false , true,false);
             $("#modalPendientes").modal("show");
-        });
-
-    
-        
+        });    
     });
 
     // Funciones de la tabla o layout Principal 
-    function fncTerminarProspecto(nIdProspecto,nIdProspectoFormat,nIdUsuario,sEmpleado,sCliente){
+    function fncTerminarProspecto(nIdProspecto){
 
         if(confirm("¿Estas seguro de validar este prospecto?")){
 
@@ -2079,23 +2091,23 @@
                         nIdNegocio       : '<?=$nIdNegocio?>',
                         nIdEtapa         : '<?=$nIdEtapaPendiente?>',
                         nValidacionAdmin : 1
-                     };
-
-                    fncDrawCardProspecto(jsnData,"#content-pendientes",true,false);
-                    fncDrawProspectosForState();
-
-                    var messageJSON = {
-                        type       : 'NOTIFICACION_VALIDACION_PROSPECTO',
-                        message    : {
-                            nIdProspecto            : nIdProspecto,
-                            nIdProspectoFormat      : nIdProspectoFormat,
-                            nIdUsuario             : nIdUsuario,
-                            sEmpleado               : sEmpleado,
-                            sCliente                : sCliente
-                        }
                     };
 
-                    websocket.send(JSON.stringify(messageJSON));
+                    fncDrawCardProspecto(jsnData,"#content-pendientes",true,false,true,false);
+                    fncDrawProspectosForState();
+
+                    // var messageJSON = {
+                    //     type       : 'NOTIFICACION_VALIDACION_PROSPECTO',
+                    //     message    : {
+                    //         nIdProspecto            : nIdProspecto,
+                    //         nIdProspectoFormat      : nIdProspectoFormat,
+                    //         nIdUsuario              : nIdUsuario,
+                    //         sEmpleado               : sEmpleado,
+                    //         sCliente                : sCliente
+                    //     }
+                    // };
+                    // websocket.send(JSON.stringify(messageJSON));
+
                     fncDrawIndicativosGeneralHoy();
                     fncDrawNotificaciones(false);
                     toastr.success(aryData.success);
@@ -2131,34 +2143,39 @@
 <!-- Prospecto -->
 <script>
 
-
     $(document).ready(function() {
 
         window.fncTriggerDrawProspecto();
 
-        $("#btnCrearProspecto").on("click", function() { 
+        $("#btnCrearProspecto").on("click", function() {
 
-            window.fncTriggerDrawProspecto((bStatus)=>{
-                
-                $("#content-etapa-prospecto").hide();
-                $("#content-historico-prospecto").hide();  
-                $("#content-titulo").hide();
+            fncCleanFormProspecto();
+            fncCleanAll();
+            fncCollap();
+     
+            $("#content-etapa-prospecto").hide();
+            $("#content-historico-prospecto").hide();  
+            $("#content-titulo").hide();
 
-                //$("#content-cambio-consultor").hide();
-                fncCleanAll();
 
-                if(window.isAsesor){
-                    $("#nIdUsuarioP").val('<?=$user["nIdUsuario"]?>').trigger("change");
-                }
-
-                $("#table-servicios,#table-productos").hide();
-                $("#formProspecto").data("sAccion","crear");
-                $("#title-prospectos").html("Crear Prospecto");
-                $("#formProspecto").data("nIdRegistro", 0);  
-                $("#formProspecto").modal("show");
-                fncCollap();
-            });        
-
+            if(window.isAsesor){
+                $("#nIdUsuarioP").val('<?=$user["nIdUsuario"]?>').trigger("change");
+            }
+            
+            $("#nIdEtapa").val("<?=$nIdEtapaProgramada?>").trigger("change");
+            $("#table-servicios,#table-productos").hide();
+            $("#formProspecto").data("sAccion","crear");
+            $("#title-prospectos").html("Crear Prospecto");
+            $("#formProspecto").data("nIdRegistro", 0);  
+            $("#formProspecto").data("nPorcentajeTributo", <?=$aryNegocio["nPorcentajeTributo"]?>);
+            $("#formProspecto").data("nIdMoneda", <?=$aryNegocio["nIdMoneda"]?>);
+            $("#formProspecto").data("nTipoProspecto", <?=$aryNegocio["nTipoProspecto"]?>);
+            $("#formCEActividad").data("nUltimoItem",0);
+            $("#formCEAdjunto").data("nUltimoItem",0);            
+            $("#sNota").off();
+            $("#sNota").data("nUltimoItem",0);
+            $("#btnEditarCliente,#btnAgregarCatalogo").show();   
+            $("#formProspecto").modal("show");
         });
 
         $("#formProspecto").find("form").on("submit",function(event){
@@ -2171,21 +2188,57 @@
            var arySegmentaciones = [];
            var aryCatalogos      = [];
            var aryActividades    = [];
-           var sNota             = $("#sNota");
-           var nIdUsuario        = $("#nIdUsuarioP");           
-           var nEstado           = $("#nEstado");
 
-           var aryServicios = fncGetDataTableCatalogo("#table-servicios");
-           var aryProductos = fncGetDataTableCatalogo("#table-productos");
+           var nIdEtapa          = $("#nIdEtapa").find("option:selected").val() 
+           var sNota             = $("#sNota").val().trim();
+           var nIdUsuario        = $("#nIdUsuarioP").val();
+
+           var aryServicios     = fncGetDataTableCatalogo("#table-servicios");
+           var aryProductos     = fncGetDataTableCatalogo("#table-productos");
+           var nTipoProspecto   = $("#formProspecto").data("nTipoProspecto");
+           var nIdMoneda        = $("#formProspecto").data("nIdMoneda");
+           var nValidacionAdmin = 0;
 
            aryCatalogos = aryServicios.concat(aryProductos);
+
+           // Validaciones
+            if( nIdUsuario == null){
+                toastr.error("Error.Debe de seleccionar un asesor de ventas .Porfavor verifique");
+                return;
+            }
+
+            if( nIdEtapa == 0 ){
+                toastr.error("Error.Debe de seleccionar un etapa.Porfavor verifique");
+                return;
+            }
+
+        
+            // Si el tipo de propsecto es largo
+            if(nTipoProspecto == '<?=$nTipoProspectoLargo?>'){
+
+                // Si es de prospecto largo vamos a validar que cuando finalize un prospecto exiga que tenga un contrato 
+                if(nIdEtapa == '<?=$nIdEtapaCierre?>'){
+                    var objContenedorContrato = $("#content-contrato").find(".archivos").eq(0);
+
+                    if(objContenedorContrato.length == 0){
+                        toastr.error("Error. Para poder finalizar un prospecto , primero debes de adjuntar un contrato.Porfavor verifique");
+                        return false;
+                    }
+
+                    // Si el vendedor da en finalizar y es un prospecto largo valida que tenga un contrato y ademas setea la etapa para que este en proceso
+                    nValidacionAdmin = 1;
+                    nIdEtapa         =  '<?=$nIdEtapaEnProceso?>';
+                }
+                
+            }
             
-            if($(".content-segmetacion").length>0){
+            if($(".content-segmetacion").length > 0){
                 $(".content-segmetacion").each(function(nIndex,element){
-                        var sLabel              = $(this).find("label").html();
-                        var nIdSegmentacion     = $(this).find("label").data("nidsegmentacion");
-                        var nRequerido          = $(this).find("select").data("nrequerido");
-                        var nIdDetalle          = $(this).find("select").find("option:selected").val();
+                        var sLabel                   = $(this).find("label").html();
+                        var nIdSegmentacion          = $(this).find("label").data("nidsegmentacion");
+                        var nRequerido               = $(this).find("select").data("nrequerido");
+                        var nIdDetalle               = $(this).find("select").find("option:selected").val();
+                        var nIdProspectoSegmentacion = $(this).find("select").data("nIdProspectoSegmentacion");
 
                         if(nRequerido == 1){
                             if(nIdDetalle == 0){
@@ -2195,64 +2248,68 @@
                         }
 
                         arySegmentaciones.push({
-                            nIdSegmentacion : nIdSegmentacion,
-                            nIdDetalle      : nIdDetalle
+                            nIdProspectoSegmentacion : nIdProspectoSegmentacion, 
+                            nIdSegmentacion          : nIdSegmentacion,
+                            nIdDetalle               : nIdDetalle
                         });
                 });
             }
 
             if($(".content-actividades").length>0){
                 $(".content-actividades").find(".content-actividad").each(function(nIndex,element){
-                        var jsnDataItem = $(this).data("jsndata");
-                        aryActividades.push(jsnDataItem);
+                    var jsnDataItem = $(this).data("jsndata");
+                    aryActividades.push(jsnDataItem);
                 });
             }
-
-
-            // if(nIdCliente.length>0 && nIdCliente.val()==0){
-            //     toastr.error("Error.Debe de seleccionar un cliente .Porfavor verifique");
-            //     return;
-            // }  
-            
-            if($("#table-servicios").length>0 && $("#table-productos").length>0 && aryCatalogos.length == 0){
+           
+            if($("#table-servicios").length>0  && $("#table-productos").length>0 && aryCatalogos.length == 0){
                 toastr.error("Error.Debe de seleccionar un producto o servicio .Porfavor verifique");
                 return;
             } else if(nIdRegistro == 0 && $(".content-actividades").length>0  && aryActividades.length == 0 ){
                 toastr.error("Error.Debe de ingresar una cita para el prospecto .Porfavor verifique");
                 return;
             }
-
-            if( nIdUsuario.length > 0 &&  nIdUsuario.val() === null){
-                toastr.error("Error.Debe de seleccionar un asesor de ventas .Porfavor verifique");
-                return;
-            }
-           
-
-            var jsnData = {
-                nIdRegistro         : nIdRegistro, 
-                nIdCliente          : nIdCliente.length > 0 ? nIdCliente.val() : null,
-                sTitulo             : sTitulo.length>0 ? sTitulo.val()  : null,
-                nIdNegocio          : '<?=$nIdNegocio?>',
-                nIdUsuario          : nIdUsuario.val(),
-                aryCatalogos        : aryCatalogos,
-                arySegmentaciones   : arySegmentaciones,
-                aryActividades      : aryActividades,
-                sNota               : sNota.length > 0 ? sNota.val() : null,
-                nEstado             : nIdRegistro == 0 ? 1 : nEstado.val()
-            };
             
+            var aryNotas = [];
+
+            if(nIdRegistro == 0){
+
+                aryNotas.push({
+                    nIdNota : 0,
+                    sNota   : sNota
+                });
+
+            } else {
+
+                $("#formProspecto").find(".item-nota").each(function(nIndex,element){
+                    var nIdNota = $(this).data("nidnota");
+                    var sNota   = $(this).find("textarea").val().trim();
+
+                    aryNotas.push({
+                        nIdNota : nIdNota,
+                        sNota   : sNota
+                    });
+                });
+                
+            }
+
             // Data extra 
-            var aryDataExtra  = $("#formProspecto").data("aryDataExtra");
-            var aryValueExtra = [];
+            var aryDataExtra  = $("#formProspecto").find(".control-extra");
+            var aryCamposExtra = [];
             
             if(aryDataExtra.length>0){
 
-                $.each(aryDataExtra, function( nIndex, aryItem ) {
+                $.each(aryDataExtra, function( nIndex, element ) {
 
-                    var sWidgetSystem     = aryItem.sWidgetSystem;
-                    var sTipoCampoSystem  = aryItem.sTipoCampoSystem;
-                    var sWidget           = aryItem.sWidget;
-                    var nRequerido        = aryItem.nRequerido;
+                    var jsnDataWidget =  $(element).data("jsndatawidget");
+
+                    var nIdWidget         = jsnDataWidget.nIdWidget;
+                    var sWidgetSystem     = jsnDataWidget.sWidgetSystem;
+                    var sTipoCampoSystem  = jsnDataWidget.sTipoCampoSystem;
+                    var sWidget           = jsnDataWidget.sWidget;
+                    var nRequerido        = jsnDataWidget.nRequerido;
+                    var sVal = '';
+                    var bExisteError = false;
 
                     switch (sTipoCampoSystem) {
 
@@ -2261,33 +2318,27 @@
                         case "textarea":
                         case "date":
 
-                            var sVal  = $("#" + sWidgetSystem).val();
+                            sVal  = $("#" + sWidgetSystem).val();
                             if(nRequerido == 1){
                                 if(sVal == ''){
                                     toastr.error("Error.Debe de ingresar un "+ sWidget +".Porfavor verifique");
-                                    return;
+                                    bExisteError= true;
+                                    return false;
                                 }
                             }
 
-                            aryValueExtra.push({
-                                [sWidgetSystem] : sVal,
-                            });
-                            
-
                             break;
                         case "select":
-                            var sVal = $("#" + sWidgetSystem).find("option:selected").val();
+                            sVal = $("#" + sWidgetSystem).find("option:selected").val();
 
                             if(nRequerido == 1){
                                 if(sVal == '0'){
                                     toastr.error("Error.Debe de seleccionar un "+ sWidget +".Porfavor verifique");
-                                    return;
+                                    bExisteError= true;
+                                    return false;
                                 }
                             }
-
-                            aryValueExtra.push({
-                                [sWidgetSystem] : sVal
-                            });
+ 
                             break;
 
                         case "radio":
@@ -2296,29 +2347,129 @@
                             if(nRequerido == 1){
                                 if(sVal === undefined){
                                     toastr.error("Error.Debe de seleccionar un "+ sWidget +".Porfavor verifique");
-                                    return;
+                                    bExisteError= true;
+                                    return false;
                                 }
                             }
 
-                            aryValueExtra.push({
-                                [sWidgetSystem]  : sVal != undefined ? sVal : null 
-                            });
+                            sVal = sVal != undefined ? sVal : null 
 
                             break;
                     }
+
+                    if(bExisteError){
+                        return false;
+                    }
+
+                    aryCamposExtra.push({
+                        nIdProspectoCampoExtra : typeof $("#" + sWidgetSystem).data("nIdProspectoCampoExtra") == 'undefined' ? 0 : $("#" + sWidgetSystem).data("nIdProspectoCampoExtra"),
+                        nIdWidget              : nIdWidget,
+                        sValor                 : sVal
+                    })
+
+                });
+            }
+
+
+            // Calcular totales 
+            var nTotalUnidades = 0;
+            var nSubTotal = 0;
+            var nPorcentajeDsct = 0 ;
+            var nDsct = 0 ;
+            var nNeto = 0 ;
+            var nPorcentajeTributo = $("#formProspecto").data("nPorcentajeTributo");
+            var nTributo = 0;
+            var nTotal = 0;
+
+            if(aryCatalogos.length > 0){
+                aryCatalogos.forEach(element => {
+                    nSubTotal      += parseFloat(element.nTotal); 
+                    nTotalUnidades += parseFloat(element.nCantidad); 
                 });
 
-                jsnData = Object.assign({ aryValueExtra : aryValueExtra }, jsnData);
+                nDsct    = nSubTotal * (nPorcentajeDsct / 100);
+                nNeto    = nSubTotal - nDsct;
+                nTributo = nNeto * ( nPorcentajeTributo / 100 );
+                nTotal   = nNeto + nTributo;
+            }
+
+          
+            // Adjuntos 
+            var objContrato           = null;
+            var objContenedorContrato = $("#content-contrato").find(".archivos").eq(0);
+            if(objContenedorContrato.length > 0 && objContenedorContrato.data("nidadjunto") == 0){
+                objContrato = objContenedorContrato.data("objTmpFile");
+            }
+
+            var aryObjOtros   = [];
+            var aryOtros      = $("#content-adjuntos").find(".archivos");
+
+            if(aryOtros.length > 0){
+
+                $.each( aryOtros ,function(){
+                    if( $(this).data("nidadjunto") == 0 ){
+                        aryObjOtros.push($(this).data("objTmpFile"));
+                    }
+                });
 
             }
-           
-            fncGrabarProspecto(jsnData,function(aryData){
+
+            var aryIdAdjuntos = [];
+            var aryAdjuntos   = $(".archivos");
+
+            if(aryAdjuntos.length > 0){
+
+                $.each( aryAdjuntos ,function(){
+                    if( $(this).data("nidadjunto") != 0 ){
+                        aryIdAdjuntos.push(  $(this).data("nidadjunto") );
+                    }
+                });
+
+            }
+
+            // console.log( aryIdAdjuntos );
+            // return  ; 
+
+            var formData = new FormData();
+            formData.append('nIdRegistro', nIdRegistro);
+            formData.append('nIdCliente', ( nIdCliente.length > 0 ? nIdCliente.val() : null ));
+            formData.append('sTitulo', (sTitulo.length>0 ? sTitulo.val()  : null));
+            formData.append('nIdNegocio','<?=$nIdNegocio?>');
+            formData.append('nIdEtapa', nIdEtapa);
+            formData.append('nIdUsuario', nIdUsuario);
+            formData.append('aryCatalogos', JSON.stringify(aryCatalogos));
+            formData.append('arySegmentaciones', JSON.stringify(arySegmentaciones));
+            formData.append('aryActividades', JSON.stringify(aryActividades));
+            formData.append('aryNotas', JSON.stringify(aryNotas));
+            formData.append('nEstado', 1);
+            formData.append('nIdMoneda', nIdMoneda);
+            formData.append('nTotalUnidades', nTotalUnidades);
+            formData.append('nSubTotal', nSubTotal);
+            formData.append('nPorcentajeDsct', nPorcentajeDsct);
+            formData.append('nDsct', nDsct);
+            formData.append('nNeto', nNeto);
+            formData.append('nPorcentajeTributo', nPorcentajeTributo);
+            formData.append('nTributo', nTributo);
+            formData.append('nTotal', nTotal);
+            formData.append('aryCamposExtra', JSON.stringify(aryCamposExtra));
+            formData.append('nTipoProspecto', nTipoProspecto);
+            formData.append('objContrato', objContrato);
+            formData.append('nValidacionAdmin', nValidacionAdmin);
+
+            if(aryObjOtros.length > 0){
+                aryObjOtros.forEach(element => {
+                    formData.append('aryObjOtros[]', element);
+                });
+            }
+
+            formData.append('aryIdAdjuntos', JSON.stringify(aryIdAdjuntos));
+            fncGrabarProspecto(formData,function(aryData){
                 if(aryData.success){
 
                     $("#formProspecto").modal("hide");
                     fncGetProspectosForEtapas();
+                    fncDrawNotificaciones();
                     toastr.success(aryData.success);
-
                 } else {
                     toastr.error(aryData.error);
                 }
@@ -2326,45 +2477,151 @@
 
         });
 
-
         $('#formProspecto').on('hidden.bs.modal', function () {
-            
-            fncClearInputs($("#formProspecto").find("form"));
-
-            $("#content-actividades").html("");
-            $("#content-notas").html("");
-            $("#formProspecto").find("table").find("tbody").html("");
-            $("#nIdCliente").prop("disabled",false);
-            $("#btnCrearCliente").show();
-            $('#formProspecto').find("table").find("tfoot").find(".cantidad-total").html("0");
-            $('#formProspecto').find("table").find("tfoot").find(".total").html("0");
-            $("#formProspecto").find(".btn-submit").show();
-            
-            // Si 
-            if($("#formProspecto").data("sAccion") == "editar") {
-
-                $("#formProspecto").data("nIdRegistro",0);
-                fncDrawProspectosForState();
-                fncDrawNotificaciones(false);
-
-            }
-           
+            // Al cerrar la ventana de edicion de un prospecto aumtomaticamente se actualizar ala venta de prospectos
+            // if($("#formProspecto").data("sAccion") == "editar") {
+            //     $("#formProspecto").data("nIdRegistro",0);
+            //     fncDrawProspectosForState();
+            //     fncDrawNotificaciones(false);
+            // }
         });
-
 
         $("#btnVerAdjuntos").on("click",function(){
-            $("#nIdEtapa-"+'<?=$nIdEtapaEnProceso?>').trigger("click");
+            $("#formCEAdjunto").modal("show");
         });
 
-        $(".btnFiltro").on("click",function(){
-            $("body").data("sfiltro",$(this).data("sfiltro"));
-            fncGetProspectosForEtapas();
+        $("#btnLinkEnviarPropuesta").on("click",function(){
+
+            var nIdCliente = $("#nIdCliente").val();
+            var nIdUsuario = $("#nIdUsuarioP").val();
+            var aryServicios = fncGetDataTableCatalogo("#table-servicios");
+            var aryProductos = fncGetDataTableCatalogo("#table-productos");
+
+           var aryCatalogos = aryServicios.concat(aryProductos);
+
+            if(nIdCliente === null){
+                toastr.error("Error.Para poder enviar la propuesta primnero debe seleccionar un cliente .Porfavor verifique");
+                return;
+            } else if  (nIdUsuario === null){
+                toastr.error("Error.Para poder enviar la propuesta primnero debe seleccionar un asesor de ventas .Porfavor verifique");
+                return;
+            } else if ( aryCatalogos.length == 0 ){
+                toastr.error("Error. Antes de enviar la propuesta ud agregar productos o servicio.Porfavor verifique.");
+                return;
+            }
+
+            var sLink = route('propuesta/'+$("#formProspecto").data("nIdRegistro"));
+
+            $("#sLinkCopyEP").val(sLink);
+            $("#formLinkPropuesta").modal("show");
         });
 
-    
+        $("#btnCopyLinkEP").on('click', function() {
+            copyToClipboard('sLinkCopyEP');
+            toastr.success("Genial!. Link copiado en portapeles");
+        });
+
+        $("#nIdEtapa").change(function(){
+
+            var nIdEtapa = $(this).val();
+
+            if( nIdEtapa == 0 ) { return false; }
+
+            // Validaciones
+            var aryServicios = fncGetDataTableCatalogo("#table-servicios");
+            var aryProductos = fncGetDataTableCatalogo("#table-productos");
+
+            var aryCatalogos = aryServicios.concat(aryProductos);
+
+            // Validar que al pasar exista a envio de propuesta valida el envio de propuesta
+            if(nIdEtapa == '<?=$nIdEtapaEnvioPropuesta?>'){
+                if($("#nIdCliente").val() === null){
+                    alert("Error. Antes de enviar la propuesta ud debe de eligir un cliente.Porfavor verifique.");
+                    return;
+                } else if ( aryCatalogos.length == 0 ){
+                    alert("Error. Antes de enviar la propuesta ud agregar productos o servicio.Porfavor verifique.");
+                    return;
+                }
+            } 
+
+            $("#btnVerAdjuntos").hide();
+            if( $("#formProspecto").data("nIdRegistro") != 0 ){ 
+
+                if(nIdEtapa == '<?=$nIdEtapaCierre?>'){
+                    $("#btnVerAdjuntos").show();
+                } else if(nIdEtapa == '<?=$nIdEtapaEnProceso?>'){
+                    $("#btnVerAdjuntos").show();
+                    fncClearInputs($("#formCEAdjunto").find("form"));
+                    $("#formCEAdjunto").modal("show");
+                } else {
+                    switch(nIdEtapa){
+                        case '<?=$nIdEtapaRechazado?>' : 
+
+                                alert("Ups. Se rechazo el prospecto porfavor indica una nota porque se rechazo.");
+
+                                var sNota = prompt("Motivo de rechazo", "");
+
+                                if(sNota.length <= 0){
+                                    return false;
+                                }
+
+                                var nIdRegistro = $("#sNota").data("nUltimoItem") + 1;
+
+                                var jsnNota = {
+                                    nIdRegistro         : nIdRegistro,
+                                    nIdNota             : 0,
+                                    sAutor              : '<?=$user["sNombre"]?>',
+                                    nIdUsuario          : '<?=$user["nIdUsuario"]?>',
+                                    dFechaActualizacion : moment().format('DD/MM/YYYY'),
+                                    sNota               : sNota
+                                };
+                                
+                                $("#content-notas").prepend(fncDrawNotas(jsnNota));
+                        break;
+                        case '<?=$nIdEtapaEnvioPropuesta?>':
+                        break;
+                    }
+                }
+            }
+        });
     });
 
 
+    // Limpia el formulario de prospecto y setea los ids en 0
+    window.fncCleanFormProspecto = function(){
+
+        // Limpiar el formulario de prospecto
+        $("#sNota").off();
+        fncClearInputs($("#formProspecto").find("form"));
+        $("#table-servicios,#table-productos").find("tbody").html("");
+        $("#content-actividades,#content-notas,#content-cambios").html("");
+        $("#nIdUsuarioP").val(null).trigger("change");
+        $("#nIdCliente").val(null).trigger("change");
+        $("#nIdCliente").prop("disabled",false);
+ 
+        // Limpiar data extra
+        var aryDataExtra = $("#formProspecto").find(".control-extra");
+        if(aryDataExtra.length>0){
+            $.each(aryDataExtra, function( nIndex, element ) {
+
+                var jsnDataWidget   = $(element).data("jsndatawidget");
+                var sWidgetSystem   = jsnDataWidget.sWidgetSystem;
+                
+                $("#" + sWidgetSystem).data("nIdProspectoCampoExtra",0);
+            });
+        }
+
+        // Limpiar las segmentaciones 
+        if($(".content-segmetacion").length > 0){
+            $(".content-segmetacion").each(function(nIndex,element){
+                $(this).find("select").data("nIdProspectoSegmentacion" ,0);
+            });
+        }
+        $('#formProspecto').find("table").find("tfoot").find(".cantidad-total").html("0");
+        $('#formProspecto').find("table").find("tfoot").find(".total").html("0");
+    }
+
+    // Edita un prospecto
     window.fncEditarProspecto = function(nIdProspecto){
 
         var jsnData = {
@@ -2372,16 +2629,12 @@
             nIdNegocio   : '<?=$nIdNegocio?>'
         };
 
+        $("#btnLinkEnviarPropuesta").hide();
         $("#btnDescargarPdfProspecto").hide();
         $("#btnVerAdjuntos").hide();
 
-        //window.fncTriggerDrawProspecto((bSatus)=>{
-            //if(bSatus){
-            // } else{
-            //     alert("Ups... ocurrio un error, vuelve a intentarlo o porfavor solicita asistencia.");
-            // }
-
-        // });
+        fncCleanFormProspecto();
+        fncCleanAll();
 
         fncMostrarProspecto(jsnData , function(aryData){
 
@@ -2403,12 +2656,27 @@
                 
                 var aryProspecto             = aryData.aryData.aryProspecto ;
                 var aryProspectoSegmentacion = aryData.aryData.aryProspectoSegmentacion ;
-                var aryConfigExtra           = aryData.aryData.aryConfigExtra ;
+                var aryProspectoCatalogo     = aryData.aryData.aryProspectoCatalogo ;
+                var aryActividad             = aryData.aryData.aryActividad ;
+                var aryNotas                 = aryData.aryData.aryNotas ;
+                var aryCambios               = aryData.aryData.aryCambios ;
+                var aryCamposExtras          = aryData.aryData.aryCamposExtras;
+                var aryAdjuntos              = aryData.aryData.aryAdjuntos;
 
-                $("#nIdUsuarioP").val(aryProspecto.nIdUsuario).trigger('change.select2'); 
- 
-                var aryConfigExtra       = aryData.aryData.aryConfigExtra ;
-                var sLinkWebCotizacion   = aryData.aryData.sLinkWebCotizacion ;
+
+                $("#nIdUsuarioP").val(aryProspecto.nIdUsuario).trigger('change');
+                $("#formProspecto").data("nPorcentajeTributo",aryProspecto.nPorcentajeTributo);
+                $("#formProspecto").data("nTipoProspecto",aryProspecto.nTipoProspecto);
+                $("#formProspecto").data("nIdMoneda",aryProspecto.nIdMoneda);
+
+                var sLinkWebCotizacion   = aryData.aryData.sLinkWebCotizacion;
+
+                // Esta Opcion solo estara habilitada para propspectos largos
+                if(  aryProspecto.nIdEtapa == '<?=$nIdEtapaProgramada?>' && aryProspecto.nTipoProspecto == '<?=$nTipoProspectoLargo?>' ){
+                    $("#btnLinkEnviarPropuesta").show();
+                } else {
+                    $("#btnLinkEnviarPropuesta").hide();
+                }
 
                 if(
                     aryProspecto.nIdEtapa == '<?=$nIdEtapaEnvioPropuesta?>' ||
@@ -2427,14 +2695,10 @@
                     $("#btnVerAdjuntos").show();
                 }
 
-                
                 // Etapa Propsecto 
-                fncSetEtapa(aryProspecto.nIdEtapa);
+                $("#nIdEtapa").val(aryProspecto.nIdEtapa);
 
-
-                // Data default
                 // Cliente
-                
                 if($("#nIdCliente").length>0){
                     
 
@@ -2448,11 +2712,12 @@
                     } else {
                         $("#btnCrearCliente").hide();
                         $('#nIdCliente').prop('disabled', true);
-                        $("#nIdCliente").val(aryProspecto.nIdCliente).trigger('change.select2'); 
+                        $("#nIdCliente").val(aryProspecto.nIdCliente).trigger('change'); 
                     }
                 
                 }
 
+                // Titulo
                 if($("#sTituloProspecto").length > 0 && aryProspecto.sTitulo.length > 0){
                     
                     $("#sTituloProspecto").val(aryProspecto.sTitulo);
@@ -2465,117 +2730,152 @@
                 
                 }
 
-
-                // Se hace los ajax en cadena  ya que tengo qie esperar a que todos los elementos cargen para poder bloquear los inputs
-                // Catalogo validar que en todos los prospectos productos
-
+                // Catalogo Productos o servicios  
                 if($("#table-servicios").length >0 && $("#table-productos").length > 0 ){
 
-                    var jsnData = {
-                        nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                    };
+                    $('#table-productos').find("tbody").html("");
+                    $('#table-servicios').find("tbody").html("");
 
-                    fncListarCatalogo(jsnData, (bStatus) => {
+                    var bExistsProd = false;
+                    var bExistsServ = false;
 
-                        if(bStatus){
+                    $("#table-productos").hide();
+                    $("#table-servicios").hide();
 
-                        // Actividades
-                            var jsnData = {
-                                nIdRegistro     : $("#formProspecto").data("nIdRegistro"),
-                                nTipoActividad  :  1
-                            };
+                    $.each(aryProspectoCatalogo, function (nKeyItem, element) {
 
-                            fncListarActividades(jsnData,(bStatus)=>{
-                                // Se Listaron las actividades 
+                        var sTable = element.sTipoItem == 'PRODUCTO' ? '#table-productos' : '#table-servicios';
 
-                                if(bStatus){
-                                    // Notas
-                                    $("#sNota").attr("onblur","fncGrabarNota(0,this);");
-                                                    
-                                    var jsnData = {
-                                        nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                                    };
+                        if(element.sTipoItem == 'PRODUCTO') bExistsProd = true;
+                        if(element.sTipoItem == 'SERVICIO') bExistsServ = true;
 
-                                    fncListarNota(jsnData,(bStatus)=>{
-                                        // Se Listaron las notas  
+                        var jsnDataFilas = {
+                            nIdProspectoCatalogo : element.nIdProspectoCatalogo,
+                            nIdProspecto         : $("#formProspecto").data("nIdRegistro"),
+                            nIdRow               : nKeyItem + 1,
+                            nIdCatalogo          : element.nIdCatalogo,
+                            sTable               : sTable,
+                            sCatalogo            : element.sNombreCatalogo,
+                            nPrecio              : element.nPrecio,
+                            nCantidad            : element.nCantidad,
+                            nTotal               : parseFloat(element.nPrecio) * parseFloat(element.nCantidad)
+                        };
+ 
+                        $(sTable).find("tbody").append(fncDrawFilaCatalogo(jsnDataFilas));
 
-                                        if(bStatus){
-                                            
-                                            fncListarCambios(jsnData,(bStatus)=>{
-
-                                                if(bStatus){
-
-                                                // Si se listaron todos 
-
-                                                    if(isRolAdmin){
-
-                                                        // Es administrador
-                                                        var sTitle = "Editar Prospecto" ;
-
-                                                        $("#btnAgregarCatalogo").show();
-                                                        $("#btnCrearActividad").show();
-                                                        $("#title-prospectos").html(sTitle); 
-
-                                                        fncEditForm("#formProspecto" , sTitle  );
-
-                                                       setTimeout(() => {
-                                                            $("#nIdCliente").attr("onchange","fncActualizarCliente($(this));");
-                                                            if($("#sTituloProspecto").length > 0){
-                                                                $("#sTituloProspecto").attr("onblur","fncActualizarTitulo($(this),event);");
-                                                                $("#sTituloProspecto").attr("onkeyup","fncActualizarTitulo($(this),event);");
-                                                            }
-                                                        },700);
-
-                                                    } else {
-
-                                                        var sTitle = "Ver Prospecto" ;
-
-                                                        $("#btnAgregarCatalogo").hide();
-                                                        $("#btnCrearActividad").hide();
-                                                        $("#btnVerAdjuntos").hide();
-                                                        $("#dropdownEtapa").addClass("disabled");
-                                                        $("#title-prospectos").html(sTitle); 
-
-                                                        $("#formProspecto")
-                                                        .find(".modal-body")
-                                                        .find("a.text-danger")
-                                                        .each(function () {
-                                                            $(this).attr("onclick", "");
-                                                            $(this).find("i.material-icons").html("block");
-                                                        });
-
-                                                        $("#formProspecto")
-                                                        .find(".modal-body")
-                                                        .find(".content-actividad")
-                                                        .find(".col-9")
-                                                        .each(function () {
-                                                            $(this).attr("onclick", "");
-                                                        });
-
-
-                                                        setTimeout(() => {
-
-                                                            fncViewForm("#formProspecto" , sTitle );
-
-                                                        }, 500);
-
-                                                    }
-
-                                                }
-
-
-                                            });
-
-                                        }
-
-                                    });
-                                }
-
-                            });
-
-                        }
                     });
 
+                    if(bExistsProd) $("#table-productos").show();
+                    if(bExistsServ) $("#table-servicios").show();
+
+                    setTimeout(()=>{ 
+                        fncTotales(null,'#table-productos'); 
+                        fncTotales(null,'#table-servicios');
+                    }, 1000);
+
+                }
+
+
+                var sHtml = ``;
+
+                // Actividad
+                if($("#content-actividades").length > 0){
+
+                    $("#content-actividades").html("");
+
+                    if(aryActividad.length>0){
+
+                        aryActividad.forEach(function(element,nIndex) {
+
+                            var jsnData = {
+                                nIdRegistro         : nIndex + 1,  // Actua como el nidrow,
+                                nIdUsuario          : element.nIdUsuario ,
+                                nIdEstadoActividad  : element.nIdEstadoActividad,
+                                nIdProspecto        : $("#formProspecto").data("nIdRegistro"),
+                                nIdActividad        : element.nIdActividad,
+                                nTipoActividad      : '<?=$nTipoActividadCita?>',
+                                sFechaActividad     : element.dFecha,
+                                sHoraActividad      : element.dHora,
+                                sLatitud            : element.sLatitud,
+                                sLongitud           : element.sLongitud,
+                                sNota               : element.sNota,
+                                nEstado             : 1
+                            };
+
+                            var jsnCard = {
+                                nIdRegistro         : nIndex + 1,  // Actua como el nidrow
+                                nIdActividad        : element.nIdActividad, // id de la tabla actividades
+                                jsnData             : jsnData,
+                                nEdit               : 0,
+                                event               : `fncValidarActividad(${jsnData.nIdRegistro},${jsnData.nIdActividad},'${jsnData.sFechaActividad}' , '${jsnData.sHoraActividad}' , '${fncEncodeHTMLValue(jsnData.sNota)}');`,
+                                sColor              : element.sColor,
+                                sNombreEmpleado     : element.sEmpleado,
+                                sFechaCreacion      : element.dFechaCreacion,
+                                sFechaActividad     : element.sFecha,
+                                sHoraActividad      : element.dHora,
+                                sLatitud            : element.sLatitud,
+                                sLongitud           : element.sLongitud,
+                                nIdEstadoActividad  : element.nIdEstadoActividad,
+                                sEstado             : element.sEstadoActividadLarga,
+                            };
+
+                            sHtml += fncDrawCardActividad(jsnCard);
+                        });
+
+                        $("#content-actividades").html(sHtml);
+                    }
+                }
+
+                $("#formCEActividad").data("nUltimoItem",aryActividad.length);
+
+                // Listar Notas 
+                sHtml = ``;
+                $("#content-notas").html("");
+                if(aryNotas.length>0){
+
+                    aryNotas.forEach(function(element,nIndex) {
+
+                        var jsnNota = {
+                            nIdRegistro         : (nIndex+1),
+                            nIdNota             : element.nIdNota,
+                            sAutor              : element.sAutor,
+                            nIdUsuario          : element.nIdUsuario,
+                            dFechaActualizacion : moment(element.dFechaActualizacion,'YYYY-MM-DD').format('DD/MM/YYYY'),
+                            sNota               : element.sNota
+                        };
+
+                        sHtml += fncDrawNotas(jsnNota);
+                    });
+
+                    sHtml += `<div class="col-12 my-1 text-right"><a href="javascript:;" data-action="show" class="ShowMore">Ver Todo</a></div>`;
+                    
+                    $("#content-notas").html(sHtml);
+                    fncEventListenerShowMoreLess();
+                }
+
+                $("#sNota").data("nUltimoItem",aryNotas.length);
+
+                // Listar cambios
+                sHtml = ``;
+                $("#content-cambios").html("");
+
+                if(aryCambios.length > 0){
+
+                    aryCambios.forEach((element) => {
+
+                        var jsnNota = {
+                            sNombreEmpleado : element.sNombreEmpleado,
+                            sFecha          : element.sFechaCreacion,
+                            sCambio         : element.sCambio
+                        };
+
+                        sHtml += fncDrawCardCambios(jsnNota);
+                    });
+
+                    sHtml += `<div class="col-12 my-1 text-right"><a href="javascript:;" data-action='show' class="ShowMore">Ver Todo</a></div>`;
+
+                    $("#content-cambios").html(sHtml);
+                    fncEventListenerShowMoreLess();
                 }
 
                 // Segmentacion 
@@ -2583,245 +2883,162 @@
                     aryProspectoSegmentacion.forEach((element) => {
                         $("#nIdDetalleSegmentacion-"+element.nIdSegmentacion).val(element.nIdDetalleSegmentacion);
                         $("#nIdDetalleSegmentacion-"+element.nIdSegmentacion).data("nIdProspectoSegmentacion",element.nIdProspectoSegmentacion);
-                        $("#nIdDetalleSegmentacion-"+element.nIdSegmentacion).attr('onchange',`fncActualizarSegmentacion(${element.nIdSegmentacion},this);`);
                     });
                 }
 
-
-                // Data default
-
                 // Data Extra 
-                if(aryConfigExtra.length>0){
-                    aryConfigExtra.forEach((element) => {
+                if(aryCamposExtras.length>0){
+                    aryCamposExtras.forEach(function(element,nIndex){
                     
                         var sTipoCampoSystem = element.sTipoCampoSystem;
                         var sWidgetSystem    = element.sWidgetSystem;
-                        var sValue           = aryProspecto[element.sWidgetSystem];
-                        var sWidget          = element.sWidget;
+                        var sValue           = element.sValor;
 
-                        
+                        $("#"+sWidgetSystem).data("nIdProspectoCampoExtra" , element.nIdProspectoCampoExtra);
+
                         switch (sTipoCampoSystem) {
                             case "text":
                             case "tel":
                             case "date":
                             case "textarea":
-
                                     $("#"+sWidgetSystem).val(sValue);
-                                    $("#"+sWidgetSystem).off();
-                                    $("#"+sWidgetSystem).on('blur',function(){
-
-                                        if($(this).val() == '') {return false;}
-                                        
-                                        if( $("#nIdUsuarioP").val() === null){
-                                            toastr.error("Error . Para poder realizar el cambio ud debe de seleccionar un asesor . Porfavor verifique"); 
-                                            return false;
-                                        }
-
-                                        var jsnData = {
-                                            nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                                            nIdUsuario : $("#nIdUsuarioP").val(),
-                                            sWidget     : sWidget,
-                                            sCol        : $(this).attr('name'),
-                                            sVal        : $(this).val()
-                                        };
-
-
-                                        fncActualizarControlExtra(jsnData,function(aryData){
-                                            if(aryData.success){
-                                                toastr.success(aryData.success);
-                                            } else {
-                                                toastr.error(aryData.error);
-                                            }
-                                        });
-
-                                    });
-
                                 break;
                             case "select":
 
                                 $("#"+sWidgetSystem).val(sValue);
-
-                                $("#"+sWidgetSystem).off();
-
-                                $("#"+sWidgetSystem).on('change',function(){
-
-                                    if($(this).find("option:selected").val() == 0) {return false;}
-                                    
-                                    if( $("#nIdUsuarioP").val() === null){
-                                        toastr.error("Error . Para poder realizar el cambio ud debe de seleccionar un asesor . Porfavor verifique"); 
-                                        return false;
-                                    }
-
-                                    var jsnData = {
-                                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                                        nIdUsuario : $("#nIdUsuarioP").val(),
-                                        sWidget     : sWidget,
-                                        sCol        : $(this).attr('name'),
-                                        sVal        : $(this).find("option:selected").val()
-                                    };
-
-                                    fncActualizarControlExtra(jsnData,function(aryData){
-                                        if(aryData.success){
-                                            toastr.success(aryData.success);
-                                        } else {
-                                            toastr.error(aryData.error);
-                                        }
-                                    });
-
-                                });
-
                             break;
                             case "radio":
-                                
-                                $('input:radio[name='+sWidgetSystem+']').val([sValue]);
-
-                                $('input:radio[name='+sWidgetSystem+']').off();
-
-                                $('input[type=radio][name='+sWidgetSystem+']').change(function() {
-
-                                    if( $("#nIdUsuarioP").val() == null){
-                                        toastr.error("Error . Para poder realizar el cambio ud debe de seleccionar un asesor . Porfavor verifique"); 
-                                        return false;
-                                    }
-
-                                    var jsnData= {
-                                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                                        nIdUsuario : $("#nIdUsuarioP").val(),
-                                        sWidget     : sWidget,
-                                        sCol        : $(this).attr('name'),
-                                        sVal        : $(this).val()
-                                    };
-
-                                    fncActualizarControlExtra(jsnData,function(aryData){
-                                        if(aryData.success){
-                                            toastr.success(aryData.success);
-                                        } else {
-                                            toastr.error(aryData.error);
-                                        }
-                                    });
-
-
-                                });
-
+                                $('input:radio[name='+sWidgetSystem+']').val([sValue]); 
                             break;
                         }
                     });
                 }
 
 
+                // Adjuntos 
+                $("#formCEAdjunto").data("nUltimoItem",0);
+                $("#contenedor-archivo-contrato,#contenedor-adjuntos").hide();
+                $("#content-adjuntos,#content-contrato").html(``);
+                fncClearInputs($("#formCEAdjunto").find("form"));
 
-                $("#formProspecto").find(".btn-submit").hide();
+                if(aryAdjuntos.length > 0){
+
+                    aryAdjuntos.forEach(element => {
+
+                        var nIdRow = $("#formCEAdjunto").data("nUltimoItem") + 1;
+
+                        if(element.nContrato == 1){
+
+                            var jsnData = {
+                                nIdRow          : nIdRow,
+                                nIdAdjunto      : element.nIdAdjunto, 
+                                sLinkArchivo    : docs(element.sNombreArchivo),
+                                sNombreArchivo  : element.sNombreArchivo
+                            };
+
+                            $("#contenedor-archivo-contrato").show();
+                            $("#content-contrato").html(fncDrawItemAdjunto(jsnData));
+
+                        } else {
+
+                            $("#contenedor-adjuntos").show();
+
+                            var jsnData = {
+                                nIdRow          : nIdRow,
+                                nIdAdjunto      : element.nIdAdjunto, 
+                                sLinkArchivo    : docs(element.sNombreArchivo),
+                                sNombreArchivo  : element.sNombreArchivo
+                            };
+
+                            $("#content-adjuntos").append(fncDrawItemAdjunto(jsnData));
+                        }
+
+                        $("#formCEAdjunto").data("nUltimoItem" , nIdRow);
+                    });
+
+                }
+
+ 
+                if(isRolAdmin){
+
+                   // Es administrador
+                   var sTitle = "Editar Prospecto" ;
+
+                   $("#btnEditarCliente").show();
+                   $("#btnAgregarCatalogo").show();
+                   $("#btnCrearActividad").show();
+                   $("#title-prospectos").html(sTitle); 
+                   $("#nIdEtapa").prop("disabled",false);
+                   fncEditForm("#formProspecto" , sTitle );
+
+                } else {
+
+                   var sTitle = "Ver Prospecto" ;
+
+                   $("#btnLinkEnviarPropuesta,#btnAgregarCatalogo,#btnCrearActividad,#btnVerAdjuntos,#btnEditarCliente").hide();
+                   $("#nIdEtapa").prop("disabled",true);
+                   $("#title-prospectos").html(sTitle); 
+                   fncViewForm("#formProspecto" , sTitle );
+
+                   $(".btn-icon-action").hide();
+                }
+
+                $("#sNota").on("blur",fncCrearNota);
                 $("#formProspecto").modal("show");
                 toastr.success(aryData.success);
-
             } else {
                 toastr.error(aryData.error);
             }
-
         });
-
-        
-       
     }
 
-    window.fncActualizarCliente = function(element){
+    // Crea notas en la vista
+    window.fncCrearNota = function() {
 
-        if( typeof $("#formProspecto").data("nIdRegistro") != "undefined" && $("#formProspecto").data("nIdRegistro") > 0){
+        var sNota = $("#sNota").val().trim();
 
-            if( element.val() !== null){
+        if(sNota.length <= 0){
+            return false;
+        }
+
+        if(confirm("¿Estas seguro de crear esta nota")){
+
+            var nIdRegistro =  $("#sNota").data("nUltimoItem") + 1;
+
+            var jsnNota = {
+                nIdRegistro         : nIdRegistro,
+                nIdNota             : 0,
+                sAutor              : '<?=$user["sNombre"]?>',
+                nIdUsuario          : '<?=$user["nIdUsuario"]?>',
+                dFechaActualizacion : moment().format('DD/MM/YYYY'),
+                sNota               : sNota
+            };
             
-                var nIdCliente = element.val();
-
-                if( $("#nIdUsuarioP").val() === null){
-                    toastr.error("Error . Para poder realizar el cambio ud debe de seleccionar un asesor . Porfavor verifique"); 
-                    return false;
-                }
-
-                var jsnData = {
-                    nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                    nIdUsuario  : $("#nIdUsuarioP").val(),
-                    sCol        : 'nIdCliente',
-                    sVal        :  nIdCliente
-                };
-
-                fncActualizarControlExtra(jsnData,function(aryData){
-                    if(aryData.success){
-                        toastr.success(aryData.success);
-                    } else {
-                        toastr.error(aryData.error);
-                    }
-                });
-            }
-
+            $("#content-notas").prepend(fncDrawNotas(jsnNota));
+            $("#sNota").val("");
+            $("#sNota").data("nUltimoItem" , nIdRegistro);
+            toastr.success("Genial!. Se agrego una nueva nota");
         }
-    }   
 
-    window.fncActualizarTitulo = function(element , event ){
-        
-        if(event.type == 'blur' || (event.type == 'keyup' &&  event.which == 13)){
 
-            console.log(event);
-            if( typeof $("#formProspecto").data("nIdRegistro") != "undefined" && $("#formProspecto").data("nIdRegistro") > 0){
-
-                var sTituloOld = element.data("sTituloOld");
-                var sTitulo    = element.val().trim();
-
-                if(sTituloOld != sTitulo){
-
-                    
-                    if( $("#nIdUsuarioP").find("option:selected").val() == '0'){
-                        toastr.error("Error . Para poder realizar el cambio de titulo debe de seleccionar un asesor . Porfavor verifique"); 
-                        return false;
-                    }
-
-                    var jsnData = {
-                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                        nIdUsuario : $("#nIdUsuarioP").val(),
-                        sCol        : 'sTitulo',
-                        sVal        :  sTitulo
-                    };
-
-                    fncActualizarControlExtra(jsnData,function(aryData){
-                        if(aryData.success){
-                            toastr.success(aryData.success);
-                        } else {
-                            toastr.error(aryData.error);
-                        }
-                    });
-                }
-
-            }
-
-        }
     }
 
     window.fncDrawNotas = function(jsnData){
-        
-        var isPropietario = false;
-        
-        // if(window.isAsesor){
-        //     isPropietario  = $("#nIdUsuarioP").val()  == jsnData.nIdUsuario;
-        // } else if (window.isSuper){
-        //     isPropietario  = '<?=$user["nIdUsuario"]?>' == jsnData.nIdUsuario;
-        // } else {
-        //     isPropietario  = $("body").data("nidusuario") == jsnData.nIdUsuario;
-        // }
-
-       
-        isPropietario  = '<?=$user["nIdUsuario"]?>' == jsnData.nIdUsuario;
+    
+        var isPropietario  = '<?=$user["nIdUsuario"]?>' == jsnData.nIdUsuario;
      
         var sHtml = `
-                 <div class="col-12 my-1 items">
+                 <div id="item-nota-${jsnData.nIdRegistro}" data-nidregistro="${jsnData.nIdRegistro}" data-nidnota="${jsnData.nIdNota}" class="col-12 my-1 items item-nota">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1 bd-highlight">
                             <p class="m-0 font-14">${jsnData.dFechaActualizacion} - ${fncUc(jsnData.sAutor)}</p>
                         </div>
                         <div class="bd-highlight">
-                         ${ isPropietario ? `<a href="javascript:;" class="text-danger btn-delete-actividad" onclick="fncEliminarNota(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">delete</i> <div></div></a>`:``}
+                         ${ isPropietario ? `<a href="javascript:;" class="text-danger btn-icon-action" onclick="fncEliminarNota(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">delete</i> <div></div></a>`:``}
                         </div>
                     </div>
                     <div class="form-group mb-1">
-                     <textarea ${ isPropietario ? `` : `readonly` }  data-stext="${jsnData.sNota.replace(/"/g, '&quot;')}" onblur="fncGrabarNota(${jsnData.nIdRegistro},this);" class="form-control d-block" placeholder="Escribe una nota.."  cols="1" rows="1">${jsnData.sNota}</textarea>
+                     <textarea ${ isPropietario ? `` : `readonly` }  data-stext="${jsnData.sNota.replace(/"/g, '&quot;')}" class="form-control d-block" placeholder="Escribe una nota.."  cols="1" rows="1">${jsnData.sNota}</textarea>
                     </div>
                 </div>`;
 
@@ -2850,47 +3067,6 @@
         fncRemoveDisabled("#formProspecto");
     }
 
-    window.fncBuscarDocument = function(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'api/' + jsnData.sTipo + '/' + jsnData.sNumeroDoc,
-            beforeSend: function() {
-                // fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                //  fncOcultarLoader();
-            }
-        });
-    }
-
-    window.fncActualizarSegmentacion = function(nIdSegmentacion,element){
-        
-        var nIdDetalleSegmentacion   = $(element).find("option:selected").val();
-        var nIdProspectoSegmentacion = $(element).data("nIdProspectoSegmentacion");
-
-        if(nIdProspectoSegmentacion == '0'){ return false; }
-
-        var jsnData = {
-            nIdProspectoSegmentacion  : nIdProspectoSegmentacion,
-            nIdProspecto              : $("#formProspecto").data("nIdRegistro"),
-            nIdSegmentacion           : nIdSegmentacion,
-            nIdDetalleSegmentacion    : nIdDetalleSegmentacion
-        };
-
-        fncActualizaProspectoSegmentacion(jsnData,function(aryData){
-            if(aryData.success){
-                var sCambio  = "Se hizo una actualizacion en el campo " +$(element).parent().find("label").text();
-                fncGuardarCambio(sCambio);
-                toastr.success(aryData.success);
-            }
-        });
-
-    }
-
     window.fncTriggerDrawProspecto = function(fncCallback = null){
 
         $("#content-ce-prospecto").html("");
@@ -2902,18 +3078,18 @@
             }
         });
     }
+
     // Eventos del formulario de prospecto
     window.fncEventListenerProspecto = function(){
 
         $("#btnCrearActividad").off();
         $("#btnAgregarCatalogo").off();
-        $(".dropdown-menu-etapa a").off();
         $("#btnVerHistorial").off();
         $("#btnVerDetallesCliente").off();
         $("#btnVerDetallesCliente").off();
         $("#nIdUsuarioP").off();
 
-
+        // Boton para crear actividad
         $("#btnCrearActividad").on("click", function() {
             
             window.fncCleanAll();
@@ -2927,6 +3103,7 @@
             }
 
             $("#formCEActividad").data("nIdRegistro",0);
+            $("#formCEActividad").data("nIdActividad",0);
             $("#formCEActividad").find(".modal-title").html("Crear Cita");
             $("#content-cumplio-actividad").hide();
             $("#content-reprogramar").hide();
@@ -2936,7 +3113,7 @@
 
         $("#btnAgregarCatalogo").on("click", function() {
             window.fncCleanAll();
-            $("#formCECatalogo").data("nIdRegistro", 0);
+            $("#formCECatalogo").data("nIdRow", 0);
             $("#formCECatalogo").modal("show");
         });
 
@@ -2948,106 +3125,7 @@
             $("#formCECliente").modal("show");
         });
 
-        $(".dropdown-menu-etapa a").click(function(){
-
-           // Validaciones
-           
-           var aryServicios = fncGetDataTableCatalogo("#table-servicios");
-           var aryProductos = fncGetDataTableCatalogo("#table-productos");
-
-           var aryCatalogos = aryServicios.concat(aryProductos);
-
-
-            // Validar que al pasar exista a envio de propuesta valida el envio de propuesta
-            var nIdEtapa = $(this).data("value");
-
-            if(nIdEtapa == '<?=$nIdEtapaEnvioPropuesta?>'){
-                if($("#nIdCliente").val() === null){
-                    alert("Error. Antes de enviar la propuesta ud debe de eligir un cliente.Porfavor verifique.");
-                    return;
-                } else if ( aryCatalogos.length == 0 ){
-                    alert("Error. Antes de enviar la propuesta ud agregar productos o servicio.Porfavor verifique.");
-                    return;
-                }
-                
-            } 
-
-
-            $("#dropdownEtapa").text($(this).text());
-            $("#dropdownEtapa").val($(this).text());
-
-
-            if( nIdEtapa == 0 ) { return false; }
-
-            if( $("#formProspecto").data("nIdRegistro") != 0 ){ 
-
-                if(nIdEtapa == '<?=$nIdEtapaEnProceso?>'){
-
-                    var jsnData = {
-                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                    };
-
-                    fncDrawAdjuntos(jsnData);
-
-                } else {
-
-                    var jsnData = {
-                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                        nIdUsuario  : $("#nIdUsuarioP").val(),
-                        nIdNegocio  : '<?=$nIdNegocio?>',
-                        nIdEtapa    : nIdEtapa
-                    };
-
-                    fncActualizarEstadoProspecto(jsnData,function(aryData){
-                    
-                        if(aryData.success){
-                            
-                            var bSend = aryData.bSend;
-
-                            if( aryData.bSend === false && aryData.sLinkArchivo.length > 0){
-                                Object.assign(document.createElement('a'), { target: '_blank', href: aryData.sLinkArchivo }).click();
-                            }
-
-                            
-                            switch(nIdEtapa){
-                                case '<?=$nIdEtapaRechazado?>' : 
-
-                                    alert("Ups.Se rechazo el prospecto porfavor indica una nota porque se rechazo.");
-
-                                    var sNota = document.getElementById("sNota"); 
-                                    sNota.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                    
-                                    setTimeout(() => {
-                                        $('input[name="sNota"]').focus();
-                                    }, 700);
-                                
-                                break;
-                                case '<?=$nIdEtapaEnvioPropuesta?>':
-
-                                    $("#btnDescargarPdfProspecto").attr("href",route( 'admin/prospecto/fncDownloadPropuesta/' + $("#formProspecto").data("nIdRegistro") ) );
-                                    $("#btnDescargarPdfProspecto").show();
-                                
-                                break;
-                            }
-
-                         
-
-                            toastr.success(aryData.success);
-
-                        } else {
-                             alert(aryData.error);
-                        }
-
-                    });
-
-                }
-            }
-
-
-        });
-    
         $("#btnVerHistorial").on('click',function(){
-            
             
             var nIdCliente  = $("#nIdCliente").find("option:selected").val();
             
@@ -3074,7 +3152,6 @@
 
         });
 
-            
         $("#btnVerDetallesCliente").on('click',function(){
             
             
@@ -3127,7 +3204,6 @@
         });
 
         $("#btnEditarCliente").on('click',function(){
-            
             
             var nIdCliente  = $("#nIdCliente").find("option:selected").val();
             
@@ -3182,8 +3258,6 @@
 
 
                     $("#formCECliente").modal("show");
-
-
                  } else {
                     toastr.error(aryData.error);
                 }
@@ -3192,42 +3266,15 @@
 
         });
 
-        $("#nIdUsuarioP").on("change",function(){
-            
-            if($(this).val() == 0) return;
-            var nIdProspecto = $("#formProspecto").data("nIdRegistro");
-
-            if(nIdProspecto > 0 && $(this).val() !== null){
-
-                var jsnData = {
-                    nIdProspecto : $("#formProspecto").data("nIdRegistro"),
-                    nIdUsuario   : $(this).val()
-                };
-
-                fncActualizaEmpleadoProspecto(jsnData,(aryData)=>{
-                    if(aryData.success){
-                        //alert("Al cambiar el prospecto a otro asesor de ventas ud ya no podra ver este prospecto e");
-                        toastr.success(aryData.success);
-                    } else {
-                        toastr.error(aryData.error);
-                    }
-                });
-            }
-
-        });
-
         $("#nIdUsuarioP").select2({
             placeholder :"Selecciona un asesor",
             allowClear  : true,
         });
-        $("#nIdUsuarioP").val(null).trigger("change");
 
         $("#nIdCliente").select2({
             placeholder :"Selecciona un cliente",
             allowClear  : true
         });
-        $("#nIdCliente").val(null).trigger("change");
-
     }
 
     window.fncDrawProspecto = function(fncCallback) {
@@ -3243,88 +3290,10 @@
         });
     }
 
-    window.fncGetDataTableCatalogo = function(sTable){
-        var aryData = [];
-        
-        $(sTable).find("tbody").find("tr").each(function(){
-
-            var nIdCatalogo = $(this).find("td").eq(0).html();
-            var nCostoItem  = $(this).find("td").eq(3).find(".costo-unitario").val();
-            var nCantidad   = $(this).find("td").eq(4).find(".cantidad").val();
-
-            aryData.push({
-                nIdCatalogo : nIdCatalogo,
-                nPrecio     : nCostoItem,
-                nCantidad   : nCantidad    
-            });
-
-        });
-
-        return aryData;
-    }
-
-    window.fncGrabarNota  = function(nIdRegistro,element){
-        
-        var sNota         = $(element).val().trim();
-        var sNotaAnterior = $(element).data("stext").trim();
-
-        // Si la nota es igual o vacia no lo actualiza 
-        if(sNota == '' ||  sNotaAnterior == sNota ) { return false;}
-
-        var jsnData = {
-            nIdRegistro      : nIdRegistro,
-            nIdProspecto     : $("#formProspecto").data("nIdRegistro"),
-            nIdUsuario       : '<?=$user["nIdUsuario"]?>',
-            sNota            : sNota,
-            nIdNegocio       : '<?=$nIdNegocio?>',
-            nEstado          : 1
-        };
-
-        fncGrabarProspectoNota(jsnData,function(aryData){
-           
-            if(aryData.success){
-
-                toastr.success(aryData.success);
-
-                var jsnData = {
-                    nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                };
-
-                fncListarNota(jsnData);
-                if(nIdRegistro == 0) {$("#sNota").val("");}
-            } else {
-                toastr.error(aryData.error);
-            }
-
-        });
-    }
-    
     window.fncEliminarNota  = function(nIdRegistro,element){
-        
+        console.log(true);
         if(confirm("¿Estas seguro de eliminar este item?")){
-
-            var jsnData = {
-                nIdRegistro : nIdRegistro
-            };
-
-            fncEliminarProspectoNota(jsnData, function(aryData){
-
-                if(aryData.success){
-                    
-                    var jsnData = {
-                        nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                    };
-
-                    fncListarNota(jsnData);
-                    fncGuardarCambio("Se elimino una nota");
-
-                    toastr.success(aryData.success);
-            
-                } else {
-                    toastr.error(aryData.error);
-                }
-
-            });
+           $("#item-nota-"+nIdRegistro).remove();
         }
     }
 
@@ -3352,7 +3321,7 @@
                 
                 fncListarCambios(jsnData);
                 
-                //toastr.success(aryData.success);
+                toastr.success(aryData.success);
 
             } else {
                 toastr.error(aryData.error);
@@ -3360,225 +3329,8 @@
         });
 
     }
-
-    window.fncListarNota  = function(jsnData,fncCallBackEndProccess = null){
-        
-        $("#content-notas").html("");
-
-        fncGetProspectoNotaByIdProspecto(jsnData,function(aryData){
-            
-            if(aryData.success){
-
-               var sHtml = ``;
-
-                if(aryData.aryData.length>0){
-
-                    aryData.aryData.forEach((element) => {
-
-                        var jsnNota = {
-                            nIdRegistro         : element.nIdNota,
-                            sAutor              : element.sAutor,
-                            nIdUsuario          : element.nIdUsuario,
-                            dFechaActualizacion : moment(element.dFechaActualizacion,'YYYY-MM-DD').format('DD/MM/YYYY'),
-                            sNota               : element.sNota
-                        };
-
-                        sHtml += fncDrawNotas(jsnNota);
-                    });
-
-                    sHtml += `<div class="col-12 my-1 text-right"><a href="javascript:;" data-action="show" class="ShowMore">Ver Todo</a></div>`;
-                    
-                    $("#content-notas").html(sHtml);
-                    fncEventListenerShowMoreLess();
-            
-                }
-
-               if(fncCallBackEndProccess != null)  fncCallBackEndProccess(true);
-                //toastr.success(aryData.success);
-            } else {
-                toastr.error(aryData.error);
-            }
-
-        });
-         
-    }
-
-    window.fncListarActividades = function(jsnData , fncCallBackEndProccess = null){
-        
-        $("#content-actividades").html("");
-
-        fncGetActividadByIdProspecto(jsnData,function(aryData){
-            
-            if(aryData.success){
-
-               var sHtml = ``;
-
-                if(aryData.aryData.length>0){
-
-                    aryData.aryData.forEach((element) => {
-
-                        var jsnCard = {
-                            nIdRegistro         : element.nIdActividad,
-                            jsnData             : null,
-                            nEdit               : 0,
-                            event               : `fncValidarActividad(${element.nIdActividad});`,
-                            sColor              : element.sColor,
-                            sNombreEmpleado     : element.sEmpleado,
-                            sFechaCreacion      : element.dFechaCreacion,
-                            sFechaActividad     : moment(element.dFecha,'YYYY-MM-DD').format('DD/MM/YYYY'),
-                            sHoraActividad      : element.dHora,
-                            sLatitud            : element.sLatitud,
-                            sLongitud           : element.sLongitud,
-                            nIdEstadoActividad  : element.nIdEstadoActividad,
-                            sEstado             : element.sEstadoActividadLarga
-                        };
-
-                        sHtml += fncDrawCardActividad(jsnCard);
-                    });
-
-                    $("#content-actividades").html(sHtml);
-
-    
-                }
-                if ( fncCallBackEndProccess != null ) fncCallBackEndProccess(true);
-
-                //toastr.success(aryData.success);
-            } else {
-                toastr.error(aryData.error);
-            }
-
-        });
-         
-    }
-
-    window.fncListarCambios  = function(jsnData,fncCallBackEndProccess= null){
-        
-        $("#content-cambios").html("");
-
-        fncGetCambioProspectoByIdProspecto(jsnData,function(aryData){
-            
-            if(aryData.success){
-
-               var sHtml = ``;
-
-                if(aryData.aryData.length > 0){
-
-                    aryData.aryData.forEach((element) => {
-
-                        var jsnNota = {
-                            sNombreEmpleado : element.sNombreEmpleado,
-                            sFecha          : moment(element.dFechaCreacion,'YYYY-MM-DD').format('DD/MM/YYYY'),
-                            sCambio         : element.sCambio
-                        };
-
-                        sHtml += fncDrawCardCambios(jsnNota);
-                    });
-
-                    sHtml += `<div class="col-12 my-1 text-right"><a href="javascript:;" data-action='show' class="ShowMore">Ver Todo</a></div>`;
-
-                    $("#content-cambios").html(sHtml);
-                    fncEventListenerShowMoreLess();
-                    if(fncCallBackEndProccess != null) fncCallBackEndProccess(true);
-                }
-
-               // toastr.success(aryData.success);
-            } else {
-                toastr.error(aryData.error);
-            }
-
-        });
-         
-    }
-
-    window.fncDrawAdjuntos = function(jsnData , bShow= true){
-        
-        fncClearInputs($("#formCEAdjunto").find("form"));
-        $("#content-adjuntos").html(``);
-
-        fncObtenerProspectoAdjuntosByIdProspecto(jsnData,function(aryData){
-            if(aryData.success){
-
-                $("#btnDescargarContrato").attr("href","javascript:;");
-                $("#btnDescargarContrato").attr("download","");
-                $("#btnEliminarContrato").attr("onclick","");
-                $("#sContrato").data( "nIdAdjunto",0);
-                $(".dw-contrato").hide();
-
-                var aryData = aryData.aryData;
-                
-                $("#formCEAdjunto").data("nIdRegistro",0); //  Se va a crear nuevos adjuntos
-
-                if(aryData.length>0){
-
-                    $("#formCEAdjunto").data("nIdRegistro",1); //  Se van a editar nuevos adjuntos
-                    
-                    fncClearInputs($("#formCEAdjunto").find("form"));
-
-                    var sHtml = `<p id="titulo-adjuntos" class="mb-0">Adjuntos: </p>`;
-                    var nExistenAdjuntosOtros = false;
-
-                    aryData.forEach(aryElement => {
-
-                        if(aryElement.nContrato == 1){
-                            
-                            $("#sContrato").data( "nIdAdjunto", aryElement.nIdAdjunto );
-                            
-                            $("label[for='sContrato']").html( aryElement.sNombreArchivo );
-
-                            $("#btnDescargarContrato").attr("href",docs(aryElement.sNombreArchivo));
-                            $("#btnDescargarContrato").attr("download",aryElement.sNombreArchivo);
-                            $("#btnEliminarContrato").attr("onclick","fncEliminarAdjunto(" + aryElement.nIdAdjunto + ");");
-
-                            $(".dw-contrato").show();
-
-                        } else {
-
-                            nExistenAdjuntosOtros = true;
-                                
-                            var jsnData = {
-                                nIdAdjunto      : aryElement.nIdAdjunto, 
-                                sLinkArchivo    : docs(aryElement.sNombreArchivo),
-                                sNombreArchivo  : aryElement.sNombreArchivo
-                            };
-
-                            sHtml += fncDrawItemAdjunto(jsnData);
-                            
-                        }
-
-                    });
-
-                    $("#content-adjuntos").html(sHtml);
-                    setTimeout(() => {
-                        
-                        if(nExistenAdjuntosOtros){
-                            $("#titulo-adjuntos").show();
-                        } else {
-                            $("#titulo-adjuntos").hide();
-                        }
-                    }, 200);
-                    
-               
-                }
-                if(bShow) {
-                    $("#formCEAdjunto").modal("show");
-                }
-
-            } else {
-                toastr.error(error);
-            }
-
-        });
-
-    }
-
-    window.fncSetEtapa = function(nIdEtapa){
-       var sEtapa =  $("#nIdEtapa-"+nIdEtapa).text();
-       $("#dropdownEtapa").text(sEtapa);
-    }
-
 
     // llamadas al servidor
-
     function fncBuildFormProspecto(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
@@ -3597,12 +3349,15 @@
         });
     }
 
-    function fncGrabarProspecto(jsnData, fncCallback) {
+    function fncGrabarProspecto(formData, fncCallback) {
         $.ajax({
             type: 'post',
             dataType: 'json',
             url: web_root + 'admin/prospecto/fncGrabarProspecto',
-            data: jsnData,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
             beforeSend: function() {
                 fncMostrarLoader();
             },
@@ -3651,96 +3406,6 @@
         });
     }
 
-    function fncActualizaProspectoSegmentacion(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncActualizaProspectoSegmentacion',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncGetProspectoNotaByIdProspecto(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGetProspectoNotaByIdProspecto',
-            data: jsnData,
-            beforeSend: function() {
-               // fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                //fncOcultarLoader();
-            }
-        });
-    }
-    
-    function fncGrabarProspectoNota(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGrabarProspectoNota',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncEliminarProspectoNota(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncEliminarProspectoNota',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncActualizarControlExtra(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncActualizarControlExtra',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
     function fncGetCambioProspectoByIdProspecto(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
@@ -3764,24 +3429,6 @@
             type: 'post',
             dataType: 'json',
             url: web_root + 'admin/prospecto/fncGrabarCambioProspecto',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncActualizarEstadoProspecto(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncActualizarEstadoProspecto',
             data: jsnData,
             beforeSend: function() {
                 fncMostrarLoader();
@@ -3830,15 +3477,14 @@
             }
         });
     }
-    
-    function fncActualizaEmpleadoProspecto(jsnData, fncCallback) {
+
+    window.fncBuscarDocument = function(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
             dataType: 'json',
-            url: web_root + 'admin/prospecto/fncActualizaEmpleadoProspecto',
-            data: jsnData,
+            url: web_root + 'api/' + jsnData.sTipo + '/' + jsnData.sNumeroDoc,
             beforeSend: function() {
-                fncMostrarLoader();
+                 fncMostrarLoader();
             },
             success: function(data) {
                 fncCallback(data);
@@ -3849,10 +3495,403 @@
         });
     }
 
-
 </script>
 <!-- Prospecto -->
+ 
+<!-- Catalogo -->
+<script>
 
+    $(document).ready(function() {
+    
+        // Submit del formulario de Cliente
+        $("#formCECatalogo").find("form").on('submit',function(event){
+            
+            event.preventDefault();
+
+            var nIdRow                 = $("#formCECatalogo").data("nIdRow");
+            var nIdCatalogo            = $("#nIdCatalogo").find("option:selected").val();
+            var sCatalogo              = $("#nIdCatalogo").find("option:selected").text();
+            var nPrecio                = $("#nIdCatalogo").find("option:selected").data("nprecio");
+            var sTipoItem              = $("#nIdCatalogo").find("option:selected").data("ntipoitem");
+            var nCantidad              = $("#nCantidad").val();
+            var nTotal                 = parseFloat(nPrecio) * parseFloat(nCantidad);
+            var sTable                 = sTipoItem == "PRODUCTO" ? "#table-productos" : "#table-servicios";
+        
+            if (nIdCatalogo == 0) {
+                toastr.error('Error. Seleccione un producto o servicio. Porfavor verifique');
+                return;
+            } else if(nPrecio <= 0){
+                toastr.error('Error. Ingrese un precio de producto o servicio. Porfavor verifique');
+                return;
+            } else if(nCantidad <= 0){
+                toastr.error('Error. Ingrese una cantidad. Porfavor verifique');
+                return;
+            }
+
+            // Validar si esque el producto o servicio existe
+            var aryData = $(sTable).find("tbody").find("tr");
+
+            if(aryData.length > 0){
+
+                var bExiste = false;
+                $.each(aryData,function(){
+                    if($(this).data("nidcatalogo") == nIdCatalogo ){
+                        bExiste = true;
+                    }
+                });
+
+                if(bExiste){
+                    toastr.error('Error. El ' + (sTipoItem == "PRODUCTO" ? "producto" : "servicio" ) + 'ya se encuentra ingresado . Porfavor verifique');
+                    return;
+                }
+            }
+     
+            $(sTable).show();
+
+            if(nIdRow == 0){
+
+                var jsnData = {
+                    nIdProspectoCatalogo  : 0,
+                    nIdRow                : ($(sTable).find("tbody").find("tr").length) + 1,
+                    nIdProspecto          : $("#formProspecto").data("nIdRegistro"),
+                    nIdCatalogo           : nIdCatalogo,
+                    sTable                : sTable,
+                    sCatalogo             : sCatalogo,
+                    nPrecio               : nPrecio,
+                    nCantidad             : nCantidad,
+                    nTotal                : nTotal
+                };
+
+                $(sTable).find("tbody").append(fncDrawFilaCatalogo(jsnData));
+            }
+
+            fncTotales(null,sTable);
+            $("#formCECatalogo").modal("hide");
+        });
+
+        $("#nIdCatalogo").on('change',function(){
+
+            if( parseInt( $(this).find("option:selected").val() ) === 0) {$("#nCostoUnitario").val(0); return false;}
+            
+            var nPrecio = $(this).find("option:selected").data("nprecio");
+
+            $("#nCostoUnitario").val( fncNf(nPrecio) );
+        });
+
+    });
+
+    window.fncDrawFilaCatalogo = function(jsnData){   
+        var sHtml = ``;  
+        sHtml = `<tr data-nidrow="${jsnData.nIdRow}" data-nidprospectocatalogo="${jsnData.nIdProspectoCatalogo}" data-nidcatalogo="${jsnData.nIdCatalogo}"> 
+                    <td><div><a href="javascript:;" class="text-danger btn-icon-action font-18" onclick="fncEliminarItem(${jsnData.nIdCatalogo},'${jsnData.sTable}',this);" title="Eliminar"><i class="material-icons">delete</i></a></div></td>
+                    <td><div>${jsnData.sCatalogo}</div></td>
+                    <td class="cont-number"><div><input onblur="fncTotales(${jsnData.nIdCatalogo},'${jsnData.sTable}',event);" onkeyup="fncTotales('${jsnData.sTable}',event);" type="number" min="0.00" max="9999999.99" step="0.01" value="${jsnData.nPrecio}" autocomplete="off" class="form-control font-12 costo-unitario text-center w-70"></div></td>
+                    <td class="cont-number"><div><input onblur="fncTotales(${jsnData.nIdCatalogo},'${jsnData.sTable}',event);" onkeyup="fncTotales('${jsnData.sTable}',event);" type="number" value="${jsnData.nCantidad}" min="1" max="9999999" step="1" autocomplete="off" class="form-control font-12 cantidad text-center w-70"></div></td>
+                    <td><div>${fncNf(jsnData.nTotal)}</div></td>
+                </tr>`;
+        return sHtml;
+    }
+
+    window.fncGetDataTableCatalogo = function(sTable){
+        var aryData = [];
+        
+        $(sTable).find("tbody").find("tr").each(function(){
+
+            var nIdProspectoCatalogo = $(this).data("nidprospectocatalogo");
+            var nIdCatalogo          = $(this).data("nidcatalogo");
+
+            var nCostoItem          = $(this).find("td").eq(2).find(".costo-unitario").val();
+            var nCantidad           = $(this).find("td").eq(3).find(".cantidad").val();
+
+            aryData.push({
+                nIdProspectoCatalogo : nIdProspectoCatalogo,
+                nIdCatalogo          : nIdCatalogo,
+                nPrecio              : nCostoItem,
+                nCantidad            : nCantidad ,
+                nTotal               : parseFloat( nCostoItem ) * parseFloat(nCantidad) 
+            });
+        });
+
+        return aryData;
+    }
+
+
+    window.fncEliminarItem  = function(nIdCatalogo,sTable,element){
+        if(confirm("¿Estas seguro de eliminar este item?")){
+            $(element).parent().parent().parent().remove();            
+            setTimeout(()=>{ fncTotales(sTable); }, 500);
+        }
+    }
+
+    window.fncTotales = function(nIdCatalogo,sTable,event = null){
+
+        var nTotal         = 0;
+        var nCantidadTotal = 0;
+
+        $(sTable).find("tbody").find("tr").each(function(){
+
+            var nCostoItem = $(this).find("td").eq(2).find(".costo-unitario").val();
+            var nCantidad  = $(this).find("td").eq(3).find(".cantidad").val();
+            var nTotalItem = parseFloat(nCostoItem) * parseFloat(nCantidad);
+
+            $(this).find("td").eq(4).find("div").html( fncNf(nTotalItem) );
+            
+            if(event != null && event.type == "blur"){
+
+                $(this).find("td").eq(2).find(".costo-unitario").val( fncNf(nCostoItem) );
+            }
+
+            nTotal          += nTotalItem;
+            nCantidadTotal  += parseInt(nCantidad);
+        });
+        
+        $(sTable).find(".total").html(fncNf(nTotal));
+        $(sTable).find(".cantidad-total").html(nCantidadTotal);
+    }
+    
+</script>
+<!-- Catalogo -->
+
+<!-- Actividad -->
+<script>
+
+    window.sLatitudActividad = null;
+    window.sLongitudActividad = null;
+
+    $(document).ready(function() {
+        $("#formCEActividad").data("nIdItem",0);
+        $("#sFechaActividad").attr("min", moment().format('YYYY-MM-DD'));
+
+        // Submit del formulario de Cliente
+        $("#formCEActividad").find("form").on('submit',function(event){
+            
+            event.preventDefault();
+
+            var nIdRegistro         = $("#formCEActividad").data("nIdRegistro");
+            var nIdActividad        = $("#formCEActividad").data("nIdActividad");
+
+            var sFechaActividad     = $("#sFechaActividad").val();
+            var sHoraActividad      = $("#sHoraActividad").val();
+            var sNota               = $("#sNotaActividad").val();
+            var nCumplioActividad   = $('input[name=nCumplioActividad]:checked').val();
+        
+
+            if ( nCumplioActividad != '1' ) {
+                if (sFechaActividad == "") {
+                    toastr.error('Error. Seleccione un fecha de la cita. Porfavor verifique');
+                    return;
+                } else if (sHoraActividad == "") {
+                    toastr.error('Error. Seleccione una hora de la cita. Porfavor verifique');
+                    return;
+                }
+            }
+
+            if($("#nIdUsuarioP").val() == null){
+                toastr.error('Error. Seleccione un asesor. Porfavor verifique');
+                return;
+            }
+        
+            // Si se esta creando pues utilizaremos el utimo item
+            var nIdRegistroCurrent = 0;
+
+            if(nIdRegistro == 0){
+                nIdRegistroCurrent = $("#formCEActividad").data("nUltimoItem") + 1;
+                $("#formCEActividad").data("nUltimoItem" , nIdRegistroCurrent); 
+            } else {
+                nIdRegistroCurrent = nIdRegistro;
+            }
+
+            // nTipoActividad - 1 Cita
+            var jsnData = {
+                nIdRegistro         : nIdRegistroCurrent,
+                nIdUsuario          : $("#nIdUsuarioP").val() ,
+                nIdEstadoActividad  : nCumplioActividad  == 1 ?  '<?=$nIdEstadoActividadEjecutado?>' : '<?=$nIdEstadoActividadPen?>',
+                nIdProspecto        : $("#formProspecto").data("nIdRegistro"),
+                nIdActividad        : nIdActividad,
+                nTipoActividad      : '<?=$nTipoActividadCita?>',
+                sFechaActividad     : sFechaActividad,
+                sHoraActividad      : sHoraActividad,
+                sLatitud            : window.sLatitudActividad,
+                sLongitud           : window.sLongitudActividad,
+                sNota               : sNota,
+                nEstado             : 1,
+            };
+
+            if(nIdRegistro == 0){
+                
+                var jsnCard = {
+                    nIdRegistro         : nIdRegistroCurrent,
+                    jsnData             : jsnData,
+                    event               : '',
+                    sColor              : "verde",
+                    sNombreEmpleado     : $("#nIdUsuarioP").find("option:selected").text().trim(),
+                    sFechaCreacion      : moment().format('DD/MM/YYYY'),
+                    sFechaActividad     : moment(sFechaActividad,'YYYY-MM-DD').format('DD/MM/YYYY'),
+                    nEdit               : 1,
+                    sHoraActividad      : sHoraActividad,
+                    sLatitud            : '',
+                    sLongitud           : '',
+                    nIdEstadoActividad  : '<?=$nIdEstadoActividadPen?>',
+                    sEstado             : "PENDIENTE",
+                };
+
+                $("#content-actividades").append(fncDrawCardActividad(jsnCard));
+            } else {
+
+                var sHtmlTagActividad = "#content-actividad-"+nIdRegistroCurrent;
+
+                var sEvent  = $(sHtmlTagActividad).find(".col-9").attr("onclick");
+
+                if(sEvent.length > 0){
+                    // Si tiene el evento lo redefine
+                    var sOnclick = `fncValidarActividad(${nIdRegistroCurrent}, ${nIdActividad} , '${sFechaActividad}' , '${sHoraActividad}' , '${fncEncodeHTMLValue(sNota)}');`;
+                    $(sHtmlTagActividad).find(".col-9").attr("onclick",sOnclick);
+                }
+
+                $(sHtmlTagActividad).data("jsndata",jsnData);
+                $(sHtmlTagActividad).find(".f-creacion").html( "Fecha creacion : "+ moment().format('DD/MM/YYYY') );
+                $(sHtmlTagActividad).find(".f-ejecucion").html( "Fecha ejecucion : " + moment(sFechaActividad,'YYYY-MM-DD').format('DD/MM/YYYY') );
+                $(sHtmlTagActividad).find(".h-ejecucion").html( "Hora ejecucion : " + sHoraActividad );
+
+                if( nCumplioActividad  == 1 ){
+                    var sUltimaClase = $(sHtmlTagActividad).attr('class').split(" ").pop();
+                    $(sHtmlTagActividad).removeClass(sUltimaClase).addClass("color-border-left-azul");
+                    $(sHtmlTagActividad).find(".acti-estado").html( "Estado : EJECUTADO");
+                    $(sHtmlTagActividad).find(".col-3").hide();
+                    $(sHtmlTagActividad).find(".col-9").attr("onclick",'');
+                } else {
+                    var sUltimaClase = $(sHtmlTagActividad).attr('class').split(" ").pop();
+                    $(sHtmlTagActividad).removeClass(sUltimaClase).addClass("color-border-left-verde");
+                    $(sHtmlTagActividad).find(".acti-estado").html( "Estado : PENDIENTE");
+                }
+            }
+          
+            $("#formCEActividad").modal("hide"); 
+        });
+
+        $('input[type=radio][name=nCumplioActividad]').change(function() {
+            if (this.value == '1') {
+                fncMostrarLoader();
+                fncGetLocation();
+                $("#content-actividad").hide();
+            } else if (this.value == '0') {
+                window.sLatitudActividad   = null;
+                window.sLongitudActividad  = null;
+                $("#content-actividad").show();
+            }
+        });
+    });
+
+    window.fncValidarActividad = function(nIdRegistro,nIdActividad,sFechaActividad,sHoraActividad,sNota){
+        fncCleanAll();
+        sNota = fncDecodeHTMLValue(sNota);
+        console.log(sNota, fncDecodeHTMLValue(sNota) );
+        $("#formCEActividad").data( "nIdRegistro" , nIdRegistro );
+        $("#formCEActividad").data("nIdActividad",nIdActividad);
+        $("#sFechaActividad").val( sFechaActividad );
+        $("#sHoraActividad").val( sHoraActividad );
+        $("#sNotaActividad").val( sNota );
+
+        $("#formCEActividad").find(".modal-title").html("¿Cumplio la Cita?");
+        $("#content-cumplio-actividad").show();
+        $("#content-actividad").hide();
+        $("#formCEActividad").modal("show");
+    } 
+
+    window.fncDrawCardActividad = function(jsnData){
+        var sHtml = `
+                    <div id="content-actividad-${jsnData.nIdRegistro}" data-nidregistro="${jsnData.nIdRegistro}" data-jsndata='${JSON.stringify(jsnData.jsnData)}' class="border-card p-2 content-actividad border-left-pr mb-2 color-border-left-${jsnData.sColor}">
+                        <div class="row">
+                            <div onclick="${jsnData.event}" class="col-9">
+                                <p class="titulo">Cita - ${jsnData.sNombreEmpleado} </p>
+                                <p class="f-creacion">Fecha creacion  : ${jsnData.sFechaCreacion}</p>
+                                <p class="f-ejecucion">Fecha ejecucion : ${jsnData.sFechaActividad}</p>
+                                <p class="h-ejecucion">Hora ejecucion  : ${jsnData.sHoraActividad}</p>
+                                <p class="acti-estado">Estado : ${jsnData.sEstado}</p>
+                            </div>
+                            <div class="col-3 text-right">
+                            
+                                ${jsnData.nEdit == '1' ? `<a href="javascript:;" class="text-primary btn-icon-action" onclick="fncEditarActividad(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">edit</i> </a>` : ''}
+                                ${(jsnData.nIdEstadoActividad == '<?=$nIdEstadoActividadEjecutado?>') ? `<a href="javascript:;" class="btn-view-location btn-icon-action"  onclick="fncVerLocationActividad( '${jsnData.sLatitud}' , '${jsnData.sLongitud}' );" title="Ver ubicacion"><i class="material-icons">location_on</i> </a>` : `` }
+                                <a href="javascript:;" class="text-danger btn-icon-action"  onclick="fncEliminarActividad(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">delete</i> </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+        return sHtml;
+    }
+
+    window.fncSuccessHandler = function (position) {
+        console.log(position);
+        toastr.success("Genial!. Ubicacion obtenida exitosamente.");
+        window.sLatitudActividad  = position.coords.latitude;
+        window.sLongitudActividad = position.coords.longitude;
+        console.log(window.sLatitudActividad ,  window.sLongitudActividad );
+        fncOcultarLoader();
+    };
+
+    window.fncErrorHandler = function (error) {
+        console.error(error);
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                //La usuario denegó la solicitud de geolocalización.
+                alert("Para una mejor experiencia te pedimos que actives tu ubicacion.");
+                 break;
+            case error.POSITION_UNAVAILABLE:
+                //La información de ubicación no está disponible
+                break;
+            case error.TIMEOUT:
+                //Se agotó el tiempo de espera de la solicitud para obtener la ubicación del usuario.
+                break;
+            case error.UNKNOWN_ERROR:
+                console.log("error no esperado");
+                break;
+        }
+
+        fncOcultarLoader();
+    };
+
+    window.fncGetLocation = function() {
+        try {
+            
+            navigator.geolocation.getCurrentPosition(fncSuccessHandler, fncErrorHandler, {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    window.fncVerLocationActividad = function(slatitud,sLongitud){
+
+        if(slatitud != '' &&  sLongitud != '' ){
+            var sUrl = `https://www.google.com/maps/search/?api=1&query=${slatitud},${sLongitud}`;
+            window.open(sUrl, "_blank", "toolbar=1, scrollbars=1, resizable=1, width=900, height=900");
+         }
+    
+    }
+
+    function fncEditarActividad(nIdRegistro,element){
+        var jsnData  = $("#content-actividad-" + nIdRegistro).data("jsndata");
+        $("#formCEActividad").data("nIdRegistro",nIdRegistro);
+        $("#sFechaActividad").val(jsnData.sFechaActividad);
+        $("#sHoraActividad").val(jsnData.sHoraActividad);
+        $("#sNotaActividad").val(jsnData.sNota);
+        $("#formCEActividad").modal("show");
+    }
+
+    function fncEliminarActividad(nIdItem,element){
+
+        if(confirm("¿Estas seguro de eliminar este item?")){
+            $("#content-actividad-" + nIdItem).remove();
+        }
+
+    }
+</script>
+<!-- Actividad -->
 
 <!-- Cliente -->
 <script>
@@ -3861,8 +3900,6 @@
 
     $(document).ready(function() {
         
-
-
         fncDrawCliente(function(bStatus){
             if(bStatus){
 
@@ -3930,7 +3967,7 @@
                     }
                 });
 
-                $("#sNumeroDocumento-1").on('keyup change',function(){
+                $("#btnsNumeroDocumento-1").on('click',function(){
                     
                     switch( $("#nTipoDocumento-1").find("option:selected").text() ){
                         
@@ -3946,7 +3983,10 @@
 
                                 fncBuscarDocument( jsnData ,function(aryData){
                                     if(aryData.success){
+                                        toastr.success(aryData.success);
                                         $("#sNombreoRazonSocial-1").val(aryData.success.razonSocial);
+                                    } else {
+                                        toastr.error(aryData.error);
                                     }
                                 });
 
@@ -3965,7 +4005,11 @@
 
                                 fncBuscarDocument(jsnData ,function(aryData){
                                     if(aryData.success){
+                                        toastr.success(aryData.success);
                                         $("#sNombreoRazonSocial-1").val(aryData.success.razonSocial);
+                                    } else{
+                                        toastr.error(aryData.error);
+
                                     }
                                 });
 
@@ -4283,819 +4327,143 @@
 </script>
 <!-- Cliente -->
 
-
-<!-- Catalogo -->
-<script>
-
-    $(document).ready(function() {
-
-        $("#nIdCatalogo").on('change',function(){
-
-            if( parseInt( $(this).find("option:selected").val() ) === 0) {$("#nCostoUnitario").val(0); return false;}
-            
-            var nPrecio = $(this).find("option:selected").data("nprecio");
-
-            $("#nCostoUnitario").val( fncNf(nPrecio) );
-        });
-        
-
-        // Submit del formulario de Cliente
-        $("#formCECatalogo").find("form").on('submit',function(event){
-            
-            event.preventDefault();
-
-            var nIdRegistro            = $("#formCECatalogo").data("nIdRegistro");
-            var nIdCatalogo            = $("#nIdCatalogo").find("option:selected").val();
-            var sCatalogo              = $("#nIdCatalogo").find("option:selected").text();
-            var nPrecio                = $("#nIdCatalogo").find("option:selected").data("nprecio");
-            var sTipoItem              = $("#nIdCatalogo").find("option:selected").data("ntipoitem");
-            var nCantidad              = $("#nCantidad").val();
-            var nTotal                 = parseFloat(nPrecio) * parseFloat(nCantidad);
-            var sTable                 = sTipoItem == "PRODUCTO" ? "#table-productos" : "#table-servicios";
-        
-            if (nIdCatalogo == 0) {
-                toastr.error('Error. Seleccione un producto o servicio. Porfavor verifique');
-                return;
-            } else if(nPrecio <= 0){
-                toastr.error('Error. Ingrese un precio de producto o servicio. Porfavor verifique');
-                return;
-            } else if(nCantidad <= 0){
-                toastr.error('Error. Ingrese una cantidad. Porfavor verifique');
-                return;
-            }
-     
-            var jsnData = {
-                    nIdRegistro     : nIdRegistro,
-                    nIdProspecto    : $("#formProspecto").data("sAccion") == 'crear' ? 0 : $("#formProspecto").data("nIdRegistro"),
-                    nIdCatalogo     : nIdCatalogo,
-                    sTable          : sTable,
-                    sCatalogo       : sCatalogo,
-                    nPrecio         : nPrecio,
-                    nCantidad       : nCantidad,
-                    nTotal          : nTotal
-                };
-
-            $(sTable).show();    
-            if( $("#formProspecto").data("sAccion") == 'crear') {
-                $(sTable).find("tbody").append(fncDrawFilaCatalogo(jsnData));
-            } else {
-
-                fncGrabarProspectoCatalogo(jsnData,function(aryData){
-                    if (aryData.success) {
-
-                        var jsnData = {
-                            nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                        };
-
-                        fncListarCatalogo(jsnData);
-
-                    } else {
-                        toastr.error(aryData.error);
-                    }
-                });
-
-            } 
-            
-            $("#formCECatalogo").modal("hide");
-
-        });
-
-
-    });
-
-    window.fncDrawFilaCatalogo = function(jsnData){   
-        var sHtml = ``;  
-        sHtml = `<tr> 
-                    <td class="d-none">${jsnData.nIdCatalogo}</td>
-                    <td><div><a href="javascript:;" class="text-danger font-18" onclick="fncEliminarItem(${jsnData.nIdCatalogo},'${jsnData.sTable}',this);" title="Eliminar"><i class="material-icons">delete</i></a></div></td>
-                    <td><div>${jsnData.sCatalogo}</div></td>
-                    <td class="cont-number"><div><input onblur="fncTotales(${jsnData.nIdCatalogo},'${jsnData.sTable}',event);" onkeyup="fncTotales('${jsnData.sTable}',event);" type="number" min="0.00" max="9999999.99" step="0.01" value="${jsnData.nPrecio}" autocomplete="off" class="form-control font-12 costo-unitario text-center"></div></td>
-                    <td class="cont-number"><div><input onblur="fncTotales(${jsnData.nIdCatalogo},'${jsnData.sTable}',event);" onkeyup="fncTotales('${jsnData.sTable}',event);" type="number" value="${jsnData.nCantidad}" min="1" max="9999999" step="1" autocomplete="off" class="form-control font-12 cantidad text-center"></div></td>
-                    <td><div>${fncNf(jsnData.nTotal)}</div></td>
-                </tr>`;
-        return sHtml;
-    }
-
-    window.fncListarCatalogo = function(jsnData , fncCallbackEndProccess = null){
-
-        fncGetProspectoCatalogoByIdProspecto(jsnData,function(aryDataList){
-
-            if(aryDataList.success){
-
-                $('#table-productos').find("tbody").html("");
-                $('#table-servicios').find("tbody").html("");
-
-                var aryDataList = aryDataList.aryData;
-                var bExistsProd = false;
-                var bExistsServ = false;
-
-                $("#table-productos").hide();
-                $("#table-servicios").hide();
-
-                $.each(aryDataList, function (nKeyItem, element) {
-
-                    var sTable = element.sTipoItem == 'PRODUCTO' ? '#table-productos' : '#table-servicios';
-
-                    if(element.sTipoItem == 'PRODUCTO') bExistsProd = true;
-                    if(element.sTipoItem == 'SERVICIO') bExistsServ = true;
-
-                    var jsnDataFilas = {
-                            nIdCatalogo     : element.nIdProspectoCatalogo,
-                            sTable          : sTable,
-                            sCatalogo       : element.sNombreCatalogo,
-                            nPrecio         : element.nPrecio,
-                            nCantidad       : element.nCantidad,
-                            nTotal          : parseFloat(element.nPrecio) * parseFloat(element.nCantidad)
-                    };
-
-                    $(sTable).find("tbody").append(fncDrawFilaCatalogo(jsnDataFilas));
-
-                });
-
-                if(bExistsProd) $("#table-productos").show();
-                if(bExistsServ) $("#table-servicios").show();
-
-                setTimeout(()=>{ 
-                    fncTotales(null,'#table-productos'); 
-                    fncTotales(null,'#table-servicios');
-                    if( fncCallbackEndProccess != null ) fncCallbackEndProccess(true);
-                }, 1000);
-
-            } else {
-                toastr.error(aryDataList.error);
-            }
-        });
-
-    }
-
-    window.fncEliminarItem  = function(nIdCatalogo,sTable,element){
-        
-        if(confirm("¿Estas seguro de eliminar este item?")){
-
-            if($("#formProspecto").data("sAccion") == 'crear'){
-                $(element).parent().parent().parent().remove();
-            } else {
-
-                var jsnData = {
-                    nIdRegistro : nIdCatalogo
-                };
-
-                fncEliminarProspectoCatalogo(jsnData, function(aryData){
-
-                    if(aryData.success){
-                        
-                        var jsnData= {
-                            nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                        };
-
-                        fncListarCatalogo(jsnData);
-                        fncGuardarCambio("Se elimino un producto o servicio");
-                        toastr.success(aryData.success);
-                    
-                    } else {
-                        toastr.error(aryData.error);
-                    }
-
-                });
-
-            }
-            
-            setTimeout(()=>{ fncTotales(sTable); }, 500);
-        }
-    }
-
-    window.fncTotales = function(nIdCatalogo,sTable,event = null){
-
-        var nTotal         = 0;
-        var nCantidadTotal = 0;
-
-        $(sTable).find("tbody").find("tr").each(function(){
-
-            var nCostoItem = $(this).find("td").eq(3).find(".costo-unitario").val();
-            var nCantidad  = $(this).find("td").eq(4).find(".cantidad").val();
-            var nTotalItem = parseFloat(nCostoItem) * parseFloat(nCantidad);
-
-            $(this).find("td").eq(5).find("div").html( fncNf(nTotalItem) );
-            
-            if(event != null && event.type == "blur"){
-
-                $(this).find("td").eq(3).find(".costo-unitario").val( fncNf(nCostoItem) );
-
-                if( $("#formProspecto").data("sAccion") == 'editar' ){
-                    
-                    var jsnData = {
-                        nIdRegistro   : nIdCatalogo ,
-                        nIdProspecto  : $("#formProspecto" ).data("nIdRegistro"),
-                        nPrecio       : nCostoItem,
-                        nCantidad     : nCantidad
-                    };
-
-                    fncGrabarProspectoCatalogo(jsnData,function(aryData){
-                        if(aryData.success){
-                            toastr.success(aryData.success);
-                        }else{
-                            toastr.error(aryData.error);
-                        }
-                    });
-
-                }
-
-            }
-
-            nTotal          += nTotalItem;
-            nCantidadTotal  += parseInt(nCantidad);
-        });
-        
-        $(sTable).find(".total").html(fncNf(nTotal));
-        $(sTable).find(".cantidad-total").html(nCantidadTotal);
-    }
-
-    // LLamadas al servidor 
-
-    function fncGrabarProspectoCatalogo(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGrabarProspectoCatalogo',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncGetProspectoCatalogoByIdProspecto(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGetProspectoCatalogoByIdProspecto',
-            data: jsnData,
-            beforeSend: function() {
-               // fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                //fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncEliminarProspectoCatalogo(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncEliminarProspectoCatalogo',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-    
-    
-</script>
-<!-- Catalogo -->
-
-<!-- Actividad -->
-<script>
-
-    window.sLatitudActividad = null;
-    window.sLongitudActividad = null;
-
-    $(document).ready(function() {
-        
-        
-        $("#formCEActividad").data("nIdItem",0);
-        $("#sFechaActividad").attr("min", moment().format('YYYY-MM-DD'));
-
-        // Submit del formulario de Cliente
-        $("#formCEActividad").find("form").on('submit',function(event){
-            
-            event.preventDefault();
-
-            var nIdRegistro         = $("#formCEActividad").data("nIdRegistro");
-            var sFechaActividad     = $("#sFechaActividad").val();
-            var sHoraActividad      = $("#sHoraActividad").val();
-            var sNota               = $("#sNotaActividad").val();
-            var nCumplioActividad   = $('input[name=nCumplioActividad]:checked').val();
-        
-
-            if ( nCumplioActividad != '1' ) {
-                if (sFechaActividad == "") {
-                    toastr.error('Error. Seleccione un fecha de la cita. Porfavor verifique');
-                    return;
-                } else if (sHoraActividad == "") {
-                    toastr.error('Error. Seleccione una hora de la cita. Porfavor verifique');
-                    return;
-                }
-            }
-
-            if($("#nIdUsuarioP").val() == null){
-                toastr.error('Error. Seleccione un asesor. Porfavor verifique');
-                return;
-            }
-
-
-            // nTipoActividad - 1 Cita
-            var jsnData = {
-                nIdRegistro         : nIdRegistro,
-                nIdUsuario          : $("#nIdUsuarioP").val() ,
-                nIdEstadoActividad  : nCumplioActividad  == 1 ?  '<?=$nIdEstadoActividadEjecutado?>' : '<?=$nIdEstadoActividadPen?>',
-                nIdProspecto        : $("#formProspecto").data("sAccion") == 'crear' ? 0 : $("#formProspecto").data("nIdRegistro"),
-                nTipoActividad      : '<?=$nTipoActividadCita?>',
-                sFechaActividad     : sFechaActividad,
-                sHoraActividad      : sHoraActividad,
-                sLatitud            : window.sLatitudActividad,
-                sLongitud           : window.sLongitudActividad,
-                sNota               : sNota,
-                nEstado             : 1
-            };
-
-            if($("#formProspecto").data("sAccion") == 'crear'){
-
-                if(nIdRegistro == 0){
-                    
-
-                    var nIdRegistro = 0 ;
-
-                    $('.content-actividades').find('.content-actividad').each(function () {
-                        nIdRegistro ++ ;
-                    });
-
-                    nIdRegistro += 1; 
-
-                    $("#formCEActividad").data( "nIdRegistro" , nIdRegistro ); 
-
-                    var jsnCard = {
-                        nIdRegistro         : nIdRegistro,
-                        jsnData             : jsnData,
-                        event               : '',
-                        sColor              : "verde",
-                        sNombreEmpleado     : $("#nIdUsuarioP").find("option:selected").text().trim(),
-                        sFechaCreacion      : moment().format('DD/MM/YYYY'),
-                        sFechaActividad     : moment(sFechaActividad,'YYYY-MM-DD').format('DD/MM/YYYY'),
-                        nEdit               : 1,
-                        sHoraActividad      : sHoraActividad,
-                        sLatitud            : '',
-                        sLongitud           : '',
-                        nIdEstadoActividad  : '<?=$nIdEstadoActividadPen?>',
-                        sEstado             : "Pendiente"
-                    };
-
-                    console.log(jsnCard);
-
-                    $("#content-actividades").append(fncDrawCardActividad(jsnCard));
-                    
-                } else {
-                    console.log(nIdRegistro , 'editar');
-
-                    $("#content-actividad-"+nIdRegistro).data("jsndata",jsnData);
-                    $("#content-actividad-"+nIdRegistro).find(".f-creacion").html( "Fecha creacion : "+ moment().format('DD/MM/YYYY') );
-                    $("#content-actividad-"+nIdRegistro).find(".f-ejecucion").html( "Fecha ejecucion : " + moment(sFechaActividad,'YYYY-MM-DD').format('DD/MM/YYYY') );
-                    $("#content-actividad-"+nIdRegistro).find(".h-ejecucion").html( "Hora ejecucion : " + sHoraActividad );
-                }
-
-            } else {
-
-                fncGrabarProspectoActividad(jsnData,function(aryData){
-
-                        if(aryData.success){
-                            
-                            var jsnData = {
-                                nIdRegistro  : $("#formProspecto").data("nIdRegistro"),
-                                nIdActividad : '<?=$nTipoActividadCita?>', 
-                            };
-
-                            fncListarActividades(jsnData);
-
-                            if(aryData.bChangeEstado){
-                                $("#btnVerAdjuntos").show();
-                                fncSetEtapa(aryData.nIdEtapaNegociacion);
-                             }
-
-                            toastr.success(aryData.success);
-                        } else {
-                            toastr.error(aryData.error);
-                        }
-
-                });
-
-                
-            }
-           
-            $("#formCEActividad").modal("hide");
-           
-        });
-
-       
-        $('input[type=radio][name=nCumplioActividad]').change(function() {
-            if (this.value == '1') {
-                fncMostrarLoader();
-                fncGetLocation();
-                $("#content-actividad").hide();
-            } else if (this.value == '0') {
-                window.sLatitudActividad   = null;
-                window.sLongitudActividad  = null;
-                $("#content-actividad").show();
-            }
-        });
-       
-       
-        
-    });
-
-    window.fncValidarActividad = function(nIdRegistro){
-        fncCleanAll();
-        $("#formCEActividad").data( "nIdRegistro" , nIdRegistro );
-        $("#formCEActividad").find(".modal-title").html("¿Cumplio la Cita?");
-        $("#content-cumplio-actividad").show();
-        $("#content-actividad").hide();
-        $("#formCEActividad").modal("show");
-    } 
-
-    window.fncDrawCardActividad = function(jsnData){
-        var sHtml = `
-                    <div id="content-actividad-${jsnData.nIdRegistro}" data-nidregistro="${jsnData.nIdRegistro}" data-jsndata='${JSON.stringify(jsnData.jsnData)}' class="border-card p-2 content-actividad border-left-pr color-border-left-${jsnData.sColor} mb-2">
-                        <div class="row">
-                            <div onclick="${jsnData.event}" class="col-9">
-                                <p class="titulo">Cita - ${jsnData.sNombreEmpleado} </p>
-                                <p class="f-creacion">Fecha creacion  : ${jsnData.sFechaCreacion}</p>
-                                <p class="f-ejecucion">Fecha ejecucion : ${jsnData.sFechaActividad}</p>
-                                <p class="h-ejecucion">Hora ejecucion  : ${jsnData.sHoraActividad}</p>
-                                <p>Estado : ${jsnData.sEstado}</p>
-                            </div>
-                            <div class="col-3 text-right">
-                            
-                                ${jsnData.nEdit == '1' ? `<a href="javascript:;" class="text-primary btn-delete-actividad" onclick="fncEditarActividad(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">edit</i> </a>` : ''}
-                                
-                                ${(jsnData.nIdEstadoActividad == '<?=$nIdEstadoActividadEjecutado?>') ? `<a href="javascript:;" class="btn-view-location btn-delete-actividad"  onclick="fncVerLocationActividad( '${jsnData.sLatitud}' , '${jsnData.sLongitud}' );" title="Ver ubicacion"><i class="material-icons">location_on</i> </a>` : `` }
-                                
-                                <a href="javascript:;" class="text-danger btn-delete-actividad"  onclick="fncEliminarActividad(${jsnData.nIdRegistro},this);" title="Eliminar"><i class="material-icons">delete</i> </a>
-                            
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-        return sHtml;
-    }
-
-    window.fncSuccessHandler = function (position) {
-        console.log(position);
-        toastr.success("Genial!. Ubicacion obtenida exitosamente.");
-        window.sLatitudActividad  = position.coords.latitude;
-        window.sLongitudActividad = position.coords.longitude;
-        console.log(window.sLatitudActividad ,  window.sLongitudActividad );
-        fncOcultarLoader();
-    };
-
-    window.fncErrorHandler = function (error) {
-        console.error(error);
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                //La usuario denegó la solicitud de geolocalización.
-                alert("Para una mejor experiencia te pedimos que actives tu ubicacion.");
-                 break;
-            case error.POSITION_UNAVAILABLE:
-                //La información de ubicación no está disponible
-                break;
-            case error.TIMEOUT:
-                //Se agotó el tiempo de espera de la solicitud para obtener la ubicación del usuario.
-                break;
-            case error.UNKNOWN_ERROR:
-                console.log("error no esperado");
-                break;
-        }
-
-        fncOcultarLoader();
-    };
-
-    window.fncGetLocation = function() {
-        try {
-            
-            navigator.geolocation.getCurrentPosition(fncSuccessHandler, fncErrorHandler, {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-            });
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
-    window.fncVerLocationActividad = function(slatitud,sLongitud){
-
-        if(slatitud != '' &&  sLongitud != '' ){
-            var sUrl = `https://www.google.com/maps/search/?api=1&query=${slatitud},${sLongitud}`;
-            window.open(sUrl, "_blank", "toolbar=1, scrollbars=1, resizable=1, width=900, height=900");
-         }
-    
-    }
-
-
-
-    function fncEditarActividad(nIdRegistro,element){
-        var jsnData  = $("#content-actividad-" + nIdRegistro).data("jsndata");
-        $("#formCEActividad").data("nIdRegistro",nIdRegistro);
-        $("#sFechaActividad").val(jsnData.sFechaActividad);
-        $("#sHoraActividad").val(jsnData.sHoraActividad);
-        $("#sNotaActividad").val(jsnData.sNota);
-        $("#formCEActividad").modal("show");
-    }
-
-    function fncEliminarActividad(nIdItem,element){
-
-        if(confirm("¿Estas seguro de eliminar este item?")){
-
-            if($("#formProspecto").data("sAccion") == 'crear'){
-                $("#content-actividad-" + nIdItem).remove();
-            } else {
-
-                var jsnData = {
-                    nIdRegistro : nIdItem
-                };
-
-                fncEliminarProspectoActividad(jsnData, function(aryData){
-                    if(aryData.success){
-                        
-                        var jsnData= {
-                            nIdRegistro : $("#formProspecto").data("nIdRegistro")
-                        };
-
-                        fncListarActividades(jsnData);
-                        fncGuardarCambio("Se elimino una cita");
-
-                        toastr.success(aryData.success);
-
-                    } else {
-                        toastr.error(aryData.error);
-                    }
-                });
-            }
-        }
-
-    }
-
-    // LLamadas al servidor 
-
-    function fncGrabarProspectoActividad(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGrabarProspectoActividad',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncEliminarProspectoActividad(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncEliminarProspectoActividad',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncGetActividadByIdProspecto(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGetActividadByIdProspecto',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-    
-</script>
-<!-- Actividad -->
-
 <!-- Adjuntos -->
 <script>
 
     $(document).ready(function() {
 
-  
-
-        // Submit del formulario de Cliente
-        $("#formCEAdjunto").find("form").on('submit',function(event){
-            
+        $("#sContrato").on('change',function(event){
             event.preventDefault();
 
-            var nIdRegistro         = typeof $("#formCEAdjunto").data("nIdRegistro") ==='undefined' ? 0 : $("#formCEAdjunto").data("nIdRegistro")  ;
-            var nIdProspecto        = $("#formProspecto").data("nIdRegistro");
-            var sContrato           = $("#sContrato")[0].files[0];
-            var nIdAdjuntoContrato  = typeof $("#sContrato").data("nIdAdjunto") ==='undefined' ? 0 : $("#sContrato").data("nIdAdjunto")  ;
+            var objTmpFile = this.files[0];
 
-            var formData = new FormData();
-            formData.append('nIdRegistro', nIdRegistro);
-            formData.append('nIdProspecto', nIdProspecto);
-            formData.append('nIdUsuario', $("#nIdUsuarioP").val() );
-            formData.append('nIdAdjuntoContrato',nIdAdjuntoContrato);
-            formData.append('sContrato',sContrato);
+            if(typeof objTmpFile === 'undefined'){
+                fncMsgBox( '0', '3', "Error. No ha cargado correctamente el contrato. Porfavor verifique." );
+                return;
+            }
 
-            $.each($('#aryOtros')[0].files,function(key,input){
-                formData.append('aryOtros[]', input);
-            });
+            var nFileZise = objTmpFile.size / 1024 / 1024;
 
-            // console.log(nIdAdjuntoContrato);
+            if (nFileZise >  <?=$nMaximoMB?>) {
+                $("#sContrato").val(null);
+                toastr.error("Error. El archivo excede los  <?=$nMaximoMB?>MB. Porfavor verifique o adjunte un archivo de menor tamaño.");
+                return false;
+            }
 
-          
-            fncGrabarProspectoAdjunto(formData,(aryData)=>{
-                if(aryData.success){
+            var nIdRow = $("#formCEAdjunto").data("nUltimoItem") + 1;
 
-                    if(aryData.bChangeEstado){
-                        fncSetEtapa(aryData.nIdEtapaEnProceso);
-                     }
+            var jsnData = {
+                nIdAdjunto      : 0,
+                nIdRow          : nIdRow, 
+                sLinkArchivo    : 'javascript:;',
+                sNombreArchivo  : objTmpFile.name,
+            };
 
-                    var jsnData = {
-                        nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                    };
+            $("#formCEAdjunto").data("nUltimoItem", nIdRow );
+            $("#contenedor-archivo-contrato").show();
+            $("#content-contrato").html(fncDrawItemAdjunto(jsnData));
+            $("#sContrato").val(null);
 
-
-                    if( sContrato != null ){
-                        fncGuardarCambio("Se "+ (nIdRegistro == 0 ? "agrego" : "actualizo")  +" el contrato");
-                    } 
-
-                    if( $('#aryOtros')[0].files != null &&  $('#aryOtros')[0].files.length > 0 ){
-                        fncGuardarCambio("Se agrego "+$('#aryOtros')[0].files.length+" Adjuntos");
-                    }
-
-
-
-                    fncDrawAdjuntos(jsnData,false);
-
-                    toastr.success(aryData.success);
-                }else{
-                    toastr.error(aryData.error);
-                }
-            });
-            
-            
-           
+            setTimeout(() => {
+                $("#adjunto" + nIdRow).data("objTmpFile" , objTmpFile);
+            }, 1000);
         });
 
-       
-        
+        $("#aryOtros").on('change',function(event){
+            event.preventDefault();
+
+            var aryObjTmpFile = this.files;
+
+            if(typeof aryObjTmpFile === 'undefined' || aryObjTmpFile.length == 0 ){
+                fncMsgBox( '0', '3', "Error. No ha cargado correctamente los adjuntos. Porfavor verifique." );
+                return;
+            }
+
+            var bError = false;
+
+            aryObjTmpFile.forEach(element => {
+
+                var nFileZise = element.size / 1024 / 1024;
+
+                if (nFileZise > <?=$nMaximoMB?>) {
+                    $("#aryOtros").val(null);
+                    toastr.error("Error. El archivo " + element.name + " excede los  <?=$nMaximoMB?>MB. Porfavor verifique o adjunte un archivo de menor tamaño.");
+                    bError= true;
+                    return false;
+                }
+            });
+
+            if(bError){
+                return false;
+            }
+            
+            $("#contenedor-adjuntos").show();
+
+            var aryJsn = [];
+            aryObjTmpFile.forEach(function(element,nIndex) {
+
+                var nIdRow = $("#formCEAdjunto").data("nUltimoItem") + 1;
+
+                var jsnData = {
+                    nIdAdjunto      : 0,
+                    nIdRow          : nIdRow, 
+                    sLinkArchivo    : 'javascript:;',
+                    sNombreArchivo  : element.name,
+                    objTmpFile      : element
+                };
+
+                aryJsn.push(jsnData);
+                $("#content-adjuntos").append(fncDrawItemAdjunto(jsnData));
+                $("#formCEAdjunto").data("nUltimoItem", nIdRow );
+            });
+
+            setTimeout(() => {
+                aryJsn.forEach(function(element,nIndex) {
+                    $("#adjunto" + element.nIdRow).data("objTmpFile" , element.objTmpFile);
+                });
+            }, 1500);
+
+            $("#aryOtros").val(null);
+        });
     });
 
     // Funciones Auxiliares
-
     window.fncDrawItemAdjunto = function(jsnData){
 
         var sHtml = `
-                <div class="card my-2 p-2">
+                <div id="adjunto${jsnData.nIdRow}" data-nidadjunto="${jsnData.nIdAdjunto}" data-nidrow="${jsnData.nIdRow}" class="my-1 p-1 archivos">
                     <div class="d-flex flex-center">
                         <div><a href="${jsnData.sLinkArchivo}" download="${jsnData.sNombreArchivo}">${jsnData.sNombreArchivo}</a></div>
-                        <div class="ml-auto"><a class="color-black" href="${jsnData.sLinkArchivo}" download="${jsnData.sNombreArchivo}"><i class="fas fa-download"></i></a></div>
-                        <div class="mx-2"><a href="javascript:;" class="text-danger font-18" onclick="fncEliminarAdjunto(${jsnData.nIdAdjunto});" title="Eliminar"><i class="material-icons">delete</i></a></div>
+                        <div class="ml-auto">
+                            ${(jsnData.sLinkArchivo.length == '0' || jsnData.sLinkArchivo == 'javascript:;' ?  `` : `<a class="color-black" href="${jsnData.sLinkArchivo}" download="${jsnData.sNombreArchivo}"><i class="fas fa-download"></i></a>`) }
+                        </div>
+                        <div class="mx-2"><a href="javascript:;" class="text-danger font-18" onclick="fncEliminarAdjunto(${jsnData.nIdRow});" title="Eliminar"><i class="material-icons">delete</i></a></div>
                     </div>
                 </div>
         `;
+
 
         return sHtml;
     }
 
     // Funciones Auxiliares 
-
     window.fncEliminarAdjunto = function(nIdRegistro){
 
         if(confirm("¿Estas seguro de eliminar este item?")){
+            $("#adjunto"+nIdRegistro).remove();
+        }
 
-                var jsnData = {
-                    nIdRegistro : nIdRegistro
-                };
+        if($("#content-contrato").html().trim().length == 0){
+            $("#contenedor-archivo-contrato").hide();
+        }
 
-                fncEliminarProspectoAdjunto(jsnData, function(aryData){
-                    if(aryData.success){
-                        
-                        var jsnData = {
-                            nIdRegistro : $("#formProspecto").data("nIdRegistro"),
-                        };
-
-                        fncDrawAdjuntos(jsnData,false);
-                        fncGuardarCambio("Se elimino un adjunto");
-
-                        // En caso se haya eliminado el contrato el prospecto regresa ala etapa anterior 
-                        if(aryData.bChangeEstado){
-                            fncSetEtapa( '<?=$nIdEtapaNegociacion?>' );
-                        }
-
-
-                        toastr.success(aryData.success);
-
-                    } else {
-                        toastr.error(aryData.error);
-                    }
-                });
+        if($("#content-adjuntos").html().trim().length == 0){
+            $("#contenedor-adjuntos").hide();
         }
         
-    }
-
-
- 
-    // LLamadas al servidor 
-
-    function fncGrabarProspectoAdjunto(formData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncGrabarProspectoAdjunto',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncObtenerProspectoAdjuntosByIdProspecto(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncObtenerProspectoAdjuntosByIdProspecto',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-
-    function fncEliminarProspectoAdjunto(jsnData, fncCallback) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: web_root + 'admin/prospecto/fncEliminarProspectoAdjunto',
-            data: jsnData,
-            beforeSend: function() {
-                fncMostrarLoader();
-            },
-            success: function(data) {
-                fncCallback(data);
-            },
-            complete: function() {
-                fncOcultarLoader();
-            }
-        });
-    }
-    
+    }   
 </script>
 <!-- Adjuntos -->
-
 
 <!-- Prospecto Simple -->
 <script>
@@ -5135,22 +4503,17 @@
             var sTitulo             = $("#sTituloPS").val(); 
             var nIdCliente          = $("#nIdClientePS").val();
             var nIdUsuario          = $("#nIdUsuarioPS").val();
-            var sNotaPS              = $("#sNotaPS").val();
+            var sNotaPS             = $("#sNotaPS").val();
 
             var bExisteWidgetCitas  = <?= $bExisteWidgetCitas ? 'true' : 'false'?>; 
             var sFechaActividad     = $("#sFechaActividadPS").val();
             var sHoraActividad      = $("#sHoraActividadPS").val();
             var sNotaAct            = $("#sNotaActividadPS").val();
 
-            
-            //if(nIdCliente == 0){
-                
-                if(sTitulo.length == 0){
-                    toastr.error("Error.Debe ingresar un titulo para el prospecto .Porfavor verifique");
-                    return;
-                }
-
-            // } 
+            if(sTitulo.length == 0){
+                toastr.error("Error.Debe ingresar un titulo para el prospecto .Porfavor verifique");
+                return;
+            }
             
             if(nIdUsuario === null){
                 toastr.error("Error.Debe de especificar un asesor de ventas .Porfavor verifique");
@@ -5188,7 +4551,6 @@
             }
 
 
-    
             var jsnData = {
                 nIdNegocio          : '<?=$nIdNegocio?>',
                 sTitulo             : sTitulo,
@@ -5197,7 +4559,9 @@
                 bExisteWidgetCitas  : bExisteWidgetCitas ? true : false,
                 aryActividades      : aryActividades,
                 sNota               : sNotaPS,
-                nEstado             : 1
+                nEstado             : 1,
+                nIdMoneda           : <?=$aryNegocio["nIdMoneda"]?>,
+                nTipoProspecto      : <?=$aryNegocio["nTipoProspecto"]?>,
             };
 
             fncGrabarPS(jsnData,(aryData)=>{
@@ -5330,10 +4694,5 @@
     
 </script>
 <!-- Prospecto Simple -->
-
-
-
-
- 
 
 </html>

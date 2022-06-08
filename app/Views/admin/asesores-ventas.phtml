@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html class="no-js h-100" lang="es">
+
+<head>
+    <?php extend_view(['admin/common/head'], $data) ?>
+    <?php load_style(['bootstrap', 'jquery-ui', 'admin/style', 'admin/shards-dashboards.1.1.0.min']); ?>
+    <?php load_style_plugin(['toast/toastr.min', 'select2/select2', 'select2/select2-bootstrap', 'bootstrap-table/bootstrap-table']); ?>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="page-loader">
+        <div class="loader-dual-ring"></div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <?php extend_view(['admin/common/aside'], $data) ?>
+
+            <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+
+                <?php extend_view(['admin/common/navbar'], $data) ?>
+
+                <div class="main-content-container container-fluid px-2 my-2">
+
+
+                    <div class="page-header row no-gutters py-0">
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                            <div class="card card-small">
+                                <div class="card-body pt-1 pb-5">
+
+
+                                    <div class="row">
+
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center bd-highlight">
+                                                <div class="flex-grow-1 bd-highlight">
+                                                    <h6 id="sTituloEmpleado" class="m-0">Asesores de ventas :</h6>
+                                                </div>
+                                                <div class="bd-highlight">
+                                                    <button type="button" id="btnCrearEmpleado" class="btn btn-gradient-primary btn-rounded btn-icon">
+                                                        <i class="fas fa-plus-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="toolbarBDEmpleados">
+                                        <!-- <button id="btnFilter" class="btn btn-gradient-primary-table mx-1" type="button" title="Filtros">
+                                            <i class="fas fa-filter"></i>
+                                        </button> -->
+                                    </div>
+
+                                    <div class="table-responsive">
+
+                                        <table data-url="<?= route('usuarios/fncPopulate?nIdNegocio=' . $aryNegocio["nIdNegocio"] . "&nIdRol=" . $nIdRolAsesorVentas . "&bPopulate=true") ?>" data-toggle="table" id="tblBDEmpleados" data-card-view="false" data-toggle="table" data-search="true" data-query-params="queryParams" toolbarAlign="left" data-show-refresh="true" data-pagination="true" data-toolbar="#toolbarBDEmpleados" data-buttons-align="left" data-show-columns="true" data-pagination-h-align="left" data-pagination-detail-h-align="right" data-classes="table table-hover table-condensed" data-striped="true" data-buttons-class="gradient-primary-table" data-card-view="false" data-page-size="14" data-sort-name="nIdUsuario" data-sort-order="desc">
+                                            <thead>
+                                                <th data-field="sAcciones">Acciones</th>
+                                                <th data-field="nIdUsuario" data-visible="false">nIdUsuario</th>
+                                                <th data-field="sSupervisor">Supervisor</th>
+                                                <th data-field="sColor">Color</th>
+                                                <?php foreach ($aryConfigTabla as $aryLoop) :  ?>
+                                                    <th data-field="<?= $aryLoop["sNombre"] ?>" data-visible="<?= in_array($aryLoop["sNombre"], ['sClave', 'nCantidadPersonasDependientes'])  ? 'false' : 'true' ?>"><?= $aryLoop["sNombreUsuario"] ?></th>
+                                                <?php endforeach ?>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </main>
+        </div>
+    </div>
+
+
+</body>
+
+
+
+<?php extend_view(['admin/common/scripts'], $data) ?>
+
+<?php load_script(['jquery', 'jquery-ui', 'popper', 'bootstrap', 'moment', 'admin/custom', 'admin/functions', 'admin/edit-user-empleado', 'admin/app']); ?>
+<?php load_script_plugin([
+    'toast/toastr.min',
+    'select2/select2',
+    'bootstrap-table/bootstrap-table',
+    'bootstrap-table/bootstrap-table-es-ES'
+]); ?>
+
+
+<!-- Modales-->
+
+<?php extend_view(['admin/common/modales-editar'], $data) ?>
+
+<div class="modal fade" id="formCEEmpleado" tabindex="-1" role="dialog" aria-labelledby="formCEEmpleadoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formCEEmpleadoLabel">Nuevo Empleado</h5>
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div id="content-color" class="col-12 col-md-12">
+                            <div class="form-group"><label for="nIdSupervisor" class="col-form-label">Supervisor</label>
+                                <select class="form-control" name="nIdSupervisor" id="nIdSupervisor">
+                                    <option value="0">SELECCIONAR</option>
+                                    <?php foreach ($arySupervisores as $aryLoop) :  ?>
+                                        <option value="<?= $aryLoop["nIdUsuario"] ?>"><?= $aryLoop["sNombre"] . " - " . $aryLoop["sColorSuper"] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="formEmpleado" class="row">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="formFilter" tabindex="-1" role="dialog" aria-labelledby="formFiltersLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form enctype="multipart/form-data">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formFiltersLabel">Filtrar</h5>
+                    <button type="button" class="btn btn-close btn-gradient-primary btn-rounded p-0" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="nEstadoEmpleadoFilter" class="col-form-label">Estado:</label>
+                                <select class="form-control" name="nEstadoEmpleadoFilter" id="nEstadoEmpleadoFilter">
+                                    <option value="">TODOS</option>
+                                    <option value="1">ACTIVO</option>
+                                    <option value="0">DESACTIVO</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Filtrar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- End Modales -->
+
+<!-- Asesor de ventas -->
+<script>
+    $(document).ready(function() {
+
+        fncDrawEmpleado(() => {
+         });
+
+        fncOcultarAside();
+
+        // $("#btnFilter").on("click", function() {
+        //     $("#formFilter").modal("show");
+        // });
+
+        $("#btnCrearEmpleado").on('click', function() {
+            $('#formCEEmpleado').data("nIdRegistro", 0);
+            $('#formCEEmpleado').find(".modal-title").html("Nuevo Asesor de ventas");
+            fncClearInputs($("#formCEEmpleado").find("form"));
+            fncRemoveDisabled("#formCEEmpleado");
+            $('#formCEEmpleado').modal("show");
+        });
+
+        $("#formCEEmpleado").find("form").on('submit', function(event) {
+
+            event.preventDefault();
+
+            var sEntidad = "-" + '<?= $nIdEntidadVendedor ?>';
+
+            var nIdRegistro = $("#formCEEmpleado").data("nIdRegistro");
+
+            var nTipoDocumento = $("#nTipoDocumento" + sEntidad);
+            var sNumeroDocumento = $("#sNumeroDocumento" + sEntidad);
+            var sNombre = $("#sNombre" + sEntidad);
+            var sCorreo = $("#sCorreo" + sEntidad);
+            var dFechaNacimiento = $("#dFechaNacimiento" + sEntidad);
+            var nCantidadPersonasDependientes = $("#nCantidadPersonasDependientes" + sEntidad);
+            var nIdEstudios = $("#nIdEstudios" + sEntidad);
+            var nIdSituacionEstudios = $("#nIdSituacionEstudios" + sEntidad);
+            var sCarreraCiclo = $("#sCarreraCiclo" + sEntidad);
+            var nIdNegocio = <?= $aryNegocio["nIdNegocio"] ?>;
+            var nIdRol = '<?= $nIdRolAsesorVentas ?>';
+
+            var nExperienciaVentas = $("#nExperienciaVentas" + sEntidad);
+            var sRubroExperiencia = $("#sRubroExperiencia" + sEntidad);
+            var nIdEstadoCivil = $("#nIdEstadoCivil" + sEntidad);
+            var nIdSexo = $("#nIdSexo" + sEntidad);
+
+            var sImagen = $("#sImagen" + sEntidad).length > 0 ? $("#sImagen" + sEntidad)[0].files[0] : null;
+            var sClave = $("#sClave" + sEntidad);
+            var nEstado = $("#nEstado" + sEntidad);
+
+            var nIdSupervisor = $("#nIdSupervisor").val();
+
+
+            if (nTipoDocumento.length > 0 && nTipoDocumento.val() == '0') {
+                toastr.error('Error. Seleccione un tipo de documento . Porfavor verifique');
+                return;
+            } else if (sNumeroDocumento.length > 0 && sNumeroDocumento.val() == '') {
+                toastr.error('Error. Ingrese un numero de documento. Porfavor verifique');
+                return;
+            } else if (sNombre.length > 0 && sNombre.val() == '') {
+                toastr.error('Error. Ingrese un nombre . Porfavor verifique');
+                return;
+            } else if (sCorreo.length > 0 && (sCorreo.val() == '' || !fncValidateEmail(sCorreo.val()))) {
+                toastr.error('Error. Ingrese un correo con el formato correcto. Porfavor verifique');
+                return;
+            } else if (dFechaNacimiento.length > 0 && dFechaNacimiento.val() == '') {
+                toastr.error('Error. Ingrese un fecha. Porfavor verifique');
+                return;
+            } else if (nCantidadPersonasDependientes.length > 0 && nCantidadPersonasDependientes.val() == '' || isNaN(nCantidadPersonasDependientes.val()) || nCantidadPersonasDependientes.val() < 0) {
+                toastr.error('Error. No ha ingresado la cantidad de personas dependientes o el valor no es correcto. Porfavor verifique');
+                return;
+            } else if (sClave.length > 0 && sClave.val() == '') {
+                toastr.error('Error. Ingrese una contraseña. Porfavor verifique');
+                return;
+            } else if (nIdEstadoCivil.length > 0 && nIdEstadoCivil.val() == '0') {
+                toastr.error('Error. Seleccione un estado civil. Porfavor verifique');
+                return;
+            } else if (nIdSexo.length > 0 && nIdSexo.val() == '0') {
+                toastr.error('Error. Seleccione un tipo de sexo. Porfavor verifique');
+                return;
+            }
+
+            if (nIdEstudios.length > 0 && nIdEstudios.val() == '1') {
+
+                if (nIdSituacionEstudios.length > 0 && nIdSituacionEstudios.val() == '0') {
+                    toastr.error('Error. Seleccione situacion de estudios . Porfavor verifique');
+                    return;
+                } else if (sCarreraCiclo.length > 0 && sCarreraCiclo.val() == '') {
+                    toastr.error('Error. Ingrese situacion de estudios . Porfavor verifique');
+                    return;
+                }
+
+            }
+
+            if (nExperienciaVentas.length > 0 && nExperienciaVentas.val() == '1') {
+                if (sRubroExperiencia.length > 0 && sRubroExperiencia.val() == '') {
+                    toastr.error('Error. Ingrese su rubro de experiencia. Porfavor verifique');
+                    return;
+                }
+            }
+
+            if (nIdSupervisor == 0) {
+                toastr.error('Error. Seleccione un supervisor para el asesor de ventas . Porfavor verifique');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('nIdRegistro', nIdRegistro);
+            formData.append('nIdNegocio', nIdNegocio);
+            formData.append('nIdRol', nIdRol);
+            formData.append('nTipoDocumento', nTipoDocumento.length > 0 ? nTipoDocumento.val() : "");
+            formData.append('sNumeroDocumento', sNumeroDocumento.length > 0 ? sNumeroDocumento.val() : "");
+            formData.append('sNombre', sNombre.length > 0 ? sNombre.val() : "");
+            formData.append('sCorreo', sCorreo.length > 0 ? sCorreo.val() : "");
+            formData.append('nIdSexo', nIdSexo.length > 0 ? nIdSexo.val() : "");
+            formData.append('nIdEstadoCivil', nIdEstadoCivil.length > 0 ? nIdEstadoCivil.val() : "");
+            formData.append('dFechaNacimiento', dFechaNacimiento.length > 0 ? dFechaNacimiento.val() : "");
+            formData.append('nCantidadPersonasDependientes', nCantidadPersonasDependientes.length > 0 ? nCantidadPersonasDependientes.val() : 0);
+            formData.append('nExperienciaVentas', nExperienciaVentas.length > 0 ? nExperienciaVentas.val() : "");
+            formData.append('sRubroExperiencia', sRubroExperiencia.length > 0 ? sRubroExperiencia.val() : "");
+            formData.append('nIdEstudios', nIdEstudios.length > 0 ? nIdEstudios.val() : "");
+            formData.append('nIdSituacionEstudios', nIdSituacionEstudios.length > 0 ? nIdSituacionEstudios.val() : "");
+            formData.append('sCarreraCiclo', sCarreraCiclo.length > 0 ? sCarreraCiclo.val() : "");
+            formData.append('sClave', sClave.length > 0 ? sClave.val() : "");
+            formData.append('sImagen', sImagen);
+            formData.append('nEstado', nEstado.length > 0 ? nEstado.val() : "");
+            formData.append('nIdSupervisor', nIdSupervisor);
+
+            fncGrabarUsuario(formData, function(aryData) {
+                if (aryData.success) {
+                    toastr.success(aryData.success);
+                    $("#tblBDEmpleados").bootstrapTable("refresh");
+                    $("#formCEEmpleado").modal("hide");
+                } else {
+                    toastr.error(aryData.error);
+                }
+            });
+
+        });
+
+        $("#formFilter").find("form").on("submit", function(event) {
+            event.preventDefault();
+
+        });
+    });
+
+
+    function fncDrawEmpleado(fncCallback) {
+
+        var jsnData = {
+            nIdEntidad: '<?= $nIdEntidadVendedor ?>',
+            nIdNegocio: <?= $aryNegocio["nIdNegocio"] ?>
+        };
+
+        var sEntidad = "-" + '<?= $nIdEntidadVendedor ?>';
+
+        fncObtenerDataForm(jsnData, function(aryData) {
+            $("#formEmpleado").html(fncBuildForm(aryData));
+
+            $("#nIdEstudios" + sEntidad).on('change', function() {
+
+                switch ($(this).val()) {
+                    case '0':
+                    case '602':
+                    case '605':
+                        // Educaccion Basica y ninguno
+                        $("#content-nIdSituacionEstudios" + sEntidad).hide();
+                        $("#content-sCarreraCiclo" + sEntidad).hide();
+                        break;
+                    case '604':
+                    case '603':
+                        // Educaccion Superior y teecnico
+                        $("#content-nIdSituacionEstudios" + sEntidad).show();
+                        $("#content-sCarreraCiclo" + sEntidad).show();
+                        break;
+                }
+
+            });
+
+            $("#nExperienciaVentas" + sEntidad).on('change', function() {
+                if ($(this).val() == 1) {
+                    $("#content-sRubroExperiencia" + sEntidad).show();
+                } else {
+                    $("#content-sRubroExperiencia" + sEntidad).hide();
+                }
+            });
+
+            $("#nTipoDocumento" + sEntidad).change(function() {
+
+                if ($(this).val() > 0) {
+                    fncMaxLengthTypeDocument($(this).find('option:selected').text().trim().toUpperCase(), "#sNumeroDocumento" + sEntidad);
+                }
+
+                $("#sNumeroDocumento" + sEntidad).val("").trigger("keyup");
+
+            });
+
+            $("#btnsNumeroDocumento" + sEntidad).on('click', function() {
+                switch ($("#nTipoDocumento" + sEntidad).find("option:selected").text()) {
+
+                    case 'RUC':
+
+                        if ($("#sNumeroDocumento" + sEntidad).val().length == 11) {
+
+                            // Lanzamos el evento
+                            var jsnData = {
+                                sTipo: "ruc",
+                                sNumeroDoc: $("#sNumeroDocumento" + sEntidad).val()
+                            };
+
+                            fncBuscarDocument(jsnData, function(aryData) {
+                                if (aryData.success) {
+                                    toastr.success(aryData.success);
+                                    $("#sNombre" + sEntidad).val(aryData.success.razonSocial);
+                                } else {
+                                    toastr.error(aryData.error);
+                                }
+                            });
+
+                        }
+
+                        break;
+                    case 'DNI':
+                        if ($("#sNumeroDocumento" + sEntidad).val().length == 7 || $("#sNumeroDocumento" + sEntidad).val().length == 8) {
+
+                            // Lanzamos el evento
+                            var jsnData = {
+                                sTipo: "dni",
+                                sNumeroDoc: $("#sNumeroDocumento" + sEntidad).val()
+                            };
+
+                            fncBuscarDocument(jsnData, function(aryData) {
+                                if (aryData.success) {
+                                    toastr.success(aryData.success);
+                                    $("#sNombre" + sEntidad).val(aryData.success.razonSocial);
+                                } else {
+                                    toastr.error(aryData.error);
+                                }
+                            });
+
+                        }
+                        break;
+
+                }
+            });
+
+            $("#nIdSituacionEstudios" + sEntidad).on('change', function() {
+                if ($(this).val() == '608') {
+                    $("label[for='sCarreraCiclo" + sEntidad + "']").html("Carrera");
+                } else {
+                    $("label[for='sCarreraCiclo" + sEntidad + "']").html("Carrera y ciclo");
+                }
+            });
+
+
+            console.log($("#content-sNombre" + sEntidad));
+            $("#content-sNombre" + sEntidad).removeClass("col-md-6").addClass("col-md-12");
+
+        });
+    }
+
+    function fncCambiarEstadoEmpleado(nIdRegistro, nNuevoEstado) {
+
+        var sEstado = nNuevoEstado == '1' ? 'mostrará' : 'ocultará';
+
+        if (confirm('Esta acción ' + sEstado + ' el registro en todo el sistema. ¿ Esta seguro de continuar ?', )) {
+
+            var jsnData = {
+                nIdRegistro: nIdRegistro,
+                nIdNegocio: '<?= $aryNegocio["nIdNegocio"] ?>',
+                nEstado: nNuevoEstado
+            };
+
+            fncEjecutarCambiarEstado(jsnData, (aryData) => {
+                if (aryData.success) {
+                    $("#tblBDEmpleados").bootstrapTable("refresh");
+                    toastr.success(aryData.success);
+                } else {
+                    toastr.error(aryData.error);
+                }
+            });
+        }
+    }
+
+    function fncMostrarEmpleado(nIdRegistro, sOpcion) {
+
+        $("#formCEEmpleado").data("nIdRegistro", nIdRegistro);
+        fncClearInputs($("#formCEEmpleado").find("form"));
+
+        var jsnData = {
+            nIdRegistro: nIdRegistro
+        };
+
+        fncBuscarUsuario(jsnData, function(aryResponse) {
+
+            if (aryResponse.success) {
+
+                var nIdEntidad = '<?= $nIdEntidadVendedor ?>';
+                var sEntidad = "-" + nIdEntidad;
+                var aryData = aryResponse.aryData;
+
+                if ($("#nTipoDocumento" + sEntidad).length > 0) $("#nTipoDocumento" + sEntidad).val(aryData.nTipoDocumento);
+                if ($("#sNumeroDocumento" + sEntidad).length > 0) $("#sNumeroDocumento" + sEntidad).val(aryData.sNumeroDocumento);
+                if ($("#sNombre" + sEntidad).length > 0) $("#sNombre" + sEntidad).val(aryData.sNombre);
+                if ($("#sCorreo" + sEntidad).length > 0) $("#sCorreo" + sEntidad).val(aryData.sCorreo);
+
+                if ($("#nIdSexo" + sEntidad).length > 0) $("#nIdSexo" + sEntidad).val(aryData.nIdSexo);
+                if ($("#nIdEstadoCivil" + sEntidad).length > 0) $("#nIdEstadoCivil" + sEntidad).val(aryData.nIdEstadoCivil);
+
+                if ($("#nExperienciaVentas" + sEntidad).length > 0) $("#nExperienciaVentas" + sEntidad).val(aryData.nExperienciaVentas).trigger("change");
+                if ($("#sRubroExperiencia" + sEntidad).length > 0) $("#sRubroExperiencia" + sEntidad).val(aryData.sRubroExperiencia);
+                if ($("#dFechaNacimiento" + sEntidad).length > 0) $("#dFechaNacimiento" + sEntidad).val(aryData.dFechaNacimiento);
+                if ($("#nCantidadPersonasDependientes" + sEntidad).length > 0) $("#nCantidadPersonasDependientes" + sEntidad).val(aryData.nCantidadPersonasDependientes);
+                if ($("#nIdEstudios" + sEntidad).length > 0) $("#nIdEstudios" + sEntidad).val(aryData.nIdEstudios).trigger("change");
+                if ($("#nIdSituacionEstudios" + sEntidad).length > 0) $("#nIdSituacionEstudios" + sEntidad).val(aryData.nIdSituacionEstudios);
+                if ($("#sCarreraCiclo" + sEntidad).length > 0) $("#sCarreraCiclo" + sEntidad).val(aryData.sCarreraCiclo);
+                if ($("#nEstado" + sEntidad).length > 0) $("#nEstado" + sEntidad).val(aryData.nEstado);
+                if ($("#sClave" + sEntidad).length > 0) $("#sClave" + sEntidad).val(aryData.sClave);
+                if ($("#sImagen" + sEntidad).length > 0) {
+                    if (aryData.sImagen.length > 0) {
+                        $("#sImagen" + sEntidad).parent().find(".custom-file-label").html(aryData.sImagen);
+                    }
+                }
+
+                $("#nIdSupervisor").val(aryData.nIdSupervisor);
+
+                var sTitle = 'Asesor de ventas';
+
+                if (sOpcion == 'ver') {
+                    fncViewForm("#formCEEmpleado", "Ver " + sTitle);
+                } else {
+                    fncEditForm("#formCEEmpleado", "Editar " + sTitle);
+                }
+
+                $("#formCEEmpleado").modal("show");
+
+            } else {
+                toastr.error(aryData.error);
+            }
+        });
+
+    }
+
+    // LLamadas al servidor 
+    function fncGrabarUsuario(formData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'admin/usuarios/fncGrabarUsuario',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncObtenerDataForm(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'formularios/fncBuildForm',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncBuscarUsuario(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'usuarios/fncMostrarRegistro',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncEjecutarCambiarEstado(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'usuarios/fncCambiarEstado',
+            data: jsnData,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+
+    function fncBuscarDocument(jsnData, fncCallback) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: web_root + 'api/' + jsnData.sTipo + '/' + jsnData.sNumeroDoc,
+            beforeSend: function() {
+                fncMostrarLoader();
+            },
+            success: function(data) {
+                fncCallback(data);
+            },
+            complete: function() {
+                fncOcultarLoader();
+            }
+        });
+    }
+</script>
+<!-- Asesor de ventas -->
+
+</html>

@@ -9,10 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<body data-nidnegocio="<?= $nIdNegocio ?>"
-      data-nrol="<?=$user["nIdRol"]?>"
-      data-nrolprospectoadmin = "<?=$nRolProspectoAdmin?>"
->
+<body>
 
     <div class="page-loader">
         <div class="loader-dual-ring"></div>
@@ -450,7 +447,7 @@
 
 <?php extend_view(['admin/common/scripts'], $data) ?>
 <?php load_script(['jquery','jquery-ui','popper','bootstrap', 'moment' ,'admin/custom','admin/functions', 'admin/edit-user-empleado', 'admin/app']); ?> 
-<?php load_script_plugin(['toast/toastr.min','select2/select2','bootstrap-table/bootstrap-table']); ?> 
+<?php load_script_plugin(['toast/toastr.min','select2/select2','bootstrap-table/bootstrap-table',  'bootstrap-table/bootstrap-table-es-ES']); ?> 
 <script>
     // Se pone asi para que no se repitan los ids 
     var sEntidadCliente  = '-1';
@@ -748,7 +745,7 @@
                     }
                 });
 
-                $("#sNumeroDocumento-1").on('keyup change',function(){
+                $("#btnsNumeroDocumento-1").on('click',function(){
                     
                     switch( $("#nTipoDocumento-1").find("option:selected").text() ){
                         
@@ -764,7 +761,10 @@
 
                                 fncBuscarDocument( jsnData ,function(aryData){
                                     if(aryData.success){
+                                        toastr.success(aryData.success);
                                         $("#sNombreoRazonSocial-1").val(aryData.success.razonSocial);
+                                    } else {
+                                        toastr.error(aryData.error);
                                     }
                                 });
 
@@ -783,8 +783,11 @@
 
                                 fncBuscarDocument(jsnData ,function(aryData){
                                     if(aryData.success){
+                                        toastr.success(aryData.success);
                                         $("#sNombreoRazonSocial-1").val(aryData.success.razonSocial);
                                         $("#sDireccion-1").val(aryData.success.direccion);
+                                    } else {
+                                        toastr.error(aryData.error);
                                     }
                                 });
 

@@ -22,7 +22,6 @@ class ClientesController extends Controller
         $this->clientes = new Clientes();
         $this->session  = new Session();
         $this->prospectos = new Prospecto();
-
         $this->session->init();
     }
 
@@ -125,7 +124,6 @@ class ClientesController extends Controller
                     $this->exception("Error.Ya existe un cliente con este numero de documento .Porfavor verifique");
                 }
 
-
                 $aryCliente = $this->clientes->fncGetClienteByNombre($nIdNegocio, $sNombreoRazonSocial);
 
                 if (fncValidateArray($aryCliente)) {
@@ -150,6 +148,20 @@ class ClientesController extends Controller
                 );
             } else {
                 //Actualizar
+
+                # Valida que otro usuario no tenga ese numero de documento
+                $aryCliente = $this->clientes->fncValidarClientByNumDoc($nIdRegistro, $nIdNegocio, $nTipoDocumento, $sNumeroDocumento);
+
+                if (fncValidateArray($aryCliente)) {
+                    $this->exception("Error.No se puede actualizar el cliente ya que existe otro cliente , con este numero de documento .Porfavor verifique");
+                }
+
+                $aryCliente = $this->clientes->fncValidarClienteByNombre($nIdRegistro, $nIdNegocio, $sNombreoRazonSocial);
+
+                if (fncValidateArray($aryCliente)) {
+                    $this->exception("Error.No se puede actualizar el cliente ya que existe otro cliente , con este nombre .Porfavor verifique");
+                }
+
                 $this->clientes->fncActualizarClientes(
                     $nIdRegistro,
                     $nIdNegocio,
@@ -212,7 +224,7 @@ class ClientesController extends Controller
 
             $aryProspecto = $this->prospectos->fncObtenerProspectosByIdCliente($nIdRegistro);
 
-            if(fncValidateArray($aryProspecto)){
+            if (fncValidateArray($aryProspecto)) {
                 $this->exception('Error. No se puede eliminar el cliente porque se esta utilizando en el sistema. Por favor verifique.');
             }
 
@@ -243,8 +255,6 @@ class ClientesController extends Controller
             echo $ex->getMessage();
         }
     }
-
-
 
     public function fncGetClientesParaAdmin()
     {
@@ -283,8 +293,6 @@ class ClientesController extends Controller
             echo $ex->getMessage();
         }
     }
-
-
 
     public function fncCambiarEstado()
     {

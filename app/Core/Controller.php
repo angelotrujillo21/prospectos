@@ -205,8 +205,13 @@ class Controller
                             "sIcono"  => "chevron_right"
                         ],
                         [
-                            "sNombre" => "Base de empleados",
-                            "sUrl"    => route('listado-empleados/' . $user["nIdNegocio"]),
+                            "sNombre" => "Supervisores",
+                            "sUrl"    => route('supervisores/' . $user["nIdNegocio"]),
+                            "sIcono"  => "chevron_right"
+                        ],
+                        [
+                            "sNombre" => "Asesores de venta",
+                            "sUrl"    => route('asesores-ventas/' . $user["nIdNegocio"]),
                             "sIcono"  => "chevron_right"
                         ],
                     ]

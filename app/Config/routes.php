@@ -13,7 +13,6 @@ $router->get('salir', 'AuthController@salir');
 
 
 // Home 
-$router->any('socket', 'ProspectosController@fncSocket');
 
 $router->any('admin/usuarios/fncSendEmailEmpleado', 'UsuariosController@fncSendEmailEmpleado');
 $router->any('usuarios/fncMostrarRegistro', 'UsuariosController@fncMostrarRegistro');
@@ -25,8 +24,6 @@ $router->any('usuarios/fncCambiarEstado', 'UsuariosController@fncCambiarEstado')
 $router->any('usuarios/fncObtenerCamposUsuarios', 'UsuariosController@fncObtenerCamposUsuarios');
 
 $router->any('formulario-empleado/:id/:id/:id', 'VistasController@fncFormularioEmpleado');
-
- 
 $router->any('formularios/fncBuildForm', 'BuildFormController@fncBuildForm');
 $router->any('formularios/fncBuildFormProspecto', 'BuildFormController@fncBuildFormProspecto');
 
@@ -58,19 +55,18 @@ $router->any('admin/prospecto/fncGetReporteBasicoUsuarios', 'ProspectosControlle
 
 
 
-$router->any('admin/prospecto/fncActualizaEmpleadoProspecto', 'ProspectosController@fncActualizaEmpleadoProspecto');
 $router->any('admin/prospecto/fncGetActividadesNoCumplidas', 'ProspectosController@fncGetActividadesNoCumplidas');
 $router->any('admin/prospecto/fncGetProspectosParaReporteVentas', 'ProspectosController@fncGetProspectosParaReporteVentas');
 $router->any('admin/prospecto/fncPopulateHistorialCliente', 'ProspectosController@fncPopulateHistorialCliente');
 $router->any('admin/prospecto/fncTerminarProspecto', 'ProspectosController@fncTerminarProspecto');
 $router->any('admin/prospecto/fncActualizarEstadoCambiosProspecto', 'ProspectosController@fncActualizarEstadoCambiosProspecto');
-$router->any('admin/prospecto/fncObtenerProspectoAdjuntosByIdProspecto', 'ProspectosController@fncObtenerProspectoAdjuntosByIdProspecto');
 $router->any('admin/prospecto/fncGrabarProspectoAdjunto', 'ProspectosController@fncGrabarProspectoAdjunto');
 $router->any('admin/prospecto/fncEliminarProspectoAdjunto', 'ProspectosController@fncEliminarProspectoAdjunto');
-$router->any('admin/prospecto/fncEliminarRegistro', 'ProspectosController@fncEliminarRegistro');
 $router->any('admin/prospecto/fncObtenerCambiosForAdmin', 'ProspectosController@fncObtenerCambiosForAdmin');
 $router->any('admin/prospecto/fncEliminarProspectoCerrado', 'ProspectosController@fncEliminarProspectoCerrado');
- 
+$router->any('admin/prospecto/fncObtenerProspectoAdjuntosByIdProspecto', 'ProspectosController@fncObtenerProspectoAdjuntosByIdProspecto');
+$router->get('propuesta/:id', 'ProspectosController@fncProcesarPropuesta');
+
 
 
 $router->any('admin/prospecto/fncGrabarProspectoCatalogo', 'ProspectosController@fncGrabarProspectoCatalogo');
@@ -84,14 +80,7 @@ $router->any('admin/prospecto/fncGetActividadByIdProspecto', 'ProspectosControll
 
 
 $router->any('admin/prospecto/fncGrabarProspectoNota', 'ProspectosController@fncGrabarProspectoNota');
-$router->any('admin/prospecto/fncEliminarProspectoNota', 'ProspectosController@fncEliminarProspectoNota');
-$router->any('admin/prospecto/fncGetProspectoNotaByIdProspecto', 'ProspectosController@fncGetProspectoNotaByIdProspecto');
-$router->any('admin/prospecto/fncActualizarControlExtra', 'ProspectosController@fncActualizarControlExtra');
-$router->any('admin/prospecto/fncGetCambioProspectoByIdProspecto', 'ProspectosController@fncGetCambioProspectoByIdProspecto');
 $router->any('admin/prospecto/fncGrabarCambioProspecto', 'ProspectosController@fncGrabarCambioProspecto');
-$router->any('admin/prospecto/fncActualizarEstadoProspecto', 'ProspectosController@fncActualizarEstadoProspecto');
-
-
 
 
 $router->any('admin/prospecto/fncGetProspectos', 'ProspectosController@fncGetProspectos');
@@ -186,7 +175,8 @@ $router->get('reporte-grafico/:id', 'VistasController@reporteGrafico');
 $router->get('reporte-ventas/:id', 'VistasController@reporteVentas');
 $router->get('reporte-consultor/:id', 'VistasController@reporteConsultor');
 $router->get('reporte-cliente/:id', 'VistasController@reporteCliente');
-$router->get('listado-empleados/:id', 'VistasController@listadoEmpleados');
+$router->get('supervisores/:id', 'VistasController@supervisores');
+$router->get('asesores-ventas/:id', 'VistasController@asesoresVentas');
 
 $router->get('home/:id/:id', 'VistasController@index');
 $router->get('mis-negocios', 'VistasController@misNegocios');

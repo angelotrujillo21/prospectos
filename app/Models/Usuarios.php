@@ -128,7 +128,6 @@ class Usuarios
         $sLogin,
         $sClave,
         $sImagen,
-        $nCrearNegocio,
         $nEstado
     ) {
         $sSQL =  $this->db->generateSQLUpdate("usuarios", [
@@ -153,7 +152,6 @@ class Usuarios
             "sClave"                             => $sClave,
             "sImagen"                            => $sImagen,
 
-            "nCrearNegocio"                      => $nCrearNegocio,
             "nEstado"                            => $nEstado
 
         ], "nIdUsuario = $nIdUsuario");
@@ -165,13 +163,15 @@ class Usuarios
         $nIdUsuario,
         $nIdNegocio,
         $nIdColor,
-        $nIdRol
+        $nIdRol,
+        $nEstado
     ) {
         $sSQL = $this->db->generateSQLInsert("usuariosnegocios", [
             "nIdUsuario"        => $nIdUsuario,
             "nIdNegocio"        => $nIdNegocio,
             "nIdColor"          => $nIdColor,
-            "nIdRol"            => $nIdRol
+            "nIdRol"            => $nIdRol,
+            "nEstado"          => $nEstado
         ]);
         return $this->db->run($sSQL);
     }
@@ -194,13 +194,13 @@ class Usuarios
     public function fncEliminarSupervisorVendedor($nIdSupervisor, $nIdVendedor)
     {
         $sSQL = "DELETE FROM supervisoresvendedores WHERE nIdSupervisor = $nIdSupervisor AND nIdVendedor = $nIdVendedor ";
-        $this->db->run($sSQL);
+        return $this->db->run($sSQL);
     }
 
     public function fncEliminarUsuarioNegocio($nIdUsuario, $nIdNegocio)
     {
         $sSQL = "DELETE FROM usuariosnegocios WHERE nIdUsuario = $nIdUsuario AND nIdNegocio = $nIdNegocio ";
-        $this->db->run($sSQL);
+        return $this->db->run($sSQL);
     }
 
 
@@ -214,6 +214,12 @@ class Usuarios
     public function fncBuscarUsuarioPorCorreoOrLogin($sCorreo, $sLogin)
     {
         $sSQL = "SELECT nIdUsuario FROM usuarios WHERE sCorreo = '$sCorreo' OR sLogin = '$sLogin' ";
+        return $this->db->run($sSQL);
+    }
+
+    public function fncValidarPorCorreoOrLogin($nIdUsuario , $sCorreo, $sLogin)
+    {
+        $sSQL = "SELECT nIdUsuario FROM usuarios WHERE nIdUsuario <> $nIdUsuario AND  sCorreo = '$sCorreo' OR sLogin = '$sLogin' ";
         return $this->db->run($sSQL);
     }
 
@@ -241,7 +247,7 @@ class Usuarios
                     us.sCorreo,
                     IFNULL(us.nIdSexo , 0) AS nIdSexo ,
                     IFNULL(us.nIdEstadoCivil , 0) AS nIdEstadoCivil ,
-                    IFNULL((SELECT nIdColor FROM usuariosnegocios WHERE nIdUsuario = $nIdUsuario AND nIdNegocio = ". ( is_null($nIdNegocio) ? 0 : $nIdNegocio )." LIMIT 1) ,0) AS nIdColor,
+                    IFNULL((SELECT nIdColor FROM usuariosnegocios WHERE nIdUsuario = $nIdUsuario AND nIdNegocio = " . (is_null($nIdNegocio) ? 0 : $nIdNegocio) . " LIMIT 1) ,0) AS nIdColor,
                     us.dFechaNacimiento,
                     us.nCantidadPersonasDependientes,
                     IFNULL(us.nExperienciaVentas , 0) AS nExperienciaVentas ,
@@ -249,7 +255,7 @@ class Usuarios
                     IFNULL(us.nIdEstudios , 0) AS nIdEstudios ,
                     IFNULL(us.nIdSituacionEstudios , 0) AS nIdSituacionEstudios ,
                     us.sCarreraCiclo,
-                    IFNULL((SELECT nIdSupervisor FROM supervisoresvendedores WHERE nIdVendedor = us.nIdUsuario AND nIdNegocio = ". ( is_null($nIdNegocio) ? 0 : $nIdNegocio )." LIMIT 1) , 0) AS nIdSupervisor,
+                    IFNULL((SELECT nIdSupervisor FROM supervisoresvendedores WHERE nIdVendedor = us.nIdUsuario AND nIdNegocio = " . (is_null($nIdNegocio) ? 0 : $nIdNegocio) . " LIMIT 1) , 0) AS nIdSupervisor,
                     us.sClave,
                     us.sImagen,
                     usneg.nIdRol,
@@ -352,7 +358,19 @@ class Usuarios
 
     public function fncGetColoresEmpleados($nIdNegocio)
     {
-        $sSQL = "SELECT DISTINCT usn.nIdColor FROM usuariosnegocios AS usn WHERE usn.nIdNegocio = $nIdNegocio AND usn.nIdColor IS NOT NULL";
+        $sSQL = "SELECT DISTINCT usn.nIdColor FROM usuariosnegocios AS usn WHERE usn.nIdNegocio = $nIdNegocio AND usn.nIdColor IS NOT NULL AND usn.nEstado = 1";
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncBuscarSupervisorColor($nIdNegocio, $nIdColor)
+    {
+        $sSQL = "SELECT usn.nIdUsuario FROM usuariosnegocios AS usn WHERE usn.nIdNegocio = $nIdNegocio AND usn.nIdColor = $nIdColor AND usn.nEstado = 1";
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncValidarSupervisorColor($nIdUsuario ,$nIdNegocio, $nIdColor)
+    {
+        $sSQL = "SELECT usn.nIdUsuario FROM usuariosnegocios AS usn WHERE usn.nIdUsuario <> $nIdUsuario AND usn.nIdNegocio = $nIdNegocio AND usn.nIdColor = $nIdColor AND usn.nEstado = 1";
         return $this->db->run(trim($sSQL));
     }
 
@@ -394,6 +412,7 @@ class Usuarios
                         IFNULL(estadocivil.sDescripcionLargaItem,'') AS sEstadoCivil, 
                         us.sCarreraCiclo,
                         IFNULL((SELECT nIdSupervisor FROM supervisoresvendedores WHERE nIdVendedor = us.nIdUsuario AND nIdNegocio = $nIdNegocio LIMIT 1) , 0) AS nIdSupervisor,
+                        IFNULL( (SELECT usb.sNombre FROM usuarios AS usb WHERE usb.nIdUsuario = (SELECT nIdSupervisor FROM supervisoresvendedores WHERE nIdVendedor = us.nIdUsuario AND nIdNegocio = $nIdNegocio LIMIT 1) ),'' ) AS sSupervisor,
                         us.sClave ,
                         us.nEstado ,
                         IFNULL(us.sImagen,'') AS sImagen, 
@@ -405,10 +424,9 @@ class Usuarios
                             INNER JOIN usuariosnegocios AS usnegs ON sv.nIdSupervisor = usnegs.nIdUsuario
                             INNER JOIN catalogotabla AS color ON usnegs.nIdColor = color.nIdCatalogoTabla
                             WHERE sv.nIdVendedor = us.nIdUsuario AND usnegs.nIdNegocio = $nIdNegocio LIMIT 1) , '') AS sColorSuperEmpleado,
-                        
-
                         CONCAT(SUBSTRING(us.sNombre, 1, 3)) AS sUsuarioCorto,
-                        TIME_TO_SEC(TIMEDIFF(NOW(), us.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso
+                        TIME_TO_SEC(TIMEDIFF(NOW(), us.dFechaHoraUltimoAcceso)) AS sTimeUltimoAcceso,
+                        usneg.nEstado AS nEstadoUN
                 FROM usuarios AS us
                 INNER JOIN usuariosnegocios AS usneg ON us.nIdUsuario = usneg.nIdUsuario
                 INNER JOIN roles AS rol ON usneg.nIdRol = rol.nIdRol
@@ -450,13 +468,19 @@ class Usuarios
 
     public function fncVerificarExisteColorSupervisor($nIdNegocio, $nIdColor)
     {
-        $sSQL = "SELECT usuneg.nIdColor FROM usuariosnegocios AS usuneg WHERE usuneg.nIdNegocio = $nIdNegocio AND usuneg.nIdColor = $nIdColor";
+        $sSQL = "SELECT usuneg.nIdColor FROM usuariosnegocios AS usuneg WHERE usuneg.nIdNegocio = $nIdNegocio AND usuneg.nIdColor = $nIdColor AND usuneg.nEstado = 1";
         return $this->db->run(trim($sSQL));
     }
 
     public function fncCambiarEstado($nIdUsuario, $nEstado)
     {
         $sSQL = "UPDATE usuarios SET nEstado = $nEstado WHERE nIdUsuario = $nIdUsuario ";
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncCambiarEstadoUsuarioNegocio($nIdUsuario, $nIdNegocio, $nEstado)
+    {
+        $sSQL = "UPDATE usuariosnegocios SET nEstado = $nEstado WHERE nIdUsuario = $nIdUsuario AND nIdNegocio = $nIdNegocio ";
         return $this->db->run(trim($sSQL));
     }
 
@@ -475,6 +499,12 @@ class Usuarios
                  FROM usuarios AS us 
                 INNER JOIN usuariosnegocios AS usneg ON us.nIdUsuario = usneg.nIdUsuario
                 WHERE us.nIdUsuario = $nIdUsuario";
+        return $this->db->run(trim($sSQL))[0];
+    }
+
+    public function fncObtenerSupervisor($nIdNegocio, $nIdVendedor)
+    {
+        $sSQL = "SELECT su.nIdSupervisor FROM supervisoresvendedores AS su WHERE su.nIdNegocio = $nIdNegocio AND su.nIdVendedor = $nIdVendedor";
         return $this->db->run(trim($sSQL))[0];
     }
 }

@@ -135,7 +135,7 @@ class Clientes
     }
 
 
-    public function fncGetClientes($nIdNegocio, $nEstado = null, $nTipoCliente = null, $sOrderBy = null)
+    public function fncGetClientes($nIdNegocio, $nEstado = null, $nTipoCliente = null, $sOrderBy = null, $sDesde = null, $sHasta = null)
     {
         $sSQL = "SELECT  
                    cli.nIdCliente,
@@ -176,6 +176,9 @@ class Clientes
         $sWhere .= (is_null($nEstado) ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " cli.nEstado = $nEstado ");
 
         $sWhere .= (is_null($nTipoCliente)  || empty($nTipoCliente)   ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " cli.nTipoCliente = $nTipoCliente ");
+
+        $sWhere .= (is_null($sDesde) || is_null($sHasta)   ? '' : (strlen($sWhere) > 0 ? " AND " : '') . " DATE(cli.dFechaCreacion)  BETWEEN STR_TO_DATE( '" . $sDesde . "', '%d/%m/%Y' ) AND STR_TO_DATE( '" . $sHasta . "', '%d/%m/%Y' )");
+
 
         $sSQL   .= (strlen($sWhere) > 0 ? ' WHERE ' : '') . $sWhere;
 
@@ -227,14 +230,14 @@ class Clientes
     public function fncGetClienteByNumDoc($nIdNegocio, $nTipoDocumento, $sNumeroDocumento)
     {
         $sSQL = "SELECT  
-                   *
+                   nIdCliente
                 FROM clientes AS cli 
                 WHERE cli.nIdNegocio = $nIdNegocio AND cli.nTipoDocumento = '$nTipoDocumento' AND cli.sNumeroDocumento = {$this->db->quote($sNumeroDocumento)} ";
 
         return $this->db->run(trim($sSQL));
     }
 
-    
+
     public function fncGetClienteByNombre($nIdNegocio, $sNombreoRazonSocial)
     {
         $sSQL = "SELECT  
@@ -242,6 +245,25 @@ class Clientes
                 FROM clientes AS cli 
                 WHERE cli.nIdNegocio = $nIdNegocio AND cli.sNombreoRazonSocial =  {$this->db->quote($sNombreoRazonSocial)} ";
 
+        return $this->db->run(trim($sSQL));
+    }
+    
+    public function fncValidarClientByNumDoc($nIdCliente, $nIdNegocio, $nTipoDocumento, $sNumeroDocumento)
+    {
+        $sSQL = "SELECT  
+                   nIdCliente
+                FROM clientes AS cli 
+                WHERE cli.nIdCliente <> $nIdCliente AND cli.nIdNegocio = $nIdNegocio AND cli.nTipoDocumento = '$nTipoDocumento' AND cli.sNumeroDocumento = {$this->db->quote($sNumeroDocumento)} ";
+
+        return $this->db->run(trim($sSQL));
+    }
+
+    public function fncValidarClienteByNombre($nIdCliente, $nIdNegocio, $sNombreoRazonSocial)
+    {
+        $sSQL = "SELECT  
+                   nIdCliente
+                FROM clientes AS cli 
+                WHERE cli.nIdCliente <> $nIdCliente AND cli.nIdNegocio = $nIdNegocio AND cli.sNombreoRazonSocial = {$this->db->quote($sNombreoRazonSocial)} ";
         return $this->db->run(trim($sSQL));
     }
 

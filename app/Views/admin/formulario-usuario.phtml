@@ -43,20 +43,13 @@
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="sLogin" class="col-form-label">Login:</label>
-                                    <input type="text" class="form-control" id="sLogin" autocomplete="off" name="sLogin">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
                                     <label for="sClaveSave" class="col-form-label">Clave:</label>
                                     <input type="text" class="form-control" id="sClaveSave" autocomplete="off" name="sClaveSave">
                                 </div>
                             </div>
 
 
-                            <div class="col-md-12 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="sImagen" class="col-form-label">Imagen:</label>
                                     <div class="input-group">
@@ -111,7 +104,6 @@
             var nIdRegistro     = 0;
             var sNombre         = $("#sNombre").val().toUpperCase().trim();
             var sCorreo         = $("#sEmailSave").val().trim();
-            var sLogin          = $("#sLogin").val().trim();
             var sClave          = $("#sClaveSave").val().trim();
             var sImagen         = $("#sImagen")[0].files[0];
             var nEstado         = 1;
@@ -121,9 +113,6 @@
                 return false;
             } else if (sCorreo == '') {
                 toastr.error('Error. Debe ingresar el email del usuario.');
-                return false;
-            } else if (sLogin == '') {
-                toastr.error('Error. Debe ingresar el login del usuario.');
                 return false;
             } else if (sClave == '') {
                 toastr.error('Error. Debe ingresar la clave del usuario.');
@@ -135,7 +124,6 @@
             formData.append('nIdRegistro', nIdRegistro);
             formData.append('sNombre', sNombre);
             formData.append('sCorreo', sCorreo);
-            formData.append('sLogin', sLogin);
             formData.append('sClave', sClave);
             formData.append('sImagen', sImagen);
             formData.append('nIdRol', '<?=$nRol?>');

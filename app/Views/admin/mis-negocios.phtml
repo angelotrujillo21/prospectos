@@ -3,11 +3,11 @@
 
 <head>
     <?php extend_view(['admin/common/head'], $data) ?>
-    <?php load_style([ 'bootstrap', 'jquery-ui', 'admin/style', 'admin/shards-dashboards.1.1.0.min']); ?> 
-    <?php load_style_plugin([ 'toast/toastr.min']); ?> 
+    <?php load_style(['bootstrap', 'jquery-ui', 'admin/style', 'admin/shards-dashboards.1.1.0.min']); ?>
+    <?php load_style_plugin(['toast/toastr.min']); ?>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- </head>
+</head>
 
 <body>
 
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="card-body py-4">
                                         <div class="row" id="list-negocios">
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
 
 
     <!-- Modales -->
-    
+
     <?php extend_view(['admin/common/modales-editar'], $data) ?>
 
     <div class="modal fade" enctype="multipart/form-data" id="formNegocio" tabindex="-1" role="dialog" aria-labelledby="formNegocioLabel" aria-hidden="true">
@@ -76,97 +76,148 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                    
-                            <div class="row">
 
-                                <div class="col-12 mb-1">
-                                    <span class="title-negocio">General</span>
-                                </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="sNombre" class="col-form-label">Nombre:</label>
-                                        <input type="text" class="form-control" id="sNombre" autocomplete="off" name="sNombre">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Controles</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane  show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+
+                                 
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="sNombre" class="col-form-label">Nombre:</label>
+                                            <input type="text" class="form-control" id="sNombre" autocomplete="off" name="sNombre">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="sDireccion" class="col-form-label">Direccion:</label>
-                                        <input type="text" class="form-control" id="sDireccion" autocomplete="off" name="sDireccion">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="sDireccion" class="col-form-label">Direccion:</label>
+                                            <input type="text" class="form-control" id="sDireccion" autocomplete="off" name="sDireccion">
+                                        </div>
                                     </div>
-                                </div>
 
 
-                                <div class="col-md-12 col-12">
-                                    <div class="form-group">
-                                        <label for="sImagen" class="col-form-label">Imagen:</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="sImagen" accept="image/*" lang="es" name="sImagen">
-                                                <label class="custom-file-label" for="sImagen">Elija el archivo</label>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="nIdPais" class="col-form-label">Pais:</label>
+                                            <select class="form-control" name="nIdPais" id="nIdPais">
+                                                <option value="0">Seleccionar</option>
+                                                <?php foreach ($aryPaises as $aryLoop) : ?>
+                                                    <option value="<?= $aryLoop['nIdPais'] ?>"><?= $aryLoop['sNombre'] ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="sCiudad" class="col-form-label">Ciudad:</label>
+                                            <input type="text" class="form-control" id="sCiudad" autocomplete="off" name="sCiudad">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="nIdMoneda" class="col-form-label">Moneda:</label>
+                                            <select class="form-control" name="nIdMoneda" id="nIdMoneda">
+                                                <option value="0">Seleccionar</option>
+                                                <?php foreach ($aryMoneda as $aryLoop) : ?>
+                                                    <option value="<?= $aryLoop['nIdCatalogoTabla'] ?>"><?= $aryLoop['sDescripcionLargaItem'] ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="nPorcentajeTributo" class="col-form-label" title="Porcentaje de tributo segun el pais, en caso no requiera colocar en 0">Porcentaje Tributo:</label>
+                                            <input type="text" class="form-control" id="nPorcentajeTributo" autocomplete="off" name="nPorcentajeTributo">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="sImagen" class="col-form-label">Imagen:</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="sImagen" accept="image/*" lang="es" name="sImagen">
+                                                    <label class="custom-file-label" for="sImagen">Elija el archivo</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div id="content-nTipoProspecto" class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="nTipoProspecto" class="col-form-label">Tipo De Prospecto:</label>
-                                        <select class="form-control" name="nTipoProspecto" id="nTipoProspecto">
-                                            <option value="0">Seleccionnar</option>
-                                            <?php foreach ($aryTipoProspectos as $aryTipoProspecto) : ?>
-                                                <option value="<?= $aryTipoProspecto['nIdCatalogoTabla'] ?>"><?= $aryTipoProspecto['sDescripcionLargaItem'] ?></option>
-                                            <?php endforeach ?>
-                                        </select>
+                                    <div id="content-nTipoProspecto" class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="nTipoProspecto" class="col-form-label">Tipo De Prospecto:</label>
+                                            <select class="form-control" name="nTipoProspecto" id="nTipoProspecto">
+                                                <option value="0">Seleccionar</option>
+                                                <?php foreach ($aryTipoProspectos as $aryTipoProspecto) : ?>
+                                                    <option value="<?= $aryTipoProspecto['nIdCatalogoTabla'] ?>"><?= $aryTipoProspecto['sDescripcionLargaItem'] ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
 
-                                
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="nEstado" class="col-form-label">Estado:</label>
-                                        <select class="form-control" name="nEstado" id="nEstado">
-                                            <option value="1">Activo</option>
-                                            <option value="0">Desactivo</option>
-                                        </select>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="nEstado" class="col-form-label">Estado:</label>
+                                            <select class="form-control" name="nEstado" id="nEstado">
+                                                <option value="1">Activo</option>
+                                                <option value="0">Desactivo</option>
+                                            </select>
+                                        </div>
                                     </div>
+
                                 </div>
 
 
+                            </div>
+                            <div class="tab-pane " id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-                                <div class="col-12 mb-1">
-                                    <span class="title-negocio">Controles</span>
-                                </div>
-
-
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <span>Cliente
-                                            <a class="edit-controles" data-toggle="modal" data-target="#formCliente"><i class="fas fa-pen"></i></a></span>
+                                <div class="row py-2">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <span>Cliente
+                                                <a class="edit-controles" data-toggle="modal" data-target="#formCliente"><i class="fas fa-pen"></i></a></span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#formVendedores"><i class="fas fa-pen"></i></a></span>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <span>Vendedores <a class="edit-controles" data-toggle="modal" data-target="#formVendedores"><i class="fas fa-pen"></i></a></span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <span>Productos o servicios <a class="edit-controles" data-toggle="modal" data-target="#formProductosoServicios"><i class="fas fa-pen"></i></a></span>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <span>Productos o servicios <a class="edit-controles" data-toggle="modal" data-target="#formProductosoServicios"><i class="fas fa-pen"></i></a></span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#formSupervisores"><i class="fas fa-pen"></i></a></span>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <span>Supervisores <a class="edit-controles" data-toggle="modal" data-target="#formSupervisores"><i class="fas fa-pen"></i></a></span>
+                                        </div>
                                     </div>
+
                                 </div>
 
                             </div>
-                        
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-gradient-primary btn-fw btn-submit">Guardar</button>
@@ -187,25 +238,25 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        
 
-                            <div class="row  ml-content-custom-switch w-100">
 
-                                <?php foreach ($aryConfigClientes as $aryConfigCliente) : ?>
-                                    <!-- Ocultamos Tipo de documento y Apellidos -->
-                                    <?php  $sClass = in_array($aryConfigCliente['nIdCampoEntidad'], [1, 5]) ? 'd-none' : ''; ?>
-                                    <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
-                                        <div class="custom-control custom-switch ">
-                                            <input type="checkbox" name="aryConfiguracionCliente[]" class="custom-control-input" id="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCliente['nIdCampoEntidad'] ?>">
-                                            <label class="custom-control-label" for="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>"><?= $aryConfigCliente['sNombreUsuario'] ?></label>
-                                        </div>
+                        <div class="row  ml-content-custom-switch w-100">
+
+                            <?php foreach ($aryConfigClientes as $aryConfigCliente) : ?>
+                                <!-- Ocultamos Tipo de documento y Apellidos -->
+                                <?php $sClass = in_array($aryConfigCliente['nIdCampoEntidad'], [1, 5]) ? 'd-none' : ''; ?>
+                                <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
+                                    <div class="custom-control custom-switch ">
+                                        <input type="checkbox" name="aryConfiguracionCliente[]" class="custom-control-input" id="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCliente['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigCliente['nIdCampoEntidad'] ?>"><?= $aryConfigCliente['sNombreUsuario'] ?></label>
                                     </div>
-                                <?php endforeach ?>
+                                </div>
+                            <?php endforeach ?>
 
 
-                            </div>
+                        </div>
 
-                        
+
                     </div>
                 </form>
             </div>
@@ -223,24 +274,24 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        
 
-                            <div class="row  ml-content-custom-switch w-100">
 
-                                <?php foreach ($aryConfigVendedores as $aryConfigVendedor) : ?>
-                                    <?php $sClass = in_array($aryConfigVendedor['nIdCampoEntidad'], [16, 20]) ? 'd-none' : ''; ?>
-                                    <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" name="aryConfiguracionVendedores[]" class="custom-control-input" id="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigVendedor['nIdCampoEntidad'] ?>">
-                                            <label class="custom-control-label" for="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>"><?= $aryConfigVendedor['sNombreUsuario'] ?></label>
-                                        </div>
+                        <div class="row  ml-content-custom-switch w-100">
+
+                            <?php foreach ($aryConfigVendedores as $aryConfigVendedor) : ?>
+                                <?php $sClass = in_array($aryConfigVendedor['nIdCampoEntidad'], [16, 20]) ? 'd-none' : ''; ?>
+                                <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" name="aryConfiguracionVendedores[]" class="custom-control-input" id="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigVendedor['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigVendedor['nIdCampoEntidad'] ?>"><?= $aryConfigVendedor['sNombreUsuario'] ?></label>
                                     </div>
-                                <?php endforeach ?>
+                                </div>
+                            <?php endforeach ?>
 
 
-                            </div>
+                        </div>
 
-                        
+
                     </div>
                 </form>
             </div>
@@ -258,23 +309,23 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        
 
-                            <div class="row  ml-content-custom-switch w-100">
 
-                                <?php foreach ($aryConfigCatalogos as $aryConfigCatalogo) : ?>
-                                    <div class="col-12 col-md-6 my-2">
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" name="aryConfiguracionCatalogo[]" class="custom-control-input" id="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>">
-                                            <label class="custom-control-label" for="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>"><?= $aryConfigCatalogo['sNombreUsuario'] ?></label>
-                                        </div>
+                        <div class="row  ml-content-custom-switch w-100">
+
+                            <?php foreach ($aryConfigCatalogos as $aryConfigCatalogo) : ?>
+                                <div class="col-12 col-md-6 my-2">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" name="aryConfiguracionCatalogo[]" class="custom-control-input" id="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigCatalogo['nIdCampoEntidad'] ?>"><?= $aryConfigCatalogo['sNombreUsuario'] ?></label>
                                     </div>
-                                <?php endforeach ?>
+                                </div>
+                            <?php endforeach ?>
 
 
-                            </div>
+                        </div>
 
-                        
+
                     </div>
                 </form>
             </div>
@@ -292,24 +343,24 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                    
 
-                            <div class="row  ml-content-custom-switch w-100">
 
-                                <?php foreach ($aryConfigSupervisores as $aryConfigSupervisor) : ?>
-                                    <?php $sClass = in_array($aryConfigSupervisor['nIdCampoEntidad'], [28, 31]) ? 'd-none' : ''; ?>
-                                    <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" name="aryConfiguracionSupervisor[]" class="custom-control-input" id="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>">
-                                            <label class="custom-control-label" for="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>"><?= $aryConfigSupervisor['sNombreUsuario'] ?></label>
-                                        </div>
+                        <div class="row  ml-content-custom-switch w-100">
+
+                            <?php foreach ($aryConfigSupervisores as $aryConfigSupervisor) : ?>
+                                <?php $sClass = in_array($aryConfigSupervisor['nIdCampoEntidad'], [28, 31]) ? 'd-none' : ''; ?>
+                                <div class="col-12 col-md-6 my-2 <?= $sClass ?>">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" name="aryConfiguracionSupervisor[]" class="custom-control-input" id="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>" checked="checked" value="<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>">
+                                        <label class="custom-control-label" for="chk<?= $aryConfigSupervisor['nIdCampoEntidad'] ?>"><?= $aryConfigSupervisor['sNombreUsuario'] ?></label>
                                     </div>
-                                <?php endforeach ?>
+                                </div>
+                            <?php endforeach ?>
 
 
-                            </div>
+                        </div>
 
-                    
+
                     </div>
                 </form>
             </div>
@@ -329,7 +380,7 @@
                     <div class="modal-body">
                         <div class="row">
 
-                        
+
                             <div id="content-sCorreoInvitacion" class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="sCorreoInvitacion" class="col-form-label">Correo:</label>
@@ -370,7 +421,7 @@
                     <div class="modal-body">
                         <div class="row flex-center " id="lista-usuarios">
 
-          
+
 
                         </div>
                     </div>
@@ -391,8 +442,8 @@
 
 
 <?php extend_view(['admin/common/scripts'], $data) ?>
-<?php load_script(['jquery','jquery-ui','popper','bootstrap','admin/custom','admin/functions', 'admin/edit-user-empleado', 'admin/app']); ?> 
-<?php load_script_plugin(['toast/toastr.min']); ?> 
+<?php load_script(['jquery', 'jquery-ui', 'popper', 'bootstrap', 'admin/custom', 'admin/functions', 'admin/edit-user-empleado', 'admin/app']); ?>
+<?php load_script_plugin(['toast/toastr.min']); ?>
 
 <script>
     $(function() {
@@ -403,79 +454,99 @@
         //Clientes
         fncDrawNegocios();
 
-        fncActDescCheck("#chk2","#chk1");
-        fncActDescCheck("#chk4","#chk5");
-        
+        fncActDescCheck("#chk2", "#chk1");
+        fncActDescCheck("#chk4", "#chk5");
+
         //Vendedores
-        fncActDescCheck("#chk17","#chk16");
-        fncActDescCheck("#chk19","#chk20");
+        fncActDescCheck("#chk17", "#chk16");
+        fncActDescCheck("#chk19", "#chk20");
 
         //Supervisores
-        fncActDescCheck("#chk29","#chk28");
-        fncActDescCheck("#chk30","#chk31");
+        fncActDescCheck("#chk29", "#chk28");
+        fncActDescCheck("#chk30", "#chk31");
         fncValidateUser();
 
         $("#btnCrearNegocio").on('click', function() {
             fncCleanAll();
             $("#formNegocio").find(".modal-title").html('Nuevo Negocio');
-            $("#sNombre").data("nIdRegistro",0);
+            $("#sNombre").data("nIdRegistro", 0);
+            $("#nPorcentajeTributo").val(0);
             $("#content-nTipoProspecto").show();
             $("#formNegocio").modal("show");
         });
 
         $("#formNegocio").find('form').on('submit', function(event) {
-            
+
             event.preventDefault();
 
-            var nIdRegistro                 = $("#sNombre").data("nIdRegistro");
-            var sNombre                     = $("#sNombre").val().trim();
-            var sDireccion                  = $("#sDireccion").val().trim();
-            var sImagen                     = $("#sImagen")[0].files[0];
-            var nTipoProspecto              = $("#nTipoProspecto").val().trim();
-            var nEstado                     = $("#nEstado").val();
+            var nIdRegistro = $("#sNombre").data("nIdRegistro");
+            var sNombre = $("#sNombre").val().trim();
+            var sDireccion = $("#sDireccion").val().trim();
+            var sImagen = $("#sImagen")[0].files[0];
+            var nTipoProspecto = $("#nTipoProspecto").val().trim();
+            var nEstado = $("#nEstado").val();
 
-            var aryConfiguracionCliente     = fncGetAryCampos("input[name='aryConfiguracionCliente[]'");
-            var aryConfiguracionCatalogo    = fncGetAryCampos("input[name='aryConfiguracionCatalogo[]'");
-            var aryConfiguracionVendedores  = fncGetAryCampos("input[name='aryConfiguracionVendedores[]'");
-            var aryConfiguracionSupervisor  = fncGetAryCampos("input[name='aryConfiguracionSupervisor[]'");
+            var nIdPais = $("#nIdPais").val();
+            var sCiudad = $("#sCiudad").val().trim();
+            var nIdMoneda = $("#nIdMoneda").val();
+            var nPorcentajeTributo = $("#nPorcentajeTributo").val();
 
 
-            if(sNombre == ''){
-                toastr.error('Error. Debe ingresar el nombre del negocio.');
+            var aryConfiguracionCliente = fncGetAryCampos("input[name='aryConfiguracionCliente[]'");
+            var aryConfiguracionCatalogo = fncGetAryCampos("input[name='aryConfiguracionCatalogo[]'");
+            var aryConfiguracionVendedores = fncGetAryCampos("input[name='aryConfiguracionVendedores[]'");
+            var aryConfiguracionSupervisor = fncGetAryCampos("input[name='aryConfiguracionSupervisor[]'");
+
+
+            if (sNombre == '') {
+                toastr.error('Error. Debe ingresar el nombre del negocio. Porfavor verifique');
                 return false;
-            } else if(sDireccion == ''){
-                toastr.error('Error. Debe ingresar el nombre del negocio.');
+            } else if (sDireccion == '') {
+                toastr.error('Error. Debe ingresar el nombre del negocio. Porfavor verifique');
                 return false;
-            } else if(nTipoProspecto == '0'){
-                toastr.error('Error. Debe seleccionar un tipo de prospecto del negocio.');
+            } else if (nTipoProspecto == '0') {
+                toastr.error('Error. Debe seleccionar un tipo de prospecto del negocio. Porfavor verifique');
+                return false;
+            } else if (nIdPais == '0') {
+                toastr.error('Error. Debe seleccionar un pais para el negocio. Porfavor verifique');
+                return false;
+            }  else if (sCiudad == '') {
+                toastr.error('Error. Debe ingresar el nombre de la ciudad. Porfavor verifique');
+                return false;
+            }  else if (nIdMoneda == '0') {
+                toastr.error('Error. Debe seleccionar la moneda. Porfavor verifique');
                 return false;
             } 
 
-            console.log(aryConfiguracionCliente);
             var formData = new FormData();
             formData.append('nIdRegistro', nIdRegistro);
             formData.append('sNombre', sNombre);
-            formData.append('sDireccion',sDireccion);
-            formData.append('sImagen',sImagen);
-            formData.append('nTipoProspecto',nTipoProspecto);
-            formData.append('nEstado', parseInt( nEstado ));
-            formData.append('aryConfiguracionCliente'    , JSON.stringify(aryConfiguracionCliente));
-            formData.append('aryConfiguracionCatalogo'   , JSON.stringify(aryConfiguracionCatalogo));
-            formData.append('aryConfiguracionVendedores' , JSON.stringify(aryConfiguracionVendedores));
-            formData.append('aryConfiguracionSupervisor' , JSON.stringify(aryConfiguracionSupervisor));
+            formData.append('sDireccion', sDireccion);
+            formData.append('sImagen', sImagen);
+            formData.append('nTipoProspecto', nTipoProspecto);
+            formData.append('nEstado', parseInt(nEstado));
+            formData.append('aryConfiguracionCliente', JSON.stringify(aryConfiguracionCliente));
+            formData.append('aryConfiguracionCatalogo', JSON.stringify(aryConfiguracionCatalogo));
+            formData.append('aryConfiguracionVendedores', JSON.stringify(aryConfiguracionVendedores));
+            formData.append('aryConfiguracionSupervisor', JSON.stringify(aryConfiguracionSupervisor));
 
-            fncGrabarNegocio(formData,function(aryData){
-                if(aryData.success){
+            formData.append('nIdPais', nIdPais);
+            formData.append('sCiudad', sCiudad);
+            formData.append('nIdMoneda', nIdMoneda);
+            formData.append('nPorcentajeTributo', (nPorcentajeTributo == '' || isNaN(nPorcentajeTributo) || nPorcentajeTributo < 0 ? 0 : nPorcentajeTributo));
+
+            fncGrabarNegocio(formData, function(aryData) {
+                if (aryData.success) {
                     fncCleanAll();
                     fncDrawNegocios();
                     $("#formNegocio").modal("hide");
                     toastr.success(aryData.success);
-                }else{
+                } else {
                     toastr.error(aryData.error);
                 }
             });
 
-            
+
         });
 
         // Fin de Formulario Negocios 
@@ -484,50 +555,50 @@
 
     // Funciones de la tabla o layout Principal 
 
-    function fncEliminarRegistro ( nIdRegistro ) {
-        if(confirm('Esta acción eliminará permanentemente el registro y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
-            
+    function fncEliminarRegistro(nIdRegistro) {
+        if (confirm('Esta acción eliminará permanentemente el registro y no podrá deshacerse. ¿ Esta seguro de continuar ?')) {
+
             var jsnData = {
-                nIdRegistro : nIdRegistro
+                nIdRegistro: nIdRegistro
             };
 
-            fncEjecutarEliminarRegistro( jsnData , function(aryData){
+            fncEjecutarEliminarRegistro(jsnData, function(aryData) {
 
-                if(aryData.success){
+                if (aryData.success) {
                     fncDrawNegocios();
-                    toastr.success( aryData.success );
+                    toastr.success(aryData.success);
                 } else {
-                    toastr.error( aryData.error );
+                    toastr.error(aryData.error);
                 }
 
-            }); 
+            });
         }
     }
 
-    function fncEliminarInvitacion ( nIdNegocio , nIdUsuario ) {
-        if(confirm('Esta acción eliminará permanentemente la invitacion y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
-            
+    function fncEliminarInvitacion(nIdNegocio, nIdUsuario) {
+        if (confirm('Esta acción eliminará permanentemente la invitacion y no podrá deshacerse. ¿ Esta seguro de continuar ?')) {
+
             var jsnData = {
-                nIdNegocio : nIdNegocio,
-                nIdUsuario : nIdUsuario
+                nIdNegocio: nIdNegocio,
+                nIdUsuario: nIdUsuario
             };
 
-            fncEjecutarEliminarUsuarioNegocio( jsnData , function(aryData){
+            fncEjecutarEliminarUsuarioNegocio(jsnData, function(aryData) {
 
-                if(aryData.success){
+                if (aryData.success) {
                     fncDrawNegocios();
-                    toastr.success( aryData.success );
+                    toastr.success(aryData.success);
                 } else {
-                    toastr.error( aryData.error );
+                    toastr.error(aryData.error);
                 }
 
-            }); 
+            });
         }
     }
 
     function fncMostrarRegistro(nIdRegistro) {
 
-        $("#sNombre").data("nIdRegistro",nIdRegistro);
+        $("#sNombre").data("nIdRegistro", nIdRegistro);
         $("#content-nTipoProspecto").hide();
 
         var jsnData = {
@@ -535,38 +606,42 @@
         };
         console.log(0);
 
-        fncBuscarRegistro(jsnData, function(aryResponse){
-            
-                if (aryResponse.success) {
-                    var aryData = aryResponse.aryData;
+        fncBuscarRegistro(jsnData, function(aryResponse) {
 
-                    $("#formNegocio").find(".modal-title").html('Editar Negocio');
-                    $("#formNegocio").modal("show");
-                
-                    $("#sNombre").val(aryData.aryNegocio.sNombre);
-                    $("#sDireccion").val(aryData.aryNegocio.sDireccion);
-                    $("#nTipoProspecto").val(aryData.aryNegocio.nTipoProspecto);
-                    $("#nEstado").val(aryData.aryNegocio.nEstado);
-                    $("#sImagen").parent().find(".custom-file-label").html(aryData.aryNegocio.sImagen);
+            if (aryResponse.success) {
+                var aryData = aryResponse.aryData;
+                console.log(aryData);
 
-                    console.log(aryData);
+                $("#formNegocio").find(".modal-title").html('Editar Negocio');
+                $("#formNegocio").modal("show");
 
-                    fncActivarDescbyEntidades(aryData.aryConfigClientes);
-                    fncActivarDescbyEntidades(aryData.aryConfigCatalogos);
-                    fncActivarDescbyEntidades(aryData.aryConfigVendedores);
-                    fncActivarDescbyEntidades(aryData.aryConfigSupervisores);
+                $("#sNombre").val(aryData.aryNegocio.sNombre);
+                $("#sDireccion").val(aryData.aryNegocio.sDireccion);
+                $("#nTipoProspecto").val(aryData.aryNegocio.nTipoProspecto);
+                $("#nEstado").val(aryData.aryNegocio.nEstado);
+                $("#sImagen").parent().find(".custom-file-label").html(aryData.aryNegocio.sImagen);
 
-                } else {
-                    toastr.error(aryData.error);
-                }
+                $("#nIdPais").val(aryData.aryNegocio.nIdPais);
+                $("#sCiudad").val(aryData.aryNegocio.sCiudad);
+                $("#nIdMoneda").val(aryData.aryNegocio.nIdMoneda);
+                $("#nPorcentajeTributo").val(aryData.aryNegocio.nPorcentajeTributo);
+    
+                fncActivarDescbyEntidades(aryData.aryConfigClientes);
+                fncActivarDescbyEntidades(aryData.aryConfigCatalogos);
+                fncActivarDescbyEntidades(aryData.aryConfigVendedores);
+                fncActivarDescbyEntidades(aryData.aryConfigSupervisores);
+
+            } else {
+                toastr.error(aryData.error);
+            }
         });
 
     }
 
     function fncValidateUser() {
         // Si tiene el flag activado de crear negocio el usuario podra crear 
-        if('<?=$user["nCrearNegocio"]?>' == 1 ){
-             $("#btnCrearNegocio").show();
+        if ('<?= $user["nCrearNegocio"] ?>' == 1) {
+            $("#btnCrearNegocio").show();
         } else {
             $("#btnCrearNegocio").hide();
         }
@@ -578,26 +653,26 @@
 
     // Funciones Auxiliares
 
-    function fncDrawNegocios(){
-        fncGetNegocios({},function(aryData){
-            if(aryData.success){
-                
+    function fncDrawNegocios() {
+        fncGetNegocios({}, function(aryData) {
+            if (aryData.success) {
+
                 var sHtmlTemplate = ``;
 
-                if(aryData.aryData.length > 0){
+                if (aryData.aryData.length > 0) {
 
-                    $.each(aryData.aryData,function(nIndex,aryValue){
+                    $.each(aryData.aryData, function(nIndex, aryValue) {
 
                         var isAdmin = false;
                         var isInvitado = false;
 
                         // Solo si es usuario va a lidar el flag
 
-                        if(aryValue.nIdRol == 1){
-                            isAdmin =  true;
+                        if (aryValue.nIdRol == 1) {
+                            isAdmin = true;
                         }
 
-                        if(aryValue.nIdRol == 2){
+                        if (aryValue.nIdRol == 2) {
                             isInvitado = true;
                         }
 
@@ -610,7 +685,7 @@
                                                             </a>
                                                             <div class="actions-negocio">
                                                             ${isAdmin ? `<a href="javascript:;" onclick="fncListarUsuarios(${aryValue.nIdNegocio});" title="Listado de usuarios"><i class="material-icons">list_alt</i> </a>` : ``}  
-                                                            ${isAdmin ? `<a href="javascript:;" onclick="fncInvitarUsario(${aryValue.nIdNegocio},'${aryValue.sNombre}');" title="Invitar usuario"><i class="material-icons">person_add</i> </a>` : ``}  
+                                                            ${isAdmin ? `<a href="javascript:;" onclick="fncInvitarUsario(${aryValue.nIdNegocio}, ${ '`'+  fncEncodeHTMLValue(`${aryValue.sNombre.trim()}` + '`') });" title="Invitar usuario"><i class="material-icons">person_add</i> </a>` : ``}  
                                                             ${isAdmin ? `<a href="javascript:;" onclick="fncMostrarRegistro(${aryValue.nIdNegocio});" title="Editar"><i class="material-icons">edit</i> </a>` : ``}  
                                                             ${isAdmin ? `<a class="text-danger" href="javascript:;" onclick="fncEliminarRegistro(${aryValue.nIdNegocio});" title="Eliminar"><i class="material-icons">delete</i> </a>` : ( isInvitado ?  ` <a  class="text-danger" href="javascript:;" onclick="fncEliminarInvitacion(${aryValue.nIdNegocio},${aryValue.nIdUsuario});" title="Eliminar Invitacion"><i class="material-icons">delete</i> </a> ` : '')}  
                                                             </div>
@@ -627,25 +702,24 @@
     }
 
 
-    
 
-    function fncCleanAll(){
-        fncClearInputs( $("#formNegocio").find("form") );
-        fncClearInputs( $("#formCliente").find("form"), true );
-        fncClearInputs( $("#formProductosoServicios").find("form") , true  );
-        fncClearInputs( $("#formVendedores").find("form") , true );
-        fncClearInputs( $("#formSupervisores").find("form"), true  );
+    function fncCleanAll() {
+        fncClearInputs($("#formNegocio").find("form"));
+        fncClearInputs($("#formCliente").find("form"), true);
+        fncClearInputs($("#formProductosoServicios").find("form"), true);
+        fncClearInputs($("#formVendedores").find("form"), true);
+        fncClearInputs($("#formSupervisores").find("form"), true);
     }
 
-    function fncGetAryCampos(sHtmlTag){
+    function fncGetAryCampos(sHtmlTag) {
         var ary = [];
-        
-        $(sHtmlTag).each(function (nIndex, objCheck) {
+
+        $(sHtmlTag).each(function(nIndex, objCheck) {
 
             ary.push({
-                nIdCampoEntidad       : $(objCheck).val() , 
-                nEstado               : $(objCheck).is(':checked') ? 1 :0 ,
-                nIdConfiguracionCampo : $("#sNombre").data("nIdRegistro") == 0 ? 0 : $(objCheck).data("nIdConfiguracionCampo")
+                nIdCampoEntidad: $(objCheck).val(),
+                nEstado: $(objCheck).is(':checked') ? 1 : 0,
+                nIdConfiguracionCampo: $("#sNombre").data("nIdRegistro") == 0 ? 0 : $(objCheck).data("nIdConfiguracionCampo")
             });
 
         });
@@ -653,11 +727,11 @@
         return ary;
     }
 
-    function fncActDescCheck(sHtmlTagPadre,sHtmlTagHijo){
-        $(sHtmlTagPadre).click( function(){
-            
-            if( $(this).is(':checked') ) {
-                $(sHtmlTagHijo).prop('checked', true);         
+    function fncActDescCheck(sHtmlTagPadre, sHtmlTagHijo) {
+        $(sHtmlTagPadre).click(function() {
+
+            if ($(this).is(':checked')) {
+                $(sHtmlTagHijo).prop('checked', true);
             } else {
                 $(sHtmlTagHijo).prop('checked', false);
             }
@@ -666,19 +740,19 @@
     }
 
     // Esta funcion sirtve cuando se edita y se activa o desactiva los checks
-    function fncActivarDescbyEntidades(aryData){
-        $.each(aryData,function(nIndex,aryItem){
+    function fncActivarDescbyEntidades(aryData) {
+        $.each(aryData, function(nIndex, aryItem) {
 
             var sHtmlTag = '#chk' + aryItem.nIdCampoEntidad;
 
             if (parseInt(aryItem.nEstado) == 1) {
-                $(sHtmlTag).prop('checked', true);         
+                $(sHtmlTag).prop('checked', true);
             } else {
-                $(sHtmlTag).prop('checked', false);         
+                $(sHtmlTag).prop('checked', false);
             }
 
-            $(sHtmlTag).data( "nIdConfiguracionCampo" , aryItem.nIdConfiguracionCampo );
-       
+            $(sHtmlTag).data("nIdConfiguracionCampo", aryItem.nIdConfiguracionCampo);
+
         });
     }
 
@@ -723,38 +797,38 @@
         });
     }
 
-    function fncEjecutarEliminarRegistro ( jsnData , fncCallback ) {    
+    function fncEjecutarEliminarRegistro(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
             url: web_root + 'admin/negocios/fncEliminarRegistro',
             data: jsnData,
             dataType: 'json',
-            beforeSend: function () {
+            beforeSend: function() {
                 fncMostrarLoader();
             },
-            success: function( data ) {
+            success: function(data) {
                 fncCallback(data);
             },
-            complete: function () {
+            complete: function() {
                 fncOcultarLoader();
             }
 
         });
     }
 
-    function fncEjecutarEliminarUsuarioNegocio ( jsnData , fncCallback ) {    
+    function fncEjecutarEliminarUsuarioNegocio(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
             url: web_root + 'admin/negocios/fncEliminarUsuarioNegocio',
             data: jsnData,
             dataType: 'json',
-            beforeSend: function () {
+            beforeSend: function() {
                 fncMostrarLoader();
             },
-            success: function( data ) {
+            success: function(data) {
                 fncCallback(data);
             },
-            complete: function () {
+            complete: function() {
                 fncOcultarLoader();
             }
 
@@ -766,25 +840,19 @@
         $.ajax({
             type: 'post',
             dataType: 'json',
-            url: web_root +  'admin/negocios/fncMostrarRegistro',
-            data: jsnData ,
-            beforeSend: function () {
+            url: web_root + 'admin/negocios/fncMostrarRegistro',
+            data: jsnData,
+            beforeSend: function() {
                 fncMostrarLoader();
             },
-            success: function (data) {
+            success: function(data) {
                 fncCallback(data);
             },
-            complete: function () {
+            complete: function() {
                 fncOcultarLoader();
             }
         });
     }
-
-
-    
-
-
-
 </script>
 
 
@@ -792,46 +860,46 @@
 <script>
     $(function() {
 
-        
+
 
         $("#formInvitarUsuario").find('form').on('submit', function(event) {
-            
+
             event.preventDefault();
 
-            var nIdNegocio            = $("#formInvitarUsuario").data("nIdNegocio");
-            var sNombre               = $("#formInvitarUsuario").data("sNombre");
-            var sCorreoInvitacion     = $("#sCorreoInvitacion").val().trim();
-            var nRol                  = $("#nRol").find("option:selected").val();
+            var nIdNegocio = $("#formInvitarUsuario").data("nIdNegocio");
+            var sNombre = $("#formInvitarUsuario").data("sNombre");
+            var sCorreoInvitacion = $("#sCorreoInvitacion").val().trim();
+            var nRol = $("#nRol").find("option:selected").val();
 
-            if(sCorreoInvitacion == ''){
+            if (sCorreoInvitacion == '') {
                 toastr.error('Error. Debe ingresar un correo para la invitacion del usuario . Porfavor verifique');
                 return;
             }
 
             var jsnData = {
-                nIdNegocio              : nIdNegocio,
-                sNombre                 : sNombre,
-                sCorreoInvitacion       : sCorreoInvitacion, 
-                nRol                    : nRol
+                nIdNegocio: nIdNegocio,
+                sNombre: sNombre,
+                sCorreoInvitacion: sCorreoInvitacion,
+                nRol: nRol
             };
 
-            fncProcesarInvitacionNegocio(jsnData,function(aryData){
-                
-                if(aryData.success){     
-                
+            fncProcesarInvitacionNegocio(jsnData, function(aryData) {
+
+                if (aryData.success) {
+
                     $("#formInvitarUsuario").modal("hide");
-                    
+
                     toastr.success(aryData.success);
-                
+
                 } else {
 
                     toastr.error(aryData.error);
-                
+
                 }
 
             });
 
-            
+
         });
 
 
@@ -839,28 +907,32 @@
 
     // Funciones de la tabla o layout Principal 
 
-  
+
 
 
     // Funciones Auxiliares
 
-  
 
-    window.fncInvitarUsario = (nIdNegocio,sNombreNegocio) => {
+
+    window.fncInvitarUsario = (nIdNegocio, sNombreNegocio) => {
 
         var jsnData = {
-            nIdNegocio : nIdNegocio 
+            nIdNegocio: nIdNegocio
         };
+
+        sNombreNegocio = fncDecodeHTMLValue(sNombreNegocio);
+
+        console.log(sNombreNegocio);
 
         $("#nTipoUsuarioInvitar").val(2).trigger("change");
 
-        $("#formInvitarUsuario").data("nIdNegocio",nIdNegocio);
-        $("#formInvitarUsuario").data("sNombre",sNombreNegocio);
+        $("#formInvitarUsuario").data("nIdNegocio", nIdNegocio);
+        $("#formInvitarUsuario").data("sNombre", sNombreNegocio);
 
         $("#formInvitarUsuario").modal("show");
     }
 
-  
+
 
     // Llamadas al servidor
 
@@ -881,7 +953,7 @@
             }
         });
     }
-    
+
     function fncProcesarInvitacionNegocio(jsnData, fncCallback) {
         $.ajax({
             type: 'post',
@@ -899,44 +971,39 @@
             }
         });
     }
-
-
-
 </script>
 <!-- Invitar Usuario -->
 
 
 <!-- Listar Usuarios -->
 <script>
-
-
-    window.fncListarUsuarios = function(nIdNegocio){
+    window.fncListarUsuarios = function(nIdNegocio) {
         var jsnData = {
-            nIdNegocio : nIdNegocio
+            nIdNegocio: nIdNegocio
         };
 
-        fncMostrarUsuariosNegocios(jsnData,(aryData)=>{
-        
-            if(aryData.success){
+        fncMostrarUsuariosNegocios(jsnData, (aryData) => {
 
-                var aryData = aryData.aryData ;
+            if (aryData.success) {
+
+                var aryData = aryData.aryData;
 
                 var sHtml = ``;
 
-                if ( aryData.length > 0 ){
- 
+                if (aryData.length > 0) {
+
                     aryData.forEach(aryItem => {
-                       sHtml += 
-                       `<div class="card my-2 p-2 w-100 mx-4">
+                        sHtml +=
+                            `<div class="card my-2 p-2 w-100 mx-4">
                             <div class="d-flex flex-center">
                                 <div>${fncUc(aryItem.sUsuario)} - ${aryItem.sRol} </div>
                                 <div class="ml-auto"></div>
                                 <div class="mx-2"><a href="javascript:;" class="text-danger font-18" onclick="fncEliminarRelacionUsuario(${aryItem.nIdNegocio}, ${aryItem.nIdUsuario});" title="Eliminar"><i class="material-icons">delete</i></a></div>
                             </div>
-                        </div>`; 
+                        </div>`;
                     });
 
-                } else{
+                } else {
                     sHtml = `<h6> No existen usuarios invitados </h6>`;
                 }
 
@@ -946,30 +1013,30 @@
                 toastr.error(aryData.error);
             }
         });
-    
+
     }
 
-    window.fncEliminarRelacionUsuario = function(nIdNegocio , nIdUsuario) {
-        if(confirm('Esta acción eliminará permanentemente la invitacion y no podrá deshacerse. ¿ Esta seguro de continuar ?')){
-            
+    window.fncEliminarRelacionUsuario = function(nIdNegocio, nIdUsuario) {
+        if (confirm('Esta acción eliminará permanentemente la invitacion y no podrá deshacerse. ¿ Esta seguro de continuar ?')) {
+
             var jsnData = {
-                nIdNegocio : nIdNegocio,
-                nIdUsuario : nIdUsuario
+                nIdNegocio: nIdNegocio,
+                nIdUsuario: nIdUsuario
             };
 
-            fncEjecutarEliminarUsuarioNegocio( jsnData , function(aryData){
+            fncEjecutarEliminarUsuarioNegocio(jsnData, function(aryData) {
 
-                if(aryData.success){
+                if (aryData.success) {
                     fncListarUsuarios(nIdNegocio);
-                    toastr.success( aryData.success );
+                    toastr.success(aryData.success);
                 } else {
-                    toastr.error( aryData.error );
+                    toastr.error(aryData.error);
                 }
 
-            }); 
+            });
         }
     }
-  
+
 
     // Llamadas al servidor    
     function fncMostrarUsuariosNegocios(jsnData, fncCallback) {

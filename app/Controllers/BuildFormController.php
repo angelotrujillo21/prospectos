@@ -63,7 +63,9 @@ class BuildFormController extends Controller
                         "sNombreConfig"     => $aryCampo['sNombreConfig'],
                         "sPlaceHolder"      => $aryCampo['sPlaceHolder'],
                         "nTamano"           => $aryCampo['nTamano'],
-                        "aryLista"          => $aryCampo['sNombreConfig'] != 'UBIGEO_DEPARTAMENTO' && $aryCampo['sNombreConfig'] != 'CONDICIONAL' &&  strlen($aryCampo['sNombreConfig']) > 0 ? $this->catalogoTabla->fncListado(trim($aryCampo['sNombreConfig'])) : ($aryCampo['sNombreConfig'] == 'UBIGEO_DEPARTAMENTO' ? $this->ubigeo->fncObtenerDepartamentos() : [])
+                        "aryLista"          => $aryCampo['sNombreConfig'] != 'UBIGEO_DEPARTAMENTO' 
+                                            && $aryCampo['sNombreConfig'] != 'CONDICIONAL' && 
+                                             strlen($aryCampo['sNombreConfig']) > 0 ? $this->catalogoTabla->fncListado(trim($aryCampo['sNombreConfig'])) : ($aryCampo['sNombreConfig'] == 'UBIGEO_DEPARTAMENTO' ? $this->ubigeo->fncObtenerDepartamentos() : [])
                     ];
                 }
             }
@@ -123,6 +125,7 @@ class BuildFormController extends Controller
                     $aryData[] = [
                         "nIdConfigProspecto" => $ary['nIdConfigProspecto'],
                         "sWidgetSystem"      => $ary['sWidgetSystem'],
+                        "nIdWidget"          => $ary['nIdWidget'],
                         "sWidget"            => uc($ary['sWidget']),
                         "aryLista"           => $aryLista,
                         "nTamano"            => $ary['nTamano'],

@@ -22,7 +22,7 @@
         </div>
         <ul class="navbar-nav border-left flex-row">
 
-            <?php if (isset($showNotificacion) && $showNotificacion) : ?>
+            <?php if (isset($showNotificacion) && $showNotificacion && $user["nIdRol"] == 1)  : ?>
 
                 <li class="nav-item border-right dropdown">
                     <a class="nav-link nav-link-icon text-center" href="<?= route('mis-negocios/') ?>" role="button" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Mis Negocios">

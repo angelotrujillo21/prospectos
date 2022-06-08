@@ -7,6 +7,7 @@
     <?php extend_view(['admin/common/head'], $data) ?>
     <?php load_style([ 'bootstrap', 'jquery-ui', 'admin/style', 'admin/shards-dashboards.1.1.0.min']); ?> 
     <?php load_style_plugin([ 'toast/toastr.min' ]); ?> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 
 </head>
 
@@ -129,7 +130,7 @@
 
                 });
 
-                $("#sNumeroDocumento" + sEntidad ).on('keyup change',function(){
+                $("#btnsNumeroDocumento" + sEntidad ).on('click',function(){
                     
                     switch( $("#nTipoDocumento"+sEntidad).find("option:selected").text() ){
                         
@@ -145,7 +146,10 @@
 
                                 fncBuscarDocument( jsnData ,function(aryData){
                                     if(aryData.success){
+                                        toastr.success(aryData.success);
                                         $("#sNombre"+sEntidad).val(aryData.success.razonSocial);
+                                    } else {
+                                        toastr.error(aryData.error);
                                     }
                                 });
 
@@ -164,7 +168,10 @@
 
                                 fncBuscarDocument(jsnData ,function(aryData){
                                     if(aryData.success){
+                                        toastr.success(aryData.success);
                                         $("#sNombre"+sEntidad).val(aryData.success.razonSocial);
+                                    } else {
+                                        toastr.error(aryData.error);
                                     }
                                 });
 
@@ -211,7 +218,7 @@
             var sCarreraCiclo                   = $("#sCarreraCiclo" + sEntidad);
 
             var nIdNegocio                      = "<?=$nIdNegocio?>";
-            var nIdRol                              = "<?=$nIdRol?>";
+            var nIdRol                          = "<?=$nIdRol?>";
             var nidsupervisorocolor             = "<?=$nIdSupervisoroColor?>";
 
             var nExperienciaVentas              = $("#nExperienciaVentas" + sEntidad);
@@ -315,16 +322,6 @@
                     
                     $("#content-form").fadeOut();
                     $("#content-success").fadeIn();
-
-                    // var messageJSON = {
-                    //     type       : 'NUEVO_EMPLEADO',
-                    //     message    : {
-                    //         nIdNegocio : $("body").data("nidnegocio")
-                    //     }
-                    // };
-
-                    // websocket.send(JSON.stringify(messageJSON));
-
                 } else {
                     toastr.error(aryData.error);
                 }
@@ -396,13 +393,13 @@
             dataType: 'json',
             url: web_root +  'api/'+ jsnData.sTipo +'/' + jsnData.sNumeroDoc ,
             beforeSend: function () {
-               // fncMostrarLoader();
+               fncMostrarLoader();
             },
             success: function (data) {
                 fncCallback(data);
             },
             complete: function () {
-              //  fncOcultarLoader();
+                fncOcultarLoader();
             }
         });
     }

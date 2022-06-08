@@ -3,7 +3,7 @@
 
 define('ROOTPATH', __DIR__);
 
-define('WEB', 'http://localhost/');
+define('WEB', 'http://192.168.1.103/');
 
 define('WEB_ROOT', WEB . 'prospectos/');
 
